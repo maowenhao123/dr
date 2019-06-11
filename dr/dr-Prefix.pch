@@ -1,0 +1,165 @@
+//
+//  Prefix header
+//
+//  The contents of this file are implicitly included at the beginning of every source file.
+//
+
+#import <Availability.h>
+
+#ifdef __OBJC__
+    #import <UIKit/UIKit.h>
+    #import <Foundation/Foundation.h>
+#endif
+
+#define KEY_WINDOW  [[UIApplication sharedApplication] keyWindow]
+
+//----------------------ABOUT SYSTYM & VERSION 系统与版本 ----------------------------
+/** 是否为iOS8 */
+#define iOS8 (([[[UIDevice currentDevice] systemVersion] floatValue] >= 8.0) ? YES : NO)
+
+/** 是否为iOS9 */
+#define iOS9 (([[[UIDevice currentDevice] systemVersion] floatValue] >= 9.0) ? YES : NO)
+
+/** 是否为iOS10 */
+#define iOS10 (([[[UIDevice currentDevice] systemVersion] floatValue] >= 10.0) ? YES : NO)
+
+/** 是否为iOS11 */
+#define iOS11 (([[[UIDevice currentDevice] systemVersion] floatValue] >= 11.0) ? YES : NO)
+
+/** 是否为iOS12 */
+#define iOS12 (([[[UIDevice currentDevice] systemVersion] floatValue] >= 12.0) ? YES : NO)
+
+//----------------------ABOUT SCREEN & SIZE 屏幕&尺寸 ----------------------------
+#define screenWidth   ([UIScreen mainScreen].bounds.size.width)
+#define screenHeight  ([UIScreen mainScreen].bounds.size.height)
+#define scaleScreenWidth(width)  screenWidth / 375 * width
+
+/** 设备是否为iPhone 4/4S 分辨率320x480，像素640x960，@2x */
+#define iPhone4 ([UIScreen instancesRespondToSelector:@selector(currentMode)] ? CGSizeEqualToSize(CGSizeMake(640, 960), [[UIScreen mainScreen] currentMode].size) : NO)
+
+/** 设备是否为iPhone 5C/5/5S 分辨率320x568，像素640x1136，@2x */
+#define iPhone5 ([UIScreen instancesRespondToSelector:@selector(currentMode)] ? CGSizeEqualToSize(CGSizeMake(640, 1136), [[UIScreen mainScreen] currentMode].size) : NO)
+
+/** 设备是否为iPhone 6 分辨率375x667，像素750x1334，@2x */
+//iPhone 6 iPhone 7 iPhone 8
+#define iPhone6 ([UIScreen instancesRespondToSelector:@selector(currentMode)] ? CGSizeEqualToSize(CGSizeMake(750, 1334), [[UIScreen mainScreen] currentMode].size) : NO)
+
+/** 设备是否为iPhone 6 Plus 分辨率414x736，像素1242x2208，@3x */
+//iPhone 6P iPhone 7P iPhone 8P
+#define iPhone6P ([UIScreen instancesRespondToSelector:@selector(currentMode)] ? CGSizeEqualToSize(CGSizeMake(1242, 2208), [[UIScreen mainScreen] currentMode].size) : NO)
+
+/** 设备是否为iPhone X 分辨率375x812，像素1125x2436，@3x */
+//iPhone XS
+#define iPhoneX ([UIScreen instancesRespondToSelector:@selector(currentMode)] ? CGSizeEqualToSize(CGSizeMake(1125, 2436), [[UIScreen mainScreen] currentMode].size) : NO)
+
+/** 设备是否为iPhone XR 分辨率414x896，像素828x1792，@3x */
+#define iPhoneXR ([UIScreen instancesRespondToSelector:@selector(currentMode)] ? CGSizeEqualToSize(CGSizeMake(828, 1792), [[UIScreen mainScreen] currentMode].size) : NO)
+
+/** 设备是否为iPhone XS MAX 分辨率414x896，像素1242x2688，@3x */
+#define iPhoneXSMax ([UIScreen instancesRespondToSelector:@selector(currentMode)] ? CGSizeEqualToSize(CGSizeMake(1242, 2688), [[UIScreen mainScreen] currentMode].size) : NO)
+
+//刘海屏手机
+#define IsBangIPhone iPhoneX || iPhoneXR || iPhoneXSMax
+
+//statuBar的高度
+#define statusBarH [[UIApplication sharedApplication] statusBarFrame].size.height
+
+//navigationBar的高度
+#define navBarH 44
+
+//tabBar的高度
+//#else
+#define tabBarH ([[UIApplication sharedApplication] statusBarFrame].size.height > 20 ? 88:49)
+
+//文字离边框的间距
+#define DRMargin 10
+
+//----------------------ABOUT COLOR 颜色相关 ----------------------------
+#define DRColor(r, g, b, a) [UIColor colorWithRed:(r)/255.0 green:(g)/255.0 blue:(b)/255.0 alpha:(a)]
+// rgb颜色转换（16进制->10进制）
+#define UIColorFromRGB(rgbValue) [UIColor colorWithRed:((float)((rgbValue & 0xFF0000) >> 16))/255.0 green:((float)((rgbValue & 0xFF00) >> 8))/255.0 blue:((float)(rgbValue & 0xFF))/255.0 alpha:1.0]
+//常用黑色字体颜色
+#define DRBlackTextColor DRColor(43, 43, 43, 1)
+//常用灰色字体颜色
+#define DRGrayTextColor DRColor(148, 148, 148, 1)
+//常用红色色字体颜色
+#define DRRedTextColor DRColor(251, 64, 27, 1)
+//点赞红色色字体颜色
+#define DRPraiseRedTextColor DRColor(255, 74, 74, 1)
+//常用背景颜色
+#define DRBackgroundColor UIColorFromRGB(0xf2f2f2)
+//常用灰色背景时线的颜色
+#define DRGrayLineColor DRColor(213, 213, 213, 1)
+//常用白色色时背景线的颜色
+#define DRWhiteLineColor DRColor(238, 238, 238, 1)
+//主色
+#define DRDefaultColor DRColor(10, 178, 137, 1)
+//副色
+#define DRViceColor DRColor(255, 166, 11, 1)
+//字体大小
+//#define DRGetFontSize(pt) pt / 2.2639
+#define DRGetFontSize(pt) pt / 2.1 * screenWidth / 375
+//字符串是否为空
+#define DRStringIsEmpty(str) ([str isKindOfClass:[NSNull class]] || str == nil || [str length] == 0) || [str isEqualToString:@"(null)"]
+//数组是否为空
+#define DRArrayIsEmpty(array) (array == nil || [array isKindOfClass:[NSNull class]] || array.count == 0)
+//字典是否为空
+#define DRDictIsEmpty(dic) (dic == nil || [dic isKindOfClass:[NSNull class]] || dic.allKeys == 0)
+/** 是否是空对象*/
+#define DRObjectIsEmpty(_object) (_object == nil || [_object isKindOfClass:[NSNull class]] || ([_object respondsToSelector:@selector(length)] && [(NSData *)_object length] == 0) || ([_object respondsToSelector:@selector(count)] && [(NSArray *)_object count] == 0))
+
+//自定义Log
+#ifdef DEBUG
+#define DRLog(fmt, ...) NSLog((@"%s [Line %d] " fmt), __PRETTY_FUNCTION__, __LINE__, ##__VA_ARGS__);
+#else
+#define DRLog(...)
+#endif
+
+//动画时间
+#define DRAnimateDuration 0.2f
+
+//cell默认高度
+#define DRCellH 44
+#define DRPageSize [NSNumber numberWithInt:10]
+#import "NSString+DR.h"
+#import "UIView+DR.h"
+#import "UIImage+DR.h"
+#import "UIBarButtonItem+DR.h"
+#import "UITableView+DR.h"
+#import "DRGoodModel.h"
+#import "DRTool.h"
+#import "MBProgressHUD+MJ.h"
+#import "DRHttpTool.h"
+#import "DRUser.h"
+#import "DRUserDefaultTool.h"
+#import "UIImageView+WebCache.h"
+
+//判断是否请求成功
+#define SUCCESS [json[@"result"] isEqualToNumber:@(0)] && json
+//请求失败
+#define ShowErrorView [MBProgressHUD showError:json[@"message"]];
+//userId
+#define UserId [[NSUserDefaults standardUserDefaults] stringForKey:@"userId"]
+//userId
+#define Token [[NSUserDefaults standardUserDefaults] stringForKey:@"token"]
+
+#define waitingView [MBProgressHUD showMessage:@"请稍后" toView:self.view];
+
+//------------------------- 第三方Id ----------------------------
+//微信
+#define WXAppId @"wxd2d06368674a5316"
+#define WXAppSecret @"c55aa0eea2606faf6582d5b3d61146e7"
+//极光
+#define JPushId @"130158087bd6a64f6301b7e8"
+#define JPushSecret @"f9ba10f9a9b8d5e3ad8012f4"
+//友盟
+#define UMengId @"595b0cb01c5dd03e6c000641"
+//QQ
+#define QQAPPId @"1106305578"
+#define QQAppSecret @"5F5LVfane3AltJP0"
+//环信
+#define EaseMobAppKey @"1184171018178655#wuhuarou"
+//友盟
+#define UMengId @"595b0cb01c5dd03e6c000641"
+//魔窗
+#define MWAppKey @"KLTUAI2EHCFU9CL5LNXPMR3IZW7N9UEM"

@@ -1,0 +1,55 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<Bucket
+   type = "1"
+   version = "2.0">
+   <Breakpoints>
+      <BreakpointProxy
+         BreakpointExtensionID = "Xcode.Breakpoint.FileBreakpoint">
+         <BreakpointContent
+            shouldBeEnabled = "Yes"
+            ignoreCount = "0"
+            continueAfterRunningActions = "No"
+            filePath = "dr/Classes/Mine/&#x6211;&#x7684;/Controller/DRMineViewController.m"
+            timestampString = "581392635.684559"
+            startingColumnNumber = "9223372036854775807"
+            endingColumnNumber = "9223372036854775807"
+            startingLineNumber = "122"
+            endingLineNumber = "122"
+            landmarkName = "-getData"
+            landmarkType = "7">
+            <Locations>
+               <Location
+                  shouldBeEnabled = "Yes"
+                  ignoreCount = "0"
+                  continueAfterRunningActions = "No"
+                  symbolName = "-[DRMineViewController getData]"
+                  moduleName = "dr"
+                  usesParentBreakpointCondition = "Yes"
+                  urlString = "file:///Users/maowenhao/data/dr/dr/dr/dr/Classes/Mine/%E6%88%91%E7%9A%84/Controller/DRMineViewController.m"
+                  timestampString = "581393303.9084409"
+                  startingColumnNumber = "9223372036854775807"
+                  endingColumnNumber = "9223372036854775807"
+                  startingLineNumber = "122"
+                  endingLineNumber = "122"
+                  offsetFromSymbolStart = "782">
+               </Location>
+               <Location
+                  shouldBeEnabled = "Yes"
+                  ignoreCount = "0"
+                  continueAfterRunningActions = "No"
+                  symbolName = "__31-[DRMineViewController getData]_block_invoke"
+                  moduleName = "dr"
+                  usesParentBreakpointCondition = "Yes"
+                  urlString = "file:///Users/maowenhao/data/dr/dr/dr/dr/Classes/Mine/%E6%88%91%E7%9A%84/Controller/DRMineViewController.m"
+                  timestampString = "581393303.911045"
+                  startingColumnNumber = "9223372036854775807"
+                  endingColumnNumber = "9223372036854775807"
+                  startingLineNumber = "123"
+                  endingLineNumber = "123"
+                  offsetFromSymbolStart = "51">
+               </Location>
+            </Locations>
+         </BreakpointContent>
+      </BreakpointProxy>
+   </Breakpoints>
+</Bucket>
