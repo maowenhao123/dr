@@ -48,7 +48,6 @@ NSString * const RecommendGoodCellId = @"RecommendGoodCellId";
 - (void)viewWillAppear:(BOOL)animated
 {
     [super viewWillAppear:animated];
-    self.navigationController.navigationBarHidden = YES;
     if (self.searchBar && self.searchBar.isFirstResponder) {
         [self.searchBar resignFirstResponder];
     }
@@ -67,7 +66,6 @@ NSString * const RecommendGoodCellId = @"RecommendGoodCellId";
 {
     [super viewWillDisappear:animated];
     [UIApplication sharedApplication].statusBarStyle = UIStatusBarStyleDefault;
-    self.navigationController.navigationBarHidden = NO;
 }
 
 - (void)viewDidLoad

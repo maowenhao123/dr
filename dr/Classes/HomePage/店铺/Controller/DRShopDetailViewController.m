@@ -39,26 +39,18 @@ NSString * const ShopHeaderCellId = @"ShopHeaderCellId";
 @implementation DRShopDetailViewController
 
 #pragma mark - 控制器的生命周期
-- (void)viewWillAppear:(BOOL)animated
-{
-    [super viewWillAppear:animated];
-    self.navigationController.navigationBarHidden = YES;
-}
 - (void)viewDidAppear:(BOOL)animated
 {
     [super viewDidAppear:animated];
     [self scrollViewDidScroll:self.collectionView];
 }
-- (void)viewWillDisappear:(BOOL)animated
-{
-    [super viewWillDisappear:animated];
-    self.navigationController.navigationBarHidden = NO;
-}
+
 - (void)viewDidDisappear:(BOOL)animated
 {
     [super viewDidDisappear:animated];
     [UIApplication sharedApplication].statusBarStyle = UIStatusBarStyleDefault;
 }
+
 - (void)viewDidLoad {
     [super viewDidLoad];
     self.pageIndex = 1;

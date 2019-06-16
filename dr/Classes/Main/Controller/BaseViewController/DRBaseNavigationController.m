@@ -7,8 +7,9 @@
 //
 
 #import "DRBaseNavigationController.h"
+#import "DRLoadHtmlFileViewController.h"
 
-@interface DRBaseNavigationController ()
+@interface DRBaseNavigationController ()<UINavigationControllerDelegate>
 
 @end
 
@@ -56,6 +57,12 @@
     [barButtonItem setTitleTextAttributes:highlightedTextAttrs forState:UIControlStateHighlighted];
 }
 
+- (void)viewDidLoad
+{
+    [super viewDidLoad];
+    self.delegate = self;
+}
+
 #pragma mark - 跳转下个页面
 - (void)pushViewController:(UIViewController *)viewController animated:(BOOL)animated
 {
@@ -70,6 +77,19 @@
     UIViewController *vc = [super popViewControllerAnimated:animated];
     
     return vc;
+}
+
+#pragma mark - UINavigationControllerDelegate
+- (void)navigationController:(UINavigationController *)navigationController willShowViewController:(UIViewController *)viewController animated:(BOOL)animated
+{
+    BOOL hiddenNavBar = [viewController isKindOfClass:[NSClassFromString(@"DRHomePageViewController") class]] || [viewController isKindOfClass:[NSClassFromString(@"DRHomePageHtmlViewController") class]] || [viewController isKindOfClass:[NSClassFromString(@"DRGoodDetailViewController") class]] || [viewController isKindOfClass:[NSClassFromString(@"DRShopDetailViewController") class]] || [viewController isKindOfClass:[NSClassFromString(@"DRUserShowViewController") class]] || [viewController isKindOfClass:[NSClassFromString(@"DRMineViewController") class]] || [viewController isKindOfClass:[NSClassFromString(@"DRMyShopViewController") class]] || [viewController isKindOfClass:[NSClassFromString(@"DRHomePageHtmlViewController") class]] || [viewController isKindOfClass:[NSClassFromString(@"DRHomePageHtmlViewController") class]] || [viewController isKindOfClass:[NSClassFromString(@"DRHomePageHtmlViewController") class]] || [viewController isKindOfClass:[NSClassFromString(@"DRHomePageHtmlViewController") class]] || [viewController isKindOfClass:[NSClassFromString(@"DRHomePageHtmlViewController") class]];
+    if ([viewController isKindOfClass:[NSClassFromString(@"DRLoadHtmlFileViewController") class]]) {
+        DRLoadHtmlFileViewController * loadHtmlFileVC = (DRLoadHtmlFileViewController *)viewController;
+        if (loadHtmlFileVC.hiddenNav) {
+            hiddenNavBar = YES;
+        }
+    }
+    [navigationController setNavigationBarHidden:hiddenNavBar animated:YES];
 }
 
 @end

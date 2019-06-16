@@ -74,7 +74,6 @@ NSString * const GoodDetailRecommendGoodCellId = @"GoodDetailRecommendGoodCellId
 - (void)viewWillAppear:(BOOL)animated
 {
     [super viewWillAppear:animated];
-    self.navigationController.navigationBarHidden = YES;
     [self addSetDeadlineTimer];
     [self scrollViewDidScroll:self.collectionView];
     if (self.videoFloatingWindow) {
@@ -93,7 +92,6 @@ NSString * const GoodDetailRecommendGoodCellId = @"GoodDetailRecommendGoodCellId
 {
     [super viewWillDisappear:animated];
     [UIApplication sharedApplication].statusBarHidden = NO;
-    self.navigationController.navigationBarHidden = NO;
     [self removeSetDeadlineTimer];
     
     if (self.videoFloatingWindow) {

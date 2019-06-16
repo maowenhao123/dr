@@ -40,7 +40,6 @@
 - (void)viewWillAppear:(BOOL)animated
 {
     [super viewWillAppear:animated];
-    self.navigationController.navigationBarHidden = YES;
     [self getData];
 }
 
@@ -54,7 +53,6 @@
 {
     [super viewWillDisappear:animated];
     [UIApplication sharedApplication].statusBarStyle = UIStatusBarStyleDefault;
-    self.navigationController.navigationBarHidden = NO;
 }
 
 - (void)viewDidLoad

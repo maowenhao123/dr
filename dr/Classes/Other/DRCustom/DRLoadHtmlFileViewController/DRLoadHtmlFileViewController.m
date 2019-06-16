@@ -64,7 +64,6 @@
 {
     [super viewWillAppear:animated];
     if (self.hiddenNav) {
-        self.navigationController.navigationBarHidden = YES;
         self.progressView.y = statusBarH;
         [UIApplication sharedApplication].statusBarStyle = UIStatusBarStyleLightContent;
     }
@@ -77,7 +76,6 @@
 {
     [super viewWillDisappear:animated];
     if (self.hiddenNav) {
-        self.navigationController.navigationBarHidden = NO;
         [UIApplication sharedApplication].statusBarStyle = UIStatusBarStyleDefault;
     }
 }

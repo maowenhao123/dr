@@ -26,7 +26,6 @@
 - (void)viewWillAppear:(BOOL)animated
 {
     [super viewWillAppear:animated];
-    self.navigationController.navigationBarHidden = YES;
     [self scrollViewDidScroll:self.showTableView];
     IQKeyboardManager *keyboardManager = [IQKeyboardManager sharedManager];
     keyboardManager.enableAutoToolbar = NO;
@@ -36,7 +35,6 @@
 {
     [super viewWillDisappear:animated];
     [self.view endEditing:YES];
-    self.navigationController.navigationBarHidden = NO;
     IQKeyboardManager *keyboardManager = [IQKeyboardManager sharedManager];
     keyboardManager.enableAutoToolbar = YES;
     keyboardManager.enable = YES;
