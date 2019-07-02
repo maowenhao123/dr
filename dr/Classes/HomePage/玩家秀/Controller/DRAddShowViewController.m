@@ -12,11 +12,12 @@
 #import "DRTextView.h"
 #import "DRAddMultipleImageView.h"
 
-@interface DRAddShowViewController ()
+@interface DRAddShowViewController ()<AddMultipleImageViewDelegate>
 
 @property (nonatomic, weak) UITextField * titleTF;
 @property (nonatomic, weak) DRTextView * detailTV;
 @property (nonatomic, weak) DRAddMultipleImageView * addImageView;
+@property (nonatomic, weak) UILabel * promptLabel;
 @property (nonatomic, strong) NSMutableArray *uploadImageUrlArray;
 
 @end
@@ -77,8 +78,31 @@
     addImageView.titleLabel.text = @"添加图片(最多9张)";
     addImageView.maxImageCount = 9;
     addImageView.height = [addImageView getViewHeight];
+    addImageView.delegate = self;
     [self.view addSubview:addImageView];
+    
+    //温馨提示
+    UILabel * promptLabel = [[UILabel alloc] init];
+    self.promptLabel = promptLabel;
+    promptLabel.numberOfLines = 0;
+    NSString * promptStr = @"注意：玩家秀场仅供玩家分享关于多肉植物的图片、感想等，任何有广告意图的帖子都将被删除，特此提醒，谢谢配合！";
+    NSMutableAttributedString * promptAttStr = [[NSMutableAttributedString alloc]initWithString:promptStr];
+    [promptAttStr addAttribute:NSFontAttributeName value:[UIFont systemFontOfSize:DRGetFontSize(24)] range:NSMakeRange(0, promptAttStr.length)];
+    [promptAttStr addAttribute:NSForegroundColorAttributeName value:DRGrayTextColor range:NSMakeRange(0, promptAttStr.length)];
+    NSMutableParagraphStyle *paragraphStyle = [[NSMutableParagraphStyle alloc] init];
+    [paragraphStyle setLineSpacing:5];
+    [promptAttStr addAttribute:NSParagraphStyleAttributeName value:paragraphStyle range:NSMakeRange(0, promptAttStr.length)];
+    promptLabel.attributedText = promptAttStr;
+    CGSize promptSize = [promptLabel.attributedText boundingRectWithSize:CGSizeMake(screenWidth - DRMargin * 2, MAXFLOAT) options:NSStringDrawingUsesLineFragmentOrigin context:nil].size;
+    promptLabel.frame = CGRectMake(DRMargin, CGRectGetMaxY(addImageView.frame) + 10, screenWidth - DRMargin * 2, promptSize.height);
+    [self.view addSubview:promptLabel];
 }
+
+- (void)viewHeightchange
+{
+    self.promptLabel.y = CGRectGetMaxY(self.addImageView.frame) + 10;
+}
+
 - (void)publishShowBarDidClick
 {
     if((!UserId || !Token))//未登录

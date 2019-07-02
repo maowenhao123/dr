@@ -10,7 +10,15 @@
 
 @implementation DRDateTool
 
-//把时间戳转换为字符串
++ (NSDate *)getTimeDateByTimestamp:(long long)timestamp format:(NSString *)format
+{
+    NSDateFormatter* formatter = [[NSDateFormatter alloc] init];
+    [formatter setDateStyle:NSDateFormatterMediumStyle];
+    [formatter setTimeStyle:NSDateFormatterShortStyle];
+    [formatter setDateFormat:format];
+    NSDate *date = [NSDate dateWithTimeIntervalSince1970:timestamp / 1000];
+    return date;
+}
 + (NSString *)getTimeByTimestamp:(long long)timestamp format:(NSString *)format
 {
     NSDateFormatter* formatter = [[NSDateFormatter alloc] init];
@@ -46,7 +54,7 @@
     NSDate *fromday = [NSDate date];//得到当前时间
     //用来得到具体的时差
     NSCalendar *cal = [NSCalendar currentCalendar];//定义一个NSCalendar对象
-    unsigned int unitFlags = NSCalendarUnitDay | NSCalendarUnitHour | NSCalendarUnitMinute | NSCalendarUnitSecond;
+    unsigned int unitFlags = NSCalendarUnitYear | NSCalendarUnitMonth | NSCalendarUnitDay | NSCalendarUnitHour | NSCalendarUnitMinute | NSCalendarUnitSecond;
     NSDateComponents *deltaDate = [cal components:unitFlags fromDate:fromday toDate:toDate options:0];
     return deltaDate;
 }
@@ -56,7 +64,7 @@
     NSDate *fromday = [NSDate date];//得到当前时间
     //用来得到具体的时差
     NSCalendar *cal = [NSCalendar currentCalendar];//定义一个NSCalendar对象
-    unsigned int unitFlags = NSCalendarUnitDay | NSCalendarUnitHour | NSCalendarUnitMinute | NSCalendarUnitSecond;
+    unsigned int unitFlags = NSCalendarUnitYear | NSCalendarUnitMonth | NSCalendarUnitDay | NSCalendarUnitHour | NSCalendarUnitMinute | NSCalendarUnitSecond;
     NSDateComponents *deltaDate = [cal components:unitFlags fromDate:fromday toDate:toDate options:0];
     return deltaDate;
 }
@@ -67,7 +75,18 @@
     
     //用来得到具体的时差
     NSCalendar *cal = [NSCalendar currentCalendar];//定义一个NSCalendar对象
-    unsigned int unitFlags = NSCalendarUnitDay | NSCalendarUnitHour | NSCalendarUnitMinute | NSCalendarUnitSecond;
+    unsigned int unitFlags = NSCalendarUnitYear | NSCalendarUnitMonth | NSCalendarUnitDay | NSCalendarUnitHour | NSCalendarUnitMinute | NSCalendarUnitSecond;
+    NSDateComponents *deltaDate = [cal components:unitFlags fromDate:fromday toDate:toDate options:0];
+    return deltaDate;
+}
++ (NSDateComponents *)getDeltaDateFromTimestamp:(long long)formTimestamp fromFormat:(NSString *)fromFormat toTimestamp:(long long)toTimestamp ToFormat:(NSString *)toFormat
+{
+    NSDate *toDate = [self getTimeDateByTimestamp:toTimestamp format:toFormat];
+    NSDate *fromday = [self getTimeDateByTimestamp:formTimestamp format:fromFormat];
+    
+    //用来得到具体的时差
+    NSCalendar *cal = [NSCalendar currentCalendar];//定义一个NSCalendar对象
+    unsigned int unitFlags = NSCalendarUnitYear | NSCalendarUnitMonth | NSCalendarUnitDay | NSCalendarUnitHour | NSCalendarUnitMinute | NSCalendarUnitSecond;
     NSDateComponents *deltaDate = [cal components:unitFlags fromDate:fromday toDate:toDate options:0];
     return deltaDate;
 }

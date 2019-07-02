@@ -193,7 +193,7 @@
     self.descriptionTV = descriptionTV;
     descriptionTV.font = [UIFont systemFontOfSize:DRGetFontSize(28)];
     descriptionTV.textColor = DRBlackTextColor;
-    descriptionTV.myPlaceholder = @"请介绍商品的主要卖点或商品规格";
+    descriptionTV.myPlaceholder = @"请介绍商品规格及主要卖点，例如多肉植物的大小、几头、状态、桩子情况等，不低于15个字";
     descriptionTV.tintColor = DRDefaultColor;
     [descriptionView addSubview:descriptionTV];
     descriptionView.height = CGRectGetMaxY(descriptionTV.frame);
@@ -511,8 +511,6 @@
 - (void)confirmBtnDidClick
 {
     [self.view endEditing:YES];
-//    [self uploadVideo];
-//    return;
     //判空
     if (DRStringIsEmpty(self.sortTF.text)) {
         [MBProgressHUD showError:@"未输入商品分类"];
@@ -603,6 +601,18 @@
 
 - (void)uploadImageWithImage:(UIImage *)image
 {
+    if ([image isKindOfClass:[NSString class]]) {
+        NSString * imageStr = (NSString *)image;
+        [self.uploadImageUrlArray addObject:imageStr];
+        if (self.uploadImageUrlArray.count == self.addImageView.images.count)
+        {
+            [self uploadGood];
+        }else
+        {
+            [self uploadImageWithImage:self.addImageView.images[self.uploadImageUrlArray.count]];
+        }
+        return;
+    }
     [DRHttpTool uploadWithImage:image currentIndex:[self.addImageView.images indexOfObject:image] + 1 totalCount:self.addImageView.images.count Success:^(id json) {
         if (SUCCESS) {
             [self.uploadImageUrlArray addObject:json[@"picUrl"]];

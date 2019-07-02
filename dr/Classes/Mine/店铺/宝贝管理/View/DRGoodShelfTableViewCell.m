@@ -188,7 +188,7 @@
     {
         self.bottomView.hidden = NO;
         self.button1.hidden = NO;
-        [self.button1 setTitle:@"编辑" forState:UIControlStateNormal];
+        [self.button1 setTitle:@"删除" forState:UIControlStateNormal];
         self.button2.hidden = NO;
         [self.button2 setTitle:@"编辑" forState:UIControlStateNormal];
         self.rejectLabel.hidden = NO;

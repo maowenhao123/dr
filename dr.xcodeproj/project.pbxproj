@@ -261,7 +261,6 @@
 		AA3657D921D46565009BE71B /* DRPraiseModel.m in Sources */ = {isa = PBXBuildFile; fileRef = AA3657D821D46565009BE71B /* DRPraiseModel.m */; };
 		AA3831791F0CE1FA00ADD3F7 /* UICollectionView+DRNoData.m in Sources */ = {isa = PBXBuildFile; fileRef = AA3831781F0CE1FA00ADD3F7 /* UICollectionView+DRNoData.m */; };
 		AA3A9D1E21D4A8FC00F9147C /* DRPraiseSectionModel.m in Sources */ = {isa = PBXBuildFile; fileRef = AA3A9D1D21D4A8FC00F9147C /* DRPraiseSectionModel.m */; };
-		AA3A9D2221DCB9A000F9147C /* DREmojiKeyboard.m in Sources */ = {isa = PBXBuildFile; fileRef = AA3A9D2121DCB9A000F9147C /* DREmojiKeyboard.m */; };
 		AA3A9D4921E2FC1700F9147C /* DRPraiseListHeaderFooterView.m in Sources */ = {isa = PBXBuildFile; fileRef = AA3A9D4821E2FC1700F9147C /* DRPraiseListHeaderFooterView.m */; };
 		AA3A9D4C21E321B500F9147C /* DRAwardModel.m in Sources */ = {isa = PBXBuildFile; fileRef = AA3A9D4B21E321B500F9147C /* DRAwardModel.m */; };
 		AA3A9D4F21E3243300F9147C /* DRPraiseGoodAwardModel.m in Sources */ = {isa = PBXBuildFile; fileRef = AA3A9D4E21E3243300F9147C /* DRPraiseGoodAwardModel.m */; };
@@ -1210,8 +1209,6 @@
 		AA3831781F0CE1FA00ADD3F7 /* UICollectionView+DRNoData.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "UICollectionView+DRNoData.m"; sourceTree = "<group>"; };
 		AA3A9D1C21D4A8FC00F9147C /* DRPraiseSectionModel.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = DRPraiseSectionModel.h; sourceTree = "<group>"; };
 		AA3A9D1D21D4A8FC00F9147C /* DRPraiseSectionModel.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = DRPraiseSectionModel.m; sourceTree = "<group>"; };
-		AA3A9D2021DCB9A000F9147C /* DREmojiKeyboard.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = DREmojiKeyboard.h; sourceTree = "<group>"; };
-		AA3A9D2121DCB9A000F9147C /* DREmojiKeyboard.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = DREmojiKeyboard.m; sourceTree = "<group>"; };
 		AA3A9D4721E2FC1700F9147C /* DRPraiseListHeaderFooterView.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = DRPraiseListHeaderFooterView.h; sourceTree = "<group>"; };
 		AA3A9D4821E2FC1700F9147C /* DRPraiseListHeaderFooterView.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = DRPraiseListHeaderFooterView.m; sourceTree = "<group>"; };
 		AA3A9D4A21E321B500F9147C /* DRAwardModel.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = DRAwardModel.h; sourceTree = "<group>"; };
@@ -3396,15 +3393,6 @@
 			path = SDWebImageDecoder;
 			sourceTree = "<group>";
 		};
-		AA3A9D1F21DCB98F00F9147C /* DREmojiKeyboard */ = {
-			isa = PBXGroup;
-			children = (
-				AA3A9D2021DCB9A000F9147C /* DREmojiKeyboard.h */,
-				AA3A9D2121DCB9A000F9147C /* DREmojiKeyboard.m */,
-			);
-			path = DREmojiKeyboard;
-			sourceTree = "<group>";
-		};
 		AA3A9D5921E6ED5500F9147C /* TYPagerController */ = {
 			isa = PBXGroup;
 			children = (
@@ -3909,7 +3897,6 @@
 				AA8E46B6212D261A005DE5CE /* UIImage+ForceDecode.m */,
 				AA8E46B7212D261A005DE5CE /* SDImageCacheConfig.h */,
 				AA8E46B8212D261A005DE5CE /* SDWebImageCodersManager.m */,
-				AA8E46B9212D261A005DE5CE /* FLAnimatedImage */,
 				AA8E46BC212D261A005DE5CE /* SDWebImageDownloader.m */,
 				AA8E46BD212D261A005DE5CE /* SDWebImageGIFCoder.h */,
 				AA8E46BE212D261A005DE5CE /* SDWebImageWebPCoder.h */,
@@ -3954,13 +3941,6 @@
 				AA8E46E5212D261A005DE5CE /* UIImage+GIF.h */,
 			);
 			path = SDWebImage;
-			sourceTree = "<group>";
-		};
-		AA8E46B9212D261A005DE5CE /* FLAnimatedImage */ = {
-			isa = PBXGroup;
-			children = (
-			);
-			path = FLAnimatedImage;
 			sourceTree = "<group>";
 		};
 		AA99358D1F29DD2B007634EA /* DRAddMultipleImageManage */ = {
@@ -5781,7 +5761,6 @@
 		CE4690AE1E2CB7B800768646 /* DRCustom */ = {
 			isa = PBXGroup;
 			children = (
-				AA3A9D1F21DCB98F00F9147C /* DREmojiKeyboard */,
 				AAC42DD721B65D38007A4865 /* DRVideoPlayerViewController */,
 				AA298ABE1FD12ABA00763CCA /* DRMenuView */,
 				AA1C32CA1F7F81DC00D05713 /* DRTitleView */,
@@ -6376,7 +6355,6 @@
 				AA27E83521B7AAA60067F72B /* PSTCollectionViewLayout.m in Sources */,
 				A9827122206CD6FB0032A672 /* DRSellerLogisticsTableViewCell.m in Sources */,
 				AA27E82121B7AAA60067F72B /* MWCaptionView.m in Sources */,
-				AA3A9D2221DCB9A000F9147C /* DREmojiKeyboard.m in Sources */,
 				AA8E46F2212D261A005DE5CE /* SDWebImageCompat.m in Sources */,
 				AAF04E3D1F10CE350023FFEC /* DRAddImageCollectionViewCell.m in Sources */,
 				AA27DB8821B66D560067F72B /* TZImageCropManager.m in Sources */,

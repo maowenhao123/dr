@@ -39,9 +39,9 @@ NSString * const ShopHeaderCellId = @"ShopHeaderCellId";
 @implementation DRShopDetailViewController
 
 #pragma mark - 控制器的生命周期
-- (void)viewDidAppear:(BOOL)animated
+- (void)viewWillAppear:(BOOL)animated
 {
-    [super viewDidAppear:animated];
+    [super viewWillAppear:animated];
     [self scrollViewDidScroll:self.collectionView];
 }
 

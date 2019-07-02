@@ -151,7 +151,7 @@
     
     [_bridge registerHandler:@"handleSearch" handler:^(id data, WVJBResponseCallback responseCallback) {
         DRHomePageSerachViewController * searchVC = [[DRHomePageSerachViewController alloc] init];
-        [self.navigationController pushViewController:searchVC animated:YES];
+        [self.navigationController pushViewController:searchVC animated:NO];
     }];
     
     [_bridge registerHandler:@"handleCarousel" handler:^(id data, WVJBResponseCallback responseCallback) {

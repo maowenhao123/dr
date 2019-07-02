@@ -8,7 +8,6 @@
 
 #import "DRSendCommentView.h"
 #import "DRLoginViewController.h"
-#import "DREmojiKeyboard.h"
 
 @interface DRSendCommentView ()<UITextViewDelegate>
 
@@ -80,18 +79,15 @@
     textView.layer.borderColor = DRWhiteLineColor.CGColor;
     textView.layer.borderWidth = 1;
     [self addSubview:textView];
-    
-//    DREmojiKeyboard * stickerKeyboard = [[DREmojiKeyboard alloc] initWithFrame:CGRectMake(0, 0, screenWidth, 100)];
-//    self.textView.inputView = stickerKeyboard;         // 切换到自定义的表情键盘
-//    [self.textView reloadInputViews];
-    
 }
+
 - (void)sendButtonDidClick
 {
     if (self.delegate && [self.delegate respondsToSelector:@selector(textViewSendButtonDidClickWithText:)]) {
         [self.delegate textViewSendButtonDidClickWithText:self.textView.text];
     }
 }
+
 -(void)textViewDidChange:(UITextView *)textView{
     self.sendButton.enabled = textView.text.length > 0;
     static CGFloat maxHeight = 100.0f;
@@ -147,10 +143,10 @@
 #pragma mark - 点赞
 - (void)praiseButtonDidClick:(UIButton *)button
 {
-//    if (button.selected) {
-//        [MBProgressHUD showError:@"您已经点过赞啦"];
-//        return;
-//    }
+    if (button.selected) {
+        [MBProgressHUD showError:@"您已经点过赞啦"];
+        return;
+    }
     if(!UserId || !Token)
     {
         DRLoginViewController * loginVC = [[DRLoginViewController alloc] init];

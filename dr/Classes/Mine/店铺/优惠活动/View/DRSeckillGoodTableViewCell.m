@@ -12,6 +12,7 @@
 
 @property (nonatomic, weak) UIImageView *goodImageView;//商品图片
 @property (nonatomic, weak) UILabel *goodNameLabel;//商品名称
+@property (nonatomic, weak) UILabel *remindLabel;
 @property (nonatomic, weak) UILabel *goodCountLabel;//商品数量
 @property (nonatomic, weak) UILabel * goodPriceLabel;//商品价格
 @property (nonatomic, weak) UIButton * statusButton;
@@ -54,10 +55,19 @@
     CGFloat labelX = CGRectGetMaxX(goodImageView.frame) + DRMargin;
     CGFloat labelW = screenWidth - DRMargin - (CGRectGetMaxX(goodImageView.frame) + DRMargin);
     //商品名称
-    UILabel * goodNameLabel = [[UILabel alloc] initWithFrame:CGRectMake(labelX, goodImageView.y, labelW, 35)];
+    UILabel * goodNameLabel = [[UILabel alloc] initWithFrame:CGRectMake(labelX, goodImageView.y, labelW - 100, 35)];
     self.goodNameLabel = goodNameLabel;
     goodNameLabel.numberOfLines = 0;
     [self addSubview:goodNameLabel];
+    
+    //活动提示
+    UILabel * remindLabel = [[UILabel alloc] initWithFrame:CGRectMake(screenWidth - DRMargin - 100, goodImageView.y, 100, 35)];
+    self.remindLabel = remindLabel;
+    remindLabel.text = @"正在参加活动";
+    remindLabel.textColor = DRDefaultColor;
+    remindLabel.textAlignment = NSTextAlignmentRight;
+    remindLabel.font = [UIFont systemFontOfSize:DRGetFontSize(28)];
+    [self addSubview:remindLabel];
     
     //商品数量
     UILabel * goodCountLabel = [[UILabel alloc] initWithFrame:CGRectMake(labelX, CGRectGetMaxY(goodNameLabel.frame) + 3, labelW, 20)];
@@ -145,6 +155,7 @@
     {
         [self.statusButton setTitle:@"已下架" forState:UIControlStateNormal];
     }
+    self.remindLabel.hidden = status != 1;
     CGSize statusButtonSize = [self.statusButton.currentTitle sizeWithLabelFont:self.statusButton.titleLabel.font];
     CGFloat statusButtonW = statusButtonSize.width + 2 * 20;
     CGFloat statusButtonH = 27;

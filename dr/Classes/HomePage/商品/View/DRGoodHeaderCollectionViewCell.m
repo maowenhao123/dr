@@ -9,6 +9,7 @@
 #import "DRGoodHeaderCollectionViewCell.h"
 #import "SDCycleScrollView.h"
 #import "XLPhotoBrowser.h"
+#import "DRDateTool.h"
 
 @interface DRGoodHeaderCollectionViewCell ()<SDCycleScrollViewDelegate, XLPhotoBrowserDelegate, XLPhotoBrowserDatasource>
 
@@ -17,6 +18,9 @@
 @property (nonatomic,weak) UILabel * goodSaleCountLabel;
 @property (nonatomic, weak) UIImageView *videoIconImageView;
 @property (nonatomic,weak) UILabel * videoLabel;
+@property (nonatomic,weak) UIView * activityRemindView;
+@property (nonatomic,weak) UILabel * activityTimeLabel;
+@property (nonatomic, strong) NSTimer *timer;
 
 @end
 
@@ -98,6 +102,34 @@
     goodSaleCountLabel.textColor = DRGrayTextColor;
     goodSaleCountLabel.font = [UIFont systemFontOfSize:DRGetFontSize(24)];
     [self addSubview:goodSaleCountLabel];
+    
+    //活动提示
+    CGFloat activityRemindViewH = 110;
+    UIView * activityRemindView = [[UIView alloc] initWithFrame:CGRectMake(0, cycleScrollView.height - activityRemindViewH, screenWidth, activityRemindViewH)];
+    self.activityRemindView = activityRemindView;
+    activityRemindView.backgroundColor = DRColor(10, 178, 137, 0.5);
+    activityRemindView.hidden = YES;
+    [self addSubview:activityRemindView];
+
+    UILabel * activityRemindLabel = [[UILabel alloc] initWithFrame:CGRectMake(DRMargin, 0, screenWidth * 0.7 - DRMargin, activityRemindViewH)];
+    activityRemindLabel.textColor = [UIColor whiteColor];
+    activityRemindLabel.numberOfLines = 0;
+    NSMutableAttributedString *activityRemindAttStr = [[NSMutableAttributedString alloc] initWithString:@"十点秒杀活动进行中\n每天10:00-12:00，特价商品先到先得"];
+    [activityRemindAttStr addAttribute:NSFontAttributeName value:[UIFont boldSystemFontOfSize:DRGetFontSize(55)] range:NSMakeRange(0, 9)];
+    [activityRemindAttStr addAttribute:NSFontAttributeName value:[UIFont systemFontOfSize:DRGetFontSize(30)] range:NSMakeRange(9, activityRemindAttStr.length - 9)];
+    NSMutableParagraphStyle *paragraphStyle = [[NSMutableParagraphStyle alloc] init];
+    paragraphStyle.lineSpacing = 5;
+    [activityRemindAttStr addAttribute:NSParagraphStyleAttributeName value:paragraphStyle range:NSMakeRange(0, activityRemindAttStr.length)];
+    activityRemindLabel.attributedText = activityRemindAttStr;
+    [activityRemindView addSubview:activityRemindLabel];
+    
+    UILabel * activityTimeLabel = [[UILabel alloc] initWithFrame:CGRectMake(screenWidth * 0.7, 0, screenWidth * 0.3, activityRemindViewH)];
+    self.activityTimeLabel = activityTimeLabel;
+    activityTimeLabel.backgroundColor = DRColor(10, 178, 137, 0.5);
+    activityTimeLabel.textColor = [UIColor whiteColor];
+    activityTimeLabel.numberOfLines = 0;
+    activityTimeLabel.font = [UIFont systemFontOfSize:DRGetFontSize(30)];
+    [activityRemindView addSubview:activityTimeLabel];
 }
 
 #pragma mark - SDCycleScrollViewDelegate
@@ -144,6 +176,16 @@
     self.goodMailTypeLabel.text = _goodHeaderFrameModel.mailTypeStr;
     self.goodSaleCountLabel.text = [NSString stringWithFormat:@"销量：%@", [DRTool getNumber:_goodHeaderFrameModel.goodModel.sellCount]];
     
+    BOOL inActive = [self inActiveDuration];
+    if (inActive) {
+        self.activityRemindView.hidden = NO;
+        [self addSetDeadlineTimer];
+    }else
+    {
+        self.activityRemindView.hidden = YES;
+        [self removeSetDeadlineTimer];
+    }
+    
     //frame
     self.goodNameLabel.frame = _goodHeaderFrameModel.goodNameLabelF;
     self.goodDetailLabel.frame = _goodHeaderFrameModel.goodDetailLabelF;
@@ -165,6 +207,39 @@
     }
 }
 
+#pragma mark - 倒计时
+- (void)addSetDeadlineTimer
+{
+    if(self.timer == nil && self.goodHeaderFrameModel.goodModel)//空才创建
+    {
+        self.timer = [NSTimer scheduledTimerWithTimeInterval:1.0f target:self selector:@selector(setTimeLabelText) userInfo:nil repeats:YES];
+        [[NSRunLoop mainRunLoop] addTimer:self.timer forMode:NSRunLoopCommonModes];
+        [self.timer fire];
+    }
+}
+
+- (void)setTimeLabelText
+{
+    //倒计时
+    DRGoodModel * goodModel = self.goodHeaderFrameModel.goodModel;
+    NSDateComponents * components = [DRDateTool getDeltaDateFromTimestamp: goodModel.systemTime fromFormat:@"yyyyy-MM-dd HH:mm:ss" toTimestamp: goodModel.dayEndTime ToFormat:@"yyyy-MM-dd HH:mm:ss"];
+    if (components.hour > 0 || components.minute > 0 || components.second > 0) {
+        NSString * activityTimeStr = [NSString stringWithFormat:@"距特价结束\n仅剩\n%02ld:%02ld:%02ld", components.hour, components.minute, components.second];
+        NSMutableAttributedString *activityTimeAttStr = [[NSMutableAttributedString alloc] initWithString:activityTimeStr];
+        NSMutableParagraphStyle *paragraphStyle = [[NSMutableParagraphStyle alloc] init];
+        paragraphStyle.lineSpacing = 5;
+        paragraphStyle.alignment = NSTextAlignmentCenter;
+        [activityTimeAttStr addAttribute:NSParagraphStyleAttributeName value:paragraphStyle range:NSMakeRange(0, activityTimeAttStr.length)];
+        self.activityTimeLabel.attributedText = activityTimeAttStr;
+        goodModel.systemTime = goodModel.systemTime + 1000;
+    }else
+    {
+        self.activityRemindView.hidden = YES;
+        [self removeSetDeadlineTimer];
+    }
+}
+
+#pragma mark - 工具
 - (NSArray *)getPicUrlStrArr
 {
     NSMutableArray * morePicUrlStrArr = [NSMutableArray array];
@@ -180,6 +255,26 @@
     return morePicUrlStrArr;
 }
 
+- (BOOL)inActiveDuration
+{
+    DRGoodModel * goodModel = self.goodHeaderFrameModel.goodModel;
+    if (goodModel.systemTime == 0 || goodModel.beginTime == 0 || goodModel.endTime == 0 || goodModel.dayBeginTime == 0 || goodModel.dayEndTime == 0 || goodModel.discountPrice == 0) {
+        return NO;
+    }
+    long long systemTime = goodModel.systemTime;
+    return systemTime > goodModel.beginTime && systemTime < goodModel.endTime && systemTime > goodModel.dayBeginTime && systemTime < goodModel.dayEndTime;
+}
 
+#pragma  mark - 销毁对象
+- (void)removeSetDeadlineTimer
+{
+    [self.timer invalidate];
+    self.timer = nil;
+}
+
+- (void)dealloc
+{
+    [self removeSetDeadlineTimer];
+}
 
 @end

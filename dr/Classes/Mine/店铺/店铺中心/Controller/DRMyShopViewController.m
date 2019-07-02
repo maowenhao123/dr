@@ -18,6 +18,7 @@
 #import "DRGoodShelfViewController.h"
 #import "DRActivityManageViewController.h"
 #import "DRLoadHtmlFileViewController.h"
+#import "DRShopDetailViewController.h"
 #import "DRItemView.h"
 #import "DRIconTextTableViewCell.h"
 #import "DRShopNewsView.h"
@@ -484,10 +485,16 @@
     {
         DRMailSettingViewController * mailSettingVC = [[DRMailSettingViewController alloc] init];
         [self.navigationController pushViewController:mailSettingVC animated:YES];
-    }else if (indexPath.section == 4)//卖家须知
+    }else if (indexPath.section == 4)//浏览店铺
     {
         DRLoadHtmlFileViewController * htmlVC = [[DRLoadHtmlFileViewController alloc] initWithWeb:[NSString stringWithFormat:@"%@/static/kaidian.html", baseUrl]];
         [self.navigationController pushViewController:htmlVC animated:YES];
+    }else if (indexPath.section == 5)//卖家须知
+    {
+        DRShopDetailViewController * shopDetailVC = [[DRShopDetailViewController alloc] init];
+        DRMyShopModel * shopModel = [DRUserDefaultTool myShopModel];
+        shopDetailVC.shopId = shopModel.id;
+        [self.navigationController pushViewController:shopDetailVC animated:YES];
     }
 }
 
@@ -542,8 +549,8 @@
     if (!_functionStatuss) {
         _functionStatuss = [NSMutableArray array];
         
-        NSArray * iconNames = @[@"delivery_icon", @"good_shelf_icon", @"shop_activity_icon", @"mail_setting", @"seller_notice"];
-        NSArray * functionNames = @[@"发布商品", @"宝贝管理", @"优惠活动", @"运费设置", @"卖家须知"];
+        NSArray * iconNames = @[@"delivery_icon", @"good_shelf_icon", @"shop_activity_icon", @"mail_setting", @"seller_notice", @"black_my_store"];
+        NSArray * functionNames = @[@"发布商品", @"宝贝管理", @"优惠活动", @"运费设置", @"卖家须知", @"浏览店铺"];
         for (int i = 0; i < iconNames.count; i++) {
             DRFunctionStatus * status = [[DRFunctionStatus alloc]init];
             status.functionName = functionNames[i];

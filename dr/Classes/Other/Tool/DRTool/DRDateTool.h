@@ -30,6 +30,7 @@
  获取两个时间段的时间差
  */
 + (NSDateComponents *)getDeltaDateFromDateString:(NSString *)fromDateString fromFormat:(NSString *)fromFormat toDateString:(NSString *)toDateString ToFormat:(NSString *)toFormat;
++ (NSDateComponents *)getDeltaDateFromTimestamp:(long long)formTimestamp fromFormat:(NSString *)fromFormat toTimestamp:(long long)toTimestamp ToFormat:(NSString *)toFormat;
 /*
  把秒数转化成时间
  */
@@ -39,8 +40,5 @@
  把时间字符串转化成date
  */
 + (NSDate *)getDateFromDateString:(NSString *)dateString format:(NSString *)format;
-/**
- *  从date获取星期几
- */
-+ (NSString *)getWeekFromDate:(NSDate *)date;
+
 @end
