@@ -7,7 +7,7 @@
 //
 
 #import <UIKit/UIKit.h>
-#import "DRRedPacketModel.h"
+#import "DRVoucherModel.h"
 
 @interface DRGiveVoucherView : UIView
 

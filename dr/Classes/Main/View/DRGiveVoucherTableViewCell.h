@@ -7,23 +7,13 @@
 //
 
 #import <UIKit/UIKit.h>
-#import "DRRedPacketModel.h"
-
-@class DRGiveVoucherTableViewCell;
-@protocol DRGiveVoucherTableViewCellDelegate <NSObject>
-
-- (void)giveVoucherTableViewCell:(DRGiveVoucherTableViewCell *)cell giveButtonDidClick:(UIButton *)button;
-- (void)useVoucher;
-
-@end
+#import "DRVoucherModel.h"
 
 @interface DRGiveVoucherTableViewCell : UITableViewCell
 
 + (instancetype)cellWithTableView:(UITableView *)tableView;
 
-@property (nonatomic, weak) id <DRGiveVoucherTableViewCellDelegate> delegate;
-
-@property (nonatomic, strong) Coupon *coupon;
+@property (nonatomic, strong) DRVoucherModel *voucherModel;
 
 @end
 

@@ -10,6 +10,10 @@
 		187B97361E77D24E00F22BFC /* DRSortTableViewCell.m in Sources */ = {isa = PBXBuildFile; fileRef = 187B97351E77D24E00F22BFC /* DRSortTableViewCell.m */; };
 		18C822141E77D59E00D00EE3 /* DRSortModel.m in Sources */ = {isa = PBXBuildFile; fileRef = 18C822131E77D59E00D00EE3 /* DRSortModel.m */; };
 		18C822171E77DB4E00D00EE3 /* DRSortGoodCollectionViewCell.m in Sources */ = {isa = PBXBuildFile; fileRef = 18C822161E77DB4E00D00EE3 /* DRSortGoodCollectionViewCell.m */; };
+		1DDDEB4722D57BD3003A9C07 /* DRVoucherModel.m in Sources */ = {isa = PBXBuildFile; fileRef = 1DDDEB4622D57BD3003A9C07 /* DRVoucherModel.m */; };
+		1DDDEB9222D70548003A9C07 /* HyphenateLite.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 1DDDEB9122D70548003A9C07 /* HyphenateLite.framework */; };
+		1DDDEB9322D7054F003A9C07 /* HyphenateLite.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 1DDDEB9122D70548003A9C07 /* HyphenateLite.framework */; };
+		1DDDEB9422D7054F003A9C07 /* HyphenateLite.framework in Embed Frameworks */ = {isa = PBXBuildFile; fileRef = 1DDDEB9122D70548003A9C07 /* HyphenateLite.framework */; settings = {ATTRIBUTES = (CodeSignOnCopy, RemoveHeadersOnCopy, ); }; };
 		A94696661E8A5BB000B4711F /* ULBCollectionViewFlowLayout.m in Sources */ = {isa = PBXBuildFile; fileRef = A94696651E8A5BB000B4711F /* ULBCollectionViewFlowLayout.m */; };
 		A98270CD206A3B100032A672 /* DRSubmitOrderViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = A98270CC206A3B100032A672 /* DRSubmitOrderViewController.m */; };
 		A98270D0206A3EED0032A672 /* DRSubmitOrderGoodTableViewCell.m in Sources */ = {isa = PBXBuildFile; fileRef = A98270CF206A3EED0032A672 /* DRSubmitOrderGoodTableViewCell.m */; };
@@ -59,8 +63,6 @@
 		A9827193206CDA220032A672 /* DRRechargeViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = A982718E206CDA220032A672 /* DRRechargeViewController.m */; };
 		AA042C672089D5FF002F585C /* StoreKit.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = AA042C662089D5FF002F585C /* StoreKit.framework */; };
 		AA076CA020D8F878003AEDC1 /* DRBillingViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = AA076C9F20D8F878003AEDC1 /* DRBillingViewController.m */; };
-		AA0F6A0021FED8A500B56D58 /* HyphenateLite.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = AA0F69FF21FED8A500B56D58 /* HyphenateLite.framework */; };
-		AA0F6A0221FED8AF00B56D58 /* HyphenateLite.framework in Embed Frameworks */ = {isa = PBXBuildFile; fileRef = AA0F69FF21FED8A500B56D58 /* HyphenateLite.framework */; settings = {ATTRIBUTES = (CodeSignOnCopy, RemoveHeadersOnCopy, ); }; };
 		AA1215421F22EE0600A78C58 /* DRThirdPartyBindingViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = AA1215411F22EE0600A78C58 /* DRThirdPartyBindingViewController.m */; };
 		AA14B3461EE4FA6C009C14EC /* UITableView+DRNoData.m in Sources */ = {isa = PBXBuildFile; fileRef = AA14B3451EE4FA6C009C14EC /* UITableView+DRNoData.m */; };
 		AA1A94811F749DC30081DD41 /* UITableView+DR.m in Sources */ = {isa = PBXBuildFile; fileRef = AA1A94801F749DC30081DD41 /* UITableView+DR.m */; };
@@ -677,7 +679,7 @@
 			dstPath = "";
 			dstSubfolderSpec = 10;
 			files = (
-				AA0F6A0221FED8AF00B56D58 /* HyphenateLite.framework in Embed Frameworks */,
+				1DDDEB9422D7054F003A9C07 /* HyphenateLite.framework in Embed Frameworks */,
 			);
 			name = "Embed Frameworks";
 			runOnlyForDeploymentPostprocessing = 0;
@@ -691,6 +693,9 @@
 		18C822131E77D59E00D00EE3 /* DRSortModel.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = DRSortModel.m; sourceTree = "<group>"; };
 		18C822151E77DB4E00D00EE3 /* DRSortGoodCollectionViewCell.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = DRSortGoodCollectionViewCell.h; sourceTree = "<group>"; };
 		18C822161E77DB4E00D00EE3 /* DRSortGoodCollectionViewCell.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = DRSortGoodCollectionViewCell.m; sourceTree = "<group>"; };
+		1DDDEB4522D57BD3003A9C07 /* DRVoucherModel.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = DRVoucherModel.h; sourceTree = "<group>"; };
+		1DDDEB4622D57BD3003A9C07 /* DRVoucherModel.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = DRVoucherModel.m; sourceTree = "<group>"; };
+		1DDDEB9122D70548003A9C07 /* HyphenateLite.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; path = HyphenateLite.framework; sourceTree = "<group>"; };
 		A94696641E8A5BB000B4711F /* ULBCollectionViewFlowLayout.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ULBCollectionViewFlowLayout.h; sourceTree = "<group>"; };
 		A94696651E8A5BB000B4711F /* ULBCollectionViewFlowLayout.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = ULBCollectionViewFlowLayout.m; sourceTree = "<group>"; };
 		A98270CB206A3B100032A672 /* DRSubmitOrderViewController.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = DRSubmitOrderViewController.h; sourceTree = "<group>"; };
@@ -788,7 +793,6 @@
 		AA042C662089D5FF002F585C /* StoreKit.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = StoreKit.framework; path = System/Library/Frameworks/StoreKit.framework; sourceTree = SDKROOT; };
 		AA076C9E20D8F878003AEDC1 /* DRBillingViewController.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = DRBillingViewController.h; sourceTree = "<group>"; };
 		AA076C9F20D8F878003AEDC1 /* DRBillingViewController.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = DRBillingViewController.m; sourceTree = "<group>"; };
-		AA0F69FF21FED8A500B56D58 /* HyphenateLite.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; path = HyphenateLite.framework; sourceTree = "<group>"; };
 		AA1215401F22EE0600A78C58 /* DRThirdPartyBindingViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = DRThirdPartyBindingViewController.h; sourceTree = "<group>"; };
 		AA1215411F22EE0600A78C58 /* DRThirdPartyBindingViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = DRThirdPartyBindingViewController.m; sourceTree = "<group>"; };
 		AA14B3441EE4FA6C009C14EC /* UITableView+DRNoData.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "UITableView+DRNoData.h"; sourceTree = "<group>"; };
@@ -1998,7 +2002,7 @@
 				AAA9284F1F91A5E400C52510 /* CoreFoundation.framework in Frameworks */,
 				AAA2C82F1F17D20D0046A335 /* libSocialQQ.a in Frameworks */,
 				AAADEAAC1FD77C9F007BD4AD /* libMagicWindowSDK.a in Frameworks */,
-				AA0F6A0021FED8A500B56D58 /* HyphenateLite.framework in Frameworks */,
+				1DDDEB9222D70548003A9C07 /* HyphenateLite.framework in Frameworks */,
 				AA89127B1EFA6B3F0038EB2F /* CoreMotion.framework in Frameworks */,
 				AA2643581FC566BF000474F7 /* UMMobClick.framework in Frameworks */,
 				AA8912781EFA6A870038EB2F /* libcrypto.a in Frameworks */,
@@ -2012,6 +2016,7 @@
 				AA8911A71EFA618D0038EB2F /* QuartzCore.framework in Frameworks */,
 				AA27E81421B7AAA60067F72B /* libopencore-amrwb.a in Frameworks */,
 				AAA2C8371F17D20E0046A335 /* UMSocialNetwork.framework in Frameworks */,
+				1DDDEB9322D7054F003A9C07 /* HyphenateLite.framework in Frameworks */,
 				AA27E81521B7AAA60067F72B /* libopencore-amrnb.a in Frameworks */,
 				AAA2C83B1F17D20E0046A335 /* UShareUI.framework in Frameworks */,
 				AAADEAB51FD78278007BD4AD /* libsqlite3.0.tbd in Frameworks */,
@@ -2388,6 +2393,8 @@
 			children = (
 				AAA9285C1F9305AA00C52510 /* DRUpgradeModel.h */,
 				AAA9285D1F9305AA00C52510 /* DRUpgradeModel.m */,
+				1DDDEB4522D57BD3003A9C07 /* DRVoucherModel.h */,
+				1DDDEB4622D57BD3003A9C07 /* DRVoucherModel.m */,
 			);
 			path = Model;
 			sourceTree = "<group>";
@@ -2717,7 +2724,7 @@
 		AA27E43921B7A4FA0067F72B /* HyphenateSDK */ = {
 			isa = PBXGroup;
 			children = (
-				AA0F69FF21FED8A500B56D58 /* HyphenateLite.framework */,
+				1DDDEB9122D70548003A9C07 /* HyphenateLite.framework */,
 			);
 			path = HyphenateSDK;
 			sourceTree = "<group>";
@@ -6506,6 +6513,7 @@
 				AA8E46FC212D261A005DE5CE /* NSImage+WebCache.m in Sources */,
 				AA8E46F4212D261A005DE5CE /* SDWebImageCoder.m in Sources */,
 				AAC5F8131E9DF4DC0051C81B /* MJRefreshHeader.m in Sources */,
+				1DDDEB4722D57BD3003A9C07 /* DRVoucherModel.m in Sources */,
 				AA27E84B21B7AAA60067F72B /* EaseRefreshTableViewController.m in Sources */,
 				AA2AB4C521BA102300A345DA /* NSLayoutConstraint+MASDebugAdditions.m in Sources */,
 				AAE55CB02089B45200A29844 /* DRRecommendGoodCollectionViewCell.m in Sources */,
@@ -6753,7 +6761,7 @@
 				PRODUCT_BUNDLE_IDENTIFIER = com.lottery.dr;
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				PROVISIONING_PROFILE = "6f5a7e46-78a2-4fda-b373-7cfe84d78868";
-				PROVISIONING_PROFILE_SPECIFIER = dr_adHoc_32;
+				PROVISIONING_PROFILE_SPECIFIER = dr_adHoc_28;
 				VALID_ARCHS = "arm64 armv7 armv7s";
 			};
 			name = "ad hoc distribution";
@@ -6946,7 +6954,7 @@
 				PRODUCT_BUNDLE_IDENTIFIER = com.lottery.dr;
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				PROVISIONING_PROFILE = "";
-				PROVISIONING_PROFILE_SPECIFIER = dr_dev_32;
+				PROVISIONING_PROFILE_SPECIFIER = dr_dev_28;
 				VALID_ARCHS = "arm64 armv7 armv7s";
 			};
 			name = Debug;

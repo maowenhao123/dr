@@ -13,9 +13,7 @@
 
 //测试环境
 #define baseUrl @"http://test.esodar.com"
-//#define baseUrl @"http://192.168.11.170:8181"
 #define baseH5Url  @"http://testindex.esodar.com"
-//#define baseH5Url  @"http://192.168.11.138:8080"
 #define baseGoodShareUrl  @"http://testwx.esodar.com"
 
 #define mcpUrl [NSString stringWithFormat:@"%@/jshop/api/service", baseUrl]

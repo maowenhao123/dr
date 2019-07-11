@@ -88,9 +88,9 @@ static NSString *kGroupName = @"GroupName";
     
     //赠送红包
     [self getGiveVoucherData];
-//
-//    //小红点
-//    [self setupUnreadMessageCount];
+
+    //小红点
+    [self setupUnreadMessageCount];
 }
 
 // 统计未读消息数
@@ -205,7 +205,6 @@ static NSString *kGroupName = @"GroupName";
 - (void)checkUpgrade
 {
     NSString * version = [NSString stringWithFormat:@"%@", [NSBundle mainBundle].infoDictionary[@"CFBundleShortVersionString"]];
-//    version = @"1.0";
     NSDictionary *bodyDic = @{
                               @"type":@"2",
                               @"version":version,
@@ -242,15 +241,9 @@ static NSString *kGroupName = @"GroupName";
     [[DRHttpTool shareInstance] postWithTarget:self headDic:headDic bodyDic:bodyDic success:^(id json) {
         DRLog(@"%@",json);
         if (SUCCESS) {
-            NSArray *redPacketList = [Coupon mj_objectArrayWithKeyValuesArray:json[@"list"]];
-            NSMutableArray *redPacketList_mu = [NSMutableArray array];
-            for (Coupon * coupon in redPacketList) {
-                if ([coupon.status isEqualToString:@"0"]) {
-                    [redPacketList_mu addObject:coupon];
-                }
-            }
-            if (redPacketList_mu.count > 0) {
-                DRGiveVoucherView * giveVoucherView = [[DRGiveVoucherView alloc] initWithFrame:self.view.bounds redPacketList:redPacketList_mu];
+            NSArray *redPacketList = [DRVoucherModel mj_objectArrayWithKeyValuesArray:json[@"registGiveRewardList"]];
+            if (redPacketList.count > 0) {
+                DRGiveVoucherView * giveVoucherView = [[DRGiveVoucherView alloc] initWithFrame:self.view.bounds redPacketList:redPacketList];
                 giveVoucherView.owerViewController = self.selectedViewController;
                 [self.view addSubview:giveVoucherView];
             }

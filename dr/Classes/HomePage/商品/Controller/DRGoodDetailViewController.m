@@ -844,7 +844,11 @@ NSString * const GoodDetailRecommendGoodCellId = @"GoodDetailRecommendGoodCellId
         
         // 商品价格
         if (!DRStringIsEmpty(headerCollectionViewCell.goodPriceLabel.text)) {
-            [goodInfo setObject:headerCollectionViewCell.goodPriceLabel.text forKey:@"price"];
+            NSString * priceStr = headerCollectionViewCell.goodPriceLabel.attributedText.string;
+            if ([_goodModel.discountPrice doubleValue] > 0) {
+                priceStr = [NSString stringWithFormat:@"¥%@", [DRTool formatFloat:[_goodModel.discountPrice doubleValue] / 100]];
+            }
+            [goodInfo setObject:priceStr forKey:@"price"];
         }
         
          // 推广图片

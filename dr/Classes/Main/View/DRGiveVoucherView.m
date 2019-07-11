@@ -9,10 +9,8 @@
 #import "DRGiveVoucherView.h"
 #import "DRRedPacketViewController.h"
 #import "DRGiveVoucherTableViewCell.h"
-#import "UIImageView+WebCache.h"
-#import "DRDateTool.h"
 
-@interface DRGiveVoucherView ()<UIGestureRecognizerDelegate, UITableViewDelegate,UITableViewDataSource, DRGiveVoucherTableViewCellDelegate>
+@interface DRGiveVoucherView ()<UIGestureRecognizerDelegate, UITableViewDelegate, UITableViewDataSource>
 
 @property (nonatomic, weak) UITableView *tableView;
 @property (nonatomic,weak) UIView *backView;
@@ -104,20 +102,34 @@
     closeImageView.image = [UIImage imageNamed:@"give_voucher_close"];
     [backView addSubview:closeImageView];
     
-    UITapGestureRecognizer * closeTap = [[UITapGestureRecognizer alloc] initWithTarget:self action:@selector(closeImageViewDidClick)];
+    UITapGestureRecognizer * closeTap = [[UITapGestureRecognizer alloc] initWithTarget:self action:@selector(removeFromSuperview)];
     closeImageView.userInteractionEnabled = YES;
     [closeImageView addGestureRecognizer:closeTap];
 }
 
-- (void)closeImageViewDidClick
-{
-    [self removeFromSuperview];
-}
-
 - (void)gotoVoucher
 {
-    DRRedPacketViewController * redPacketVC = [[DRRedPacketViewController alloc] init];
-    [self.owerViewController pushViewController:redPacketVC animated:YES];
+    NSDictionary * bodyDic = @{};
+    NSDictionary *headDic = @{
+                              @"digest":[DRTool getDigestByBodyDic:bodyDic],
+                              @"cmd":@"L26",
+                              @"userId":UserId,
+                              };
+    [[DRHttpTool shareInstance] postWithHeadDic:headDic bodyDic:bodyDic success:^(id json) {
+        DRLog(@"%@",json);
+        if (SUCCESS) {
+            if (!SUCCESS) {
+                ShowErrorView
+            }
+            DRRedPacketViewController * redPacketVC = [[DRRedPacketViewController alloc] init];
+            [self.owerViewController pushViewController:redPacketVC animated:YES];
+        }
+    } failure:^(NSError *error) {
+        DRLog(@"error:%@",error);
+        DRRedPacketViewController * redPacketVC = [[DRRedPacketViewController alloc] init];
+        [self.owerViewController pushViewController:redPacketVC animated:YES];
+        
+    }];
     
     [self removeFromSuperview];
 }
@@ -143,8 +155,7 @@
 - (UITableViewCell *)tableView:(UITableView *)tableView cellForRowAtIndexPath:(NSIndexPath *)indexPath
 {
     DRGiveVoucherTableViewCell * cell = [DRGiveVoucherTableViewCell cellWithTableView:tableView];
-    cell.coupon = self.redPacketList[indexPath.row];
-    cell.delegate = self;
+    cell.voucherModel = self.redPacketList[indexPath.row];
     return cell;
 }
 
@@ -153,38 +164,6 @@
     return 85;
 }
 
-- (void)giveVoucherTableViewCell:(DRGiveVoucherTableViewCell *)cell giveButtonDidClick:(UIButton *)button
-{
-    NSIndexPath * indexPath = [self.tableView indexPathForCell:cell];
-    Coupon * coupon = self.redPacketList[indexPath.row];
-    coupon.status = @"1";
-    [self.tableView reloadRowsAtIndexPaths:@[indexPath] withRowAnimation:UITableViewRowAnimationNone];
-}
 
-- (void)useVoucher
-{
-    [self goHome];
-    [self removeFromSuperview];
-}
-
-- (void)goHome
-{
-    NSBlockOperation *op1 = [NSBlockOperation blockOperationWithBlock:^{
-        dispatch_async(dispatch_get_main_queue(), ^{
-            [self.owerViewController popToRootViewControllerAnimated:NO];
-        });
-    }];
-    
-    NSBlockOperation *op2 = [NSBlockOperation blockOperationWithBlock:^{
-        dispatch_async(dispatch_get_main_queue(), ^{
-            [[NSNotificationCenter defaultCenter] postNotificationName:@"gotoHomePage" object:nil];
-        });
-    }];
-    [op2 addDependency:op1];
-    NSOperationQueue *queue = [[NSOperationQueue alloc] init];
-    [queue waitUntilAllOperationsAreFinished];
-    [queue addOperation:op1];
-    [queue addOperation:op2];
-}
 
 @end
