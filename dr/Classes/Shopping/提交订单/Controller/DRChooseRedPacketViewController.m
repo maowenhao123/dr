@@ -32,11 +32,14 @@
 - (void)getData
 {
     NSDictionary *bodyDic = @{
+                              @"pageIndex":@(1),
+                              @"pageSize":@"100000",
+                              @"status":@(1),
                               @"orderPrice":@(self.orderPrice * 100),
                               };
     NSDictionary *headDic = @{
                               @"digest":[DRTool getDigestByBodyDic:bodyDic],
-                              @"cmd":@"C08",
+                              @"cmd":@"C02",
                               @"userId":UserId,
                               };
     waitingView
@@ -44,7 +47,12 @@
         DRLog(@"%@",json);
         [MBProgressHUD hideHUDForView:self.view];
         if (SUCCESS) {
-            self.dataArray = [DRRedPacketModel mj_objectArrayWithKeyValuesArray:json[@"list"]];
+            NSArray * redPacketList = [DRRedPacketModel mj_objectArrayWithKeyValuesArray:json[@"list"]];
+            for (DRRedPacketModel * redPacketModel in redPacketList) {
+                if ([redPacketModel.coupon.minAmount doubleValue] <= self.orderPrice * 100) {
+                    [self.dataArray addObject:redPacketModel];
+                }
+            }
             [self.tableView reloadData];//刷新数据
         }else
         {

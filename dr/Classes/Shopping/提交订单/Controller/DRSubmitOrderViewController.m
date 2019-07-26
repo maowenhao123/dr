@@ -178,19 +178,32 @@
     NSDictionary *bodyDic = @{
                               @"pageIndex":@(1),
                               @"pageSize":@"100000",
+                              @"status":@(1),
                               @"orderPrice":@(self.orderPrice * 100),
                               };
     NSDictionary *headDic = @{
                               @"digest":[DRTool getDigestByBodyDic:bodyDic],
-                              @"cmd":@"C08",
+                              @"cmd":@"C02",
                               @"userId":UserId,
                               };
     [[DRHttpTool shareInstance] postWithTarget:self headDic:headDic bodyDic:bodyDic success:^(id json) {
         DRLog(@"%@",json);
         if (SUCCESS) {
             NSArray *redPacketList = [DRRedPacketModel mj_objectArrayWithKeyValuesArray:json[@"list"]];
-            self.couponNumber = redPacketList.count;
-            self.redPacketView.couponNumber = self.couponNumber;
+            NSMutableArray * usableRedPacketList = [NSMutableArray array];
+            for (DRRedPacketModel * redPacketModel in redPacketList) {
+                if ([redPacketModel.coupon.minAmount doubleValue] <= self.orderPrice * 100) {
+                    [usableRedPacketList addObject:redPacketModel];
+                }
+            }
+            self.couponNumber = usableRedPacketList.count;
+            if (self.couponNumber == 0) {
+                self.tableView.tableFooterView = [UIView new];
+            }else
+            {
+                self.redPacketView.couponNumber = self.couponNumber;
+                self.tableView.tableFooterView = self.redPacketView;
+            }
         }
     } failure:^(NSError *error) {
         DRLog(@"error:%@",error);

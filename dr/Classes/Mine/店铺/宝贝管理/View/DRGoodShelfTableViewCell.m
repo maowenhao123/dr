@@ -272,22 +272,18 @@
     CGSize timeLabelSize = [self.timeLabel.text sizeWithLabelFont:self.timeLabel.font];
     self.timeLabel.frame = CGRectMake(DRMargin, 9, timeLabelSize.width, 35);
 
-    CGSize goodNameLabelSize = [self.goodNameLabel.text sizeWithLabelFont:self.goodNameLabel.font];
-    CGFloat goodNameLabelX = CGRectGetMaxX(self.goodImageView.frame) + 10;
-    CGFloat goodNameLabelW = screenWidth - goodNameLabelX;
-    self.goodNameLabel.frame = CGRectMake(goodNameLabelX, self.goodImageView.y, goodNameLabelW, goodNameLabelSize.height);
+    CGFloat labelX = CGRectGetMaxX(self.goodImageView.frame) + 10;
+    CGFloat labelW = screenWidth - labelX - DRMargin;
+    CGSize goodNameLabelSize = [self.goodNameLabel.text sizeWithFont:self.goodNameLabel.font maxSize:CGSizeMake(labelW, 40)];
+    self.goodNameLabel.frame = CGRectMake(labelX, self.goodImageView.y, labelW, goodNameLabelSize.height);
     
     CGSize goodNumberLabelSize = [self.goodNumberLabel.text sizeWithLabelFont:self.goodNumberLabel.font];
-    CGFloat goodNumberLabelX = goodNameLabelX;
-    CGFloat goodNumberLabelW = goodNameLabelW;
-    self.goodNumberLabel.frame = CGRectMake(goodNumberLabelX, CGRectGetMaxY(self.goodNameLabel.frame) + 13, goodNumberLabelW, goodNumberLabelSize.height);
+    self.goodNumberLabel.frame = CGRectMake(labelX, CGRectGetMaxY(self.goodNameLabel.frame) + 13, labelW, goodNumberLabelSize.height);
     self.goodNumberLabel.centerY = self.goodImageView.centerY;
 
     CGSize goodPriceLabelSize = [self.goodPriceLabel.text sizeWithLabelFont:self.goodPriceLabel.font];
-    CGFloat goodPriceLabelX = goodNameLabelX;
     CGFloat goodPriceLabelY = CGRectGetMaxY(self.goodImageView.frame) - goodPriceLabelSize.height;
-    CGFloat goodPriceLabelW = goodNameLabelW;
-    self.goodPriceLabel.frame = CGRectMake(goodPriceLabelX, goodPriceLabelY, goodPriceLabelW, goodPriceLabelSize.height);
+    self.goodPriceLabel.frame = CGRectMake(labelX, goodPriceLabelY, labelW, goodPriceLabelSize.height);
 }
 
 

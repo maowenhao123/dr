@@ -12,7 +12,6 @@
 @protocol AddMultipleImageViewDelegate <NSObject>
 
 @optional
-
 - (void)viewHeightchange;
 
 @end
@@ -32,7 +31,10 @@
 
 - (void)setImagesWithImageUrlStrs:(NSArray *)imageUrlStrs;
 
+- (void)setImagesWithImage:(NSArray *)images;
+
 - (CGFloat)getViewHeight;
 
 @property (nonatomic, assign) id <AddMultipleImageViewDelegate> delegate;
+
 @end

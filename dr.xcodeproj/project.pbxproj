@@ -10,10 +10,15 @@
 		187B97361E77D24E00F22BFC /* DRSortTableViewCell.m in Sources */ = {isa = PBXBuildFile; fileRef = 187B97351E77D24E00F22BFC /* DRSortTableViewCell.m */; };
 		18C822141E77D59E00D00EE3 /* DRSortModel.m in Sources */ = {isa = PBXBuildFile; fileRef = 18C822131E77D59E00D00EE3 /* DRSortModel.m */; };
 		18C822171E77DB4E00D00EE3 /* DRSortGoodCollectionViewCell.m in Sources */ = {isa = PBXBuildFile; fileRef = 18C822161E77DB4E00D00EE3 /* DRSortGoodCollectionViewCell.m */; };
+		1D0DB5B822E83D5A008E7B97 /* DRManageSpecificationViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 1D0DB5B722E83D5A008E7B97 /* DRManageSpecificationViewController.m */; };
+		1D0DB5BB22E845D1008E7B97 /* DRAddSpecificationViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 1D0DB5BA22E845D1008E7B97 /* DRAddSpecificationViewController.m */; };
+		1D0DB5BE22E845FB008E7B97 /* DRSpecificationTableViewCell.m in Sources */ = {isa = PBXBuildFile; fileRef = 1D0DB5BD22E845FB008E7B97 /* DRSpecificationTableViewCell.m */; };
+		1D0DB5C122E84FF5008E7B97 /* DRGoodSpecificationModel.m in Sources */ = {isa = PBXBuildFile; fileRef = 1D0DB5BF22E84FF5008E7B97 /* DRGoodSpecificationModel.m */; };
+		1D8D1A2322E80727009185B2 /* HyphenateLite.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 1D8D1A2222E80727009185B2 /* HyphenateLite.framework */; };
+		1D8D1A2422E8078B009185B2 /* HyphenateLite.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 1D8D1A2222E80727009185B2 /* HyphenateLite.framework */; };
+		1D8D1A2522E8078C009185B2 /* HyphenateLite.framework in Embed Frameworks */ = {isa = PBXBuildFile; fileRef = 1D8D1A2222E80727009185B2 /* HyphenateLite.framework */; settings = {ATTRIBUTES = (CodeSignOnCopy, RemoveHeadersOnCopy, ); }; };
+		1D8D1A2822E80B02009185B2 /* DRPublishGoodMessageView.m in Sources */ = {isa = PBXBuildFile; fileRef = 1D8D1A2722E80B02009185B2 /* DRPublishGoodMessageView.m */; };
 		1DDDEB4722D57BD3003A9C07 /* DRVoucherModel.m in Sources */ = {isa = PBXBuildFile; fileRef = 1DDDEB4622D57BD3003A9C07 /* DRVoucherModel.m */; };
-		1DDDEB9222D70548003A9C07 /* HyphenateLite.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 1DDDEB9122D70548003A9C07 /* HyphenateLite.framework */; };
-		1DDDEB9322D7054F003A9C07 /* HyphenateLite.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 1DDDEB9122D70548003A9C07 /* HyphenateLite.framework */; };
-		1DDDEB9422D7054F003A9C07 /* HyphenateLite.framework in Embed Frameworks */ = {isa = PBXBuildFile; fileRef = 1DDDEB9122D70548003A9C07 /* HyphenateLite.framework */; settings = {ATTRIBUTES = (CodeSignOnCopy, RemoveHeadersOnCopy, ); }; };
 		A94696661E8A5BB000B4711F /* ULBCollectionViewFlowLayout.m in Sources */ = {isa = PBXBuildFile; fileRef = A94696651E8A5BB000B4711F /* ULBCollectionViewFlowLayout.m */; };
 		A98270CD206A3B100032A672 /* DRSubmitOrderViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = A98270CC206A3B100032A672 /* DRSubmitOrderViewController.m */; };
 		A98270D0206A3EED0032A672 /* DRSubmitOrderGoodTableViewCell.m in Sources */ = {isa = PBXBuildFile; fileRef = A98270CF206A3EED0032A672 /* DRSubmitOrderGoodTableViewCell.m */; };
@@ -679,7 +684,7 @@
 			dstPath = "";
 			dstSubfolderSpec = 10;
 			files = (
-				1DDDEB9422D7054F003A9C07 /* HyphenateLite.framework in Embed Frameworks */,
+				1D8D1A2522E8078C009185B2 /* HyphenateLite.framework in Embed Frameworks */,
 			);
 			name = "Embed Frameworks";
 			runOnlyForDeploymentPostprocessing = 0;
@@ -693,9 +698,20 @@
 		18C822131E77D59E00D00EE3 /* DRSortModel.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = DRSortModel.m; sourceTree = "<group>"; };
 		18C822151E77DB4E00D00EE3 /* DRSortGoodCollectionViewCell.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = DRSortGoodCollectionViewCell.h; sourceTree = "<group>"; };
 		18C822161E77DB4E00D00EE3 /* DRSortGoodCollectionViewCell.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = DRSortGoodCollectionViewCell.m; sourceTree = "<group>"; };
+		1D0DB5B622E83D5A008E7B97 /* DRManageSpecificationViewController.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = DRManageSpecificationViewController.h; sourceTree = "<group>"; };
+		1D0DB5B722E83D5A008E7B97 /* DRManageSpecificationViewController.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = DRManageSpecificationViewController.m; sourceTree = "<group>"; };
+		1D0DB5B922E845D1008E7B97 /* DRAddSpecificationViewController.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = DRAddSpecificationViewController.h; sourceTree = "<group>"; };
+		1D0DB5BA22E845D1008E7B97 /* DRAddSpecificationViewController.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = DRAddSpecificationViewController.m; sourceTree = "<group>"; };
+		1D0DB5BC22E845FB008E7B97 /* DRSpecificationTableViewCell.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = DRSpecificationTableViewCell.h; sourceTree = "<group>"; };
+		1D0DB5BD22E845FB008E7B97 /* DRSpecificationTableViewCell.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = DRSpecificationTableViewCell.m; sourceTree = "<group>"; };
+		1D0DB5BF22E84FF5008E7B97 /* DRGoodSpecificationModel.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = DRGoodSpecificationModel.m; sourceTree = "<group>"; };
+		1D0DB5C022E84FF5008E7B97 /* DRGoodSpecificationModel.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = DRGoodSpecificationModel.h; sourceTree = "<group>"; };
+		1D76804722DC0A72007C1154 /* HealthKit.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = HealthKit.framework; path = System/Library/Frameworks/HealthKit.framework; sourceTree = SDKROOT; };
+		1D8D1A2222E80727009185B2 /* HyphenateLite.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; path = HyphenateLite.framework; sourceTree = "<group>"; };
+		1D8D1A2622E80B02009185B2 /* DRPublishGoodMessageView.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = DRPublishGoodMessageView.h; sourceTree = "<group>"; };
+		1D8D1A2722E80B02009185B2 /* DRPublishGoodMessageView.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = DRPublishGoodMessageView.m; sourceTree = "<group>"; };
 		1DDDEB4522D57BD3003A9C07 /* DRVoucherModel.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = DRVoucherModel.h; sourceTree = "<group>"; };
 		1DDDEB4622D57BD3003A9C07 /* DRVoucherModel.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = DRVoucherModel.m; sourceTree = "<group>"; };
-		1DDDEB9122D70548003A9C07 /* HyphenateLite.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; path = HyphenateLite.framework; sourceTree = "<group>"; };
 		A94696641E8A5BB000B4711F /* ULBCollectionViewFlowLayout.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ULBCollectionViewFlowLayout.h; sourceTree = "<group>"; };
 		A94696651E8A5BB000B4711F /* ULBCollectionViewFlowLayout.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = ULBCollectionViewFlowLayout.m; sourceTree = "<group>"; };
 		A98270CB206A3B100032A672 /* DRSubmitOrderViewController.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = DRSubmitOrderViewController.h; sourceTree = "<group>"; };
@@ -2002,7 +2018,7 @@
 				AAA9284F1F91A5E400C52510 /* CoreFoundation.framework in Frameworks */,
 				AAA2C82F1F17D20D0046A335 /* libSocialQQ.a in Frameworks */,
 				AAADEAAC1FD77C9F007BD4AD /* libMagicWindowSDK.a in Frameworks */,
-				1DDDEB9222D70548003A9C07 /* HyphenateLite.framework in Frameworks */,
+				1D8D1A2322E80727009185B2 /* HyphenateLite.framework in Frameworks */,
 				AA89127B1EFA6B3F0038EB2F /* CoreMotion.framework in Frameworks */,
 				AA2643581FC566BF000474F7 /* UMMobClick.framework in Frameworks */,
 				AA8912781EFA6A870038EB2F /* libcrypto.a in Frameworks */,
@@ -2016,7 +2032,7 @@
 				AA8911A71EFA618D0038EB2F /* QuartzCore.framework in Frameworks */,
 				AA27E81421B7AAA60067F72B /* libopencore-amrwb.a in Frameworks */,
 				AAA2C8371F17D20E0046A335 /* UMSocialNetwork.framework in Frameworks */,
-				1DDDEB9322D7054F003A9C07 /* HyphenateLite.framework in Frameworks */,
+				1D8D1A2422E8078B009185B2 /* HyphenateLite.framework in Frameworks */,
 				AA27E81521B7AAA60067F72B /* libopencore-amrnb.a in Frameworks */,
 				AAA2C83B1F17D20E0046A335 /* UShareUI.framework in Frameworks */,
 				AAADEAB51FD78278007BD4AD /* libsqlite3.0.tbd in Frameworks */,
@@ -2724,7 +2740,7 @@
 		AA27E43921B7A4FA0067F72B /* HyphenateSDK */ = {
 			isa = PBXGroup;
 			children = (
-				1DDDEB9122D70548003A9C07 /* HyphenateLite.framework */,
+				1D8D1A2222E80727009185B2 /* HyphenateLite.framework */,
 			);
 			path = HyphenateSDK;
 			sourceTree = "<group>";
@@ -3819,6 +3835,7 @@
 		AA8911A11EFA61760038EB2F /* Frameworks */ = {
 			isa = PBXGroup;
 			children = (
+				1D76804722DC0A72007C1154 /* HealthKit.framework */,
 				AA7C4065215343240003B142 /* libstdc++.6.0.9.tbd */,
 				AA8E46A5212D1FE2005DE5CE /* GameKit.framework */,
 				AA042C662089D5FF002F585C /* StoreKit.framework */,
@@ -5417,6 +5434,10 @@
 				AAFED3F62079EF620000981E /* DRPublishGoodViewController.m */,
 				AAE55C872085E9E000A29844 /* DRAddPictureAndWordViewController.h */,
 				AAE55C882085E9E100A29844 /* DRAddPictureAndWordViewController.m */,
+				1D0DB5B622E83D5A008E7B97 /* DRManageSpecificationViewController.h */,
+				1D0DB5B722E83D5A008E7B97 /* DRManageSpecificationViewController.m */,
+				1D0DB5B922E845D1008E7B97 /* DRAddSpecificationViewController.h */,
+				1D0DB5BA22E845D1008E7B97 /* DRAddSpecificationViewController.m */,
 			);
 			path = Controller;
 			sourceTree = "<group>";
@@ -5424,6 +5445,8 @@
 		AAFED3FB2079EF620000981E /* Model */ = {
 			isa = PBXGroup;
 			children = (
+				1D0DB5C022E84FF5008E7B97 /* DRGoodSpecificationModel.h */,
+				1D0DB5BF22E84FF5008E7B97 /* DRGoodSpecificationModel.m */,
 			);
 			path = Model;
 			sourceTree = "<group>";
@@ -5433,10 +5456,14 @@
 			children = (
 				AAE55C8A2085E9E600A29844 /* DRGoodSortPickerView.h */,
 				AAE55C8B2085E9E600A29844 /* DRGoodSortPickerView.m */,
+				1D8D1A2622E80B02009185B2 /* DRPublishGoodMessageView.h */,
+				1D8D1A2722E80B02009185B2 /* DRPublishGoodMessageView.m */,
 				AAE55B95207C997E00A29844 /* DRPublishSingleGoodView.h */,
 				AAE55B96207C997E00A29844 /* DRPublishSingleGoodView.m */,
 				AAE55B92207C996200A29844 /* DRPublishWholesaleGoodView.h */,
 				AAE55B93207C996200A29844 /* DRPublishWholesaleGoodView.m */,
+				1D0DB5BC22E845FB008E7B97 /* DRSpecificationTableViewCell.h */,
+				1D0DB5BD22E845FB008E7B97 /* DRSpecificationTableViewCell.m */,
 			);
 			path = View;
 			sourceTree = "<group>";
@@ -6111,6 +6138,7 @@
 				AAF438FA1FAFF80800CA31DE /* DRShowPhoneViewController.m in Sources */,
 				AA27E86121B7AAA60067F72B /* EaseBubbleView+File.m in Sources */,
 				AA1C32E61F8B636D00D05713 /* DRShopHeaderCollectionViewCell.m in Sources */,
+				1D8D1A2822E80B02009185B2 /* DRPublishGoodMessageView.m in Sources */,
 				AA3657CD21D20804009BE71B /* DRPraiseAwardAddressViewController.m in Sources */,
 				AA27EC6E1F7C85000081DB18 /* IQNSArray+Sort.m in Sources */,
 				AA27EC6F1F7C85000081DB18 /* IQUIScrollView+Additions.m in Sources */,
@@ -6246,6 +6274,7 @@
 				AAC5F7D71E9DF4A10051C81B /* MJFoundation.m in Sources */,
 				AA601D6E21C2481100147514 /* DRShowPraiseModel.m in Sources */,
 				A9827183206CD9F30032A672 /* DRGradeDetailViewController.m in Sources */,
+				1D0DB5C122E84FF5008E7B97 /* DRGoodSpecificationModel.m in Sources */,
 				AA601D6F21C2481100147514 /* DRPraiseUserModel.m in Sources */,
 				18C822171E77DB4E00D00EE3 /* DRSortGoodCollectionViewCell.m in Sources */,
 				AA2AB4E321BA104700A345DA /* CLSlider.m in Sources */,
@@ -6487,6 +6516,7 @@
 				AADF7BB6218ACD3300AED4A5 /* DRGoodScreeningPriceCollectionViewCell.m in Sources */,
 				AA27E73C21B7AA8B0067F72B /* EaseEmoji.m in Sources */,
 				AAC42DDA21B65D48007A4865 /* DRVideoPlayerViewController.m in Sources */,
+				1D0DB5B822E83D5A008E7B97 /* DRManageSpecificationViewController.m in Sources */,
 				AAF43A581FAFFEB200CA31DE /* DRMyShopModel.m in Sources */,
 				AAF438F81FAFF80800CA31DE /* DRBindingPhoneViewController.m in Sources */,
 				AA8E46E9212D261A005DE5CE /* UIImageView+HighlightedWebCache.m in Sources */,
@@ -6514,6 +6544,7 @@
 				AA8E46F4212D261A005DE5CE /* SDWebImageCoder.m in Sources */,
 				AAC5F8131E9DF4DC0051C81B /* MJRefreshHeader.m in Sources */,
 				1DDDEB4722D57BD3003A9C07 /* DRVoucherModel.m in Sources */,
+				1D0DB5BB22E845D1008E7B97 /* DRAddSpecificationViewController.m in Sources */,
 				AA27E84B21B7AAA60067F72B /* EaseRefreshTableViewController.m in Sources */,
 				AA2AB4C521BA102300A345DA /* NSLayoutConstraint+MASDebugAdditions.m in Sources */,
 				AAE55CB02089B45200A29844 /* DRRecommendGoodCollectionViewCell.m in Sources */,
@@ -6615,6 +6646,7 @@
 				AAF43A651FAFFEB200CA31DE /* DRShopDetailTableViewCell.m in Sources */,
 				CE4690061E29DA7300768646 /* MBProgressHUD.m in Sources */,
 				AA8547AE21C8C18D0006A60A /* DRPraiseListView.m in Sources */,
+				1D0DB5BE22E845FB008E7B97 /* DRSpecificationTableViewCell.m in Sources */,
 				AAE55CB62089B45200A29844 /* DRHomePageSortCollectionViewCell.m in Sources */,
 				AA75CCA01EE7E8E200D5839F /* DRCardNoTextField.m in Sources */,
 				AA8547B721C9D8F80006A60A /* DRPraiseWinnerListViewController.m in Sources */,

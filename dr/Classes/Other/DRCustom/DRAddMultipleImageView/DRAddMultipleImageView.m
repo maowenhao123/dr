@@ -363,6 +363,13 @@
 {
     return CGRectGetMaxY(self.collectionView.frame);
 }
+
+- (void)setImagesWithImage:(NSArray *)images
+{
+    self.images = [NSMutableArray arrayWithArray:images];
+    [self refreshView];
+}
+
 - (void)setImagesWithImageUrlStrs:(NSArray *)imageUrlStrs
 {
     self.images = [NSMutableArray array];

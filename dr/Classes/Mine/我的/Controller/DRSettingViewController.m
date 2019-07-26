@@ -26,6 +26,7 @@
     self.title = @"设置";
     [self setupChilds];
 }
+
 - (void)setupChilds
 {
     UITableView * tableView = [[UITableView alloc] initWithFrame:CGRectMake(0, 0, screenWidth, screenHeight - statusBarH - navBarH) style:UITableViewStyleGrouped];
@@ -40,12 +41,16 @@
     //footerView
     UIView * footerView = [[UIView alloc]initWithFrame:CGRectMake(0, 0, screenWidth, 29 + 40 + 10)];
     footerView.backgroundColor = DRBackgroundColor;
+
     UIButton * exitButton = [UIButton buttonWithType:UIButtonTypeCustom];
-    exitButton.frame = CGRectMake(0, 29, screenWidth, 40);
-    exitButton.backgroundColor = [UIColor whiteColor];
+    exitButton.frame = CGRectMake(20, 29, screenWidth - 2 * 20, 40);
     [exitButton setTitle:@"退出登录" forState:UIControlStateNormal];
     [exitButton setTitleColor:DRDefaultColor forState:UIControlStateNormal];
     exitButton.titleLabel.font = [UIFont systemFontOfSize:DRGetFontSize(30)];
+    exitButton.layer.masksToBounds = YES;
+    exitButton.layer.cornerRadius = exitButton.height / 2;
+    exitButton.layer.borderColor = DRDefaultColor.CGColor;
+    exitButton.layer.borderWidth = 1;
     [exitButton addTarget:self action:@selector(exitButtonDidClick) forControlEvents:UIControlEventTouchUpInside];
     [footerView addSubview:exitButton];
     tableView.tableFooterView = footerView;
@@ -102,10 +107,12 @@
 {
     return 1;
 }
+
 - (NSInteger)tableView:(UITableView *)tableView numberOfRowsInSection:(NSInteger)section
 {
     return self.functionNames.count;
 }
+
 - (UITableViewCell *)tableView:(UITableView *)tableView cellForRowAtIndexPath:(NSIndexPath *)indexPath
 {
     DRTextTableViewCell * cell = [DRTextTableViewCell cellWithTableView:tableView];
@@ -132,18 +139,22 @@
     }
     return cell;
 }
+
 - (CGFloat)tableView:(UITableView *)tableView heightForRowAtIndexPath:(NSIndexPath *)indexPath
 {
     return DRCellH;
 }
+
 - (CGFloat)tableView:(UITableView *)tableView heightForHeaderInSection:(NSInteger)section
 {
     return 9;
 }
+
 - (CGFloat)tableView:(UITableView *)tableView heightForFooterInSection:(NSInteger)section
 {
     return CGFLOAT_MIN;
 }
+
 - (void)tableView:(UITableView *)tableView didSelectRowAtIndexPath:(NSIndexPath *)indexPath
 {
     [tableView deselectRowAtIndexPath:indexPath animated:YES];
@@ -152,6 +163,7 @@
         [self.navigationController pushViewController:htmlVC animated:YES];
     }
 }
+
 #pragma mark - 初始化
 - (NSArray *)functionNames
 {

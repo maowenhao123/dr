@@ -9,9 +9,14 @@
 #import <UIKit/UIKit.h>
 #import "DRDecimalTextField.h"
 
+typedef void (^SingleGoodHightChangeBlock)(void);
+
 @interface DRPublishSingleGoodView : UIView
 
+@property (nonatomic, weak) UIButton * multiSpecificationButton;
 @property (nonatomic, weak) DRDecimalTextField * priceTF;
 @property (nonatomic, weak) UITextField * countTF;
+
+@property (copy, nonatomic) SingleGoodHightChangeBlock hightChangeBlock;
 
 @end

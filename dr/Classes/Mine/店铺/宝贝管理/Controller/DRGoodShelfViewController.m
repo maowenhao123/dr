@@ -320,7 +320,6 @@
             {
                 DRPublishGoodViewController * addGoodVC = [[DRPublishGoodViewController alloc] init];
                 addGoodVC.goodId = goodId;
-                addGoodVC.isGoodShelf = YES;
                 [self.navigationController pushViewController:addGoodVC animated:YES];
             }
         }else

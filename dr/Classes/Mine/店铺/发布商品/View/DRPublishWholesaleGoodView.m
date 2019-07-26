@@ -233,8 +233,8 @@
         self.height = CGRectGetMaxY(self.grouponPriceLabel.frame);
     }
     
-    if (self.block) {
-        self.block();
+    if (self.hightChangeBlock) {
+        self.hightChangeBlock();
     }
 }
 

@@ -9,7 +9,7 @@
 #import <UIKit/UIKit.h>
 #import "DRDecimalTextField.h"
 
-typedef void (^PublishWholesaleGoodViewBlock)();
+typedef void (^WholesaleGoodHightChangeBlock)(void);
 
 @interface DRPublishWholesaleGoodView : UIView
 
@@ -23,6 +23,6 @@ typedef void (^PublishWholesaleGoodViewBlock)();
 @property (nonatomic,weak) UITextField *countTF;
 @property (nonatomic, weak) UISwitch *grouponSwitch;
 @property (nonatomic, assign) int isGroup;
-@property (copy, nonatomic)PublishWholesaleGoodViewBlock block;
+@property (copy, nonatomic) WholesaleGoodHightChangeBlock hightChangeBlock;
 
 @end

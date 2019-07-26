@@ -23,6 +23,7 @@
 #import "DRGrouponViewController.h"
 #import "DRAddShowViewController.h"
 #import "DRPraiseListViewController.h"
+#import "DRManageSpecificationViewController.h"
 #import "WebViewJavascriptBridge.h"
 #import "DRShareTool.h"
 
@@ -150,6 +151,10 @@
     }];
     
     [_bridge registerHandler:@"handleSearch" handler:^(id data, WVJBResponseCallback responseCallback) {
+        DRManageSpecificationViewController * manageSpecificationVC = [[DRManageSpecificationViewController alloc] init];
+        [self.navigationController pushViewController:manageSpecificationVC animated:YES];
+        return ;
+        
         DRHomePageSerachViewController * searchVC = [[DRHomePageSerachViewController alloc] init];
         [self.navigationController pushViewController:searchVC animated:NO];
     }];

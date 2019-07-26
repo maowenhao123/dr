@@ -119,7 +119,7 @@ static NSDictionary *platformDic;
     DRShareView * shareView = [[DRShareView alloc] init];
     [shareView show];
     shareView.block = ^(UMSocialPlatformType platformType){//选择平台
-        [self shareWithTitle:@"买卖多肉就上吾花肉" description:@"向您推荐一个多肉店铺，物美价廉，值得收藏哦~" imageUrl:nil image:[UIImage imageNamed:@"share_logo"] platformType:platformType url:[NSString stringWithFormat:@"%@/jshop/share/store/%@", baseUrl, shopModel.id]];
+        [self shareWithTitle:@"买卖多肉就上吾花肉" description:@"向您推荐一个多肉店铺，物美价廉，值得收藏哦~" imageUrl:nil image:[UIImage imageNamed:@"share_logo"] platformType:platformType url:[NSString stringWithFormat:@"http://wx.esodar.com/#/storedetail/%@", shopModel.id]];
     };
 }
 

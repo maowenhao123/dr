@@ -11,6 +11,5 @@
 @interface DRPublishGoodViewController : DRBaseViewController
 
 @property (nonatomic,copy) NSString *goodId;
-@property (nonatomic,assign) BOOL isGoodShelf;
 
 @end
