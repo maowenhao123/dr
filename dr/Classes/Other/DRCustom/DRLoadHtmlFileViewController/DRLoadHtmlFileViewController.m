@@ -151,10 +151,6 @@
     }];
     
     [_bridge registerHandler:@"handleSearch" handler:^(id data, WVJBResponseCallback responseCallback) {
-        DRManageSpecificationViewController * manageSpecificationVC = [[DRManageSpecificationViewController alloc] init];
-        [self.navigationController pushViewController:manageSpecificationVC animated:YES];
-        return ;
-        
         DRHomePageSerachViewController * searchVC = [[DRHomePageSerachViewController alloc] init];
         [self.navigationController pushViewController:searchVC animated:NO];
     }];
@@ -460,8 +456,13 @@
     }else if ([type intValue] == 5)//跳转到一个商品分类列表
     {
         DRGoodListViewController * goodListVC = [[DRGoodListViewController alloc] init];
-        goodListVC.categoryId = [NSString stringWithFormat:@"%@",data];
+        goodListVC.categoryId = [NSString stringWithFormat:@"%@", data];
         [self.navigationController pushViewController:goodListVC animated:YES];
+    }else if ([type intValue] == 7)//跳转到搜索
+    {
+        DRHomePageSerachViewController * searchVC = [[DRHomePageSerachViewController alloc] init];
+        searchVC.keyWord = [NSString stringWithFormat:@"%@", data];
+        [self.navigationController pushViewController:searchVC animated:NO];
     }
 }
 

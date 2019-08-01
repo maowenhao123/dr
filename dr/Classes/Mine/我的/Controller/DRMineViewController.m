@@ -115,8 +115,7 @@
                               @"cmd":@"U10",
                               @"userId":UserId,
                               };
-    //170831213407010086
-    //171023163154010012
+    //190710150926010002
     [[DRHttpTool shareInstance] postWithTarget:self headDic:headDic bodyDic:bodyDic success:^(id json) {
         DRLog(@"%@",json);
         if (SUCCESS) {

@@ -169,6 +169,11 @@
     [historyView addSubview:historyTextView];
     
     historyView.height = CGRectGetMaxX(historyTextView.frame);
+    
+    if (!DRStringIsEmpty(self.keyWord)) {
+        searchBar.text = self.keyWord;
+        [self searchWithKeyword:searchBar.text];
+    }
 }
 
 - (void)back
@@ -221,12 +226,12 @@
     if (self.type == 1) {//宝贝
         DRGoodListViewController * goodListVC = [[DRGoodListViewController alloc] init];
         goodListVC.likeName = keyword;
-        [self.navigationController pushViewController:goodListVC animated:YES];
+        [self.navigationController pushViewController:goodListVC animated:NO];
     }else if (self.type == 2)//店铺
     {
         DRShopListViewController * shopListVC = [[DRShopListViewController alloc] init];
         shopListVC.likeName = keyword;
-        [self.navigationController pushViewController:shopListVC animated:YES];
+        [self.navigationController pushViewController:shopListVC animated:NO];
     }
 }
 

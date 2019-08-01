@@ -75,14 +75,14 @@
             showDetailVC.userId = weakSelf.model.userId;
             showDetailVC.nickName = weakSelf.model.userNickName;
             showDetailVC.userHeadImg = weakSelf.model.userHeadImg;
-            [self.viewController.navigationController pushViewController:showDetailVC animated:YES];
+            [weakSelf.viewController.navigationController pushViewController:showDetailVC animated:YES];
         }else
         {
             DRUserShowViewController * showDetailVC = [[DRUserShowViewController alloc] init];
             showDetailVC.userId = weakSelf.model.toUser.id;
             showDetailVC.nickName = weakSelf.model.toUser.nickName;
             showDetailVC.userHeadImg = weakSelf.model.toUser.headImg;
-            [self.viewController.navigationController pushViewController:showDetailVC animated:YES];
+            [weakSelf.viewController.navigationController pushViewController:showDetailVC animated:YES];
         }
     }];
 }

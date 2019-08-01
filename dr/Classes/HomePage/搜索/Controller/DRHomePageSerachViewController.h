@@ -10,4 +10,6 @@
 
 @interface DRHomePageSerachViewController : DRBaseViewController
 
+@property (nonatomic, copy) NSString * keyWord;
+
 @end

@@ -107,14 +107,14 @@ static NSString *kGroupName = @"GroupName";
             //显示
             [self.tabBar showBadgeOnItemIndex:2];
         } else {
-            //隐藏
+            //隐藏x
             [self.tabBar hideBadgeOnItemIndex:2];
         }
-//        [UIApplication sharedApplication].applicationIconBadgeNumber = unreadCount;
-        NSInteger badgeCount = [UIApplication sharedApplication].applicationIconBadgeNumber;
-        [[UIApplication sharedApplication] setApplicationIconBadgeNumber:0];
-        [[UIApplication sharedApplication] cancelAllLocalNotifications];
-        [[UIApplication sharedApplication] setApplicationIconBadgeNumber:badgeCount];
+        [UIApplication sharedApplication].applicationIconBadgeNumber = unreadCount;
+//        NSInteger badgeCount = [UIApplication sharedApplication].applicationIconBadgeNumber;
+//        [[UIApplication sharedApplication] setApplicationIconBadgeNumber:0];
+//        [[UIApplication sharedApplication] cancelAllLocalNotifications];
+//        [[UIApplication sharedApplication] setApplicationIconBadgeNumber:badgeCount];
     });
 }
 
