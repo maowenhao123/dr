@@ -16,6 +16,7 @@ typedef void (^SingleGoodHightChangeBlock)(void);
 @property (nonatomic, weak) UIButton * multiSpecificationButton;
 @property (nonatomic, weak) DRDecimalTextField * priceTF;
 @property (nonatomic, weak) UITextField * countTF;
+@property (nonatomic, strong) NSMutableArray *specificationDataArray;
 
 @property (copy, nonatomic) SingleGoodHightChangeBlock hightChangeBlock;
 

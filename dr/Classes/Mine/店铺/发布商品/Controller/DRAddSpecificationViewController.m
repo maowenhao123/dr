@@ -117,6 +117,28 @@
 #pragma mark - 点击确定按钮
 - (void)confirmBtnDidClick
 {
+    [self.view endEditing:YES];
+    //判空
+    if (DRStringIsEmpty(self.nameTF.text)) {
+        [MBProgressHUD showError:@"未输入规格名称"];
+        return;
+    }
+    
+    if (DRStringIsEmpty(self.priceTF.text)) {
+        [MBProgressHUD showError:@"未输入规格价格"];
+        return;
+    }
+    
+    if (DRStringIsEmpty(self.countTF.text)) {
+        [MBProgressHUD showError:@"未输入规格库存"];
+        return;
+    }
+    
+    if (DRArrayIsEmpty(self.addImageView.images)) {
+        [MBProgressHUD showError:@"请至少上传一张图片"];
+        return;
+    }
+    
     DRGoodSpecificationModel *specificationModel = [[DRGoodSpecificationModel alloc] init];
     specificationModel.name = self.nameTF.text;
     specificationModel.price = self.priceTF.text;

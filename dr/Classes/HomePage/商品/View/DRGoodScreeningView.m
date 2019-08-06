@@ -10,7 +10,6 @@
 #import "DRGoodScreeningTitleCollectionReusableView.h"
 #import "DRGoodScreeningCollectionViewCell.h"
 #import "DRGoodScreeningPriceCollectionViewCell.h"
-#import "UIView+DR.h"
 
 NSString * const GoodScreeningCollectionViewCellId = @"GoodScreeningCollectionViewCellId";
 NSString * const GoodScreeningPriceCollectionViewCellId = @"GoodScreeningPriceCollectionViewCellId";

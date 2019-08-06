@@ -13,6 +13,7 @@
 @protocol GoodHeaderCollectionViewCellDelegate <NSObject>
 
 - (void)goodHeaderCollectionViewPlayDidClickWithCell:(DRGoodHeaderCollectionViewCell *)cell;
+- (void)goodHeaderCollectionViewSpecificationDidClickWithCell:(DRGoodHeaderCollectionViewCell *)cell;
 
 @end
 

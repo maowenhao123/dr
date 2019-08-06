@@ -333,15 +333,19 @@
         int numberInt3 = [self.wholesaleView.numberTF3.text intValue];
         
         if ((DRStringIsEmpty(self.wholesaleView.priceTF1.text) || DRStringIsEmpty(self.wholesaleView.numberTF1.text)) && (DRStringIsEmpty(self.wholesaleView.priceTF2.text) || DRStringIsEmpty(self.wholesaleView.numberTF2.text)) && (DRStringIsEmpty(self.wholesaleView.priceTF3.text) || DRStringIsEmpty(self.wholesaleView.numberTF3.text))) {
-            [MBProgressHUD showError:@"未输入批发规则"];
+            [MBProgressHUD showError:@"不符合批发模式价格设置，请重新选择售卖类型。"];
             return;
         }
-        if ((priceFloat2 > 0 && priceFloat2 == priceFloat1) || (priceFloat3 > 0 && priceFloat3 == priceFloat2) || (priceFloat3 > 0 && priceFloat3 == priceFloat1)) {
-            [MBProgressHUD showError:@"批发规则不正确"];
+        if (numberInt1 == 1 && (DRStringIsEmpty(self.wholesaleView.priceTF2.text) || DRStringIsEmpty(self.wholesaleView.numberTF2.text)) && (DRStringIsEmpty(self.wholesaleView.priceTF3.text) || DRStringIsEmpty(self.wholesaleView.numberTF3.text))) {
+            [MBProgressHUD showError:@"不符合批发模式价格设置，请重新选择售卖类型。"];
             return;
         }
-        if ((numberInt1 > 0 && numberInt2 == numberInt1) || (numberInt3 > 0 && priceFloat3 == numberInt2) || (numberInt3 > 0 && numberInt3 == numberInt1)) {
-            [MBProgressHUD showError:@"批发规则不正确"];
+        if ((priceFloat2 > 0 && priceFloat2 >= priceFloat1) || (priceFloat3 > 0 && priceFloat3 >= priceFloat2) || (priceFloat3 > 0 && priceFloat3 >= priceFloat1)) {
+            [MBProgressHUD showError:@"不符合批发模式价格设置，请重新选择售卖类型。"];
+            return;
+        }
+        if ((numberInt1 > 0 && numberInt2 > 0 && numberInt2 <= numberInt1) || (numberInt3 > 0 && numberInt2 > 0 && priceFloat3 <= numberInt2) || (numberInt3 > 0 && numberInt1 > 0 && numberInt3 <= numberInt1)) {
+            [MBProgressHUD showError:@"不符合批发模式价格设置，请重新选择售卖类型。"];
             return;
         }
         

@@ -10,7 +10,16 @@
 
 NS_ASSUME_NONNULL_BEGIN
 
+@protocol ManageSpecificationDelegate <NSObject>
+
+- (void)addSpecificationWithDataArray:(NSMutableArray *)dataArray;
+
+@end
+
 @interface DRManageSpecificationViewController : DRBaseViewController
+
+@property (nonatomic, assign) id <ManageSpecificationDelegate> delegate;
+@property (nonatomic, strong) NSMutableArray * dataArray;
 
 @end
 

@@ -15,7 +15,6 @@
 #import "TZImageManager.h"
 #import "TZPhotoPreviewController.h"
 #import "TZLocationManager.h"
-#import "UIView+DR.h"
 #import "MBProgressHUD+MJ.h"
 
 @interface DRAddMultipleImageView ()<TZImagePickerControllerDelegate,UICollectionViewDataSource,UICollectionViewDelegate,UIActionSheetDelegate,UIImagePickerControllerDelegate,UINavigationControllerDelegate> {

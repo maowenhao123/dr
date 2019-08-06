@@ -12,7 +12,7 @@
 NS_ASSUME_NONNULL_BEGIN
 @class DRGoodSpecificationModel;
 
-@protocol AddSpecificationWithSpecificationDic <NSObject>
+@protocol AddSpecificationDelegate <NSObject>
 
 - (void)addSpecificationWithSpecificationModel:(DRGoodSpecificationModel *)specificationModel;
 - (void)editSpecificationWithSpecificationModel:(DRGoodSpecificationModel *)specificationModel;
@@ -21,7 +21,7 @@ NS_ASSUME_NONNULL_BEGIN
 
 @interface DRAddSpecificationViewController : DRBaseViewController
 
-@property (nonatomic, assign) id <AddSpecificationWithSpecificationDic> delegate;
+@property (nonatomic, assign) id <AddSpecificationDelegate> delegate;
 
 @property (nonatomic,strong) DRGoodSpecificationModel *goodSpecificationModel;
 

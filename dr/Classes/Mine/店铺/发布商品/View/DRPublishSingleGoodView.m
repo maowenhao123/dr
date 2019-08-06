@@ -11,7 +11,7 @@
 #import "DRBottomPickerView.h"
 #import "UIButton+DR.h"
 
-@interface DRPublishSingleGoodView ()
+@interface DRPublishSingleGoodView ()<ManageSpecificationDelegate>
 
 @property (nonatomic, weak) UIView * singleGoodMessageView;
 @property (nonatomic, weak) UIView * multiSpecificationView;
@@ -48,26 +48,25 @@
     line1.backgroundColor = DRWhiteLineColor;
     [self addSubview:line1];
     
-//    //选择多规格
-//    UIButton * multiSpecificationButton = [UIButton buttonWithType:UIButtonTypeCustom];
-//    self.multiSpecificationButton = multiSpecificationButton;
-//    multiSpecificationButton.frame = CGRectMake(0, 0, 280, DRCellH);
-//    [multiSpecificationButton setImage:[UIImage imageNamed:@"shoppingcar_not_selected"] forState:UIControlStateNormal];
-//    [multiSpecificationButton setImage:[UIImage imageNamed:@"shoppingcar_selected"] forState:UIControlStateSelected];
-//    [multiSpecificationButton setTitle:@"如选择上传本商品的多规格，请勾选" forState:UIControlStateNormal];
-//    [multiSpecificationButton setTitleColor:DRBlackTextColor forState:UIControlStateNormal];
-//    [multiSpecificationButton setTitleColor:DRDefaultColor forState:UIControlStateSelected];
-//    multiSpecificationButton.titleLabel.font = [UIFont systemFontOfSize:DRGetFontSize(28)];
-//    [multiSpecificationButton setButtonTitleWithImageAlignment:UIButtonTitleWithImageAlignmentLeft imgTextDistance:3];
-//    [multiSpecificationButton addTarget:self action:@selector(multiSpecificationButtonDidClick) forControlEvents:UIControlEventTouchUpInside];
-//    [self addSubview:multiSpecificationButton];
+    //选择多规格
+    UIButton * multiSpecificationButton = [UIButton buttonWithType:UIButtonTypeCustom];
+    self.multiSpecificationButton = multiSpecificationButton;
+    multiSpecificationButton.frame = CGRectMake(0, 0, 280, DRCellH);
+    [multiSpecificationButton setImage:[UIImage imageNamed:@"shoppingcar_not_selected"] forState:UIControlStateNormal];
+    [multiSpecificationButton setImage:[UIImage imageNamed:@"shoppingcar_selected"] forState:UIControlStateSelected];
+    [multiSpecificationButton setTitle:@"如选择上传本商品的多规格，请勾选" forState:UIControlStateNormal];
+    [multiSpecificationButton setTitleColor:DRBlackTextColor forState:UIControlStateNormal];
+    multiSpecificationButton.titleLabel.font = [UIFont systemFontOfSize:DRGetFontSize(28)];
+    [multiSpecificationButton setButtonTitleWithImageAlignment:UIButtonTitleWithImageAlignmentLeft imgTextDistance:5];
+    [multiSpecificationButton addTarget:self action:@selector(multiSpecificationButtonDidClick) forControlEvents:UIControlEventTouchUpInside];
+    [self addSubview:multiSpecificationButton];
     
-//    UIView * line2 = [[UIView alloc] initWithFrame:CGRectMake(0, CGRectGetMaxY(multiSpecificationButton.frame), screenWidth, 1)];
-//    line2.backgroundColor = DRWhiteLineColor;
-//    [self addSubview:line2];
+    UIView * line2 = [[UIView alloc] initWithFrame:CGRectMake(0, CGRectGetMaxY(multiSpecificationButton.frame), screenWidth, 1)];
+    line2.backgroundColor = DRWhiteLineColor;
+    [self addSubview:line2];
     
     //商品信息
-    UIView * singleGoodMessageView = [[UIView alloc] initWithFrame:CGRectMake(0, CGRectGetMaxY(line1.frame), screenWidth, 0)];
+    UIView * singleGoodMessageView = [[UIView alloc] initWithFrame:CGRectMake(0, CGRectGetMaxY(line2.frame), screenWidth, 0)];
     self.singleGoodMessageView = singleGoodMessageView;
     [self addSubview:singleGoodMessageView];
     
@@ -127,36 +126,36 @@
     
     self.height = CGRectGetMaxY(singleGoodMessageView.frame);
     
-//    //多规格
-//    UIView * multiSpecificationView = [[UIView alloc] initWithFrame:CGRectMake(0, CGRectGetMaxY(line2.frame), screenWidth, DRCellH)];
-//    self.multiSpecificationView = multiSpecificationView;
-//    multiSpecificationView.hidden = YES;
-//    [self addSubview:multiSpecificationView];
-//    
-//    UILabel * specificationTitleLabel = [[UILabel alloc] init];
-//    specificationTitleLabel.text = @"规格管理";
-//    specificationTitleLabel.textColor = DRBlackTextColor;
-//    specificationTitleLabel.font = [UIFont systemFontOfSize:DRGetFontSize(28)];
-//    CGSize specificationTitleLabelSize = [specificationTitleLabel.text sizeWithLabelFont:specificationTitleLabel.font];
-//    specificationTitleLabel.frame = CGRectMake(DRMargin, 0, specificationTitleLabelSize.width, DRCellH);
-//    [multiSpecificationView addSubview:specificationTitleLabel];
-//    
-//    UILabel * specificationLabel = [[UILabel alloc] init];
-//    self.specificationLabel = specificationLabel;
-//    specificationLabel.text = @"可添加商品规格";
-//    specificationLabel.textColor = DRGrayTextColor;
-//    specificationLabel.textAlignment = NSTextAlignmentRight;
-//    specificationLabel.font = [UIFont systemFontOfSize:DRGetFontSize(28)];
-//    CGFloat specificationLabelX = CGRectGetMaxX(specificationTitleLabel.frame) + DRMargin;
-//    specificationLabel.frame = CGRectMake(specificationLabelX, 0, screenWidth - specificationLabelX - DRMargin - 7, DRCellH);
-//    [multiSpecificationView addSubview:specificationLabel];
-//    
-//    UIButton *specificationBtn = [UIButton buttonWithType:UIButtonTypeCustom];
-//    specificationBtn.frame =  CGRectMake(specificationLabelX, 0, screenWidth - specificationLabelX, DRCellH);
-//    [specificationBtn setImageEdgeInsets:UIEdgeInsetsMake(0, specificationBtn.width - DRMargin - 10, 0, 0)];
-//    [specificationBtn setImage:[UIImage imageNamed:@"small_black_accessory_icon"] forState:UIControlStateNormal];
-//    [specificationBtn addTarget:self action:@selector(specificationBtnDidClick) forControlEvents:UIControlEventTouchUpInside];
-//    [multiSpecificationView addSubview:specificationBtn];
+    //多规格
+    UIView * multiSpecificationView = [[UIView alloc] initWithFrame:CGRectMake(0, CGRectGetMaxY(line2.frame), screenWidth, DRCellH)];
+    self.multiSpecificationView = multiSpecificationView;
+    multiSpecificationView.hidden = YES;
+    [self addSubview:multiSpecificationView];
+    
+    UILabel * specificationTitleLabel = [[UILabel alloc] init];
+    specificationTitleLabel.text = @"规格管理";
+    specificationTitleLabel.textColor = DRBlackTextColor;
+    specificationTitleLabel.font = [UIFont systemFontOfSize:DRGetFontSize(28)];
+    CGSize specificationTitleLabelSize = [specificationTitleLabel.text sizeWithLabelFont:specificationTitleLabel.font];
+    specificationTitleLabel.frame = CGRectMake(DRMargin, 0, specificationTitleLabelSize.width, DRCellH);
+    [multiSpecificationView addSubview:specificationTitleLabel];
+    
+    UILabel * specificationLabel = [[UILabel alloc] init];
+    self.specificationLabel = specificationLabel;
+    specificationLabel.text = @"可添加商品规格";
+    specificationLabel.textColor = DRGrayTextColor;
+    specificationLabel.textAlignment = NSTextAlignmentRight;
+    specificationLabel.font = [UIFont systemFontOfSize:DRGetFontSize(28)];
+    CGFloat specificationLabelX = CGRectGetMaxX(specificationTitleLabel.frame) + DRMargin;
+    specificationLabel.frame = CGRectMake(specificationLabelX, 0, screenWidth - specificationLabelX - DRMargin - 7, DRCellH);
+    [multiSpecificationView addSubview:specificationLabel];
+    
+    UIButton *specificationBtn = [UIButton buttonWithType:UIButtonTypeCustom];
+    specificationBtn.frame =  CGRectMake(specificationLabelX, 0, screenWidth - specificationLabelX, DRCellH);
+    [specificationBtn setImageEdgeInsets:UIEdgeInsetsMake(0, specificationBtn.width - DRMargin - 10, 0, 0)];
+    [specificationBtn setImage:[UIImage imageNamed:@"small_black_accessory_icon"] forState:UIControlStateNormal];
+    [specificationBtn addTarget:self action:@selector(specificationBtnDidClick) forControlEvents:UIControlEventTouchUpInside];
+    [multiSpecificationView addSubview:specificationBtn];
 }
 
 - (void)multiSpecificationButtonDidClick
@@ -182,7 +181,30 @@
 - (void)specificationBtnDidClick
 {
     DRManageSpecificationViewController * manageSpecificationVC = [[DRManageSpecificationViewController alloc] init];
+    manageSpecificationVC.delegate = self;
+    manageSpecificationVC.dataArray = self.specificationDataArray;
     [self.viewController.navigationController pushViewController:manageSpecificationVC animated:YES];
 }
+
+- (void)addSpecificationWithDataArray:(NSMutableArray *)dataArray
+{
+    self.specificationDataArray = dataArray;
+    if (dataArray.count > 0) {
+        self.specificationLabel.text = @"已添加";
+    }else
+    {
+        self.specificationLabel.text = @"可添加商品规格";
+    }
+}
+
+#pragma mark - 初始化
+- (NSMutableArray *)specificationDataArray
+{
+    if (!_specificationDataArray) {
+        _specificationDataArray = [NSMutableArray array];
+    }
+    return _specificationDataArray;
+}
+
 
 @end

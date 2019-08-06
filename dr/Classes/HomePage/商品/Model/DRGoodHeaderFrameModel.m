@@ -12,7 +12,7 @@
 
 - (CGFloat)GoodHeaderCellH
 {
-    CGSize goodNameLabelSize = [_goodModel.name sizeWithLabelFont:[UIFont systemFontOfSize:DRGetFontSize(30)]];
+    CGSize goodNameLabelSize = [_goodModel.name sizeWithLabelFont:[UIFont boldSystemFontOfSize:DRGetFontSize(32)]];
     _goodNameLabelF = CGRectMake(DRMargin, 390 + 10, goodNameLabelSize.width, goodNameLabelSize.height);
     
     NSString * detailStr = _goodModel.description_;
@@ -107,7 +107,9 @@
     CGSize goodSaleCountLabelSize = [[NSString stringWithFormat:@"销量：%@", _goodModel.sellCount] sizeWithLabelFont:[UIFont systemFontOfSize:DRGetFontSize(24)]];
     _goodSaleCountLabelF = CGRectMake(CGRectGetMaxX(_goodMailTypeLabelF) + DRMargin, CGRectGetMaxY(_goodPriceLabelF) + 7, goodSaleCountLabelSize.width, goodSaleCountLabelSize.height);
     
-    _GoodHeaderCellH = CGRectGetMaxY(_goodSaleCountLabelF) + 10;
+    _specificationViewF = CGRectMake(0, CGRectGetMaxY(_goodSaleCountLabelF) + 7, screenWidth, 75);
+    
+    _GoodHeaderCellH = CGRectGetMaxY(_specificationViewF);
     
     return _GoodHeaderCellH;
 }

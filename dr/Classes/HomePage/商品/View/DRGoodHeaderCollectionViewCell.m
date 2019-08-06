@@ -21,6 +21,7 @@
 @property (nonatomic,weak) UIView * activityRemindView;
 @property (nonatomic,weak) UILabel * activityTimeLabel;
 @property (nonatomic, strong) NSTimer *timer;
+@property (nonatomic,weak) UIView * specificationView;
 
 @end
 
@@ -72,7 +73,7 @@
     UILabel * goodNameLabel = [[UILabel alloc] init];
     self.goodNameLabel = goodNameLabel;
     goodNameLabel.textColor = DRBlackTextColor;
-    goodNameLabel.font = [UIFont systemFontOfSize:DRGetFontSize(30)];
+    goodNameLabel.font = [UIFont boldSystemFontOfSize:DRGetFontSize(32)];
     goodNameLabel.numberOfLines = 0;
     [self addSubview:goodNameLabel];
     
@@ -130,6 +131,56 @@
     activityTimeLabel.numberOfLines = 0;
     activityTimeLabel.font = [UIFont systemFontOfSize:DRGetFontSize(30)];
     [activityRemindView addSubview:activityTimeLabel];
+    
+    //规格
+    UIView * specificationView = [[UILabel alloc] init];
+    self.specificationView = specificationView;
+    specificationView.backgroundColor = [UIColor whiteColor];
+    [self addSubview:specificationView];
+    
+    //分割线
+    UIView * specificationLine = [[UIView alloc]initWithFrame:CGRectMake(0, 0, screenWidth, 1)];
+    specificationLine.backgroundColor = DRWhiteLineColor;
+    [specificationView addSubview:specificationLine];
+    
+    UITapGestureRecognizer *specificationTap = [[UITapGestureRecognizer alloc] initWithTarget:self action:@selector(specificationDidTap)];
+    specificationView.userInteractionEnabled = YES;
+    [specificationView addGestureRecognizer:specificationTap];
+    
+    UILabel * specificationTitleLabel = [[UILabel alloc] initWithFrame:CGRectMake(DRMargin, 7, screenWidth - 2 * DRMargin, 20)];
+    NSMutableAttributedString *specificationTitleAttStr = [[NSMutableAttributedString alloc] initWithString:@"选择 请选择商品规格"];
+    [specificationTitleAttStr addAttribute:NSForegroundColorAttributeName value:DRGrayTextColor range:NSMakeRange(0, 3)];
+    [specificationTitleAttStr addAttribute:NSForegroundColorAttributeName value:DRBlackTextColor range:NSMakeRange(3, specificationTitleAttStr.length - 3)];
+    [specificationTitleAttStr addAttribute:NSFontAttributeName value:[UIFont systemFontOfSize:DRGetFontSize(24)] range:NSMakeRange(0, specificationTitleAttStr.length)];
+    specificationTitleLabel.attributedText = specificationTitleAttStr;
+    [specificationView addSubview:specificationTitleLabel];
+    
+    CGFloat specificationScrollViewX = 42;
+    CGFloat specificationScrollViewW = screenWidth - specificationScrollViewX - 120 - DRMargin - 20;
+    UIScrollView * specificationScrollView = [[UIScrollView alloc] initWithFrame:CGRectMake(specificationScrollViewX, 35, specificationScrollViewW, 30)];
+    specificationScrollView.showsHorizontalScrollIndicator = NO;
+    [specificationView addSubview:specificationScrollView];
+    
+    CGFloat specificationImageViewWH = 30;
+    for (int i = 0; i < 20; i++) {
+        UIImageView *specificationImageView = [[UIImageView alloc] initWithFrame:CGRectMake((specificationImageViewWH + DRMargin) * i, 0, specificationImageViewWH, specificationImageViewWH)];
+        specificationImageView.backgroundColor = [UIColor redColor];
+        [specificationScrollView addSubview:specificationImageView];
+        
+        if (i == 19) {
+            specificationScrollView.contentSize = CGSizeMake(CGRectGetMaxX(specificationImageView.frame) + DRMargin, specificationScrollView.height);
+        }
+    }
+    
+    UILabel * specificationCountLabel = [[UILabel alloc] initWithFrame:CGRectMake(screenWidth - 120 - 20, 35, 120, 30)];
+    specificationCountLabel.text = @"共4种分类可选";
+    specificationCountLabel.backgroundColor = DRColor(240, 240, 240, 1);
+    specificationCountLabel.textColor = DRGrayTextColor;
+    specificationCountLabel.font = [UIFont systemFontOfSize:DRGetFontSize(26)];
+    specificationCountLabel.textAlignment = NSTextAlignmentCenter;
+    specificationCountLabel.layer.masksToBounds = YES;
+    specificationCountLabel.layer.cornerRadius = 5;
+    [specificationView addSubview:specificationCountLabel];
 }
 
 #pragma mark - SDCycleScrollViewDelegate
@@ -192,6 +243,7 @@
     self.goodPriceLabel.frame = _goodHeaderFrameModel.goodPriceLabelF;
     self.goodMailTypeLabel.frame = _goodHeaderFrameModel.goodMailTypeLabelF;
     self.goodSaleCountLabel.frame = _goodHeaderFrameModel.goodSaleCountLabelF;
+    self.specificationView.frame = _goodHeaderFrameModel.specificationViewF;
 }
 
 - (void)videoPlayDidTap
@@ -207,6 +259,12 @@
     }
 }
 
+- (void)specificationDidTap
+{
+    if (_delegate && [_delegate respondsToSelector:@selector(goodHeaderCollectionViewSpecificationDidClickWithCell:)]) {
+        [_delegate goodHeaderCollectionViewSpecificationDidClickWithCell:self];
+    }
+}
 #pragma mark - 倒计时
 - (void)addSetDeadlineTimer
 {

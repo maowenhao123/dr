@@ -10,11 +10,10 @@
 #import "DRAddSpecificationViewController.h"
 #import "DRSpecificationTableViewCell.h"
 
-@interface DRManageSpecificationViewController ()<UITableViewDataSource, UITableViewDelegate, AddSpecificationWithSpecificationDic, SpecificationTableViewCellDelegate>
+@interface DRManageSpecificationViewController ()<UITableViewDataSource, UITableViewDelegate, AddSpecificationDelegate, SpecificationTableViewCellDelegate>
 
 @property (nonatomic, weak) UIView *noDataView;
 @property (nonatomic,weak) UITableView *tableView;
-@property (nonatomic, strong) NSMutableArray * dataArray;
 
 @end
 
@@ -30,6 +29,8 @@
 #pragma mark - 布局视图
 - (void)setupChilds
 {
+    self.navigationItem.rightBarButtonItem = [[UIBarButtonItem alloc]initWithTitle:@"确定" style:UIBarButtonItemStylePlain target:self action:@selector(confirmBarDidClick)];
+    
     //noDataView
     UIView * noDataView = [[UIView alloc] initWithFrame:CGRectMake(0, 0, screenWidth, screenHeight - statusBarH - navBarH)];
     self.noDataView = noDataView;
@@ -63,7 +64,6 @@
     tableView.delegate = self;
     tableView.dataSource = self;
     tableView.separatorStyle = UITableViewCellSeparatorStyleNone;
-    tableView.hidden = YES;
     [tableView setEstimatedSectionHeaderHeightAndFooterHeight];
     [self.view addSubview:tableView];
     
@@ -83,6 +83,17 @@
     addButton.layer.cornerRadius = addButton.height / 2;
     [footerView addSubview:addButton];
     tableView.tableFooterView = footerView;
+    
+    noDataView.hidden = self.dataArray.count > 0;
+    tableView.hidden = self.dataArray.count == 0;
+}
+
+- (void)confirmBarDidClick
+{
+    if (_delegate && [_delegate respondsToSelector:@selector(addSpecificationWithDataArray:)]) {
+        [_delegate addSpecificationWithDataArray:self.dataArray];
+    }
+    [self.navigationController popViewControllerAnimated:YES];
 }
 
 - (void)addButtonDidClick
@@ -141,7 +152,7 @@
     UIAlertAction * alertAction2 = [UIAlertAction actionWithTitle:@"删除" style:UIAlertActionStyleDestructive handler:^(UIAlertAction * _Nonnull action) {
         [self.dataArray removeObjectAtIndex:indexPath.row];
         [self.tableView deleteRowsAtIndexPaths:@[indexPath] withRowAnimation:UITableViewRowAnimationAutomatic];
-        if (self.dataArray.count) {
+        if (self.dataArray.count == 0) {
             self.tableView.hidden = YES;
             self.noDataView.hidden = NO;
         }else

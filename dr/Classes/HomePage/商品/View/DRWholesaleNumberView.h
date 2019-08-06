@@ -8,16 +8,15 @@
 
 #import <UIKit/UIKit.h>
 
-@class DRWholesaleNumberView;
 @protocol WholesaleNumberViewDelegate <NSObject>
 
-- (void)wholesaleNumberView:(DRWholesaleNumberView *)wholesaleNumberView selectedNumber:(int)number price:(float)price isBuy:(BOOL)isBuy;
+- (void)goodSelectedNumber:(int)number price:(float)price isBuy:(BOOL)isBuy;
 
 @end
 
 @interface DRWholesaleNumberView : UIView
 
-- (instancetype)initWithFrame:(CGRect)frame goodModel:(DRGoodModel *)goodModel isBuy:(BOOL)isBuy;
+- (instancetype)initWithFrame:(CGRect)frame goodModel:(DRGoodModel *)goodModel type:(int) type;
 
 /**
  协议

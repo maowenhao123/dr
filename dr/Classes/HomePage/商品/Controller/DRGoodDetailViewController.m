@@ -19,6 +19,7 @@
 #import "DRRecommendGoodCollectionViewCell.h"
 #import "UIButton+DR.h"
 #import "DRWholesaleNumberView.h"
+#import "DRSingleSpecificationView.h"
 #import "DRJoinGrouponView.h"
 #import "DRStartGrouponView.h"
 #import "DRMenuView.h"
@@ -37,7 +38,7 @@ NSString * const GoodShopMessageId = @"GoodShopMessageId";
 NSString * const WebViewCellId = @"WebViewCellId";
 NSString * const GoodDetailRecommendGoodCellId = @"GoodDetailRecommendGoodCellId";
 
-@interface DRGoodDetailViewController ()<UICollectionViewDataSource, UICollectionViewDelegate, UICollectionViewDelegateFlowLayout, UIGestureRecognizerDelegate, UIWebViewDelegate, WholesaleNumberViewDelegate, JoinGrouponViewDelegate, StartGrouponViewDelegate, MenuViewDelegate, GoodHeaderCollectionViewCellDelegate>
+@interface DRGoodDetailViewController ()<UICollectionViewDataSource, UICollectionViewDelegate, UICollectionViewDelegateFlowLayout, UIWebViewDelegate, WholesaleNumberViewDelegate, SingleSpecificationViewDelegate, JoinGrouponViewDelegate, StartGrouponViewDelegate, MenuViewDelegate, GoodHeaderCollectionViewCellDelegate>
 
 @property (nonatomic, weak) UICollectionView *collectionView;
 @property (nonatomic, weak) UIView *barView;
@@ -48,12 +49,8 @@ NSString * const GoodDetailRecommendGoodCellId = @"GoodDetailRecommendGoodCellId
 @property (nonatomic,weak) UILabel * timeLabel;
 @property (nonatomic,weak) UILabel * bageLabel;
 @property (nonatomic, weak) UIButton * attentionButon;
-@property (nonatomic, weak) UIView *backView;
 @property (nonatomic,weak) UIButton *buyButton;
 @property (nonatomic,weak) UIButton *addCarButton;
-@property (nonatomic,weak) DRWholesaleNumberView *wholesaleNumberView;
-@property (nonatomic,weak) DRStartGrouponView *startGrouponView;
-@property (nonatomic,weak) DRJoinGrouponView *joinGrouponView;
 @property (nonatomic,strong) UIWebView *webView;
 @property (nonatomic, weak) DRVideoFloatingWindow *videoFloatingWindow;
 @property (nonatomic,strong) DRGoodHeaderFrameModel *goodHeaderFrameModel;
@@ -443,8 +440,8 @@ NSString * const GoodDetailRecommendGoodCellId = @"GoodDetailRecommendGoodCellId
     [self.view addSubview:bottomView];
     //阴影
     bottomView.layer.shadowColor = [UIColor lightGrayColor].CGColor;
-    bottomView.layer.shadowOffset = CGSizeMake(0, -1);
-    bottomView.layer.shadowOpacity = 0.5;
+    bottomView.layer.shadowOffset = CGSizeMake(0, -3);
+    bottomView.layer.shadowOpacity = 1;
     
     //立刻购买按钮
     UIButton *buyButton = [UIButton buttonWithType:UIButtonTypeCustom];
@@ -696,56 +693,30 @@ NSString * const GoodDetailRecommendGoodCellId = @"GoodDetailRecommendGoodCellId
     }
     
     if (self.isGroupon) {
-        CGFloat backViewH = screenHeight - [DRTool getSafeAreaBottom];
-        UIView *backView = [[UIView alloc] initWithFrame:CGRectMake(0, 0, screenWidth, backViewH)];
-        self.backView = backView;
-        backView.backgroundColor = DRColor(0, 0, 0, 0.4);
-        [self.view addSubview:backView];
-        
-        UITapGestureRecognizer * tap = [[UITapGestureRecognizer alloc] initWithTarget:self action:@selector(removeBackView:)];
-        tap.delegate = self;
-        [backView addGestureRecognizer:tap];
-        
-        DRJoinGrouponView *joinGrouponView = [[DRJoinGrouponView alloc] initWithFrame:CGRectMake(0, backView.height - 10, screenWidth, 378) goodModel:self.grouponModel.goods plusCount:[self.grouponModel.plusCount intValue] payCount:[self.grouponModel.payCount intValue] successCount:[self.grouponModel.successCount intValue]];
-        self.joinGrouponView = joinGrouponView;
+        DRJoinGrouponView *joinGrouponView = [[DRJoinGrouponView alloc] initWithFrame:CGRectMake(0, 0, screenWidth, screenHeight - [DRTool getSafeAreaBottom]) goodModel:self.grouponModel.goods plusCount:[self.grouponModel.plusCount intValue] payCount:[self.grouponModel.payCount intValue] successCount:[self.grouponModel.successCount intValue]];
         joinGrouponView.delegate = self;
-        [backView addSubview:joinGrouponView];
-        
-        //动画
-        [UIView animateWithDuration:DRAnimateDuration animations:^{
-            joinGrouponView.y = backView.height - 378;
-        }];
+        [self.view addSubview:joinGrouponView];
     }else
     {
         if ([button.currentTitle isEqualToString:@"立刻购买"]) {
-            CGFloat backViewH = screenHeight - [DRTool getSafeAreaBottom];
-            UIView *backView = [[UIView alloc] initWithFrame:CGRectMake(0, 0, screenWidth, backViewH)];
-            self.backView = backView;
-            backView.backgroundColor = DRColor(0, 0, 0, 0.4);
-            [self.view addSubview:backView];
-            
-            UITapGestureRecognizer * tap = [[UITapGestureRecognizer alloc] initWithTarget:self action:@selector(removeBackView:)];
-            tap.delegate = self;
-            [backView addGestureRecognizer:tap];
-            
-            DRWholesaleNumberView *wholesaleNumberView = [[DRWholesaleNumberView alloc] initWithFrame:CGRectMake(0, backView.height - 10, screenWidth, 378) goodModel:self.goodModel isBuy:YES];
-            self.wholesaleNumberView = wholesaleNumberView;
-            wholesaleNumberView.delegate = self;
-            [backView addSubview:wholesaleNumberView];
-            
-            //动画
-            [UIView animateWithDuration:DRAnimateDuration animations:^{
-                wholesaleNumberView.y = backView.height - 378;
-            }];
+            if ([self.goodModel.sellType intValue] == 2) {
+                DRWholesaleNumberView *wholesaleNumberView = [[DRWholesaleNumberView alloc] initWithFrame:CGRectMake(0, 0, screenWidth, screenHeight - [DRTool getSafeAreaBottom]) goodModel:self.goodModel type:2];
+                wholesaleNumberView.delegate = self;
+                [self.view addSubview:wholesaleNumberView];
+            }else
+            {
+                DRSingleSpecificationView *singleSpecificationView = [[DRSingleSpecificationView alloc] initWithFrame:CGRectMake(0, 0, screenWidth, screenHeight - [DRTool getSafeAreaBottom]) goodModel:self.goodModel type:2];
+                singleSpecificationView.delegate = self;
+                [self.view addSubview:singleSpecificationView];
+            }
         }else
         {
             [self grouponButtonDidClick];
         }
     }
 }
-- (void)wholesaleNumberView:(DRWholesaleNumberView *)wholesaleNumberView selectedNumber:(int)number price:(float)price isBuy:(BOOL)isBuy
+- (void)goodSelectedNumber:(int)number price:(float)price isBuy:(BOOL)isBuy
 {
-    [self.backView removeFromSuperview];
     if (isBuy) {
         if(!UserId || !Token)
         {
@@ -788,32 +759,23 @@ NSString * const GoodDetailRecommendGoodCellId = @"GoodDetailRecommendGoodCellId
         [[NSNotificationCenter defaultCenter] postNotificationName:@"upSataShoppingCar" object:nil];
     }
 }
+
 - (void)addCarButtonDidClick:(UIButton *)button
 {
-    if (!self.goodModel) {
-        return;
+    if (!self.goodModel) return;
+    
+    if ([self.goodModel.sellType intValue] == 2) {
+        DRWholesaleNumberView *wholesaleNumberView = [[DRWholesaleNumberView alloc] initWithFrame:CGRectMake(0, 0, screenWidth, screenHeight - [DRTool getSafeAreaBottom]) goodModel:self.goodModel type:1];
+        wholesaleNumberView.delegate = self;
+        [self.view addSubview:wholesaleNumberView];
+    }else
+    {
+        DRSingleSpecificationView *singleSpecificationView = [[DRSingleSpecificationView alloc] initWithFrame:CGRectMake(0, 0, screenWidth, screenHeight - [DRTool getSafeAreaBottom]) goodModel:self.goodModel type:1];
+        singleSpecificationView.delegate = self;
+        [self.view addSubview:singleSpecificationView];
     }
-    
-    CGFloat backViewH = screenHeight - [DRTool getSafeAreaBottom];
-    UIView *backView = [[UIView alloc] initWithFrame:CGRectMake(0, 0, screenWidth, backViewH)];
-    self.backView = backView;
-    backView.backgroundColor = DRColor(0, 0, 0, 0.4);
-    [self.view addSubview:backView];
-    
-    UITapGestureRecognizer * tap = [[UITapGestureRecognizer alloc] initWithTarget:self action:@selector(removeBackView:)];
-    tap.delegate = self;
-    [backView addGestureRecognizer:tap];
-    
-    DRWholesaleNumberView *wholesaleNumberView = [[DRWholesaleNumberView alloc] initWithFrame:CGRectMake(0, backView.height - 10, screenWidth, 378) goodModel:self.goodModel isBuy:NO];
-    self.wholesaleNumberView = wholesaleNumberView;
-    wholesaleNumberView.delegate = self;
-    [backView addSubview:wholesaleNumberView];
-    
-    //动画
-    [UIView animateWithDuration:DRAnimateDuration animations:^{
-        wholesaleNumberView.y = backView.height - 378;
-    }];
 }
+
 - (void)bottomButtonDidClick:(UIButton *)button
 {
     if ([button.currentTitle containsString:@"聊天"]) {
@@ -891,52 +853,18 @@ NSString * const GoodDetailRecommendGoodCellId = @"GoodDetailRecommendGoodCellId
 {
     _groupJson = groupJson;
     if (_groupJson) {//参加团购
-        CGFloat backViewH = screenHeight - [DRTool getSafeAreaBottom];
-        UIView *backView = [[UIView alloc] initWithFrame:CGRectMake(0, 0, screenWidth, backViewH)];
-        self.backView = backView;
-        backView.backgroundColor = DRColor(0, 0, 0, 0.4);
-        [self.view addSubview:backView];
-        
-        UITapGestureRecognizer * tap = [[UITapGestureRecognizer alloc] initWithTarget:self action:@selector(removeBackView:)];
-        tap.delegate = self;
-        [backView addGestureRecognizer:tap];
-        
-        DRJoinGrouponView *joinGrouponView = [[DRJoinGrouponView alloc] initWithFrame:CGRectMake(0, backView.height - 10, screenWidth, 378) goodModel:self.goodModel plusCount:[_groupJson[@"plusCount"] intValue] payCount:[_groupJson[@"payCount"] intValue] successCount:[_groupJson[@"successCount"] intValue]];
-        self.joinGrouponView = joinGrouponView;
+        DRJoinGrouponView *joinGrouponView = [[DRJoinGrouponView alloc] initWithFrame:CGRectMake(0, 0, screenWidth, screenHeight - [DRTool getSafeAreaBottom]) goodModel:self.goodModel plusCount:[_groupJson[@"plusCount"] intValue] payCount:[_groupJson[@"payCount"] intValue] successCount:[_groupJson[@"successCount"] intValue]];
         joinGrouponView.delegate = self;
-        [backView addSubview:joinGrouponView];
-        
-        //动画
-        [UIView animateWithDuration:DRAnimateDuration animations:^{
-            joinGrouponView.y = backView.height - 378;
-        }];
+        [self.view addSubview:joinGrouponView];
     }else
     {
-        CGFloat backViewH = screenHeight - [DRTool getSafeAreaBottom];
-        UIView *backView = [[UIView alloc] initWithFrame:CGRectMake(0, 0, screenWidth, backViewH)];
-        self.backView = backView;
-        backView.backgroundColor = DRColor(0, 0, 0, 0.4);
-        [self.view addSubview:backView];
-        
-        UITapGestureRecognizer * tap = [[UITapGestureRecognizer alloc] initWithTarget:self action:@selector(removeBackView:)];
-        tap.delegate = self;
-        [backView addGestureRecognizer:tap];
-        
-        DRStartGrouponView *startGrouponView = [[DRStartGrouponView alloc] initWithFrame:CGRectMake(0, backView.height - 10, screenWidth, 378) goodModel:self.goodModel successCount:[self.goodModel.groupNumber intValue]];
-        self.startGrouponView = startGrouponView;
+        DRStartGrouponView *startGrouponView = [[DRStartGrouponView alloc] initWithFrame:CGRectMake(0, 0, screenWidth, screenHeight - [DRTool getSafeAreaBottom]) goodModel:self.goodModel successCount:[self.goodModel.groupNumber intValue]];
         startGrouponView.delegate = self;
-        [backView addSubview:startGrouponView];
-        
-        //动画
-        [UIView animateWithDuration:DRAnimateDuration animations:^{
-            startGrouponView.y = backView.height - 378;
-        }];
+        [self.view addSubview:startGrouponView];
     }
 }
 - (void)JoinGrouponView:(DRJoinGrouponView *)joinGrouponView selectedNumber:(int)number
 {
-    [self.backView removeFromSuperview];
-    
     if(!UserId || !Token)
     {
         DRLoginViewController * loginVC = [[DRLoginViewController alloc] init];
@@ -962,8 +890,6 @@ NSString * const GoodDetailRecommendGoodCellId = @"GoodDetailRecommendGoodCellId
 
 - (void)startGrouponView:(DRStartGrouponView *)startGrouponView selectedNumber:(int)number price:(float)price
 {
-    [self.backView removeFromSuperview];
-    
     if(!UserId || !Token)
     {
         DRLoginViewController * loginVC = [[DRLoginViewController alloc] init];
@@ -986,10 +912,6 @@ NSString * const GoodDetailRecommendGoodCellId = @"GoodDetailRecommendGoodCellId
     submitOrderVC.grouponType = 2;
     submitOrderVC.groupId = self.grouponId;
     [self.navigationController pushViewController:submitOrderVC animated:YES];
-}
-- (void)removeBackView:(UITapGestureRecognizer *)tap
-{
-    [self.backView removeFromSuperview];
 }
 
 #pragma mark - UIWebViewDelegate
@@ -1185,6 +1107,12 @@ NSString * const GoodDetailRecommendGoodCellId = @"GoodDetailRecommendGoodCellId
     [self.videoFloatingWindow.playerView resetPlay];
 }
 
+- (void)goodHeaderCollectionViewSpecificationDidClickWithCell:(DRGoodHeaderCollectionViewCell *)cell
+{
+    DRSingleSpecificationView *singleSpecificationView = [[DRSingleSpecificationView alloc] initWithFrame:CGRectMake(0, 0, screenWidth, screenHeight - [DRTool getSafeAreaBottom]) goodModel:self.goodModel type:0];
+    singleSpecificationView.delegate = self;
+    [self.view addSubview:singleSpecificationView];
+}
 #pragma mark - 初始化
 - (NSArray *)commentDataArray
 {
@@ -1207,16 +1135,7 @@ NSString * const GoodDetailRecommendGoodCellId = @"GoodDetailRecommendGoodCellId
     }
     return _goodHeaderFrameModel;
 }
-#pragma mark - UIGestureRecognizerDelegate
-- (BOOL)gestureRecognizer:(UIGestureRecognizer *)gestureRecognizer shouldReceiveTouch:(UITouch *)touch
-{
-    if ([gestureRecognizer isKindOfClass:[UITapGestureRecognizer class]]) {
-        if (CGRectContainsPoint(self.wholesaleNumberView.frame, [touch locationInView:self.wholesaleNumberView.superview]) || CGRectContainsPoint(self.startGrouponView.frame, [touch locationInView:self.startGrouponView.superview]) || CGRectContainsPoint(self.joinGrouponView.frame, [touch locationInView:self.joinGrouponView.superview])) {
-            return NO;
-        }
-    }
-    return YES;
-}
+
 #pragma  mark - 销毁对象
 - (void)removeSetDeadlineTimer
 {

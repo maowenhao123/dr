@@ -23,6 +23,7 @@
 @property (nonatomic,assign) CGRect goodPriceLabelF;
 @property (nonatomic,assign) CGRect goodMailTypeLabelF;
 @property (nonatomic,assign) CGRect goodSaleCountLabelF;
+@property (nonatomic,assign) CGRect specificationViewF;
 @property (nonatomic,assign) CGFloat GoodHeaderCellH;
 
 @end

@@ -1,28 +1,29 @@
 //
-//  DRWholesaleNumberView.m
+//  DRSingleSpecificationView.m
 //  dr
 //
-//  Created by 毛文豪 on 2017/5/18.
-//  Copyright © 2017年 JG. All rights reserved.
+//  Created by dahe on 2019/8/6.
+//  Copyright © 2019 JG. All rights reserved.
 //
 
-#import "DRWholesaleNumberView.h"
+#import "DRSingleSpecificationView.h"
 #import "DRAdjustNumberView.h"
+#import "UIButton+DR.h"
 
-@interface DRWholesaleNumberView ()<UIGestureRecognizerDelegate, DRAdjustNumberViewDelegate>
+@interface DRSingleSpecificationView ()<UIGestureRecognizerDelegate, DRAdjustNumberViewDelegate>
 
 @property (nonatomic,weak) UIView * contentView;
 @property (nonatomic,weak) UIImageView * goodImageView;
 @property (nonatomic,weak) UILabel * goodPriceLabel;
 @property (nonatomic,weak) UILabel * stockLabel;
-@property (nonatomic,weak) UIButton *selectedNumberButton;
+@property (nonatomic,weak) UIButton *selectedSpecificationButton;
 @property (nonatomic, weak) DRAdjustNumberView * numberView;//数量改变
 @property (nonatomic,strong) DRGoodModel *goodModel;
 @property (nonatomic, assign) int type; //0确定 1加入购物车 2立刻购买
 
 @end
 
-@implementation DRWholesaleNumberView
+@implementation DRSingleSpecificationView
 
 - (instancetype)initWithFrame:(CGRect)frame goodModel:(DRGoodModel *)goodModel type:(int) type
 {
@@ -66,32 +67,23 @@
     self.goodPriceLabel = goodPriceLabel;
     goodPriceLabel.textColor = DRDefaultColor;
     goodPriceLabel.font = [UIFont systemFontOfSize:DRGetFontSize(34)];
-    int minCount = 1;
-    double minPrice = 0;
-    double maxPrice = 0;
-    for (NSDictionary * wholesaleRuleDic in _goodModel.wholesaleRule) {
-        NSInteger index = [ _goodModel.wholesaleRule indexOfObject:wholesaleRuleDic];
-        int price = [wholesaleRuleDic[@"price"] intValue];
-        int count = [wholesaleRuleDic[@"count"] intValue];
-        if (index == 0) {
-            minPrice = price;
-            minCount = count;
-        }else
-        {
-            minPrice = price < minPrice ? price : minPrice;
-            minCount = count < minCount ? count : minCount;
-        }
-        maxPrice = price < maxPrice ? maxPrice : price;
-    }
-    if (maxPrice == minPrice) {
-        goodPriceLabel.text = [NSString stringWithFormat:@"¥%@", [DRTool formatFloat:maxPrice/ 100]];
+    if ([DRTool showDiscountPriceWithGoodModel:self.goodModel]) {
+        NSString * newPriceStr = [NSString stringWithFormat:@"¥%@", [DRTool formatFloat:[self.goodModel.discountPrice doubleValue] / 100]];
+        NSString * oldPriceStr = [NSString stringWithFormat:@"¥%@", [DRTool formatFloat:[self.goodModel.price doubleValue] / 100]];
+        NSString * priceStr = [NSString stringWithFormat:@"%@ %@", newPriceStr, oldPriceStr];
+        NSMutableAttributedString * priceAttStr = [[NSMutableAttributedString alloc]initWithString:priceStr];
+        [priceAttStr addAttribute:NSFontAttributeName value:[UIFont systemFontOfSize:DRGetFontSize(34)] range:NSMakeRange(0, newPriceStr.length)];
+        [priceAttStr addAttribute:NSFontAttributeName value:[UIFont systemFontOfSize:DRGetFontSize(26)] range:NSMakeRange(priceStr.length - oldPriceStr.length, oldPriceStr.length)];
+        [priceAttStr addAttribute:NSForegroundColorAttributeName value:DRRedTextColor range:NSMakeRange(0, newPriceStr.length)];
+        [priceAttStr addAttribute:NSForegroundColorAttributeName value:DRGrayTextColor range:NSMakeRange(priceStr.length - oldPriceStr.length, oldPriceStr.length)];
+        [priceAttStr addAttribute:NSStrikethroughStyleAttributeName value:@(NSUnderlinePatternSolid | NSUnderlineStyleSingle) range:NSMakeRange(priceStr.length - oldPriceStr.length, oldPriceStr.length)];
+        self.goodPriceLabel.attributedText = priceAttStr;
     }else
     {
-        goodPriceLabel.text = [NSString stringWithFormat:@"¥%@ ~ ¥%@", [DRTool formatFloat:maxPrice / 100], [DRTool formatFloat:minPrice / 100]];
+        self.goodPriceLabel.text = [NSString stringWithFormat:@"¥%@", [DRTool formatFloat:[self.goodModel.price doubleValue] / 100]];
     }
     [contentView addSubview:goodPriceLabel];
-    
-    //plusCount
+
     //库存
     UILabel * stockLabel = [[UILabel alloc] init];
     self.stockLabel = stockLabel;
@@ -107,64 +99,67 @@
     stockLabel.frame = CGRectMake(self.goodPriceLabel.x, CGRectGetMaxY(self.goodPriceLabel.frame) + 7, stockLabelSize.width, stockLabelSize.height);
     [contentView addSubview:stockLabel];
     
+    //scrollView
+    UIScrollView *scrollView = [[UIScrollView alloc] initWithFrame:CGRectMake(0, 85, screenWidth, contentView.height - 85 - 45)];
+    scrollView.showsVerticalScrollIndicator = NO;
+    [contentView addSubview:scrollView];
+    
+    UIView * lastView = nil;
+    if (1) {
+        //分割线
+        UIView * line1 = [[UIView alloc]initWithFrame:CGRectMake(0, 85, self.width, 1)];
+        line1.backgroundColor = DRWhiteLineColor;
+        [contentView addSubview:line1];
+        
+        for (int i = 0; i < 30; i++) {
+            UIButton * specificationButton = [UIButton buttonWithType:UIButtonTypeCustom];
+            specificationButton.backgroundColor = DRColor(240, 240, 240, 1);
+            [specificationButton setImage:[UIImage ImageFromColor:DRDefaultColor WithRect:CGRectMake(0, 0, 25, 25)] forState:UIControlStateNormal];
+            [specificationButton setTitle:[NSString stringWithFormat:@"规格%d", i] forState:UIControlStateNormal];
+            specificationButton.titleLabel.font = [UIFont systemFontOfSize:DRGetFontSize(26)];
+            CGFloat x = CGRectGetMaxX(lastView.frame) + 20;
+            CGFloat y = lastView.y;
+            if (!lastView) {
+                y = 15;
+            }
+            CGFloat w = [specificationButton.currentTitle sizeWithLabelFont:specificationButton.titleLabel.font].width + 25 + 7 + 2 * 15;
+            if (x + w + 20 > screenWidth) {
+                x = 20;
+                y = CGRectGetMaxY(lastView.frame) + 15;
+            }
+            specificationButton.frame = CGRectMake(x, y, w, 40);
+            [specificationButton setButtonTitleWithImageAlignment:UIButtonTitleWithImageAlignmentLeft imgTextDistance:7];
+            [specificationButton setTitleColor:DRBlackTextColor forState:UIControlStateNormal];
+            [specificationButton setTitleColor:DRDefaultColor forState:UIControlStateSelected];
+            [specificationButton setTitleColor:DRDefaultColor forState:UIControlStateHighlighted];
+            [specificationButton setTitleColor:[UIColor lightGrayColor] forState:UIControlStateDisabled];
+            specificationButton.layer.masksToBounds = YES;
+            specificationButton.layer.cornerRadius = 10;
+            specificationButton.layer.borderColor = DRDefaultColor.CGColor;
+            if (i == 0) {
+                self.selectedSpecificationButton = specificationButton;
+                specificationButton.selected = YES;
+                specificationButton.layer.borderWidth = 1;
+            }
+            [specificationButton addTarget:self action:@selector(specificationButtonDidClick:) forControlEvents:UIControlEventTouchUpInside];
+            [scrollView addSubview:specificationButton];
+            lastView = specificationButton;
+        }
+    }
     //分割线
-    UIView * line1 = [[UIView alloc]initWithFrame:CGRectMake(0, 85, self.width, 1)];
-    line1.backgroundColor = DRWhiteLineColor;
-    [contentView addSubview:line1];
+    UIView * line2 = [[UIView alloc]initWithFrame:CGRectMake(0, CGRectGetMaxY(lastView.frame) + 15, self.width, 1)];
+    line2.backgroundColor = DRWhiteLineColor;
+    [scrollView addSubview:line2];
     
     //购买数量
-    UILabel * numberLabel = [[UILabel alloc] init];
-    numberLabel.text = @"购买数量";
-    numberLabel.textColor = DRBlackTextColor;
-    numberLabel.font = [UIFont systemFontOfSize:DRGetFontSize(24)];
-    CGSize numberLabelSize = [numberLabel.text sizeWithLabelFont:numberLabel.font];
-    CGFloat goodPriceLabelY = CGRectGetMaxY(line1.frame) + 23;
-    numberLabel.frame = CGRectMake(DRMargin, goodPriceLabelY, numberLabelSize.width, numberLabelSize.height);
-    [contentView addSubview:numberLabel];
-    
-    //购买数量按钮
-    CGFloat numberButtonW = 52;
-    CGFloat numberButtonH = 26;
-    CGFloat numberButtonY = CGRectGetMaxY(numberLabel.frame) + 12;
-    NSMutableArray *numberButtonTitles = [NSMutableArray array];
-    for (NSDictionary * wholesaleRuleDic in _goodModel.wholesaleRule) {
-        NSString * countStr = [NSString stringWithFormat:@"%@", wholesaleRuleDic[@"count"]];
-        [numberButtonTitles addObject:countStr];
-    }
-    UIView * lastNumberButton;
-    for (int i = 0; i < numberButtonTitles.count; i++) {
-        UIButton * numberButton = [UIButton buttonWithType:UIButtonTypeCustom];
-        numberButton.frame = CGRectMake(DRMargin + (numberButtonW + 15) * i, numberButtonY, numberButtonW, numberButtonH);
-        numberButton.adjustsImageWhenHighlighted = NO;
-        [numberButton setBackgroundImage:[UIImage ImageFromColor:DRColor(240, 240, 240, 1) WithRect:numberButton.bounds] forState:UIControlStateNormal];
-        [numberButton setBackgroundImage:[UIImage ImageFromColor:DRDefaultColor WithRect:numberButton.bounds] forState:UIControlStateSelected];
-        [numberButton setBackgroundImage:[UIImage ImageFromColor:DRDefaultColor WithRect:numberButton.bounds] forState:UIControlStateHighlighted];
-        [numberButton setTitle:numberButtonTitles[i] forState:UIControlStateNormal];
-        numberButton.titleLabel.font = [UIFont systemFontOfSize:DRGetFontSize(24)];
-        [numberButton setTitleColor:DRBlackTextColor forState:UIControlStateNormal];
-        [numberButton setTitleColor:[UIColor whiteColor] forState:UIControlStateSelected];
-        [numberButton setTitleColor:[UIColor whiteColor] forState:UIControlStateHighlighted];
-        numberButton.layer.masksToBounds = YES;
-        numberButton.layer.cornerRadius = 10;
-        [numberButton addTarget:self action:@selector(numberButtonDidClick:) forControlEvents:UIControlEventTouchUpInside];
-        [contentView addSubview:numberButton];
-        lastNumberButton = numberButton;
-    }
-    
-    //分割线
-    UIView * line2 = [[UIView alloc]initWithFrame:CGRectMake(0, CGRectGetMaxY(lastNumberButton.frame) + 12, self.width, 1)];
-    line2.backgroundColor = DRWhiteLineColor;
-    [contentView addSubview:line2];
-    
-    //其他数量
     UILabel * otherNumberLabel = [[UILabel alloc] init];
-    otherNumberLabel.text = @"其他数量";
+    otherNumberLabel.text = @"购买数量";
     otherNumberLabel.textColor = DRBlackTextColor;
     otherNumberLabel.font = [UIFont systemFontOfSize:DRGetFontSize(24)];
     CGSize otherNumberLabelSize = [otherNumberLabel.text sizeWithLabelFont:otherNumberLabel.font];
     CGFloat otherNumberLabelY = CGRectGetMaxY(line2.frame) + (57 - otherNumberLabelSize.height) / 2;
     otherNumberLabel.frame = CGRectMake(DRMargin, otherNumberLabelY, otherNumberLabelSize.width, otherNumberLabelSize.height);
-    [contentView addSubview:otherNumberLabel];
+    [scrollView addSubview:otherNumberLabel];
     
     //改变数量
     DRAdjustNumberView * numberView = [[DRAdjustNumberView alloc] init];
@@ -178,18 +173,16 @@
     numberView.textField.font = [UIFont systemFontOfSize:DRGetFontSize(22)];
     //plusCount
     numberView.max = [self.goodModel.plusCount intValue];//最大
-    numberView.min = minCount;
-    numberView.textField.placeholder = [NSString stringWithFormat:@"%d",minCount];
-    if ([self.goodModel.sellType intValue] == 1) {
-        numberView.textField.text = @"1";
-    }
-        
-    [contentView addSubview:numberView];
+    numberView.min = 1;
+    numberView.textField.placeholder = [NSString stringWithFormat:@"%d", 1];
+    numberView.textField.text = @"1";
+    [scrollView addSubview:numberView];
     
     //分割线
     UIView * line3 = [[UIView alloc]initWithFrame:CGRectMake(0, CGRectGetMaxY(line2.frame) + 57, self.width, 1)];
     line3.backgroundColor = DRWhiteLineColor;
-    [contentView addSubview:line3];
+    [scrollView addSubview:line3];
+    scrollView.contentSize = CGSizeMake(screenWidth, CGRectGetMaxY(line3.frame) + 100);
     
     //确定
     UIView * buttonView = [[UIView alloc] initWithFrame:CGRectMake(DRMargin, contentView.height - 45, screenWidth - 2 * DRMargin, 45)];
@@ -241,11 +234,21 @@
     }];
 }
 
+- (void)specificationButtonDidClick:(UIButton *)button
+{
+    if (self.selectedSpecificationButton == button) {
+        return;
+    }
+    
+    self.selectedSpecificationButton.selected = NO;
+    self.selectedSpecificationButton.layer.borderWidth = 0;
+    button.selected = YES;
+    button.layer.borderWidth = 1;
+    self.selectedSpecificationButton = button;
+}
+
 - (void)adjustNumbeView:(DRAdjustNumberView *)numberView currentNumber:(NSString *)number
 {
-    self.selectedNumberButton.selected = NO;
-    self.selectedNumberButton = nil;
-    
     NSSortDescriptor *sortDescriptor = [NSSortDescriptor sortDescriptorWithKey:@"count" ascending:NO];
     NSArray *wholesaleRule = [self.goodModel.wholesaleRule sortedArrayUsingDescriptors:@[sortDescriptor]];//排序
     
@@ -257,35 +260,12 @@
         }
     }
 }
-- (void)numberButtonDidClick:(UIButton *)button
-{
-    if (button == self.selectedNumberButton) {
-        return;
-    }
-    self.selectedNumberButton.selected = NO;
-    button.selected = YES;
-    self.selectedNumberButton = button;
-    self.numberView.currentNum = button.currentTitle;
-    
-    for (NSDictionary * wholesaleRuleDic in self.goodModel.wholesaleRule) {
-        int count = [wholesaleRuleDic[@"count"] intValue];
-        if (count == [button.currentTitle intValue]) {
-            self.goodPriceLabel.text = [NSString stringWithFormat:@"¥%@", [DRTool formatFloat:[wholesaleRuleDic[@"price"] doubleValue] / 100.0]];
-        }
-    }
-}
+
 - (void)confirmButtonDidClick:(UIButton *)button
 {
-    if (!self.selectedNumberButton && [self.numberView.currentNum intValue] == 0 && [self.goodModel.sellType intValue] == 2) {
-        return;
-    }
-    int number = 0;
-    if (self.selectedNumberButton) {
-        number = [self.selectedNumberButton.currentTitle intValue];
-    }else{
-        number = [self.numberView.currentNum intValue];
-    }
+    int number = [self.numberView.currentNum intValue];
     NSString *price = self.goodPriceLabel.text;
+    price = [price stringByReplacingOccurrencesOfString:@"¥" withString:@""];
     BOOL isBuy = button.tag == 1;
     if (self.type == 1) {
         isBuy = NO;
@@ -293,7 +273,6 @@
     {
         isBuy = YES;
     }
-    price = [price stringByReplacingOccurrencesOfString:@"¥" withString:@""];
     if (_delegate && [_delegate respondsToSelector:@selector(goodSelectedNumber:price:isBuy:)]) {
         [_delegate goodSelectedNumber:number price:[price doubleValue] isBuy:isBuy];
     }

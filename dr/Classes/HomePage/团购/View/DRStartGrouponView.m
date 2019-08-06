@@ -9,8 +9,9 @@
 #import "DRStartGrouponView.h"
 #import "DRAdjustNumberView.h"
 
-@interface DRStartGrouponView ()
+@interface DRStartGrouponView ()<UIGestureRecognizerDelegate>
 
+@property (nonatomic,weak) UIView * contentView;
 @property (nonatomic,weak) UIImageView * goodImageView;
 @property (nonatomic,weak) UILabel * goodPriceLabel;
 @property (nonatomic,weak) UILabel * stockLabel;
@@ -34,7 +35,16 @@
 }
 - (void)setupChildViews
 {
-    self.backgroundColor = [UIColor whiteColor];
+    self.backgroundColor = DRColor(0, 0, 0, 0.4);
+    
+    UIView * contentView = [[UIView alloc]initWithFrame:CGRectMake(0, self.height + [DRTool getSafeAreaBottom], screenWidth, screenHeight * 0.6)];
+    self.contentView = contentView;
+    contentView.backgroundColor = [UIColor whiteColor];
+    [self addSubview:contentView];
+    
+    UITapGestureRecognizer * tap = [[UITapGestureRecognizer alloc] initWithTarget:self action:@selector(removeFromSuperview)];
+    tap.delegate = self;
+    [self addGestureRecognizer:tap];
     
     //图片
     UIImageView * goodImageView = [[UIImageView alloc] init];
@@ -48,7 +58,7 @@
     goodImageView.layer.cornerRadius = 4;
     NSString * imageUrlStr = [NSString stringWithFormat:@"%@%@%@",baseUrl,self.goodModel.spreadPics,smallPicUrl];
     [goodImageView sd_setImageWithURL:[NSURL URLWithString:imageUrlStr] placeholderImage:[UIImage imageNamed:@"placeholder"]];
-    [self addSubview:goodImageView];
+    [contentView addSubview:goodImageView];
     
     //商品价格
     UILabel * goodPriceLabel = [[UILabel alloc] init];
@@ -58,7 +68,7 @@
     goodPriceLabel.font = [UIFont systemFontOfSize:DRGetFontSize(34)];
     CGSize goodPriceLabelSize = [goodPriceLabel.text sizeWithLabelFont:goodPriceLabel.font];
     goodPriceLabel.frame = CGRectMake(CGRectGetMaxX(goodImageView.frame) + 7, 14, goodPriceLabelSize.width, goodPriceLabelSize.height);
-    [self addSubview:goodPriceLabel];
+    [contentView addSubview:goodPriceLabel];
     
     //plusCount
     //库存
@@ -69,12 +79,12 @@
     stockLabel.font = [UIFont systemFontOfSize:DRGetFontSize(24)];
     CGSize stockLabelSize = [stockLabel.text sizeWithLabelFont:stockLabel.font];
     stockLabel.frame = CGRectMake(self.goodPriceLabel.x, CGRectGetMaxY(self.goodPriceLabel.frame) + 7, stockLabelSize.width, stockLabelSize.height);
-    [self addSubview:stockLabel];
+    [contentView addSubview:stockLabel];
     
     //分割线
     UIView * line1 = [[UIView alloc]initWithFrame:CGRectMake(0, 85, self.width, 1)];
     line1.backgroundColor = DRWhiteLineColor;
-    [self addSubview:line1];
+    [contentView addSubview:line1];
     
     //成团数量
     UILabel * grouponLabel =  [[UILabel alloc] init];
@@ -84,7 +94,7 @@
     CGSize grouponLabelSize = [grouponLabel.text sizeWithLabelFont:grouponLabel.font];
     CGFloat grouponLabelY = CGRectGetMaxY(line1.frame) + 20;
     grouponLabel.frame = CGRectMake(DRMargin, grouponLabelY, grouponLabelSize.width, grouponLabelSize.height);
-    [self addSubview:grouponLabel];
+    [contentView addSubview:grouponLabel];
     
     UILabel * grouponNumberLabel =  [[UILabel alloc] init];
     grouponNumberLabel.text = [NSString stringWithFormat:@"%d", self.successCount];
@@ -92,12 +102,12 @@
     grouponNumberLabel.font = [UIFont systemFontOfSize:DRGetFontSize(24)];
     CGSize grouponNumberLabelSize = [grouponNumberLabel.text sizeWithLabelFont:grouponNumberLabel.font];
     grouponNumberLabel.frame = CGRectMake(self.width - DRMargin - grouponNumberLabelSize.width, grouponLabelY, grouponNumberLabelSize.width, grouponNumberLabelSize.height);
-    [self addSubview:grouponNumberLabel];
+    [contentView addSubview:grouponNumberLabel];
     
     //分割线
     UIView * line2 = [[UIView alloc]initWithFrame:CGRectMake(0, CGRectGetMaxY(grouponLabel.frame) + 20, self.width, 1)];
     line2.backgroundColor = DRWhiteLineColor;
-    [self addSubview:line2];
+    [contentView addSubview:line2];
     
     //其他数量
     UILabel * numberLabel = [[UILabel alloc] init];
@@ -107,7 +117,7 @@
     CGSize numberLabelSize = [numberLabel.text sizeWithLabelFont:numberLabel.font];
     CGFloat numberLabelY = CGRectGetMaxY(line2.frame) + (57 - numberLabelSize.height) / 2;
     numberLabel.frame = CGRectMake(DRMargin, numberLabelY, numberLabelSize.width, numberLabelSize.height);
-    [self addSubview:numberLabel];
+    [contentView addSubview:numberLabel];
     
     //改变数量
     DRAdjustNumberView * numberView = [[DRAdjustNumberView alloc] init];
@@ -120,35 +130,35 @@
     numberView.textField.font = [UIFont systemFontOfSize:DRGetFontSize(22)];
     numberView.textField.text = @"1";
     numberView.max = 999;//最大999
-    [self addSubview:numberView];
+    [contentView addSubview:numberView];
     
     //分割线
     UIView * line3 = [[UIView alloc]initWithFrame:CGRectMake(0, CGRectGetMaxY(line2.frame) + 57, self.width, 1)];
     line3.backgroundColor = DRWhiteLineColor;
-    [self addSubview:line3];
+    [contentView addSubview:line3];
 
     //确定
     UIButton * confirmButton = [UIButton buttonWithType:UIButtonTypeCustom];
-    confirmButton.frame = CGRectMake(0, self.height - 45, self.width, 45);
+    confirmButton.frame = CGRectMake(0, contentView.height - 45, self.width, 45);
     confirmButton.backgroundColor = DRDefaultColor;
     [confirmButton setTitle:@"立刻开团" forState:UIControlStateNormal];
     [confirmButton setTitleColor:[UIColor whiteColor] forState:UIControlStateNormal];
     confirmButton.titleLabel.font = [UIFont systemFontOfSize:DRGetFontSize(30)];
     [confirmButton addTarget:self action:@selector(confirmButtonDidClick) forControlEvents:UIControlEventTouchUpInside];
-    [self addSubview:confirmButton];
+    [contentView addSubview:confirmButton];
     
     //exit
     CGFloat exitButtonWH = 15;
     UIButton * exitButton = [UIButton buttonWithType:UIButtonTypeCustom];
     exitButton.frame = CGRectMake(screenWidth - exitButtonWH - 10, 10, exitButtonWH, exitButtonWH);
     [exitButton setImage:[UIImage imageNamed:@"groupon_exit"] forState:UIControlStateNormal];
-    [exitButton addTarget:self action:@selector(exitButtonDidClick) forControlEvents:UIControlEventTouchUpInside];
-    [self addSubview:exitButton];
-}
-
-- (void)exitButtonDidClick
-{
-    [self.superview removeFromSuperview];
+    [exitButton addTarget:self action:@selector(removeFromSuperview) forControlEvents:UIControlEventTouchUpInside];
+    [contentView addSubview:exitButton];
+    
+    //动画
+    [UIView animateWithDuration:DRAnimateDuration animations:^{
+        contentView.y = self.height - contentView.height;
+    }];
 }
 
 - (void)confirmButtonDidClick
@@ -174,7 +184,20 @@
         [_delegate startGrouponView:self selectedNumber:[self.numberView.currentNum intValue] price:[self.goodModel.groupPrice doubleValue] / 100];
     }
     
+    [self removeFromSuperview];
 }
+
+#pragma mark - UIGestureRecognizerDelegate
+- (BOOL)gestureRecognizer:(UIGestureRecognizer *)gestureRecognizer shouldReceiveTouch:(UITouch *)touch
+{
+    if ([gestureRecognizer isKindOfClass:[UITapGestureRecognizer class]]) {
+        if (CGRectContainsPoint(self.contentView.frame, [touch locationInView:self.contentView.superview])) {
+            return NO;
+        }
+    }
+    return YES;
+}
+
 
 
 @end
