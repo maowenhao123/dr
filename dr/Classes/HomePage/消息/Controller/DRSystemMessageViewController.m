@@ -94,7 +94,7 @@
 - (NSInteger)tableView:(UITableView *)tableView numberOfRowsInSection:(NSInteger)section
 {
     if (tableView.tag == 0) {
-        [tableView showNoDataWithTitle:@"" description:@"暂无消息" isCar:NO rowCount:self.dataArray.count];
+        [tableView showNoDataWithTitle:@"" description:@"暂无消息" rowCount:self.dataArray.count];
     }
     return self.dataArray.count;
 }

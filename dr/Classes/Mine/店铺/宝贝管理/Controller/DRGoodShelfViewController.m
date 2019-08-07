@@ -193,7 +193,7 @@
 - (NSInteger)tableView:(UITableView *)tableView numberOfRowsInSection:(NSInteger)section
 {
     NSMutableArray *dataArray_ = self.dataArray[self.currentIndex];
-    [tableView showNoDataWithTitle:@"" description:@"没有相关商品" isCar:NO rowCount:dataArray_.count];
+    [tableView showNoDataWithTitle:@"" description:@"没有相关商品" rowCount:dataArray_.count];
     return dataArray_.count;
 }
 - (UITableViewCell *)tableView:(UITableView *)tableView cellForRowAtIndexPath:(NSIndexPath *)indexPath

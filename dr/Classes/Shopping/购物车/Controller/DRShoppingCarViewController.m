@@ -10,11 +10,12 @@
 #import "DRSubmitOrderViewController.h"
 #import "DRLoginViewController.h"
 #import "DRShoppingCarBottomView.h"
+#import "DRShoppingCarNoDataTableViewCell.h"
 #import "DRShoppingCarShopTableViewCell.h"
 #import "DRShoppingCarTableViewCell.h"
-#import "UITableView+DRNoData.h"
+#import "DRShoppingCarRecommendTableViewCell.h"
 
-@interface DRShoppingCarViewController ()<UITableViewDelegate,UITableViewDataSource,ShoppingCarShopTableViewCellDelegate,ShoppingCarTableViewCellDelegate,ShoppingCarBottomViewDelegate>
+@interface DRShoppingCarViewController ()<UITableViewDelegate, UITableViewDataSource, ShoppingCarShopTableViewCellDelegate, ShoppingCarTableViewCellDelegate, ShoppingCarBottomViewDelegate>
 
 @property (nonatomic, weak) UITableView *tableView;
 @property (nonatomic, weak) DRShoppingCarBottomView * shoppingBottomView;
@@ -82,6 +83,7 @@
     
     [self upDataAllSelectedButtonStatus];
 }
+
 - (void)editDidClick:(UIBarButtonItem *)barButtonItem
 {
     if ([barButtonItem.title isEqualToString:@"编辑"]) {
@@ -95,51 +97,103 @@
     [self.shoppingBottomView updataWithData:self.dataArray isEdit:self.isEdit];
     [self.tableView reloadData];
 }
+
 #pragma mark - UITableViewDelegate
 - (NSInteger)numberOfSectionsInTableView:(UITableView *)tableView
 {
-    [tableView showNoDataWithTitle:@"购物车竟然是空的" description:@"快买个多肉萌翻自己~" isCar:YES rowCount:self.dataArray.count];
-    return self.dataArray.count;
+    if (self.dataArray.count == 0) {
+        return 2;
+    }
+    return self.dataArray.count + 1;
 }
+
 - (NSInteger)tableView:(UITableView *)tableView numberOfRowsInSection:(NSInteger)section
 {
-    DRShoppingCarShopModel * carShopModel = self.dataArray[section];
-    return carShopModel.goodArr.count + 1;
+    if (self.dataArray.count == 0 && section == 0) {
+        return 1;
+    }
+    if (section < self.dataArray.count) {
+        DRShoppingCarShopModel * carShopModel = self.dataArray[section];
+        return carShopModel.goodArr.count + 1;
+    }
+    return 5;
 }
+
 - (UITableViewCell *)tableView:(UITableView *)tableView cellForRowAtIndexPath:(NSIndexPath *)indexPath
 {
-    if (indexPath.row == 0) {
-        DRShoppingCarShopTableViewCell * cell = [DRShoppingCarShopTableViewCell cellWithTableView:tableView andIndexpath:indexPath];
-        DRShoppingCarShopModel * carShopModel = self.dataArray[indexPath.section];
-        cell.model = carShopModel;
-        cell.delegate = self;
+    if (self.dataArray.count == 0 && indexPath.section == 0) {
+        DRShoppingCarNoDataTableViewCell * cell = [DRShoppingCarNoDataTableViewCell cellWithTableView:tableView];
         return cell;
+    }
+    if (indexPath.section < self.dataArray.count) {
+        if (indexPath.row == 0) {
+            DRShoppingCarShopTableViewCell * cell = [DRShoppingCarShopTableViewCell cellWithTableView:tableView];
+            DRShoppingCarShopModel * carShopModel = self.dataArray[indexPath.section];
+            cell.model = carShopModel;
+            cell.delegate = self;
+            return cell;
+        }else
+        {
+            DRShoppingCarTableViewCell * cell = [DRShoppingCarTableViewCell cellWithTableView:tableView];
+            DRShoppingCarShopModel * carShopModel = self.dataArray[indexPath.section];
+            DRShoppingCarGoodModel * carGoodModel = carShopModel.goodArr[indexPath.row - 1];
+            cell.model = carGoodModel;
+            cell.edit = self.isEdit;
+            cell.delegate = self;
+            cell.tag = indexPath.section * 1000 + indexPath.row;
+            return cell;
+        }
     }else
     {
-        DRShoppingCarTableViewCell * cell = [DRShoppingCarTableViewCell cellWithTableView:tableView andIndexpath:indexPath];
-        DRShoppingCarShopModel * carShopModel = self.dataArray[indexPath.section];
-        DRShoppingCarGoodModel * carGoodModel = carShopModel.goodArr[indexPath.row - 1];
-        cell.model = carGoodModel;
-        cell.edit = self.isEdit;
-        cell.delegate = self;
-        cell.tag = indexPath.section * 1000 + indexPath.row;
+        DRShoppingCarRecommendTableViewCell * cell = [DRShoppingCarRecommendTableViewCell cellWithTableView:tableView];
         return cell;
     }
 }
+
+- (UIView *)tableView:(UITableView *)tableView viewForHeaderInSection:(NSInteger)section
+{
+    if ((section == self.dataArray.count && section != 0) || (self.dataArray.count == 0 && section == 1)) {
+        UILabel * titleLabel = [[UILabel alloc] initWithFrame:CGRectMake(0, 0, screenWidth, 50)];
+        titleLabel.backgroundColor = DRBackgroundColor;
+        titleLabel.text = @"- 猜你喜欢 -";
+        titleLabel.textAlignment = NSTextAlignmentCenter;
+        titleLabel.font = [UIFont boldSystemFontOfSize:DRGetFontSize(35)];
+        return titleLabel;
+    }
+    return nil;
+}
+
 - (CGFloat)tableView:(UITableView *)tableView heightForRowAtIndexPath:(NSIndexPath *)indexPath
 {
-    if (indexPath.row == 0) {
-        return 49;
+    if (self.dataArray.count == 0 && indexPath.section == 0) {
+        return 300;
     }
-    return 100;
+    if (indexPath.section < self.dataArray.count) {
+        if (indexPath.row == 0) {
+            return 49;
+        }
+        return 100;
+    }
+    CGFloat goodItemViewW = (screenWidth - 3 * DRMargin) / 2;
+    return goodItemViewW + 75 + DRMargin;
 }
+
+- (CGFloat)tableView:(UITableView *)tableView heightForHeaderInSection:(NSInteger)section
+{
+    if ((section == self.dataArray.count && section != 0) || (self.dataArray.count == 0 && section == 1)) {
+        return 50;
+    }
+    return 0;
+}
+
 - (BOOL)tableView:(UITableView *)tableView canEditRowAtIndexPath:(NSIndexPath *)indexPath
 {
-    if (indexPath.row == 0) {
+    if (indexPath.row == 0 || indexPath.section == self.dataArray.count) {
         return NO;
     }
     return YES;
 }
+
 - (void)tableView:(UITableView *)tableView commitEditingStyle:(UITableViewCellEditingStyle)editingStyle forRowAtIndexPath:(NSIndexPath *)indexPath
 {
     if (editingStyle == UITableViewCellEditingStyleDelete) {
@@ -160,6 +214,7 @@
         [self upDataAllSelectedButtonStatus];
     }
 }
+
 #pragma mark - 协议
 - (void)upDataShopTableViewCell:(DRShoppingCarShopTableViewCell *)cell isSelected:(BOOL)isSelected
 {
@@ -174,6 +229,7 @@
     [self.shoppingBottomView updataWithData:self.dataArray isEdit:self.isEdit];
     [self upDataAllSelectedButtonStatus];
 }
+
 - (void)upDataGoodTableViewCell:(DRShoppingCarTableViewCell *)cell isSelected:(BOOL)isSelected currentNumber:(NSString *)number
 {
     self.dataArray = [NSMutableArray arrayWithArray:[DRUserDefaultTool getShoppingCarGoods]];
@@ -204,6 +260,7 @@
     [self.shoppingBottomView updataWithData:self.dataArray isEdit:self.isEdit];
     [self upDataAllSelectedButtonStatus];
 }
+
 - (void)upDataAllSelectedButtonStatus
 {
     BOOL isAllSelected = YES;
@@ -220,6 +277,7 @@
     isAllSelected = self.dataArray.count > 0 ? isAllSelected : NO;
     self.shoppingBottomView.allSelectedButton.selected = isAllSelected;
 }
+
 - (void)bottomView:(DRShoppingCarBottomView *)bottomView confirmButtonDidClick:(UIButton *)button
 {
     if((!UserId || !Token))//未登录
@@ -257,6 +315,7 @@
     submitOrderVC.dataArray = dataArray;
     [self.navigationController pushViewController:submitOrderVC animated:YES];
 }
+
 - (void)bottomView:(DRShoppingCarBottomView *)bottomView deleteButtonDidClick:(UIButton *)button
 {
     for (DRShoppingCarShopModel * carShopModel in self.dataArray) {
@@ -269,6 +328,7 @@
     [self upData];
     [self upDataAllSelectedButtonStatus];
 }
+
 - (void)bottomView:(DRShoppingCarBottomView *)bottomView allSelectedButtonDidClick:(UIButton *)button
 {
     BOOL isSelected = button.selected;

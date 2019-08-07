@@ -123,7 +123,7 @@
     NSMutableArray *redPacketList = self.dataArray[self.currentIndex];
     NSArray * btnTitles = @[@"未使用", @"已使用", @"已过期"];
     NSString *description = [NSString stringWithFormat:@"暂无%@红包", btnTitles[self.currentIndex]];
-    [tableView showNoDataWithTitle:@"" description:description isCar:NO rowCount:redPacketList.count];
+    [tableView showNoDataWithTitle:@"" description:description rowCount:redPacketList.count];
     return redPacketList.count;
 }
 - (NSInteger)tableView:(UITableView *)tableView numberOfRowsInSection:(NSInteger)section

@@ -37,7 +37,7 @@
 - (NSInteger)tableView:(UITableView *)tableView numberOfRowsInSection:(NSInteger)section
 {
     if (tableView.tag == 0) {
-        [tableView showNoDataWithTitle:@"" description:@"暂无积分" isCar:NO rowCount:0];
+        [tableView showNoDataWithTitle:@"" description:@"暂无积分" rowCount:0];
     }
     return 0;
 }

@@ -422,7 +422,7 @@
 - (NSInteger)numberOfSectionsInTableView:(UITableView *)tableView
 {
     NSMutableArray *moneyDetailSectionList = self.moneyDetailSectionListArray[self.currentIndex];
-    [tableView showNoDataWithTitle:@"" description:@"您还没有相关的记录" isCar:NO rowCount:moneyDetailSectionList.count];
+    [tableView showNoDataWithTitle:@"" description:@"您还没有相关的记录" rowCount:moneyDetailSectionList.count];
     
     return moneyDetailSectionList.count;
 }

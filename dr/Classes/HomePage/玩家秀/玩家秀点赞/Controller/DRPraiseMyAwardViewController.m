@@ -146,7 +146,7 @@
 - (NSInteger)tableView:(UITableView *)tableView numberOfRowsInSection:(NSInteger)section
 {
     NSMutableArray *awardSectionList = self.dataArray[self.currentIndex];
-    [tableView showNoDataWithTitle:@"" description:@"您还没有相关的记录" isCar:NO rowCount:awardSectionList.count];
+    [tableView showNoDataWithTitle:@"" description:@"您还没有相关的记录" rowCount:awardSectionList.count];
     
     return awardSectionList.count;
 }

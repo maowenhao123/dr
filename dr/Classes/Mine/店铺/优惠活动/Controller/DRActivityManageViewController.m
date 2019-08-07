@@ -109,7 +109,7 @@
 - (NSInteger)numberOfSectionsInTableView:(UITableView *)tableView
 {
     NSMutableArray * activityArray = self.dataArray[self.currentIndex];
-    [tableView showNoDataWithTitle:@"" description:@"暂无活动" isCar:NO rowCount:activityArray.count];
+    [tableView showNoDataWithTitle:@"" description:@"暂无活动" rowCount:activityArray.count];
     return activityArray.count;
 }
 

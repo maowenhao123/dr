@@ -61,7 +61,7 @@
 - (NSInteger)tableView:(UITableView *)tableView numberOfRowsInSection:(NSInteger)section
 {
     // Return the number of rows in the section.
-    [tableView showNoDataWithTitle:@"" description:@"暂无聊天数据" isCar:NO rowCount:self.dataArray.count];
+    [tableView showNoDataWithTitle:@"" description:@"暂无聊天数据" rowCount:self.dataArray.count];
     return [self.dataArray count];
 }
 

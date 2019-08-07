@@ -179,7 +179,7 @@
 {
     NSMutableArray *praiseSectionList = self.dataArray[self.currentIndex];
     DRPraiseSectionModel * praiseSectionModel = praiseSectionList.firstObject;
-    [tableView showNoDataWithTitle:@"" description:@"暂无数据" isCar:NO rowCount:praiseSectionModel.praiseList.count];
+    [tableView showNoDataWithTitle:@"" description:@"暂无数据" rowCount:praiseSectionModel.praiseList.count];
     return praiseSectionList.count;
 }
 

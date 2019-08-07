@@ -216,7 +216,7 @@
 - (NSInteger)numberOfSectionsInTableView:(UITableView *)tableView
 {
     NSMutableArray * dataArray_ = self.dataArray[self.currentIndex];
-    [tableView showNoDataWithTitle:@"您还没有相关的订单" description:@"去买个多肉萌翻自己~" isCar:NO rowCount:dataArray_.count];
+    [tableView showNoDataWithTitle:@"您还没有相关的订单" description:@"去买个多肉萌翻自己~" rowCount:dataArray_.count];
     return dataArray_.count;
 }
 - (NSInteger)tableView:(UITableView *)tableView numberOfRowsInSection:(NSInteger)section

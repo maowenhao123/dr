@@ -15,4 +15,6 @@
 @property (nonatomic,copy) NSString *price;//价格
 @property (nonatomic,copy) NSString *plusCount;//库存数量
 @property (nonatomic,strong) UIImage *pic;//图片
+@property (nonatomic,copy) NSString *picUrl;
+
 @end

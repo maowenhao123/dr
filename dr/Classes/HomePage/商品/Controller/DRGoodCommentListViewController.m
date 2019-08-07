@@ -158,7 +158,7 @@
 }
 - (NSInteger)tableView:(UITableView *)tableView numberOfRowsInSection:(NSInteger)section
 {
-    [tableView showNoDataWithTitle:@"" description:@"该商品没有评论" isCar:NO rowCount:self.dataArray.count];
+    [tableView showNoDataWithTitle:@"" description:@"该商品没有评论" rowCount:self.dataArray.count];
     return self.dataArray.count;
 }
 - (UITableViewCell *)tableView:(UITableView *)tableView cellForRowAtIndexPath:(NSIndexPath *)indexPath

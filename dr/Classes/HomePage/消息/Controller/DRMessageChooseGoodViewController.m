@@ -564,7 +564,7 @@
 - (NSInteger)tableView:(UITableView *)tableView numberOfRowsInSection:(NSInteger)section
 {
     NSArray * dataArray = self.dataArray[self.currentIndex];
-    [tableView showNoDataWithTitle:@"" description:@"暂无数据" isCar:NO rowCount:dataArray.count];
+    [tableView showNoDataWithTitle:@"" description:@"暂无数据" rowCount:dataArray.count];
     return dataArray.count;
 }
 

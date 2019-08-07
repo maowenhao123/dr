@@ -446,7 +446,7 @@ NSString * const collectionCellId = @"GoodCollectionViewCellId";
 }
 - (NSInteger)collectionView:(UICollectionView *)collectionView numberOfItemsInSection:(NSInteger)section
 {
-   [collectionView showNoDataWithTitle:@"" description:@"没有相关商品" isCar:NO rowCount:self.dataArray.count];
+   [collectionView showNoDataWithTitle:@"" description:@"没有相关商品" rowCount:self.dataArray.count];
     return self.dataArray.count;
 }
 - (UICollectionViewCell *)collectionView:(UICollectionView *)collectionView cellForItemAtIndexPath:(NSIndexPath *)indexPath

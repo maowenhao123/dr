@@ -61,7 +61,7 @@
     goodPriceLabel.textColor = DRRedTextColor;
     [self addSubview:goodPriceLabel];
 
-    //价格
+    //邮费
     UILabel * mailLabel = [[UILabel alloc] init];
     self.mailLabel = mailLabel;
     mailLabel.font = [UIFont systemFontOfSize:DRGetFontSize(24)];

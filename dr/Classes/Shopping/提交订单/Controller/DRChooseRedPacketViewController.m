@@ -119,7 +119,7 @@
 #pragma mark - UITableViewDataSource
 - (NSInteger)numberOfSectionsInTableView:(UITableView *)tableView
 {
-    [tableView showNoDataWithTitle:@"" description:@"暂无可用红包" isCar:NO rowCount:self.dataArray.count];
+    [tableView showNoDataWithTitle:@"" description:@"暂无可用红包" rowCount:self.dataArray.count];
     return self.dataArray.count;
 }
 - (NSInteger)tableView:(UITableView *)tableView numberOfRowsInSection:(NSInteger)section

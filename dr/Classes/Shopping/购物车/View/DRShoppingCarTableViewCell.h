@@ -19,7 +19,7 @@
 
 @interface DRShoppingCarTableViewCell : UITableViewCell
 
-+ (DRShoppingCarTableViewCell *)cellWithTableView:(UITableView *)tableView andIndexpath:(NSIndexPath *)indexPath;
++ (DRShoppingCarTableViewCell *)cellWithTableView:(UITableView *)tableView;
 
 /**
  数据

@@ -10,6 +10,6 @@
 
 @interface UITableView (DRNoData)
 
-- (void)showNoDataWithTitle:(NSString *)title description:(NSString *)description isCar:(BOOL)isCar rowCount:(NSInteger)rowCount;
+- (void)showNoDataWithTitle:(NSString *)title description:(NSString *)description rowCount:(NSInteger)rowCount;
 
 @end

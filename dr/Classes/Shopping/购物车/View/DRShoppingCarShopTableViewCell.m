@@ -18,7 +18,7 @@
 
 @implementation DRShoppingCarShopTableViewCell
 
-+ (DRShoppingCarShopTableViewCell *)cellWithTableView:(UITableView *)tableView andIndexpath:(NSIndexPath *)indexPath
++ (DRShoppingCarShopTableViewCell *)cellWithTableView:(UITableView *)tableView
 {
     static NSString *ID = @"ShoppingCarShopTableViewCell";
     DRShoppingCarShopTableViewCell *cell = [tableView dequeueReusableCellWithIdentifier:ID];

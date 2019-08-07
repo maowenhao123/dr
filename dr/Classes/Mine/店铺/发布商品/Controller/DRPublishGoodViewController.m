@@ -315,13 +315,21 @@
     }
     
     if ([self.goodMessageView.sellTypeLabel.text isEqualToString:@"一物一拍/零售"]) {//一物一拍/零售
-        if (DRStringIsEmpty(self.singleView.priceTF.text)) {
-            [MBProgressHUD showError:@"未输入商品价格"];
-            return;
-        }
-        if (DRStringIsEmpty(self.singleView.countTF.text)) {
-            [MBProgressHUD showError:@"未输入商品库存"];
-            return;
+        if (self.singleView.specificationButton.selected) {
+            if (DRArrayIsEmpty(self.singleView.specificationDataArray)) {
+                [MBProgressHUD showError:@"请添加商品规格"];
+                return;
+            }
+        }else if (!self.singleView.specificationButton.selected)
+        {
+            if (DRStringIsEmpty(self.singleView.priceTF.text)) {
+                [MBProgressHUD showError:@"未输入商品价格"];
+                return;
+            }
+            if (DRStringIsEmpty(self.singleView.countTF.text)) {
+                [MBProgressHUD showError:@"未输入商品库存"];
+                return;
+            }
         }
     }else
     {
@@ -363,7 +371,7 @@
             self.uploadVideoUrl = @"-1";
         }
         self.uploadImageUrlArray = [NSMutableArray array];
-        [self uploadImageWithImage:self.goodMessageView.addImageView.images[0]];
+        [self uploadGoodImageWithImage:self.goodMessageView.addImageView.images[0]];
     }
 }
 
@@ -375,27 +383,33 @@
         }
         
         self.uploadImageUrlArray = [NSMutableArray array];
-        [self uploadImageWithImage:self.goodMessageView.addImageView.images[0]];
+        [self uploadGoodImageWithImage:self.goodMessageView.addImageView.images[0]];
     } Failure:^(NSError *error) {
         
         self.uploadImageUrlArray = [NSMutableArray array];
-        [self uploadImageWithImage:self.goodMessageView.addImageView.images[0]];
+        [self uploadGoodImageWithImage:self.goodMessageView.addImageView.images[0]];
     } Progress:^(float percent) {
         
     }];
 }
 
-- (void)uploadImageWithImage:(UIImage *)image
+//上传商品图片
+- (void)uploadGoodImageWithImage:(UIImage *)image
 {
     if ([image isKindOfClass:[NSString class]]) {
         NSString * imageStr = (NSString *)image;
         [self.uploadImageUrlArray addObject:imageStr];
         if (self.uploadImageUrlArray.count == self.goodMessageView.addImageView.images.count)
         {
-            [self uploadGood];
+            if (DRArrayIsEmpty(self.singleView.specificationDataArray)) {
+                [self uploadGood];
+            }else
+            {
+                [self uploadSpecificationImageWithSpecificationModel:self.singleView.specificationDataArray.firstObject];
+            }
         }else
         {
-            [self uploadImageWithImage:self.goodMessageView.addImageView.images[self.uploadImageUrlArray.count]];
+            [self uploadGoodImageWithImage:self.goodMessageView.addImageView.images[self.uploadImageUrlArray.count]];
         }
         return;
     }
@@ -408,25 +422,67 @@
         }
         if (self.uploadImageUrlArray.count == self.goodMessageView.addImageView.images.count)
         {
-            [self uploadGood];
+            if (DRArrayIsEmpty(self.singleView.specificationDataArray)) {
+                [self uploadGood];
+            }else
+            {
+                [self uploadSpecificationImageWithSpecificationModel:self.singleView.specificationDataArray.firstObject];
+            }
         }else
         {
-            [self uploadImageWithImage:self.goodMessageView.addImageView.images[self.uploadImageUrlArray.count]];
+            [self uploadGoodImageWithImage:self.goodMessageView.addImageView.images[self.uploadImageUrlArray.count]];
         }
     } Failure:^(NSError *error) {
         [self.uploadImageUrlArray addObject:@""];
         if (self.uploadImageUrlArray.count == self.goodMessageView.addImageView.images.count)
         {
-            [self uploadGood];
+            if (DRArrayIsEmpty(self.singleView.specificationDataArray)) {
+                [self uploadGood];
+            }else
+            {
+                [self uploadSpecificationImageWithSpecificationModel:self.singleView.specificationDataArray.firstObject];
+            }
         }else
         {
-            [self uploadImageWithImage:self.goodMessageView.addImageView.images[self.uploadImageUrlArray.count]];
+            [self uploadGoodImageWithImage:self.goodMessageView.addImageView.images[self.uploadImageUrlArray.count]];
         }
     } Progress:^(float percent) {
         
     }];
 }
 
+//上传规格图片
+- (void)uploadSpecificationImageWithSpecificationModel:(DRGoodSpecificationModel *)specificationModel
+{
+    [DRHttpTool uploadWithImage:specificationModel.pic currentIndex:[self.singleView.specificationDataArray indexOfObject:specificationModel] + 1 totalCount:self.singleView.specificationDataArray.count Success:^(id json) {
+        if (SUCCESS) {
+            specificationModel.picUrl = json[@"picUrl"];
+        }else
+        {
+            specificationModel.picUrl = @"";
+        }
+        if (specificationModel == self.singleView.specificationDataArray.lastObject)
+        {
+            [self uploadGood];
+        }else
+        {
+            [self uploadSpecificationImageWithSpecificationModel:self.singleView.specificationDataArray[[self.singleView.specificationDataArray indexOfObject:specificationModel] + 1]];
+        }
+    } Failure:^(NSError *error) {
+        specificationModel.picUrl = @"";
+        if (specificationModel == self.singleView.specificationDataArray.lastObject)
+        {
+            [self uploadGood];
+        }else
+        {
+            [self uploadSpecificationImageWithSpecificationModel:self.singleView.specificationDataArray[[self.singleView.specificationDataArray indexOfObject:specificationModel] + 1]];
+        }
+    } Progress:^(float percent) {
+        
+    }];
+}
+
+//上传商品
 - (void)uploadGood
 {
     NSDictionary * bodyDic_ = [NSDictionary dictionary];
@@ -511,6 +567,20 @@
         {
             [bodyDic setObject:self.uploadVideoUrl forKey:@"video"];
         }
+    }
+    if (!DRArrayIsEmpty(self.singleView.specificationDataArray)) {
+        NSMutableArray *specifications = [NSMutableArray array];
+        for (DRGoodSpecificationModel *specificationModel in self.singleView.specificationDataArray) {
+            NSNumber * specificationPrice = [NSNumber numberWithInt:[DRTool getHighPrecisionDouble:[specificationModel.price doubleValue]]];
+            NSDictionary *specificationDic = @{
+                                               @"name": specificationModel.name,
+                                               @"price": specificationPrice,
+                                               @"storeCount": @([specificationModel.plusCount longLongValue]),
+                                               @"picUrl": specificationModel.picUrl,
+                                               };
+            [specifications addObject:specificationDic];
+        }
+        [bodyDic setObject:specifications forKey:@"specifications"];
     }
     NSDictionary *headDic = @{
                               @"digest":[DRTool getDigestByBodyDic:bodyDic],

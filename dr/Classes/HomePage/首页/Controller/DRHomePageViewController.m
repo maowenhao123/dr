@@ -25,7 +25,7 @@ NSString * const NewCellId = @"NewCellId";
 NSString * const AllShopCellId = @"AllShopCellId";
 NSString * const RecommendGoodCellId = @"RecommendGoodCellId";
 
-@interface DRHomePageViewController ()<UICollectionViewDataSource,UICollectionViewDelegate,UICollectionViewDelegateFlowLayout, UISearchBarDelegate>
+@interface DRHomePageViewController ()<UICollectionViewDataSource, UICollectionViewDelegate, UICollectionViewDelegateFlowLayout, UISearchBarDelegate>
 
 @property (nonatomic, weak) UIView *barView;
 @property (nonatomic, weak) UIImageView * messageImageView;

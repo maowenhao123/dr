@@ -14,7 +14,7 @@
 @interface DRPublishSingleGoodView ()<ManageSpecificationDelegate>
 
 @property (nonatomic, weak) UIView * singleGoodMessageView;
-@property (nonatomic, weak) UIView * multiSpecificationView;
+@property (nonatomic, weak) UIView * specificationView;
 @property (nonatomic, weak) UILabel * specificationLabel;
 
 @end
@@ -49,19 +49,19 @@
     [self addSubview:line1];
     
     //选择多规格
-    UIButton * multiSpecificationButton = [UIButton buttonWithType:UIButtonTypeCustom];
-    self.multiSpecificationButton = multiSpecificationButton;
-    multiSpecificationButton.frame = CGRectMake(0, 0, 280, DRCellH);
-    [multiSpecificationButton setImage:[UIImage imageNamed:@"shoppingcar_not_selected"] forState:UIControlStateNormal];
-    [multiSpecificationButton setImage:[UIImage imageNamed:@"shoppingcar_selected"] forState:UIControlStateSelected];
-    [multiSpecificationButton setTitle:@"如选择上传本商品的多规格，请勾选" forState:UIControlStateNormal];
-    [multiSpecificationButton setTitleColor:DRBlackTextColor forState:UIControlStateNormal];
-    multiSpecificationButton.titleLabel.font = [UIFont systemFontOfSize:DRGetFontSize(28)];
-    [multiSpecificationButton setButtonTitleWithImageAlignment:UIButtonTitleWithImageAlignmentLeft imgTextDistance:5];
-    [multiSpecificationButton addTarget:self action:@selector(multiSpecificationButtonDidClick) forControlEvents:UIControlEventTouchUpInside];
-    [self addSubview:multiSpecificationButton];
+    UIButton * specificationButton = [UIButton buttonWithType:UIButtonTypeCustom];
+    self.specificationButton = specificationButton;
+    specificationButton.frame = CGRectMake(0, 0, 280, DRCellH);
+    [specificationButton setImage:[UIImage imageNamed:@"shoppingcar_not_selected"] forState:UIControlStateNormal];
+    [specificationButton setImage:[UIImage imageNamed:@"shoppingcar_selected"] forState:UIControlStateSelected];
+    [specificationButton setTitle:@"如选择上传本商品的多规格，请勾选" forState:UIControlStateNormal];
+    [specificationButton setTitleColor:DRBlackTextColor forState:UIControlStateNormal];
+    specificationButton.titleLabel.font = [UIFont systemFontOfSize:DRGetFontSize(28)];
+    [specificationButton setButtonTitleWithImageAlignment:UIButtonTitleWithImageAlignmentLeft imgTextDistance:5];
+    [specificationButton addTarget:self action:@selector(specificationButtonDidClick) forControlEvents:UIControlEventTouchUpInside];
+    [self addSubview:specificationButton];
     
-    UIView * line2 = [[UIView alloc] initWithFrame:CGRectMake(0, CGRectGetMaxY(multiSpecificationButton.frame), screenWidth, 1)];
+    UIView * line2 = [[UIView alloc] initWithFrame:CGRectMake(0, CGRectGetMaxY(specificationButton.frame), screenWidth, 1)];
     line2.backgroundColor = DRWhiteLineColor;
     [self addSubview:line2];
     
@@ -127,10 +127,10 @@
     self.height = CGRectGetMaxY(singleGoodMessageView.frame);
     
     //多规格
-    UIView * multiSpecificationView = [[UIView alloc] initWithFrame:CGRectMake(0, CGRectGetMaxY(line2.frame), screenWidth, DRCellH)];
-    self.multiSpecificationView = multiSpecificationView;
-    multiSpecificationView.hidden = YES;
-    [self addSubview:multiSpecificationView];
+    UIView * specificationView = [[UIView alloc] initWithFrame:CGRectMake(0, CGRectGetMaxY(line2.frame), screenWidth, DRCellH)];
+    self.specificationView = specificationView;
+    specificationView.hidden = YES;
+    [self addSubview:specificationView];
     
     UILabel * specificationTitleLabel = [[UILabel alloc] init];
     specificationTitleLabel.text = @"规格管理";
@@ -138,7 +138,7 @@
     specificationTitleLabel.font = [UIFont systemFontOfSize:DRGetFontSize(28)];
     CGSize specificationTitleLabelSize = [specificationTitleLabel.text sizeWithLabelFont:specificationTitleLabel.font];
     specificationTitleLabel.frame = CGRectMake(DRMargin, 0, specificationTitleLabelSize.width, DRCellH);
-    [multiSpecificationView addSubview:specificationTitleLabel];
+    [specificationView addSubview:specificationTitleLabel];
     
     UILabel * specificationLabel = [[UILabel alloc] init];
     self.specificationLabel = specificationLabel;
@@ -148,27 +148,27 @@
     specificationLabel.font = [UIFont systemFontOfSize:DRGetFontSize(28)];
     CGFloat specificationLabelX = CGRectGetMaxX(specificationTitleLabel.frame) + DRMargin;
     specificationLabel.frame = CGRectMake(specificationLabelX, 0, screenWidth - specificationLabelX - DRMargin - 7, DRCellH);
-    [multiSpecificationView addSubview:specificationLabel];
+    [specificationView addSubview:specificationLabel];
     
     UIButton *specificationBtn = [UIButton buttonWithType:UIButtonTypeCustom];
     specificationBtn.frame =  CGRectMake(specificationLabelX, 0, screenWidth - specificationLabelX, DRCellH);
     [specificationBtn setImageEdgeInsets:UIEdgeInsetsMake(0, specificationBtn.width - DRMargin - 10, 0, 0)];
     [specificationBtn setImage:[UIImage imageNamed:@"small_black_accessory_icon"] forState:UIControlStateNormal];
     [specificationBtn addTarget:self action:@selector(specificationBtnDidClick) forControlEvents:UIControlEventTouchUpInside];
-    [multiSpecificationView addSubview:specificationBtn];
+    [specificationView addSubview:specificationBtn];
 }
 
-- (void)multiSpecificationButtonDidClick
+- (void)specificationButtonDidClick
 {
-    self.multiSpecificationButton.selected = !self.multiSpecificationButton.selected;
+    self.specificationButton.selected = !self.specificationButton.selected;
     
-    if (self.multiSpecificationButton.selected) {
-        self.multiSpecificationView.hidden = NO;
+    if (self.specificationButton.selected) {
+        self.specificationView.hidden = NO;
         self.singleGoodMessageView.hidden = YES;
-        self.height = CGRectGetMaxY(self.multiSpecificationView.frame);
+        self.height = CGRectGetMaxY(self.specificationView.frame);
     }else
     {
-        self.multiSpecificationView.hidden = YES;
+        self.specificationView.hidden = YES;
         self.singleGoodMessageView.hidden = NO;
         self.height = CGRectGetMaxY(self.singleGoodMessageView.frame);
     }

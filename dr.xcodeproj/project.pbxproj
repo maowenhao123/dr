@@ -15,6 +15,9 @@
 		1D0DB5BE22E845FB008E7B97 /* DRSpecificationTableViewCell.m in Sources */ = {isa = PBXBuildFile; fileRef = 1D0DB5BD22E845FB008E7B97 /* DRSpecificationTableViewCell.m */; };
 		1D0DB5C122E84FF5008E7B97 /* DRGoodSpecificationModel.m in Sources */ = {isa = PBXBuildFile; fileRef = 1D0DB5BF22E84FF5008E7B97 /* DRGoodSpecificationModel.m */; };
 		1D8D1A2822E80B02009185B2 /* DRPublishGoodMessageView.m in Sources */ = {isa = PBXBuildFile; fileRef = 1D8D1A2722E80B02009185B2 /* DRPublishGoodMessageView.m */; };
+		1DABCE5222FAA582009C5D33 /* DRShoppingCarRecommendTableViewCell.m in Sources */ = {isa = PBXBuildFile; fileRef = 1DABCE5122FAA582009C5D33 /* DRShoppingCarRecommendTableViewCell.m */; };
+		1DABCE5522FAAAE7009C5D33 /* DRGoodItemView.m in Sources */ = {isa = PBXBuildFile; fileRef = 1DABCE5422FAAAE7009C5D33 /* DRGoodItemView.m */; };
+		1DABCE5822FAAEBC009C5D33 /* DRShoppingCarNoDataTableViewCell.m in Sources */ = {isa = PBXBuildFile; fileRef = 1DABCE5722FAAEBC009C5D33 /* DRShoppingCarNoDataTableViewCell.m */; };
 		1DDDEB4722D57BD3003A9C07 /* DRVoucherModel.m in Sources */ = {isa = PBXBuildFile; fileRef = 1DDDEB4622D57BD3003A9C07 /* DRVoucherModel.m */; };
 		1DDEE46C22F91215003EACE6 /* HyphenateLite.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 1DDEE46B22F91215003EACE6 /* HyphenateLite.framework */; };
 		1DDEE46D22F9121D003EACE6 /* HyphenateLite.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 1DDEE46B22F91215003EACE6 /* HyphenateLite.framework */; };
@@ -710,6 +713,12 @@
 		1D76804722DC0A72007C1154 /* HealthKit.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = HealthKit.framework; path = System/Library/Frameworks/HealthKit.framework; sourceTree = SDKROOT; };
 		1D8D1A2622E80B02009185B2 /* DRPublishGoodMessageView.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = DRPublishGoodMessageView.h; sourceTree = "<group>"; };
 		1D8D1A2722E80B02009185B2 /* DRPublishGoodMessageView.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = DRPublishGoodMessageView.m; sourceTree = "<group>"; };
+		1DABCE5022FAA582009C5D33 /* DRShoppingCarRecommendTableViewCell.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = DRShoppingCarRecommendTableViewCell.h; sourceTree = "<group>"; };
+		1DABCE5122FAA582009C5D33 /* DRShoppingCarRecommendTableViewCell.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = DRShoppingCarRecommendTableViewCell.m; sourceTree = "<group>"; };
+		1DABCE5322FAAAE7009C5D33 /* DRGoodItemView.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = DRGoodItemView.h; sourceTree = "<group>"; };
+		1DABCE5422FAAAE7009C5D33 /* DRGoodItemView.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = DRGoodItemView.m; sourceTree = "<group>"; };
+		1DABCE5622FAAEBC009C5D33 /* DRShoppingCarNoDataTableViewCell.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = DRShoppingCarNoDataTableViewCell.h; sourceTree = "<group>"; };
+		1DABCE5722FAAEBC009C5D33 /* DRShoppingCarNoDataTableViewCell.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = DRShoppingCarNoDataTableViewCell.m; sourceTree = "<group>"; };
 		1DDDEB4522D57BD3003A9C07 /* DRVoucherModel.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = DRVoucherModel.h; sourceTree = "<group>"; };
 		1DDDEB4622D57BD3003A9C07 /* DRVoucherModel.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = DRVoucherModel.m; sourceTree = "<group>"; };
 		1DDEE46B22F91215003EACE6 /* HyphenateLite.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; path = HyphenateLite.framework; sourceTree = "<group>"; };
@@ -2677,6 +2686,8 @@
 				AAE55CA92089B45000A29844 /* DRHomePageShopCollectionViewCell.m */,
 				AAE55CA72089B45000A29844 /* DRRecommendGoodCollectionViewCell.h */,
 				AAE55CA02089B44E00A29844 /* DRRecommendGoodCollectionViewCell.m */,
+				1DABCE5322FAAAE7009C5D33 /* DRGoodItemView.h */,
+				1DABCE5422FAAAE7009C5D33 /* DRGoodItemView.m */,
 			);
 			path = View;
 			sourceTree = "<group>";
@@ -4202,6 +4213,10 @@
 				AAABE03D2027E76100DD3DBE /* DRShoppingCarShopTableViewCell.m */,
 				AAABE03E2027E76100DD3DBE /* DRShoppingCarTableViewCell.h */,
 				AAABE0412027E76100DD3DBE /* DRShoppingCarTableViewCell.m */,
+				1DABCE5022FAA582009C5D33 /* DRShoppingCarRecommendTableViewCell.h */,
+				1DABCE5122FAA582009C5D33 /* DRShoppingCarRecommendTableViewCell.m */,
+				1DABCE5622FAAEBC009C5D33 /* DRShoppingCarNoDataTableViewCell.h */,
+				1DABCE5722FAAEBC009C5D33 /* DRShoppingCarNoDataTableViewCell.m */,
 			);
 			path = View;
 			sourceTree = "<group>";
@@ -6279,6 +6294,7 @@
 				AAC5F7D71E9DF4A10051C81B /* MJFoundation.m in Sources */,
 				AA601D6E21C2481100147514 /* DRShowPraiseModel.m in Sources */,
 				A9827183206CD9F30032A672 /* DRGradeDetailViewController.m in Sources */,
+				1DABCE5522FAAAE7009C5D33 /* DRGoodItemView.m in Sources */,
 				1D0DB5C122E84FF5008E7B97 /* DRGoodSpecificationModel.m in Sources */,
 				AA601D6F21C2481100147514 /* DRPraiseUserModel.m in Sources */,
 				18C822171E77DB4E00D00EE3 /* DRSortGoodCollectionViewCell.m in Sources */,
@@ -6563,6 +6579,7 @@
 				AAC5F7D61E9DF4A10051C81B /* MJExtensionConst.m in Sources */,
 				AAC4DCE51EA5BEC300FA9A50 /* AFSecurityPolicy.m in Sources */,
 				CE468E1A1E29BD4D00768646 /* main.m in Sources */,
+				1DABCE5822FAAEBC009C5D33 /* DRShoppingCarNoDataTableViewCell.m in Sources */,
 				AA27E82321B7AAA60067F72B /* UIImage+MWPhotoBrowser.m in Sources */,
 				AAE55C8C2085E9E600A29844 /* DRGoodSortPickerView.m in Sources */,
 				AAF4394C1FAFF96E00CA31DE /* DRMineTableHeaderView.m in Sources */,
@@ -6606,6 +6623,7 @@
 				AA601D9C21C24C5E00147514 /* DRShowTableView.m in Sources */,
 				AA27E73621B7AA8B0067F72B /* NSString+Valid.m in Sources */,
 				AAF43A621FAFFEB200CA31DE /* DRMyShopDetailViewController.m in Sources */,
+				1DABCE5222FAA582009C5D33 /* DRShoppingCarRecommendTableViewCell.m in Sources */,
 				AAC5F8121E9DF4DC0051C81B /* MJRefreshFooter.m in Sources */,
 				1DDEE47122F9257F003EACE6 /* DRSingleSpecificationView.m in Sources */,
 				AA27E84E21B7AAA60067F72B /* EaseMessageModel.m in Sources */,

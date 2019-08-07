@@ -10,15 +10,11 @@
 
 @implementation UICollectionView (DRNoData)
 
-- (void)showNoDataWithTitle:(NSString *)title description:(NSString *)description isCar:(BOOL)isCar rowCount:(NSInteger)rowCount
+- (void)showNoDataWithTitle:(NSString *)title description:(NSString *)description rowCount:(NSInteger)rowCount
 {
     UIView * backView = [[UIView alloc] initWithFrame:self.bounds];
-    
-    //图片
+    //图
     UIImage * image = [UIImage imageNamed:@"no_data"];
-    if (isCar) {
-        image = [UIImage imageNamed:@"car_no_data"];
-    }
     UIImageView * imageView = [[UIImageView alloc] initWithImage:image];
     [backView addSubview:imageView];
     

@@ -196,7 +196,7 @@
 #pragma mark - UITableViewDelegate
 - (NSInteger)numberOfSectionsInTableView:(UITableView *)tableView
 {
-    [tableView showNoDataWithTitle:@"" description:@"未搜到该城市" isCar:NO rowCount:self.dataArray.count];
+    [tableView showNoDataWithTitle:@"" description:@"未搜到该城市" rowCount:self.dataArray.count];
     return self.dataArray.count;
 }
 

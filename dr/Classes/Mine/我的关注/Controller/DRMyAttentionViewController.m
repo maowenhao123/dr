@@ -200,16 +200,16 @@
 {
     NSMutableArray * attentionArray_ = self.attentionArray[self.currentIndex];
     if (tableView.tag == 0) {
-        [tableView showNoDataWithTitle:@"" description:@"您还没有关注过商品" isCar:NO rowCount:attentionArray_.count];
+        [tableView showNoDataWithTitle:@"" description:@"您还没有关注过商品" rowCount:attentionArray_.count];
     }else if (tableView.tag == 1)
     {
-        [tableView showNoDataWithTitle:@"" description:@"您还没有关注过店铺" isCar:NO rowCount:attentionArray_.count];
+        [tableView showNoDataWithTitle:@"" description:@"您还没有关注过店铺" rowCount:attentionArray_.count];
     }else if (tableView.tag == 2)
     {
-        [tableView showNoDataWithTitle:@"" description:@"您还没有关注过用户" isCar:NO rowCount:attentionArray_.count];
+        [tableView showNoDataWithTitle:@"" description:@"您还没有关注过用户" rowCount:attentionArray_.count];
     }else
     {
-        [tableView showNoDataWithTitle:@"" description:@"您还没有关注过帖子" isCar:NO rowCount:attentionArray_.count];
+        [tableView showNoDataWithTitle:@"" description:@"您还没有关注过帖子" rowCount:attentionArray_.count];
     }
     return attentionArray_.count;
 }
