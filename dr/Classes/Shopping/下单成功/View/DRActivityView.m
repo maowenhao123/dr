@@ -35,7 +35,7 @@
 - (void)setupChildViews
 {
     //标题
-    UILabel *titleLabel = [[UILabel alloc] initWithFrame:CGRectMake(5, 12, self.width - 10, 20)];
+    UILabel *titleLabel = [[UILabel alloc] initWithFrame:CGRectMake(5, 10, self.width - 10, 20)];
     self.titleLabel = titleLabel;
     titleLabel.textColor = [UIColor whiteColor];
     titleLabel.font = [UIFont boldSystemFontOfSize:DRGetFontSize(30)];
@@ -56,7 +56,7 @@
     CGFloat buttonH = 25;
     UIButton *button = [UIButton buttonWithType:UIButtonTypeCustom];
     self.button = button;
-    button.frame = CGRectMake((self.width - buttonW) / 2, CGRectGetMaxY(contentLabel.frame), buttonW, buttonH);
+    button.frame = CGRectMake((self.width - buttonW) / 2, CGRectGetMaxY(contentLabel.frame) + 2, buttonW, buttonH);
     button.backgroundColor = [UIColor whiteColor];
     [button setTitleColor:DRGrayTextColor forState:UIControlStateNormal];
     button.titleLabel.font = [UIFont systemFontOfSize:DRGetFontSize(26)];
@@ -72,7 +72,7 @@
     
     NSString *colorStr = _activityModel.background;
     colorStr = [colorStr stringByReplacingOccurrencesOfString:@"#" withString:@"0x"];
-    unsigned long colorInt = strtoul([colorStr UTF8String],0,0);//转换成16进制
+    unsigned long colorInt = strtoul([colorStr UTF8String], 0, 0);//转换成16进制
     self.backgroundColor = UIColorFromRGB(colorInt);
     
     self.titleLabel.text = _activityModel.title;

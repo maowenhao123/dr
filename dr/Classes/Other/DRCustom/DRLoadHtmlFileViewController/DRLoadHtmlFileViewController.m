@@ -23,7 +23,6 @@
 #import "DRGrouponViewController.h"
 #import "DRAddShowViewController.h"
 #import "DRPraiseListViewController.h"
-#import "DRManageSpecificationViewController.h"
 #import "WebViewJavascriptBridge.h"
 #import "DRShareTool.h"
 

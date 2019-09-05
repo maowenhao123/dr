@@ -81,14 +81,17 @@ NSString * const GoodScreeningCollectionViewHeaderId = @"GoodScreeningCollection
     [self addSubview:collectionView];
     
     //底部按钮
-    NSArray * buttonTitles = @[@"重置",@"确定"];
+    NSArray * buttonTitles = @[@"重置", @"确定"];
+    CGFloat buttonH = 37;
+    CGFloat buttonPadding = 20;
+    CGFloat buttonW = (self.width - 3 * buttonPadding) / 2;
     for (int i = 0; i < buttonTitles.count; i++) {
         UIButton * button = [UIButton buttonWithType:UIButtonTypeCustom];
         button.tag = i;
-        button.frame = CGRectMake(self.width / 2 * i, CGRectGetMaxY(collectionView.frame), self.width / 2, 45);
+        button.frame = CGRectMake(buttonPadding + (buttonPadding + buttonW) * i, CGRectGetMaxY(collectionView.frame), buttonW, buttonH);
         button.adjustsImageWhenHighlighted = NO;
         if (i == 0) {
-            button.backgroundColor = [UIColor whiteColor];
+            button.backgroundColor = DRWhiteLineColor;
             [button setTitleColor:DRBlackTextColor forState:UIControlStateNormal];
         }else
         {
@@ -97,6 +100,8 @@ NSString * const GoodScreeningCollectionViewHeaderId = @"GoodScreeningCollection
         }
         [button setTitle:buttonTitles[i] forState:UIControlStateNormal];
         button.titleLabel.font = [UIFont systemFontOfSize:DRGetFontSize(30)];
+        button.layer.masksToBounds = YES;
+        button.layer.cornerRadius = buttonH / 2;
         [button addTarget:self action:@selector(buttonDidClick:) forControlEvents:UIControlEventTouchUpInside];
         [self addSubview:button];
     }

@@ -7,6 +7,7 @@
 //
 
 #import "DRShipmentGoodTableViewCell.h"
+#import "DRGoodDetailViewController.h"
 
 @interface DRShipmentGoodTableViewCell ()
 
@@ -105,7 +106,7 @@
         self.goodCountLabel.text = [NSString stringWithFormat:@"%@个起团 - 已团%d", self.successCount, [self.payCount intValue]];
     }else
     {
-        self.goodCountLabel.text = [NSString stringWithFormat:@"数量：%d",[_orderItemDetailModel.purchaseCount intValue]];
+        self.goodCountLabel.text = [NSString stringWithFormat:@"数量：%d", [_orderItemDetailModel.purchaseCount intValue]];
     }
     
     self.goodPriceLabel.text = [NSString stringWithFormat:@"价格：%@元", [DRTool formatFloat:[_orderItemDetailModel.priceCount doubleValue] / 100]];
@@ -117,6 +118,15 @@
     self.goodNameLabel.frame = CGRectMake(labelX, self.goodImageView.y, labelW, goodNameLabelSize.height);
     self.goodPriceLabel.frame = CGRectMake(labelX, CGRectGetMaxY(self.goodNameLabel.frame) + padding, labelW, goodPriceLabelSize.height);
     self.goodCountLabel.frame = CGRectMake(labelX, CGRectGetMaxY(self.goodPriceLabel.frame) + padding, labelW, goodCountLabelSize.height);
+}
+
+- (void)setSelected:(BOOL)selected animated:(BOOL)animated
+{
+    [super setSelected:selected animated:animated];
+    
+    DRGoodDetailViewController * goodVC = [[DRGoodDetailViewController alloc] init];
+    goodVC.goodId = _orderItemDetailModel.goods.id;
+    [self.viewController.navigationController pushViewController:goodVC animated:YES];
 }
 
 

@@ -235,8 +235,8 @@
     tableView.tableFooterView = redPacketView;
     
     //底部视图
-    CGFloat bottomViewH = 45;
-    CGFloat bottomViewY = screenHeight - statusBarH - navBarH - bottomViewH - [DRTool getSafeAreaBottom];
+    CGFloat bottomViewH = 45 + [DRTool getSafeAreaBottom];
+    CGFloat bottomViewY = screenHeight - statusBarH - navBarH - bottomViewH;
     UIView * bottomView = [[UIView alloc] init];
     bottomView.frame = CGRectMake(0, bottomViewY, screenWidth, bottomViewH);
     bottomView.backgroundColor = [UIColor whiteColor];
@@ -255,7 +255,7 @@
     
     //提交订单
     UIButton *confirmButton = [UIButton buttonWithType:UIButtonTypeCustom];
-    confirmButton.frame = CGRectMake(screenWidth - confirmButtonW, 0, confirmButtonW, bottomView.height);
+    confirmButton.frame = CGRectMake(screenWidth - confirmButtonW, 0, confirmButtonW, 45);
     confirmButton.backgroundColor = DRDefaultColor;
     [confirmButton setTitle:@"提交订单" forState:UIControlStateNormal];
     [confirmButton setTitleColor:[UIColor whiteColor] forState:UIControlStateNormal];

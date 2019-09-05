@@ -183,8 +183,8 @@
     tableView.tableFooterView = footerView;
     
     //底部视图
-    CGFloat bottomViewH = 49;
-    CGFloat bottomViewY = screenHeight - statusBarH - navBarH - bottomViewH - [DRTool getSafeAreaBottom];
+    CGFloat bottomViewH = 49 + [DRTool getSafeAreaBottom];;
+    CGFloat bottomViewY = screenHeight - statusBarH - navBarH - bottomViewH;
     UIView * bottomView = [[UIView alloc] initWithFrame:CGRectMake(0, bottomViewY, screenWidth, bottomViewH)];
     bottomView.backgroundColor = [UIColor whiteColor];
     [self.view addSubview:bottomView];
@@ -195,7 +195,7 @@
     
     CGFloat buttonW = 90;
     CGFloat buttonH = 31;
-    CGFloat buttonY = (bottomView.height - buttonH) / 2;
+    CGFloat buttonY = (49 - buttonH) / 2;
     for (int i = 0; i < 3; i++) {
         UIButton * button = [UIButton buttonWithType:UIButtonTypeCustom];
         button.frame = CGRectMake(screenWidth - (buttonW + DRMargin) * (i + 1), buttonY, buttonW, buttonH);
@@ -212,16 +212,7 @@
 - (void)bottomButtonDidClick:(UIButton *)button
 {
     if ([button.currentTitle isEqualToString:@"联系买家"]) {
-        if (DRStringIsEmpty(self.shipmentModel.user.id)) {
-            [MBProgressHUD showError:@"未获取到买家信息"];
-            return;
-        }
-        
-        DRChatViewController *chatVC = [[DRChatViewController alloc] initWithConversationChatter:self.shipmentModel.user.id conversationType:EMConversationTypeChat];
-        chatVC.title = self.shipmentModel.user.nickName;
-        NSString * imageUrlStr = [NSString stringWithFormat:@"%@%@", baseUrl, self.shipmentModel.user.headImg];
-        [DRIMTool saveUserProfileWithUsername:self.shipmentModel.user.id forNickName:self.shipmentModel.user.nickName avatarURLPath:imageUrlStr];
-        [self.navigationController pushViewController:chatVC animated:YES];
+        [self chatWithBuyer];
     }else if ([button.currentTitle isEqualToString:@"发货"])
     {
         if ([_shipmentModel.orderType intValue] == 2) {//团购
@@ -237,43 +228,55 @@
         }
     }else if ([button.currentTitle isEqualToString:@"无货"])
     {
-        if ([button.currentTitle isEqualToString:@"无货"]) {
-            UIAlertController * alertController = [UIAlertController alertControllerWithTitle:@"温馨提示" message:@"发起无货申请后该订单将撤销，请尽快到宝贝管理中下架该商品。" preferredStyle:UIAlertControllerStyleAlert];
-            UIAlertAction * alertAction1 = [UIAlertAction actionWithTitle:@"取消" style:UIAlertActionStyleCancel handler:nil];
-            UIAlertAction * alertAction2 = [UIAlertAction actionWithTitle:@"确定" style:UIAlertActionStyleDestructive handler:^(UIAlertAction * _Nonnull action) {
-                
-                NSDictionary *bodyDic = @{
-                                          @"orderId":self.orderId,
-                                          };
-                
-                NSDictionary *headDic = @{
-                                          @"digest":[DRTool getDigestByBodyDic:bodyDic],
-                                          @"cmd":@"S53",
-                                          @"userId":UserId,
-                                          };
-                [[DRHttpTool shareInstance] postWithHeadDic:headDic bodyDic:bodyDic success:^(id json) {
-                    DRLog(@"%@",json);
-                    if (SUCCESS) {
-                        [self headerRefreshViewBeginRefreshing];
-                        [[NSNotificationCenter defaultCenter] postNotificationName:@"NoGoodsNote" object:nil];
-                    }else
-                    {
-                        ShowErrorView
-                    }
-                } failure:^(NSError *error) {
-                    DRLog(@"error:%@",error);
-                }];
+        UIAlertController * alertController = [UIAlertController alertControllerWithTitle:@"温馨提示" message:@"点击“无货”，会造成不必要的订单流失，建议您联系买家调换同等价位商品。" preferredStyle:UIAlertControllerStyleAlert];
+        UIAlertAction * alertAction1 = [UIAlertAction actionWithTitle:@"好，去联系买家" style:UIAlertActionStyleDefault handler:^(UIAlertAction * _Nonnull action) {
+            [self chatWithBuyer];
+        }];
+        UIAlertAction * alertAction2 = [UIAlertAction actionWithTitle:@"继续无货扯单操作" style:UIAlertActionStyleDestructive handler:^(UIAlertAction * _Nonnull action) {
+            NSDictionary *bodyDic = @{
+                                      @"orderId":self.orderId,
+                                      };
+            NSDictionary *headDic = @{
+                                      @"digest":[DRTool getDigestByBodyDic:bodyDic],
+                                      @"cmd":@"S53",
+                                      @"userId":UserId,
+                                      };
+            [[DRHttpTool shareInstance] postWithHeadDic:headDic bodyDic:bodyDic success:^(id json) {
+                DRLog(@"%@",json);
+                if (SUCCESS) {
+                    [self headerRefreshViewBeginRefreshing];
+                    [[NSNotificationCenter defaultCenter] postNotificationName:@"NoGoodsNote" object:nil];
+                }else
+                {
+                    ShowErrorView
+                }
+            } failure:^(NSError *error) {
+                DRLog(@"error:%@",error);
             }];
-            [alertController addAction:alertAction1];
-            [alertController addAction:alertAction2];
-            [self presentViewController:alertController animated:YES completion:nil];
-        }
+        }];
+        [alertController addAction:alertAction1];
+        [alertController addAction:alertAction2];
+        [self presentViewController:alertController animated:YES completion:nil];
     }else if ([button.currentTitle isEqualToString:@"修改成团数"])
     {
         DRChangeGrouponNumberView * changeGrouponNumberView = [[DRChangeGrouponNumberView alloc] initWithFrame:self.tabBarController.view.bounds];
         changeGrouponNumberView.delegate = self;
         [self.tabBarController.view addSubview:changeGrouponNumberView];
     }
+}
+
+- (void)chatWithBuyer
+{
+    if (DRStringIsEmpty(self.shipmentModel.user.id)) {
+        [MBProgressHUD showError:@"未获取到买家信息"];
+        return;
+    }
+    
+    DRChatViewController *chatVC = [[DRChatViewController alloc] initWithConversationChatter:self.shipmentModel.user.id conversationType:EMConversationTypeChat];
+    chatVC.title = self.shipmentModel.user.nickName;
+    NSString * imageUrlStr = [NSString stringWithFormat:@"%@%@", baseUrl, self.shipmentModel.user.headImg];
+    [DRIMTool saveUserProfileWithUsername:self.shipmentModel.user.id forNickName:self.shipmentModel.user.nickName avatarURLPath:imageUrlStr];
+    [self.navigationController pushViewController:chatVC animated:YES];
 }
 
 - (void)changeGrouponNumberView:(DRChangeGrouponNumberView *)changeGrouponNumberView number:(int)number
@@ -532,6 +535,7 @@
                 shipmentGroupon.user = self.shipmentModel.user;
                 shipmentGroupon.status = self.shipmentModel.status;
                 cell.shipmentGroupon = shipmentGroupon;
+                cell.promptView.hidden = YES;
                 return cell;
             }else
             {

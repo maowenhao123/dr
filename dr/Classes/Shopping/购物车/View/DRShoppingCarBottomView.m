@@ -28,11 +28,6 @@
     line1.backgroundColor = DRWhiteLineColor;
     [self addSubview:line1];
     
-    //下分割线
-    UIView * line2 = [[UIView alloc]initWithFrame:CGRectMake(0, self.height - 1, screenWidth, 1)];
-    line2.backgroundColor = DRWhiteLineColor;
-    [self addSubview:line2];
-    
     //全选
     UIButton * allSelectedButton = [UIButton buttonWithType:UIButtonTypeCustom];
     self.allSelectedButton = allSelectedButton;
@@ -65,6 +60,7 @@
     [confirmButton addTarget:self action:@selector(confirmButtonDidClick:) forControlEvents:UIControlEventTouchUpInside];
     [self addSubview:confirmButton];
 }
+
 - (void)allSelectedButtonDidClick:(UIButton *)button
 {
     button.selected = !button.selected;
@@ -87,6 +83,7 @@
         }
     }
 }
+
 - (void)updataWithData:(NSArray *)dataArray isEdit:(BOOL)isEdit
 {
     int selectedCount = 0;//选中商品的数量

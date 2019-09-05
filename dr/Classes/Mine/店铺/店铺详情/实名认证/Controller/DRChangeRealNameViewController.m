@@ -26,11 +26,14 @@
 
 @implementation DRChangeRealNameViewController
 
-- (void)viewDidLoad {
+- (void)viewDidLoad
+{
     [super viewDidLoad];
     self.title = @"实名认证";
     [self setupChilds];
 }
+
+#pragma mark - 布局视图
 - (void)setupChilds
 {
     self.navigationItem.rightBarButtonItem = [[UIBarButtonItem alloc]initWithTitle:@"保存" style:UIBarButtonItemStylePlain target:self action:@selector(saveBarDidClick)];
@@ -159,17 +162,17 @@
 {
     [self.view endEditing:YES];
     
-//    if (self.realNameTF.text.length == 0)//不是姓名
-//    {
-//        [MBProgressHUD showError:@"请输入真实姓名"];
-//        return;
-//    }
-//
-//    if (![DRValidateTool validateIdentityCard:self.personalIdTF.text])//不是手机号码
-//    {
-//        [MBProgressHUD showError:@"您输入的身份证号格式不对"];
-//        return;
-//    }
+    if (self.realNameTF.text.length == 0)//不是姓名
+    {
+        [MBProgressHUD showError:@"请输入真实姓名"];
+        return;
+    }
+
+    if (![DRValidateTool validateIdentityCard:self.personalIdTF.text])//不是手机号码
+    {
+        [MBProgressHUD showError:@"您输入的身份证号格式不对"];
+        return;
+    }
     
     if (!self.haveImage1) {
         [MBProgressHUD showError:@"请输入身份证正面"];

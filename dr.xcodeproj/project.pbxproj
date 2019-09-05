@@ -14,10 +14,12 @@
 		1D0DB5BB22E845D1008E7B97 /* DRAddSpecificationViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 1D0DB5BA22E845D1008E7B97 /* DRAddSpecificationViewController.m */; };
 		1D0DB5BE22E845FB008E7B97 /* DRSpecificationTableViewCell.m in Sources */ = {isa = PBXBuildFile; fileRef = 1D0DB5BD22E845FB008E7B97 /* DRSpecificationTableViewCell.m */; };
 		1D0DB5C122E84FF5008E7B97 /* DRGoodSpecificationModel.m in Sources */ = {isa = PBXBuildFile; fileRef = 1D0DB5BF22E84FF5008E7B97 /* DRGoodSpecificationModel.m */; };
+		1D7C898D2305426A00D6F2B2 /* DRIdentityAuditViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 1D7C898C2305426A00D6F2B2 /* DRIdentityAuditViewController.m */; };
 		1D8D1A2822E80B02009185B2 /* DRPublishGoodMessageView.m in Sources */ = {isa = PBXBuildFile; fileRef = 1D8D1A2722E80B02009185B2 /* DRPublishGoodMessageView.m */; };
 		1DABCE5222FAA582009C5D33 /* DRShoppingCarRecommendTableViewCell.m in Sources */ = {isa = PBXBuildFile; fileRef = 1DABCE5122FAA582009C5D33 /* DRShoppingCarRecommendTableViewCell.m */; };
 		1DABCE5522FAAAE7009C5D33 /* DRGoodItemView.m in Sources */ = {isa = PBXBuildFile; fileRef = 1DABCE5422FAAAE7009C5D33 /* DRGoodItemView.m */; };
 		1DABCE5822FAAEBC009C5D33 /* DRShoppingCarNoDataTableViewCell.m in Sources */ = {isa = PBXBuildFile; fileRef = 1DABCE5722FAAEBC009C5D33 /* DRShoppingCarNoDataTableViewCell.m */; };
+		1DCA15EA2320E04E00F2061B /* DRRewardView.m in Sources */ = {isa = PBXBuildFile; fileRef = 1DCA15E92320E04D00F2061B /* DRRewardView.m */; };
 		1DDDEB4722D57BD3003A9C07 /* DRVoucherModel.m in Sources */ = {isa = PBXBuildFile; fileRef = 1DDDEB4622D57BD3003A9C07 /* DRVoucherModel.m */; };
 		1DDEE46C22F91215003EACE6 /* HyphenateLite.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 1DDEE46B22F91215003EACE6 /* HyphenateLite.framework */; };
 		1DDEE46D22F9121D003EACE6 /* HyphenateLite.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 1DDEE46B22F91215003EACE6 /* HyphenateLite.framework */; };
@@ -576,7 +578,6 @@
 		AAE7C4201EA49A6B006A03A9 /* NSDate+DR.m in Sources */ = {isa = PBXBuildFile; fileRef = AAE7C41F1EA49A6B006A03A9 /* NSDate+DR.m */; };
 		AAE7C4231EA49AEC006A03A9 /* DRDateTool.m in Sources */ = {isa = PBXBuildFile; fileRef = AAE7C4221EA49AEC006A03A9 /* DRDateTool.m */; };
 		AAE7C4341EA5AA48006A03A9 /* address.plist in Resources */ = {isa = PBXBuildFile; fileRef = AAE7C4331EA5AA48006A03A9 /* address.plist */; };
-		AAEFE7982133ED2E004300CD /* DRHomePageHtmlViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = AAEFE7972133ED2E004300CD /* DRHomePageHtmlViewController.m */; };
 		AAEFE7A22133EF2F004300CD /* WebViewJavascriptBridgeBase.m in Sources */ = {isa = PBXBuildFile; fileRef = AAEFE79A2133EF2E004300CD /* WebViewJavascriptBridgeBase.m */; };
 		AAEFE7A32133EF2F004300CD /* WKWebViewJavascriptBridge.m in Sources */ = {isa = PBXBuildFile; fileRef = AAEFE79B2133EF2E004300CD /* WKWebViewJavascriptBridge.m */; };
 		AAEFE7A42133EF2F004300CD /* WebViewJavascriptBridge.m in Sources */ = {isa = PBXBuildFile; fileRef = AAEFE79C2133EF2E004300CD /* WebViewJavascriptBridge.m */; };
@@ -711,6 +712,8 @@
 		1D0DB5BF22E84FF5008E7B97 /* DRGoodSpecificationModel.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = DRGoodSpecificationModel.m; sourceTree = "<group>"; };
 		1D0DB5C022E84FF5008E7B97 /* DRGoodSpecificationModel.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = DRGoodSpecificationModel.h; sourceTree = "<group>"; };
 		1D76804722DC0A72007C1154 /* HealthKit.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = HealthKit.framework; path = System/Library/Frameworks/HealthKit.framework; sourceTree = SDKROOT; };
+		1D7C898B2305426A00D6F2B2 /* DRIdentityAuditViewController.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = DRIdentityAuditViewController.h; sourceTree = "<group>"; };
+		1D7C898C2305426A00D6F2B2 /* DRIdentityAuditViewController.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = DRIdentityAuditViewController.m; sourceTree = "<group>"; };
 		1D8D1A2622E80B02009185B2 /* DRPublishGoodMessageView.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = DRPublishGoodMessageView.h; sourceTree = "<group>"; };
 		1D8D1A2722E80B02009185B2 /* DRPublishGoodMessageView.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = DRPublishGoodMessageView.m; sourceTree = "<group>"; };
 		1DABCE5022FAA582009C5D33 /* DRShoppingCarRecommendTableViewCell.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = DRShoppingCarRecommendTableViewCell.h; sourceTree = "<group>"; };
@@ -719,6 +722,8 @@
 		1DABCE5422FAAAE7009C5D33 /* DRGoodItemView.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = DRGoodItemView.m; sourceTree = "<group>"; };
 		1DABCE5622FAAEBC009C5D33 /* DRShoppingCarNoDataTableViewCell.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = DRShoppingCarNoDataTableViewCell.h; sourceTree = "<group>"; };
 		1DABCE5722FAAEBC009C5D33 /* DRShoppingCarNoDataTableViewCell.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = DRShoppingCarNoDataTableViewCell.m; sourceTree = "<group>"; };
+		1DCA15E82320E04D00F2061B /* DRRewardView.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = DRRewardView.h; sourceTree = "<group>"; };
+		1DCA15E92320E04D00F2061B /* DRRewardView.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = DRRewardView.m; sourceTree = "<group>"; };
 		1DDDEB4522D57BD3003A9C07 /* DRVoucherModel.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = DRVoucherModel.h; sourceTree = "<group>"; };
 		1DDDEB4622D57BD3003A9C07 /* DRVoucherModel.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = DRVoucherModel.m; sourceTree = "<group>"; };
 		1DDEE46B22F91215003EACE6 /* HyphenateLite.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; path = HyphenateLite.framework; sourceTree = "<group>"; };
@@ -1830,8 +1835,6 @@
 		AAE7C4211EA49AEC006A03A9 /* DRDateTool.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = DRDateTool.h; sourceTree = "<group>"; };
 		AAE7C4221EA49AEC006A03A9 /* DRDateTool.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = DRDateTool.m; sourceTree = "<group>"; };
 		AAE7C4331EA5AA48006A03A9 /* address.plist */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.xml; path = address.plist; sourceTree = "<group>"; };
-		AAEFE7962133ED2E004300CD /* DRHomePageHtmlViewController.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = DRHomePageHtmlViewController.h; sourceTree = "<group>"; };
-		AAEFE7972133ED2E004300CD /* DRHomePageHtmlViewController.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = DRHomePageHtmlViewController.m; sourceTree = "<group>"; };
 		AAEFE79A2133EF2E004300CD /* WebViewJavascriptBridgeBase.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = WebViewJavascriptBridgeBase.m; sourceTree = "<group>"; };
 		AAEFE79B2133EF2E004300CD /* WKWebViewJavascriptBridge.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = WKWebViewJavascriptBridge.m; sourceTree = "<group>"; };
 		AAEFE79C2133EF2E004300CD /* WebViewJavascriptBridge.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = WebViewJavascriptBridge.m; sourceTree = "<group>"; };
@@ -2070,6 +2073,39 @@
 /* End PBXFrameworksBuildPhase section */
 
 /* Begin PBXGroup section */
+		1D7C89872305422E00D6F2B2 /* 身份审核 */ = {
+			isa = PBXGroup;
+			children = (
+				1D7C89882305422E00D6F2B2 /* Controller */,
+				1D7C89892305422E00D6F2B2 /* Model */,
+				1D7C898A2305422E00D6F2B2 /* View */,
+			);
+			path = "身份审核";
+			sourceTree = "<group>";
+		};
+		1D7C89882305422E00D6F2B2 /* Controller */ = {
+			isa = PBXGroup;
+			children = (
+				1D7C898B2305426A00D6F2B2 /* DRIdentityAuditViewController.h */,
+				1D7C898C2305426A00D6F2B2 /* DRIdentityAuditViewController.m */,
+			);
+			path = Controller;
+			sourceTree = "<group>";
+		};
+		1D7C89892305422E00D6F2B2 /* Model */ = {
+			isa = PBXGroup;
+			children = (
+			);
+			path = Model;
+			sourceTree = "<group>";
+		};
+		1D7C898A2305422E00D6F2B2 /* View */ = {
+			isa = PBXGroup;
+			children = (
+			);
+			path = View;
+			sourceTree = "<group>";
+		};
 		A98270F7206CD5A80032A672 /* 退货 */ = {
 			isa = PBXGroup;
 			children = (
@@ -2408,6 +2444,8 @@
 				AA8284281F908A2A00379159 /* DRUpGradeView.m */,
 				AAEFE7B421378A71004300CD /* UITabBar+DRBage.h */,
 				AAEFE7B521378A71004300CD /* UITabBar+DRBage.m */,
+				1DCA15E82320E04D00F2061B /* DRRewardView.h */,
+				1DCA15E92320E04D00F2061B /* DRRewardView.m */,
 				AAB169F42159D7E8006AC708 /* DRGiveVoucherView.h */,
 				AAB169F52159D7E8006AC708 /* DRGiveVoucherView.m */,
 				AAB169F72159D7FA006AC708 /* DRGiveVoucherTableViewCell.h */,
@@ -2648,8 +2686,6 @@
 			children = (
 				AA1C33351F8B67F000D05713 /* DRHomePageViewController.h */,
 				AA1C33361F8B67F000D05713 /* DRHomePageViewController.m */,
-				AAEFE7962133ED2E004300CD /* DRHomePageHtmlViewController.h */,
-				AAEFE7972133ED2E004300CD /* DRHomePageHtmlViewController.m */,
 			);
 			path = Controller;
 			sourceTree = "<group>";
@@ -5277,6 +5313,7 @@
 		AAF43A0B1FAFFEB200CA31DE /* 店铺详情 */ = {
 			isa = PBXGroup;
 			children = (
+				1D7C89872305422E00D6F2B2 /* 身份审核 */,
 				AAF43A281FAFFEB200CA31DE /* 店铺信息 */,
 				AAF43A0C1FAFFEB200CA31DE /* 实名认证 */,
 				AAF43A141FAFFEB200CA31DE /* 密码 */,
@@ -6083,6 +6120,7 @@
 			buildActionMask = 2147483647;
 			files = (
 				AA8E46F0212D261A005DE5CE /* UIImage+MultiFormat.m in Sources */,
+				1DCA15EA2320E04E00F2061B /* DRRewardView.m in Sources */,
 				AA1C33531F8B681400D05713 /* DRHomePageViewController.m in Sources */,
 				AA2AB53F21BA5FE100A345DA /* UIImage+RSKImageCropper.m in Sources */,
 				AA1C33541F8B681400D05713 /* DRHomePageBannerModel.m in Sources */,
@@ -6311,7 +6349,6 @@
 				A9827161206CD8150032A672 /* DROrderDetailTableViewCell.m in Sources */,
 				AA8547BD21C9E80D0006A60A /* DRPraiseMyAwardTableViewCell.m in Sources */,
 				AA27E85D21B7AAA60067F72B /* EaseRecordView.m in Sources */,
-				AAEFE7982133ED2E004300CD /* DRHomePageHtmlViewController.m in Sources */,
 				AAF04E391F10CE200023FFEC /* DRAddMultipleImageView.m in Sources */,
 				AA4539D61F1E34700072E680 /* UIView+SDExtension.m in Sources */,
 				AAABE0672027E76100DD3DBE /* DRShoppingCarTableViewCell.m in Sources */,
@@ -6470,6 +6507,7 @@
 				AA2AB53E21BA5FE100A345DA /* RSKImageCropViewController.m in Sources */,
 				AA2AB4CD21BA102300A345DA /* MASViewConstraint.m in Sources */,
 				AAE7C4201EA49A6B006A03A9 /* NSDate+DR.m in Sources */,
+				1D7C898D2305426A00D6F2B2 /* DRIdentityAuditViewController.m in Sources */,
 				AA601D7321C2481100147514 /* DRShowPraiseTableViewCell.m in Sources */,
 				AA8547A721C889500006A60A /* DRPraiseListTableViewCell.m in Sources */,
 				AA3A9D7021E6ED5600F9147C /* TYTabPagerController.m in Sources */,
@@ -6817,7 +6855,7 @@
 				PRODUCT_BUNDLE_IDENTIFIER = com.lottery.dr;
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				PROVISIONING_PROFILE = "6f5a7e46-78a2-4fda-b373-7cfe84d78868";
-				PROVISIONING_PROFILE_SPECIFIER = dr_adHoc_28;
+				PROVISIONING_PROFILE_SPECIFIER = dr_adHoc_29;
 				VALID_ARCHS = "arm64 armv7 armv7s";
 			};
 			name = "ad hoc distribution";

@@ -26,6 +26,7 @@
     }
     return self;
 }
+
 - (void)setupChildViews
 {
     self.backgroundColor = DRColor(0, 0, 0, 0.4);

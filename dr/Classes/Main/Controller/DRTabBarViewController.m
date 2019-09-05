@@ -5,11 +5,11 @@
 //  Created by apple on 17/1/14.
 //  Copyright © 2017年 JG. All rights reserved.
 //
+#import <StoreKit/StoreKit.h>
 #import <AudioToolbox/AudioToolbox.h>
 #import "DRTabBarViewController.h"
 #import "DRBaseNavigationController.h"
 #import "DRHomePageViewController.h"
-#import "DRHomePageHtmlViewController.h"
 #import "DRLoadHtmlFileViewController.h"
 #import "DRGoodSortViewController.h"
 #import "DRGrouponViewController.h"
@@ -26,14 +26,12 @@
 #import "EaseUI.h"
 #import "UITabBar+DRBage.h"
 #import "DRGiveVoucherView.h"
-#import "DRVideoPlayerViewController.h"
-#import "DRBaseViewController.h"
+#import "DRRewardView.h"
 
 //两次提示的默认间隔
 static const CGFloat kDefaultPlaySoundInterval = 3.0;
 static NSString *kMessageType = @"MessageType";
 static NSString *kConversationChatter = @"ConversationChatter";
-static NSString *kGroupName = @"GroupName";
 
 @interface DRTabBarViewController ()<UITabBarControllerDelegate, EMChatManagerDelegate>
 
@@ -49,7 +47,6 @@ static NSString *kGroupName = @"GroupName";
     // 设置背景
     [tabBar setBackgroundImage:[UIImage ImageFromColor:[UIColor whiteColor] WithRect:CGRectMake(0, 0, screenWidth, tabBarH)]];
     tabBar.tintColor = DRColor(10, 178, 137, 1);
-//    tabBar.tintColor = DRColor(240, 46, 43, 1);
     
     NSMutableDictionary *textAttrs = [NSMutableDictionary dictionary];
     textAttrs[NSFontAttributeName] = [UIFont systemFontOfSize:DRGetFontSize(20)];
@@ -72,7 +69,7 @@ static NSString *kGroupName = @"GroupName";
     //接收个人中心的通知
     [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(gotoMine) name:@"gotoMine" object:nil];
     //登录成功的通知
-    [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(getGiveVoucherData) name:@"loginSuccess" object:nil];
+    [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(loginSuccess) name:@"loginSuccess" object:nil];
     //接收下单成功的通知
     [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(gotoMine) name:@"checkoutSuccess" object:nil];
     //未读消息数改变时的通知
@@ -88,11 +85,30 @@ static NSString *kGroupName = @"GroupName";
     
     //赠送红包
     [self getGiveVoucherData];
-
+    
+    //抽奖能力
+    [self getRewardDrawAbilty];
+    
     //小红点
     [self setupUnreadMessageCount];
+    
+    //评分
+    [self addAppReview];
+    return;
+    
+    long long currentTimeSp = [[NSDate date] timeIntervalSince1970];
+    long long lastGradeTimeSp = [[[NSUserDefaults standardUserDefaults] objectForKey:@"lastGradeTimeSp"] longLongValue];
+    if (currentTimeSp - lastGradeTimeSp > 7 * 24 * 60 * 60) {
+        [self addAppReview];
+    }
+    [[NSUserDefaults standardUserDefaults] setObject:@(currentTimeSp) forKey:@"lastGradeTimeSp"];
 }
 
+- (void)loginSuccess
+{
+    [self getGiveVoucherData];
+    [self getRewardDrawAbilty];
+}
 // 统计未读消息数
 -(void)setupUnreadMessageCount
 {
@@ -111,10 +127,6 @@ static NSString *kGroupName = @"GroupName";
             [self.tabBar hideBadgeOnItemIndex:2];
         }
         [UIApplication sharedApplication].applicationIconBadgeNumber = unreadCount;
-//        NSInteger badgeCount = [UIApplication sharedApplication].applicationIconBadgeNumber;
-//        [[UIApplication sharedApplication] setApplicationIconBadgeNumber:0];
-//        [[UIApplication sharedApplication] cancelAllLocalNotifications];
-//        [[UIApplication sharedApplication] setApplicationIconBadgeNumber:badgeCount];
     });
 }
 
@@ -201,6 +213,30 @@ static NSString *kGroupName = @"GroupName";
     self.selectedIndex = 4;
 }
 
+//评分
+- (void)addAppReview{
+    UIAlertController * alertVC = [UIAlertController alertControllerWithTitle:@"喜欢吾花肉 么?给个五星好评吧亲!" message:nil preferredStyle:UIAlertControllerStyleAlert];
+    UIAlertAction *fiveStar = [UIAlertAction actionWithTitle:@"五星好评" style:UIAlertActionStyleDefault handler:^(UIAlertAction * _Nonnull action) {
+        NSURL *appReviewUrl = [NSURL URLWithString:[NSString stringWithFormat: @"itms-apps://itunes.apple.com/app/id%@?action=write-review", @"1276983899"]];
+        CGFloat version = [[[UIDevice currentDevice]systemVersion]floatValue];
+        if (version >= 10.0) {
+            /// 大于等于10.0系统使用此openURL方法
+            [[UIApplication sharedApplication] openURL:appReviewUrl options:@{} completionHandler:nil];
+        }else{
+            [[UIApplication sharedApplication] openURL:appReviewUrl];
+        }
+    }];
+    //不做任何操作
+    UIAlertAction *noReview = [UIAlertAction actionWithTitle:@"用用再说" style:UIAlertActionStyleDefault handler:^(UIAlertAction * _Nonnull action) {
+        [alertVC removeFromParentViewController];
+    }];
+    [alertVC addAction:noReview];
+    [alertVC addAction:fiveStar];
+    dispatch_async(dispatch_get_main_queue(), ^{
+        [self presentViewController:alertVC animated:YES completion:nil];
+    });
+}
+
 #pragma mark - 检查升级
 - (void)checkUpgrade
 {
@@ -246,6 +282,32 @@ static NSString *kGroupName = @"GroupName";
                 DRGiveVoucherView * giveVoucherView = [[DRGiveVoucherView alloc] initWithFrame:self.view.bounds redPacketList:redPacketList];
                 giveVoucherView.owerViewController = self.selectedViewController;
                 [self.view addSubview:giveVoucherView];
+            }
+        }
+    } failure:^(NSError *error) {
+        DRLog(@"error:%@",error);
+    }];
+}
+
+#pragma mark - 抽奖
+- (void)getRewardDrawAbilty
+{
+    if (!UserId) return;
+    NSDictionary * bodyDic = @{
+                               @"userId":UserId,
+                               };
+    NSDictionary *headDic = @{
+                              @"digest":[DRTool getDigestByBodyDic:bodyDic],
+                              @"cmd":@"GET_USER_WEEK_REWARD_DRAW_ABILITY",
+                              @"userId":UserId,
+                              };
+    [[DRHttpTool shareInstance] postWithTarget:self headDic:headDic bodyDic:bodyDic success:^(id json) {
+        DRLog(@"%@",json);
+        if (SUCCESS) {
+            if ([json[@"ability"] boolValue]) {
+                DRRewardView * rewardView = [[DRRewardView alloc] initWithFrame:self.view.bounds drawUrl:json[@"drawUrl"]];
+                rewardView.owerViewController = self.selectedViewController;
+                [self.view addSubview:rewardView];
             }
         }
     } failure:^(NSError *error) {

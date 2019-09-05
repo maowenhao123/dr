@@ -24,11 +24,13 @@
 
 @implementation DRSetupShopViewController
 
-- (void)viewDidLoad {
+- (void)viewDidLoad
+{
     [super viewDidLoad];
     self.title = @"我要开店";
     [self setupChilds];
 }
+
 - (void)setupChilds
 {
     //contentView

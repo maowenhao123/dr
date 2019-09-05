@@ -435,7 +435,7 @@ NSString * const GoodDetailRecommendGoodCellId = @"GoodDetailRecommendGoodCellId
     [self setBageText];
     
     //底部试图
-    UIView * bottomView = [[UIView alloc] initWithFrame:CGRectMake(0, CGRectGetMaxY(collectionView.frame), screenWidth, bottomViewH)];
+    UIView * bottomView = [[UIView alloc] initWithFrame:CGRectMake(0, CGRectGetMaxY(collectionView.frame), screenWidth, bottomViewH + [DRTool getSafeAreaBottom])];
     bottomView.backgroundColor = [UIColor whiteColor];
     [self.view addSubview:bottomView];
     //阴影
@@ -446,7 +446,7 @@ NSString * const GoodDetailRecommendGoodCellId = @"GoodDetailRecommendGoodCellId
     //立刻购买按钮
     UIButton *buyButton = [UIButton buttonWithType:UIButtonTypeCustom];
     self.buyButton = buyButton;
-    buyButton.frame = CGRectMake(screenWidth - 100, 0, 100, bottomView.height);
+    buyButton.frame = CGRectMake(screenWidth - 100, 0, 100, 45);
     [buyButton setBackgroundImage:[UIImage ImageFromColor:DRDefaultColor WithRect:buyButton.bounds] forState:UIControlStateNormal];
     [buyButton setBackgroundImage:[UIImage ImageFromColor:[UIColor lightGrayColor] WithRect:buyButton.bounds] forState:UIControlStateDisabled];
     if (self.isGroupon) {
@@ -462,7 +462,7 @@ NSString * const GoodDetailRecommendGoodCellId = @"GoodDetailRecommendGoodCellId
     
     CGFloat timeLabelW = 120 * screenWidth / 375;
     if (self.isGroupon) {
-        UILabel * timeLabel = [[UILabel alloc] initWithFrame:CGRectMake(buyButton.x - timeLabelW, 0, timeLabelW, bottomView.height)];
+        UILabel * timeLabel = [[UILabel alloc] initWithFrame:CGRectMake(buyButton.x - timeLabelW, 0, timeLabelW, 45)];
         self.timeLabel = timeLabel;
         timeLabel.font = [UIFont systemFontOfSize:DRGetFontSize(28)];
         timeLabel.textColor = DRDefaultColor;
@@ -474,7 +474,7 @@ NSString * const GoodDetailRecommendGoodCellId = @"GoodDetailRecommendGoodCellId
         //加入购物车按钮
         UIButton *addCarButton = [UIButton buttonWithType:UIButtonTypeCustom];
         self.addCarButton = addCarButton;
-        addCarButton.frame = CGRectMake(buyButton.x - 100, 0, 100, bottomView.height);
+        addCarButton.frame = CGRectMake(buyButton.x - 100, 0, 100, 45);
         [addCarButton setBackgroundImage:[UIImage ImageFromColor:DRColor(20, 215, 167, 1) WithRect:addCarButton.bounds] forState:UIControlStateNormal];
         [addCarButton setTitle:@"加入购物车" forState:UIControlStateNormal];
         [addCarButton setTitleColor:[UIColor whiteColor] forState:UIControlStateNormal];
@@ -495,7 +495,7 @@ NSString * const GoodDetailRecommendGoodCellId = @"GoodDetailRecommendGoodCellId
     for (int i = 0; i < bottomButtonTitles.count; i++) {
         UIButton *bottomButton = [UIButton buttonWithType:UIButtonTypeCustom];
         bottomButton.tag = i;
-        bottomButton.frame = CGRectMake(bottomButtonW * i, 0, bottomButtonW, bottomView.height);
+        bottomButton.frame = CGRectMake(bottomButtonW * i, 0, bottomButtonW, 45);
         bottomButton.backgroundColor = [UIColor whiteColor];
         [bottomButton setImage:[UIImage imageNamed:bottomButtonImages[i]] forState:UIControlStateNormal];
         [bottomButton setTitle:bottomButtonTitles[i] forState:UIControlStateNormal];
