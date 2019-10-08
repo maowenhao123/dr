@@ -11,7 +11,7 @@
 
 NS_ASSUME_NONNULL_BEGIN
 
-@interface DRActivityView : UIView
+@interface DRActivityView : UIImageView
 
 @property (nonatomic, strong) DRActivityModel *activityModel;
 

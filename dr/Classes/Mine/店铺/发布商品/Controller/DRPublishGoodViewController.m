@@ -62,6 +62,7 @@
         DRLog(@"%@",json);
         if (SUCCESS) {
             DRGoodModel * goodModel = [DRGoodModel mj_objectWithKeyValues:json[@"goods"]];
+            goodModel.specifications = [DRGoodSpecificationModel mj_objectArrayWithKeyValuesArray:json[@"goods"][@"specifications"]];
             self.goodModel = goodModel;
             [self setData];
         }else
@@ -235,9 +236,15 @@
         self.confirmBtn.y = CGRectGetMaxY(self.singleView.frame) + 29;
         self.scrollView.contentSize = CGSizeMake(screenWidth, CGRectGetMaxY(self.confirmBtn.frame) + 10);
         
-        self.singleView.priceTF.text = [NSString stringWithFormat:@"%@", [DRTool formatFloat:[self.goodModel.price doubleValue] / 100]];
-        //plusCount
-        self.singleView.countTF.text = [NSString stringWithFormat:@"%@", self.goodModel.plusCount];
+        if (self.goodModel.specifications.count > 0) {
+            self.singleView.specificationDataArray = [NSMutableArray arrayWithArray:self.goodModel.specifications];
+            [self.singleView specificationButtonDidClick];
+        }else
+        {
+            self.singleView.specificationButton.selected = NO;
+            self.singleView.priceTF.text = [NSString stringWithFormat:@"%@", [DRTool formatFloat:[self.goodModel.price doubleValue] / 100]];
+            self.singleView.countTF.text = [NSString stringWithFormat:@"%@", self.goodModel.plusCount];
+        }
     }else//批发
     {
         self.goodMessageView.sellTypeLabel.text = @"批发";
@@ -454,6 +461,16 @@
 //上传规格图片
 - (void)uploadSpecificationImageWithSpecificationModel:(DRGoodSpecificationModel *)specificationModel
 {
+    if (!DRStringIsEmpty(specificationModel.picUrl)) {
+        if (specificationModel == self.singleView.specificationDataArray.lastObject)
+        {
+            [self uploadGood];
+        }else
+        {
+            [self uploadSpecificationImageWithSpecificationModel:self.singleView.specificationDataArray[[self.singleView.specificationDataArray indexOfObject:specificationModel] + 1]];
+        }
+        return;
+    }
     [DRHttpTool uploadWithImage:specificationModel.pic currentIndex:[self.singleView.specificationDataArray indexOfObject:specificationModel] + 1 totalCount:self.singleView.specificationDataArray.count Success:^(id json) {
         if (SUCCESS) {
             specificationModel.picUrl = json[@"picUrl"];
@@ -575,8 +592,9 @@
             NSDictionary *specificationDic = @{
                                                @"name": specificationModel.name,
                                                @"price": specificationPrice,
-                                               @"storeCount": @([specificationModel.plusCount longLongValue]),
+                                               @"storeCount": @([specificationModel.storeCount longLongValue]),
                                                @"picUrl": specificationModel.picUrl,
+                                               @"delFlag": @"0",
                                                };
             [specifications addObject:specificationDic];
         }

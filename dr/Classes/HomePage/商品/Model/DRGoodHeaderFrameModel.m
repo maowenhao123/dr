@@ -49,6 +49,22 @@
                 [priceAttStr addAttribute:NSStrikethroughStyleAttributeName value:@(NSUnderlinePatternSolid | NSUnderlineStyleSingle) range:NSMakeRange(priceStr.length - oldPriceStr.length, oldPriceStr.length)];
                 _goodPriceAttStr = priceAttStr;
                 goodPriceStr = @"";
+            }else if (_goodModel.specifications.count > 0)
+            {
+                double minPrice = 0;
+                double maxPrice = 0;
+                for (DRGoodSpecificationModel * specificationModel in _goodModel.specifications) {
+                    NSInteger index = [ _goodModel.specifications indexOfObject:specificationModel];
+                    int price = [specificationModel.price intValue];
+                    if (index == 0) {
+                        minPrice = price;
+                    }else
+                    {
+                        minPrice = price < minPrice ? price : minPrice;
+                    }
+                    maxPrice = price < maxPrice ? maxPrice : price;
+                }
+                goodPriceStr = [NSString stringWithFormat:@"¥%@ ~ ¥%@", [DRTool formatFloat:minPrice / 100], [DRTool formatFloat:maxPrice / 100]];
             }else
             {
                 goodPriceStr = [NSString stringWithFormat:@"¥%@", [DRTool formatFloat:[_goodModel.price doubleValue] / 100]];
@@ -107,9 +123,13 @@
     CGSize goodSaleCountLabelSize = [[NSString stringWithFormat:@"销量：%@", _goodModel.sellCount] sizeWithLabelFont:[UIFont systemFontOfSize:DRGetFontSize(24)]];
     _goodSaleCountLabelF = CGRectMake(CGRectGetMaxX(_goodMailTypeLabelF) + DRMargin, CGRectGetMaxY(_goodPriceLabelF) + 7, goodSaleCountLabelSize.width, goodSaleCountLabelSize.height);
     
-    _specificationViewF = CGRectMake(0, CGRectGetMaxY(_goodSaleCountLabelF) + 7, screenWidth, 75);
-    
-    _GoodHeaderCellH = CGRectGetMaxY(_specificationViewF);
+    if (_goodModel.specifications.count > 0) {
+        _specificationViewF = CGRectMake(0, CGRectGetMaxY(_goodSaleCountLabelF) + 7, screenWidth, 75);
+        _GoodHeaderCellH = CGRectGetMaxY(_specificationViewF);
+    }else
+    {
+        _GoodHeaderCellH = CGRectGetMaxY(_goodSaleCountLabelF) + 7;
+    }
     
     return _GoodHeaderCellH;
 }

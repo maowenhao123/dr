@@ -13,8 +13,9 @@
 @property (nonatomic,assign) NSInteger index;//序号
 @property (nonatomic,copy) NSString *name;//规格名称
 @property (nonatomic,copy) NSString *price;//价格
-@property (nonatomic,copy) NSString *plusCount;//库存数量
+@property (nonatomic,copy) NSString *storeCount;//库存数量
 @property (nonatomic,strong) UIImage *pic;//图片
 @property (nonatomic,copy) NSString *picUrl;
+@property (nonatomic,assign) NSInteger delFlag;
 
 @end

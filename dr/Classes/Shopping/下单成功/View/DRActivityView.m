@@ -70,10 +70,16 @@
 {
     _activityModel = activityModel;
     
-    NSString *colorStr = _activityModel.background;
-    colorStr = [colorStr stringByReplacingOccurrencesOfString:@"#" withString:@"0x"];
-    unsigned long colorInt = strtoul([colorStr UTF8String], 0, 0);//转换成16进制
-    self.backgroundColor = UIColorFromRGB(colorInt);
+//    NSString *colorStr = _activityModel.background;
+//    colorStr = [colorStr stringByReplacingOccurrencesOfString:@"#" withString:@"0x"];
+//    unsigned long colorInt = strtoul([colorStr UTF8String], 0, 0);//转换成16进制
+//    self.backgroundColor = UIColorFromRGB(colorInt);
+    if ([self.activityModel.type intValue] == 1) {//分享
+        self.image = [UIImage imageNamed:@"order_redPacket"];
+    }else if ([self.activityModel.type intValue] == 2)//H5
+    {
+        self.image = [UIImage imageNamed:@"order_water"];
+    }
     
     self.titleLabel.text = _activityModel.title;
     self.contentLabel.text = _activityModel.content;

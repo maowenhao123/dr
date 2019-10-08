@@ -21,4 +21,6 @@ typedef void (^SingleGoodHightChangeBlock)(void);
 
 @property (copy, nonatomic) SingleGoodHightChangeBlock hightChangeBlock;
 
+- (void)specificationButtonDidClick;
+
 @end

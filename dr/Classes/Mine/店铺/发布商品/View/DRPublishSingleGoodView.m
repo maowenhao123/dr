@@ -176,6 +176,13 @@
     if (self.hightChangeBlock) {
         self.hightChangeBlock();
     }
+    
+    if (self.specificationDataArray.count > 0) {
+        self.specificationLabel.text = @"已添加";
+    }else
+    {
+        self.specificationLabel.text = @"可添加商品规格";
+    }
 }
 
 - (void)specificationBtnDidClick

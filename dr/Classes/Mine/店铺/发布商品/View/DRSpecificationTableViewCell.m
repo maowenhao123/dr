@@ -134,9 +134,15 @@
     _goodSpecificationModel = goodSpecificationModel;
     
     self.indexLabel.text = [NSString stringWithFormat:@"规格%ld", _goodSpecificationModel.index + 1];
-    self.goodImageView.image = _goodSpecificationModel.pic;
+    if (_goodSpecificationModel.pic) {
+        self.goodImageView.image = _goodSpecificationModel.pic;
+    } else
+    {
+        NSString * imageUrlStr = [NSString stringWithFormat:@"%@%@%@", baseUrl, _goodSpecificationModel.picUrl,smallPicUrl];
+        [self.goodImageView sd_setImageWithURL:[NSURL URLWithString:imageUrlStr] placeholderImage:[UIImage imageNamed:@"placeholder"]];
+    }
     self.goodNameLabel.text = [NSString stringWithFormat:@"名称：%@", _goodSpecificationModel.name];
-    self.goodPlusCountLabel.text = [NSString stringWithFormat:@"库存：%@", _goodSpecificationModel.plusCount];
+    self.goodPlusCountLabel.text = [NSString stringWithFormat:@"库存：%@", _goodSpecificationModel.storeCount];
     self.goodPriceLabel.text = [NSString stringWithFormat:@"价格：%@", _goodSpecificationModel.price];
 }
 

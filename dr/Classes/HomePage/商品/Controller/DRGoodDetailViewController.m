@@ -168,6 +168,7 @@ NSString * const GoodDetailRecommendGoodCellId = @"GoodDetailRecommendGoodCellId
         [MBProgressHUD hideHUDForView:self.view];
         if (SUCCESS) {
             DRGoodModel * goodModel = [DRGoodModel mj_objectWithKeyValues:json[@"goods"]];
+            goodModel.specifications = [DRGoodSpecificationModel mj_objectArrayWithKeyValuesArray:json[@"goods"][@"specifications"]];
             self.goodModel = goodModel;
             if (self.grouponModel) {
                 self.grouponModel.goods = goodModel;

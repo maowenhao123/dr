@@ -15,10 +15,11 @@
 
 @property (nonatomic, copy) NSString *web;
 @property (nonatomic, copy) NSString *fileName;
-@property (nonatomic,weak)  UIView * headerView;
-@property (nonatomic,weak) UILabel * titleLabel;
-@property (nonatomic,weak) UILabel * timeLabel;
+@property (nonatomic, weak)  UIView * headerView;
+@property (nonatomic, weak) UILabel * titleLabel;
+@property (nonatomic, weak) UILabel * timeLabel;
 @property (nonatomic, weak) UILabel * readCountLabel;
+@property (nonatomic, weak) UIView * line;
 @property (nonatomic, weak) WKWebView *webView;
 @property (nonatomic, strong) UIBarButtonItem * attentionBar;
 @property (nonatomic,assign) BOOL isAttention;
@@ -57,12 +58,8 @@
         DRLog(@"%@",json);
         [MBProgressHUD hideHUDForView:self.view];
         if (SUCCESS) {
-            self.dic = json[@"article"];
-            [self.webView loadHTMLString:json[@"article"][@"content"]  baseURL:[NSURL URLWithString:baseUrl]];
-            self.titleLabel.text = json[@"article"][@"title"];
-            self.timeLabel.text = [NSString stringWithFormat:@"%@",[DRDateTool getTimeByTimestamp:[json[@"article"][@"createTime"] longLongValue] format:@"yyyy-MM-dd HH:mm:ss"]];
-            self.readCountLabel.text = [NSString stringWithFormat:@"%@人阅读", json[@"article"][@"hits"]];
-            [[NSNotificationCenter defaultCenter] postNotificationName:@"MaintainReadNotification" object:nil];
+            self.dic = [NSDictionary dictionaryWithDictionary:json[@"article"]];
+            [self setData];
         }else
         {
             ShowErrorView
@@ -180,6 +177,7 @@
     self.titleLabel = titleLabel;
     titleLabel.textColor = DRBlackTextColor;
     titleLabel.font = [UIFont systemFontOfSize:DRGetFontSize(32)];
+    titleLabel.numberOfLines = 0;
     [headerView addSubview:titleLabel];
     
     //时间
@@ -199,6 +197,7 @@
     
     //分割线
     UIView * line = [[UIView alloc] initWithFrame:CGRectMake(0, headerView.height - 1, screenWidth, 1)];
+    self.line = line;
     line.backgroundColor = DRWhiteLineColor;
     [headerView addSubview:line];
     
@@ -207,6 +206,30 @@
     self.progressView = progressView;
     progressView.backgroundColor = DRDefaultColor;
     [self.view addSubview:progressView];
+}
+- (void)setData
+{
+    CGSize titleLabelSize = [self.dic[@"title"] sizeWithFont:self.titleLabel.font maxSize:CGSizeMake(screenWidth - 2 * DRMargin, MAXFLOAT)];
+    CGFloat titleLabelH = titleLabelSize.height;
+    if (titleLabelH > 30) {
+        titleLabelH = 50;
+    }else
+    {
+        titleLabelH = 30;
+    }
+    self.titleLabel.frame = CGRectMake(DRMargin, 10, screenWidth - 2 * DRMargin, titleLabelH);
+    self.timeLabel.frame = CGRectMake(DRMargin, CGRectGetMaxY(self.titleLabel.frame), screenWidth - 2 * DRMargin, 20);
+    self.readCountLabel.frame = CGRectMake(screenWidth - DRMargin - 100, CGRectGetMaxY(self.titleLabel.frame), 100, 20);
+    self.line.frame = CGRectMake(0, CGRectGetMaxY(self.timeLabel.frame) + 4, screenWidth, 1);
+    self.headerView.height = CGRectGetMaxY(self.line.frame);
+    self.webView.scrollView.contentInset = UIEdgeInsetsMake(self.headerView.height, 0 , 0, 0);
+    self.webView.scrollView.mj_offsetY = -self.headerView.height;
+    
+    self.titleLabel.text = self.dic[@"title"];
+    self.timeLabel.text = [NSString stringWithFormat:@"%@", [DRDateTool getTimeByTimestamp:[self.dic[@"createTime"] longLongValue] format:@"yyyy-MM-dd HH:mm:ss"]];
+    self.readCountLabel.text = [NSString stringWithFormat:@"%@人阅读", self.dic[@"hits"]];
+    [self.webView loadHTMLString:self.dic[@"content"]  baseURL:[NSURL URLWithString:baseUrl]];
+    [[NSNotificationCenter defaultCenter] postNotificationName:@"MaintainReadNotification" object:nil];
 }
 #pragma mark - 按钮点击
 - (void)shareBarDidClick
@@ -235,7 +258,7 @@
 #pragma mark - UIWebViewDelegate
 - (void)scrollViewDidScroll:(UIScrollView *)scrollView
 {
-    self.headerView.y = - 60 - scrollView.mj_offsetY;
+    self.headerView.y = - self.headerView.height - scrollView.mj_offsetY;
 }
 
 #pragma mark - 进度条

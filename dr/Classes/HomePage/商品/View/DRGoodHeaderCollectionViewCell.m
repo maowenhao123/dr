@@ -21,7 +21,10 @@
 @property (nonatomic,weak) UIView * activityRemindView;
 @property (nonatomic,weak) UILabel * activityTimeLabel;
 @property (nonatomic, strong) NSTimer *timer;
-@property (nonatomic,weak) UIView * specificationView;
+@property (nonatomic, weak) UIView * specificationView;
+@property (nonatomic, weak) UIScrollView * specificationScrollView;
+@property (nonatomic, weak) UILabel * specificationCountLabel;
+@property (nonatomic, strong) NSMutableArray * specificationImageViews;
 
 @end
 
@@ -136,6 +139,7 @@
     UIView * specificationView = [[UILabel alloc] init];
     self.specificationView = specificationView;
     specificationView.backgroundColor = [UIColor whiteColor];
+    specificationView.hidden = YES;
     [self addSubview:specificationView];
     
     //分割线
@@ -158,22 +162,23 @@
     CGFloat specificationScrollViewX = 42;
     CGFloat specificationScrollViewW = screenWidth - specificationScrollViewX - 120 - DRMargin - 20;
     UIScrollView * specificationScrollView = [[UIScrollView alloc] initWithFrame:CGRectMake(specificationScrollViewX, 35, specificationScrollViewW, 30)];
+    self.specificationScrollView = specificationScrollView;
     specificationScrollView.showsHorizontalScrollIndicator = NO;
     [specificationView addSubview:specificationScrollView];
     
     CGFloat specificationImageViewWH = 30;
     for (int i = 0; i < 20; i++) {
         UIImageView *specificationImageView = [[UIImageView alloc] initWithFrame:CGRectMake((specificationImageViewWH + DRMargin) * i, 0, specificationImageViewWH, specificationImageViewWH)];
-        specificationImageView.backgroundColor = [UIColor redColor];
+        specificationImageView.image = [UIImage imageNamed:@"placeholder"];
+        specificationImageView.hidden = YES;
+        specificationImageView.layer.masksToBounds = YES;
+        specificationImageView.layer.cornerRadius = 2;
         [specificationScrollView addSubview:specificationImageView];
-        
-        if (i == 19) {
-            specificationScrollView.contentSize = CGSizeMake(CGRectGetMaxX(specificationImageView.frame) + DRMargin, specificationScrollView.height);
-        }
+        [self.specificationImageViews addObject:specificationImageView];
     }
     
     UILabel * specificationCountLabel = [[UILabel alloc] initWithFrame:CGRectMake(screenWidth - 120 - 20, 35, 120, 30)];
-    specificationCountLabel.text = @"共4种分类可选";
+    self.specificationCountLabel = specificationCountLabel;
     specificationCountLabel.backgroundColor = DRColor(240, 240, 240, 1);
     specificationCountLabel.textColor = DRGrayTextColor;
     specificationCountLabel.font = [UIFont systemFontOfSize:DRGetFontSize(26)];
@@ -243,7 +248,27 @@
     self.goodPriceLabel.frame = _goodHeaderFrameModel.goodPriceLabelF;
     self.goodMailTypeLabel.frame = _goodHeaderFrameModel.goodMailTypeLabelF;
     self.goodSaleCountLabel.frame = _goodHeaderFrameModel.goodSaleCountLabelF;
-    self.specificationView.frame = _goodHeaderFrameModel.specificationViewF;
+    if (_goodHeaderFrameModel.goodModel.specifications.count > 0) {
+        self.specificationView.frame = _goodHeaderFrameModel.specificationViewF;
+        self.specificationView.hidden = NO;
+        self.specificationCountLabel.text = [NSString stringWithFormat:@"共%ld种分类可选", _goodHeaderFrameModel.goodModel.specifications.count];
+        for (int i = 0; i < self.specificationImageViews.count; i++) {
+            UIImageView * specificationImageView = self.specificationImageViews[i];
+            specificationImageView.hidden = YES;
+            if (i < _goodHeaderFrameModel.goodModel.specifications.count) {
+                specificationImageView.hidden = NO;
+                DRGoodSpecificationModel * specificationModel = _goodHeaderFrameModel.goodModel.specifications[i];
+                NSString * imageUrlStr = [NSString stringWithFormat:@"%@%@%@", baseUrl, specificationModel.picUrl,smallPicUrl];
+                [specificationImageView sd_setImageWithURL:[NSURL URLWithString:imageUrlStr] placeholderImage:[UIImage imageNamed:@"placeholder"]];
+                if (i == _goodHeaderFrameModel.goodModel.specifications.count - 1) {
+                    self.specificationScrollView.contentSize = CGSizeMake(CGRectGetMaxX(specificationImageView.frame) + DRMargin, self.specificationScrollView.height);
+                }
+            }
+        }
+    }else
+    {
+        self.specificationView.hidden = YES;
+    }
 }
 
 - (void)videoPlayDidTap
@@ -333,6 +358,15 @@
 - (void)dealloc
 {
     [self removeSetDeadlineTimer];
+}
+
+#pragma mark - 初始化
+- (NSMutableArray *)specificationImageViews
+{
+    if (!_specificationImageViews) {
+        _specificationImageViews = [NSMutableArray array];
+    }
+    return _specificationImageViews;
 }
 
 @end

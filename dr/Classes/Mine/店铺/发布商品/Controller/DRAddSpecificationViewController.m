@@ -69,6 +69,7 @@
         {
             textField = [[UITextField alloc] init];
             textField.placeholder = @"请输入";
+            textField.keyboardType = UIKeyboardTypeNumberPad;
             self.countTF = textField;
         }
         CGFloat textFieldX = CGRectGetMaxX(titleLabel.frame) + DRMargin;
@@ -108,9 +109,15 @@
     if (self.goodSpecificationModel) {
         self.nameTF.text = self.goodSpecificationModel.name;
         self.priceTF.text = self.goodSpecificationModel.price;
-        self.countTF.text = self.goodSpecificationModel.plusCount;
+        self.countTF.text = self.goodSpecificationModel.storeCount;
         self.nameTF.text = self.goodSpecificationModel.name;
-        [self.addImageView setImagesWithImage:@[self.goodSpecificationModel.pic]];
+        if (self.goodSpecificationModel.pic) {
+            [self.addImageView setImagesWithImage:@[self.goodSpecificationModel.pic]];
+        } else
+        {
+            NSString * imageUrlStr = [NSString stringWithFormat:@"%@%@%@", baseUrl, self.goodSpecificationModel.picUrl,smallPicUrl];
+            [self.addImageView setImagesWithImage:@[imageUrlStr]];
+        }
     }
 }
 
@@ -142,7 +149,7 @@
     DRGoodSpecificationModel *specificationModel = [[DRGoodSpecificationModel alloc] init];
     specificationModel.name = self.nameTF.text;
     specificationModel.price = self.priceTF.text;
-    specificationModel.plusCount = self.countTF.text;
+    specificationModel.storeCount = self.countTF.text;
     specificationModel.pic = self.addImageView.images.firstObject;
     if (self.goodSpecificationModel) {
         if (_delegate && [_delegate respondsToSelector:@selector(editSpecificationWithSpecificationModel:)]) {

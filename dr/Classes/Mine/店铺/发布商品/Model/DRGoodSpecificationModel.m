@@ -10,4 +10,6 @@
 
 @implementation DRGoodSpecificationModel
 
+MJCodingImplementation
+
 @end

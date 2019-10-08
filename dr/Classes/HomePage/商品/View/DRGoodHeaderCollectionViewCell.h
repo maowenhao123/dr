@@ -24,7 +24,7 @@
 @property (nonatomic, weak) UIView *barView;
 @property (nonatomic, weak) UILabel * goodNameLabel;
 @property (nonatomic, weak) UILabel *goodPriceLabel;//商品价格
-@property (nonatomic,weak) UILabel * goodDetailLabel;
+@property (nonatomic, weak) UILabel * goodDetailLabel;
 /**
  协议
  */
