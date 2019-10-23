@@ -505,6 +505,7 @@
     NSDictionary * bodyDic_ = [NSDictionary dictionary];
     NSString *categoryId = self.goodMessageView.categoryDic[@"id"];
     NSString *subjectId = self.goodMessageView.subjectDic[@"id"];
+    NSString * version = [NSString stringWithFormat:@"%@", [NSBundle mainBundle].infoDictionary[@"CFBundleShortVersionString"]];
     
     if ([self.goodMessageView.sellTypeLabel.text isEqualToString:@"一物一拍/零售"]) {//一物一拍/零售
         NSNumber * priceStr = [NSNumber numberWithInt:[DRTool getHighPrecisionDouble:[self.singleView.priceTF.text doubleValue]]];
@@ -517,6 +518,7 @@
                      @"picUrls":self.uploadImageUrlArray,
                      @"categoryId":categoryId,
                      @"subjectId":subjectId,
+                     @"version": version
                      };
     }else//批发
     {
@@ -557,6 +559,7 @@
                      @"categoryId":categoryId,
                      @"subjectId":subjectId,
                      @"count":self.wholesaleView.countTF.text,
+                     @"version": version
                      };
         
     }

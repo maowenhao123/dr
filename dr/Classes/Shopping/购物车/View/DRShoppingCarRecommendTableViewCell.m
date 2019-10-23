@@ -56,4 +56,24 @@
     }
 }
 
+- (void)setLeftModel:(DRGoodModel *)leftModel
+{
+    _leftModel = leftModel;
+    
+    self.leftGoodItemView.model = _leftModel;
+}
+
+- (void)setRightModel:(DRGoodModel *)rightModel
+{
+    _rightModel = rightModel;
+    
+    if (DRObjectIsEmpty(_rightModel)) {
+        self.rightGoodItemView.hidden = YES;
+    }else
+    {
+        self.rightGoodItemView.hidden = NO;
+        self.rightGoodItemView.model = _rightModel;
+    }
+}
+
 @end

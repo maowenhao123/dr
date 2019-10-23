@@ -18,7 +18,6 @@
 #import "MBProgressHUD+MJ.h"
 
 @interface DRAddMultipleImageView ()<TZImagePickerControllerDelegate,UICollectionViewDataSource,UICollectionViewDelegate,UIActionSheetDelegate,UIImagePickerControllerDelegate,UINavigationControllerDelegate> {
-    NSMutableArray *_selectedAssets;
     CGFloat _itemWH;
     CGFloat _margin;
 }
@@ -48,7 +47,6 @@
 {
     self.backgroundColor = [UIColor whiteColor];
     self.maxImageCount = 6;
-    _selectedAssets = [NSMutableArray array];
     
     //标题
     UILabel * titleLabel = [[UILabel alloc] initWithFrame:CGRectMake(DRMargin, 0, self.width -  2 * DRMargin, 35)];
@@ -108,12 +106,7 @@
         if ([imageObj isKindOfClass:[UIImage class]]) {
             cell.imageView.image = imageObj;
         }else{
-            [cell.imageView sd_setImageWithURL:[NSURL URLWithString:[NSString stringWithFormat:@"%@", imageObj]] placeholderImage:[UIImage imageNamed:@"placeholder"] completed:^(UIImage * _Nullable image, NSError * _Nullable error, SDImageCacheType cacheType, NSURL * _Nullable imageURL) {
-                if (!error) {
-                    NSInteger index = [self.images indexOfObject:imageURL.absoluteString];
-                    [self.images replaceObjectAtIndex:index withObject:image];
-                }
-            }];
+            [cell.imageView sd_setImageWithURL:[NSURL URLWithString:[NSString stringWithFormat:@"%@", imageObj]] placeholderImage:[UIImage imageNamed:@"placeholder"]];
         }
     }
     cell.deleteBtn.tag = indexPath.row;
@@ -133,25 +126,11 @@
         }
     }else if (self.supportVideo + self.images.count == indexPath.row)
     {
-        [self chooseResourceIsVideo:NO];
-    }else
-    {
-        if (_selectedAssets.count == self.images.count) {
-            [self setImagePickerControllerNav];
-            TZImagePickerController *imagePickerVc = [[TZImagePickerController alloc] initWithSelectedAssets:_selectedAssets selectedPhotos:self.images index:indexPath.row - self.supportVideo];
-            imagePickerVc.maxImagesCount = self.maxImageCount;
-            imagePickerVc.allowPickingOriginalPhoto = NO;
-            [imagePickerVc setDidFinishPickingPhotosHandle:^(NSArray<UIImage *> *photos, NSArray *assets, BOOL isSelectOriginalPhoto) {
-                NSMutableArray * images = [NSMutableArray array];
-                for (UIImage * photo in photos) {
-                    [images addObject:[DRTool imageCompressionWithImage:photo]];
-                }
-                self.images = [NSMutableArray arrayWithArray:images];
-                _selectedAssets = [NSMutableArray arrayWithArray:assets];
-                [self refreshView];
-            }];
-            [self.viewController presentViewController:imagePickerVc animated:YES completion:nil];
+        if (self.images.count >= self.maxImageCount) {
+            [MBProgressHUD showError:[NSString stringWithFormat:@"最多选择%d张图片", self.maxImageCount]];
+            return;
         }
+        [self chooseResourceIsVideo:NO];
     }
 }
 
@@ -163,11 +142,6 @@
     }else
     {
         [self.images removeObjectAtIndex:sender.tag - self.supportVideo];
-        
-        if (_selectedAssets.count > sender.tag - self.supportVideo) {
-            [_selectedAssets removeObjectAtIndex:sender.tag - self.supportVideo];
-        }
-        
         [self refreshView];
     }
 }
@@ -260,7 +234,6 @@
 
 - (void)refreshCollectionViewWithAddedAsset:(id)asset image:(UIImage *)image
 {
-    [_selectedAssets addObject:asset];
     [self.images addObject:[DRTool imageCompressionWithImage:image]];
     [self refreshView];
 }
@@ -271,9 +244,6 @@
     [self setImagePickerControllerNav];
     
     if (!isVideo) {
-        if (self.maxImageCount > 1) {
-            imagePickerVc.selectedAssets = _selectedAssets;
-        }
         imagePickerVc.allowCrop = YES;
         imagePickerVc.needCircleCrop = NO;
     }
@@ -290,8 +260,7 @@
     for (UIImage * photo in photos) {
         [images addObject:[DRTool imageCompressionWithImage:photo]];
     }
-    self.images = [NSMutableArray arrayWithArray:images];
-    _selectedAssets = [NSMutableArray arrayWithArray:assets];
+    [self.images addObjectsFromArray:images];
     [self refreshView];
 }
 
@@ -373,7 +342,7 @@
 {
     self.images = [NSMutableArray array];
     for (NSString * imageUrlStr in imageUrlStrs) {
-        [self.images addObject:[NSString stringWithFormat:@"%@%@", baseUrl,imageUrlStr]];
+        [self.images addObject:[NSString stringWithFormat:@"%@%@", baseUrl, imageUrlStr]];
     }
     [self refreshView];
 }

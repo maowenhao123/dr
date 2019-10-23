@@ -79,51 +79,6 @@
     }
 }
 #pragma mark - 购物车
-+ (void)addGoodInShoppingCarWithGood:(DRGoodModel *)goodModel
-{
-    NSMutableDictionary *carShopDic = [NSKeyedUnarchiver unarchiveObjectWithFile:DRShoppingCarFile];
-    if (DRDictIsEmpty(carShopDic)) {
-        carShopDic = [NSMutableDictionary dictionary];
-    }
-    //获取当前时间戳
-    NSDate* date = [NSDate date];
-    NSTimeInterval creatTime = [date timeIntervalSince1970];
-    
-    DRShoppingCarShopModel * carShopModel = carShopDic[goodModel.store.id];
-    if (!carShopModel) {
-        carShopModel = [[DRShoppingCarShopModel alloc] init];
-        carShopModel.creatTime = creatTime;
-    }
-    carShopModel.selected = NO;
-    carShopModel.shopModel = goodModel.store;
-    
-    DRShoppingCarGoodModel * carGoodModel = carShopModel.goodDic[goodModel.id];
-    if (!carGoodModel) {
-        carGoodModel = [[DRShoppingCarGoodModel alloc] init];
-        carGoodModel.creatTime = creatTime;
-    }
-    carGoodModel.count++;
-    //批发根据数量改变价格
-    if ([goodModel.sellType intValue] == 2) {
-        NSSortDescriptor *sortDescriptor = [NSSortDescriptor sortDescriptorWithKey:@"count" ascending:NO];
-        NSArray *wholesaleRule = [goodModel.wholesaleRule sortedArrayUsingDescriptors:@[sortDescriptor]];//排序
-        
-        for (NSDictionary * wholesaleRuleDic in wholesaleRule) {
-            int count = [wholesaleRuleDic[@"count"] intValue];
-            if (carGoodModel.count >= count) {
-                goodModel.price = [NSNumber numberWithInt:[wholesaleRuleDic[@"price"] intValue]];
-                break;
-            }
-        }
-    }
-    
-    carGoodModel.goodModel = goodModel;
-    
-    [carShopModel.goodDic setValue:carGoodModel forKey:goodModel.id];
-    [carShopDic setValue:carShopModel forKey:goodModel.store.id];
-
-    [NSKeyedArchiver archiveRootObject:carShopDic toFile:DRShoppingCarFile];
-}
 + (void)addGoodInShoppingCarWithGood:(DRGoodModel *)goodModel count:(int)count
 {
     NSMutableDictionary *carShopDic = [NSKeyedUnarchiver unarchiveObjectWithFile:DRShoppingCarFile];

@@ -27,7 +27,6 @@
 + (DRMyShopModel *)myShopModel;//取出我的店铺信息
 + (void)removeShop;
 
-+ (void)addGoodInShoppingCarWithGood:(DRGoodModel *)goodModel;//把商品存入购物车
 + (void)addGoodInShoppingCarWithGood:(DRGoodModel *)goodModel count:(int)count;//把商品存入购物车
 + (void)upDataGoodInShoppingCarWithGood:(DRGoodModel *)goodModel count:(int)count;//更新购物车中商品数量
 + (void)deleteGoodInShoppingCarWithGood:(DRGoodModel *)goodModel;//丛购物车中删除商品

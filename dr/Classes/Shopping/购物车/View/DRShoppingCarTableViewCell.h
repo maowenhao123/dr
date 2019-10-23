@@ -27,11 +27,6 @@
 @property (nonatomic, strong) DRShoppingCarGoodModel *model;
 
 /**
- 编辑
- */
-@property (nonatomic, assign) BOOL edit;
-
-/**
   协议
  */
 @property (nonatomic, weak) id <ShoppingCarTableViewCellDelegate> delegate;

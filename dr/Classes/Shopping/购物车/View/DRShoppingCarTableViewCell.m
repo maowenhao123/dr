@@ -108,16 +108,6 @@
     numberView.textField.font = [UIFont systemFontOfSize:DRGetFontSize(24)];
     [self.customContentView addSubview:numberView];
 }
-- (void)setEdit:(BOOL)edit
-{
-    _edit = edit;
-    if (_edit) {//编辑状态
-        self.numberView.hidden = NO;
-    }else
-    {
-        self.numberView.hidden = YES;
-    }
-}
 
 - (void)setModel:(DRShoppingCarGoodModel *)model
 {

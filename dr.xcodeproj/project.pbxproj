@@ -5196,8 +5196,8 @@
 			children = (
 				AAF439321FAFF96E00CA31DE /* DRMineTableHeaderView.h */,
 				AAF439361FAFF96E00CA31DE /* DRMineTableHeaderView.m */,
-				AAF439341FAFF96E00CA31DE /* DRItemView.m */,
 				AAF439381FAFF96E00CA31DE /* DRItemView.h */,
+				AAF439341FAFF96E00CA31DE /* DRItemView.m */,
 				AAF439351FAFF96E00CA31DE /* DRTextTableViewCell.h */,
 				AAF439391FAFF96E00CA31DE /* DRTextTableViewCell.m */,
 				AAF439371FAFF96E00CA31DE /* DRIconTextTableViewCell.h */,

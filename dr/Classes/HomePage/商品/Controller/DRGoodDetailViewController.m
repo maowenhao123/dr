@@ -173,7 +173,7 @@ NSString * const GoodDetailRecommendGoodCellId = @"GoodDetailRecommendGoodCellId
             if (self.grouponModel) {
                 self.grouponModel.goods = goodModel;
             }
-            [self getDataWithCategoryId:self.goodModel.categoryId];
+            [self getRecommendData];
         }else
         {
             ShowErrorView
@@ -319,19 +319,17 @@ NSString * const GoodDetailRecommendGoodCellId = @"GoodDetailRecommendGoodCellId
         }
     }];
 }
-- (void)getDataWithCategoryId:(NSString *)categoryId
+- (void)getRecommendData
 {
-    if (DRStringIsEmpty(categoryId)) {
+    if (!self.goodId) {
         return;
     }
     NSDictionary *bodyDic = @{
-                              @"pageIndex":@1,
-                              @"pageSize":@10,
-                              @"categoryId":categoryId,
                               };
     
     NSDictionary *headDic = @{
-                              @"cmd":@"B07",
+                              @"goodsId": self.goodId,
+                              @"cmd": @"GET_SAME_SUBJECT_RECOMMEND_GOODS_LIST",
                               };
     
     [[DRHttpTool shareInstance] postWithHeadDic:headDic bodyDic:bodyDic success:^(id json) {

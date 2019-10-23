@@ -7,6 +7,7 @@
 //
 
 #import "DRItemView.h"
+#import "UIImage+GIF.h"
 
 @interface DRItemView ()
 
@@ -47,7 +48,6 @@
     imageView.frame = CGRectMake(imageViewX, imageViewY, imageViewWH, imageViewWH);
     label.frame = CGRectMake(0, CGRectGetMaxY(imageView.frame) + padding, self.width, labelH);
     
-    
     CGFloat bageLabelWH = 13;
     UILabel * bageLabel = [[UILabel alloc] initWithFrame:CGRectMake(0, 0, bageLabelWH, bageLabelWH)];
     self.bageLabel = bageLabel;
@@ -66,7 +66,19 @@
 - (void)setImageName:(NSString *)imageName
 {
     _imageName = imageName;
-    self.imageView.image = [UIImage imageNamed:_imageName];
+    if ([imageName isEqualToString:@"shop"]) {
+        NSMutableArray * images = [NSMutableArray array];
+        for (int i = 0; i < 5; i++) {
+            UIImage *image = [UIImage imageNamed:[NSString stringWithFormat:@"shop_%d", i + 1]];
+            [images addObject:image];
+        }
+        self.imageView.animationImages = images;
+        self.imageView.animationDuration = 0.5;
+        [self.imageView startAnimating];
+    }else
+    {
+        self.imageView.image = [UIImage imageNamed:_imageName];
+    }
 }
 - (void)setText:(NSString *)text
 {

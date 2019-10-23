@@ -99,7 +99,7 @@
     searchBar.delegate = self;
     searchBar.placeholder = @"多肉、店铺";
     searchBar.tintColor = DRDefaultColor;
-    UITextField * searchTextField = [[[self.searchBar.subviews firstObject] subviews] lastObject];
+    UITextField * searchTextField = [searchBar valueForKey:@"_searchField"];
     searchTextField.backgroundColor = DRColor(242, 242, 242, 1);
     searchTextField.textColor = DRBlackTextColor;
     searchTextField.font = [UIFont systemFontOfSize:DRGetFontSize(26)];
@@ -215,7 +215,7 @@
         return;
     }
     
-    UITextField * searchTextField = [[[self.searchBar.subviews firstObject] subviews] lastObject];
+    UITextField * searchTextField = [self.searchBar valueForKey:@"_searchField"];
     searchTextField.leftView = nil;
 
     //储存搜索关键字
@@ -243,7 +243,7 @@
 
 - (void)searchBarTextDidBeginEditing:(UISearchBar *)searchBar
 {
-    UITextField * searchTextField = [[[self.searchBar.subviews firstObject] subviews] lastObject];
+    UITextField * searchTextField = [searchBar valueForKey:@"_searchField"];
     searchTextField.leftView = self.sortbutton;
 }
 

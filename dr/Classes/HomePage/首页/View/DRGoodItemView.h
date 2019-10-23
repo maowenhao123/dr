@@ -12,6 +12,8 @@ NS_ASSUME_NONNULL_BEGIN
 
 @interface DRGoodItemView : UIView
 
+@property (nonatomic,strong) DRGoodModel *model;
+
 @end
 
 NS_ASSUME_NONNULL_END

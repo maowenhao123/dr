@@ -20,6 +20,7 @@
 @property (nonatomic, weak) UITableView *tableView;
 @property (nonatomic, weak) DRShoppingCarBottomView * shoppingBottomView;
 @property (nonatomic, strong) NSMutableArray *dataArray;
+@property (nonatomic, strong) NSArray *goodArray;
 @property (nonatomic, assign) BOOL isEdit;//是否是编辑状态
 
 @end
@@ -37,9 +38,34 @@
     self.view.backgroundColor = [UIColor whiteColor];
     self.navigationItem.title = @"购物车";
     [self setupChilds];
+    [self getGoodData];
     
     //接收去购物车的通知
     [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(upData) name:@"upSataShoppingCar" object:nil];
+}
+- (void)getGoodData
+{
+    NSDictionary *bodyDic = @{
+                               @"pageIndex": @(1),
+                               @"pageSize": DRPageSize,
+                               };
+    NSDictionary *headDic = @{
+                              @"cmd":@"B07",
+                              };
+    [[DRHttpTool shareInstance] postWithTarget:self headDic:headDic bodyDic:bodyDic success:^(id json) {
+        DRLog(@"%@",json);
+        [MBProgressHUD hideHUDForView:self.view];
+        if (SUCCESS) {
+            self.goodArray = [DRGoodModel mj_objectArrayWithKeyValuesArray:json[@"list"]];
+            [self.tableView reloadData];
+        }else
+        {
+            ShowErrorView
+        }
+    } failure:^(NSError *error) {
+        DRLog(@"error:%@",error);
+        [MBProgressHUD hideHUDForView:self.view];
+    }];
 }
 - (void)upData
 {
@@ -116,8 +142,15 @@
     if (section < self.dataArray.count) {
         DRShoppingCarShopModel * carShopModel = self.dataArray[section];
         return carShopModel.goodArr.count + 1;
+    }else
+    {
+        if (self.goodArray.count % 2 == 0) {
+            return self.goodArray.count / 2;
+        }else
+        {
+            return 1 + self.goodArray.count / 2;
+        }
     }
-    return 5;
 }
 
 - (UITableViewCell *)tableView:(UITableView *)tableView cellForRowAtIndexPath:(NSIndexPath *)indexPath
@@ -139,7 +172,6 @@
             DRShoppingCarShopModel * carShopModel = self.dataArray[indexPath.section];
             DRShoppingCarGoodModel * carGoodModel = carShopModel.goodArr[indexPath.row - 1];
             cell.model = carGoodModel;
-            cell.edit = self.isEdit;
             cell.delegate = self;
             cell.tag = indexPath.section * 1000 + indexPath.row;
             return cell;
@@ -147,6 +179,13 @@
     }else
     {
         DRShoppingCarRecommendTableViewCell * cell = [DRShoppingCarRecommendTableViewCell cellWithTableView:tableView];
+        cell.leftModel = self.goodArray[indexPath.row * 2];
+        if (1 + indexPath.row * 2 < self.goodArray.count) {
+            cell.rightModel = self.goodArray[1 + indexPath.row * 2];
+        }else
+        {
+            cell.rightModel = nil;
+        }
         return cell;
     }
 }
@@ -351,5 +390,14 @@
     }
     return _dataArray;
 }
+
+- (NSArray *)goodArray
+{
+    if (!_goodArray) {
+        _goodArray = [NSArray array];
+    }
+    return _goodArray;
+}
+
 
 @end

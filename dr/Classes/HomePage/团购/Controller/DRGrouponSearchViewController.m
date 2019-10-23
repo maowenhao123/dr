@@ -74,7 +74,7 @@
     searchBar.placeholder = @"商品名称";
     searchBar.tintColor = DRDefaultColor;
     
-    UITextField * searchTextField = [[[self.searchBar.subviews firstObject] subviews] lastObject];
+    UITextField * searchTextField = [searchBar valueForKey:@"_searchField"];
     searchTextField.font = [UIFont systemFontOfSize:DRGetFontSize(26)];
     CGFloat tfColor = 242;
     searchTextField.backgroundColor = DRColor(tfColor, tfColor, tfColor, 1);

@@ -142,7 +142,7 @@
     }
     
     if (DRArrayIsEmpty(self.addImageView.images)) {
-        [MBProgressHUD showError:@"请至少上传一张图片"];
+        [MBProgressHUD showError:@"请上传图片"];
         return;
     }
     

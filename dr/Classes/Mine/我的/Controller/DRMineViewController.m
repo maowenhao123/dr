@@ -254,10 +254,11 @@
     [headerView addSubview:allFunctionItemView];
     
     NSArray *functionItemTitles = @[@"我的拼团", @"我的消息", @"我的秀场", @"我的关注", @"我要开店"];
-    NSArray *functionItemImageNames = @[@"my_groupon_icon", @"my_message_icon", @"my_show_icon", @"my_attention_icon", @"my_shop_icon"];
+    NSArray *functionItemImageNames = @[@"my_groupon_icon", @"my_message_icon", @"my_show_icon", @"my_attention_icon", @"shop"];
     DRUser *user = [DRUserDefaultTool user];
     if ([user.type intValue] == 1) {//已开店
         functionItemTitles = @[@"我的拼团", @"我的消息", @"我的秀场", @"我的关注", @"我的店铺"];
+        functionItemImageNames = @[@"my_groupon_icon", @"my_message_icon", @"my_show_icon", @"my_attention_icon", @"my_shop_icon"];
     }
     CGFloat functionItemViewW = screenWidth / functionItemTitles.count;
     for (int i = 0; i < functionItemTitles.count; i++) {
@@ -396,7 +397,7 @@
     }else if (tag == 4)//我的店铺
     {
         DRUser *user = [DRUserDefaultTool user];
-        if ([user.type intValue] == 0) {//未开店
+        if ([user.type intValue] != 0) {//未开店
             if (!user.phone || !user.realName) {
                 UIAlertController * alertController = [UIAlertController alertControllerWithTitle:@"温馨提示" message:@"完善信息后才能开店哦" preferredStyle:UIAlertControllerStyleAlert];
                 UIAlertAction * alertAction1 = [UIAlertAction actionWithTitle:@"取消" style:UIAlertActionStyleCancel handler:nil];

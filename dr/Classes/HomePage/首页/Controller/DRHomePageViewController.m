@@ -248,7 +248,7 @@ NSString * const RecommendGoodCellId = @"RecommendGoodCellId";
     searchBar.layer.borderWidth = 8;
     searchBar.delegate = self;
     searchBar.placeholder = @"多肉、店铺";
-    UITextField * searchTextField = [[[self.searchBar.subviews firstObject] subviews] lastObject];
+    UITextField * searchTextField = [searchBar valueForKey:@"_searchField"];
     searchTextField.font = [UIFont systemFontOfSize:DRGetFontSize(26)];
     searchTextField.layer.cornerRadius = searchTextField.height / 2;
     searchTextField.layer.masksToBounds = YES;
@@ -452,7 +452,7 @@ NSString * const RecommendGoodCellId = @"RecommendGoodCellId";
         //设置bar背景色
         self.barView.backgroundColor = [UIColor colorWithWhite:1 alpha:scale * 0.94];
         //设置输入框背景色
-        UITextField * searchTextField = [[[self.searchBar.subviews firstObject] subviews] lastObject];
+        UITextField * searchTextField = [self.searchBar valueForKey:@"_searchField"];
         CGFloat tfColor = 255 - (255 - 223) * scale;
         searchTextField.backgroundColor = DRColor(tfColor, tfColor, tfColor, 1);
         self.searchBar.layer.borderColor = DRColor(tfColor, tfColor, tfColor, 1).CGColor;

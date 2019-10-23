@@ -224,14 +224,14 @@
 {
     NSMutableArray *dataArray_ = self.dataArray[self.currentIndex];
     DRGoodModel * goodModel = dataArray_[indexPath.row];
-//    if (self.currentIndex == 2) {
+    if (self.currentIndex == 2) {
         [self judgeMailWithGoodId:goodModel.id];
-//    }else if (self.currentIndex == 0)
-//    {
-//        DRGoodDetailViewController * goodVC = [[DRGoodDetailViewController alloc] init];
-//        goodVC.goodId = goodModel.id;
-//        [self.navigationController pushViewController:goodVC animated:YES];
-//    }
+    }else if (self.currentIndex == 0)
+    {
+        DRGoodDetailViewController * goodVC = [[DRGoodDetailViewController alloc] init];
+        goodVC.goodId = goodModel.id;
+        [self.navigationController pushViewController:goodVC animated:YES];
+    }
 }
 #pragma mark - 协议
 - (void)goodShelfTableViewCell:(DRGoodShelfTableViewCell *)cell buttonDidClick:(UIButton *)button
@@ -289,6 +289,11 @@
 //判断是否设置邮费
 - (void)judgeMailWithGoodId:(NSString *)goodId
 {
+    DRPublishGoodViewController * addGoodVC = [[DRPublishGoodViewController alloc] init];
+    addGoodVC.goodId = goodId;
+    [self.navigationController pushViewController:addGoodVC animated:YES];
+    return;
+    
     NSDictionary *bodyDic = @{
                               
                               };

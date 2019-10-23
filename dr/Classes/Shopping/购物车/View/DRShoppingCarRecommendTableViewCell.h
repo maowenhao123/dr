@@ -14,6 +14,9 @@ NS_ASSUME_NONNULL_BEGIN
 
 + (DRShoppingCarRecommendTableViewCell *)cellWithTableView:(UITableView *)tableView;
 
+@property (nonatomic,strong) DRGoodModel *leftModel;
+@property (nonatomic, strong, nullable) DRGoodModel *rightModel;
+
 @end
 
 NS_ASSUME_NONNULL_END
