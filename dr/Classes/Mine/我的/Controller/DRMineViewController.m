@@ -397,7 +397,7 @@
     }else if (tag == 4)//我的店铺
     {
         DRUser *user = [DRUserDefaultTool user];
-        if ([user.type intValue] != 0) {//未开店
+        if ([user.type intValue] == 0) {//未开店
             if (!user.phone || !user.realName) {
                 UIAlertController * alertController = [UIAlertController alertControllerWithTitle:@"温馨提示" message:@"完善信息后才能开店哦" preferredStyle:UIAlertControllerStyleAlert];
                 UIAlertAction * alertAction1 = [UIAlertAction actionWithTitle:@"取消" style:UIAlertActionStyleCancel handler:nil];

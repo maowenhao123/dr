@@ -172,7 +172,7 @@
         specificationImageView.image = [UIImage imageNamed:@"placeholder"];
         specificationImageView.hidden = YES;
         specificationImageView.layer.masksToBounds = YES;
-        specificationImageView.layer.cornerRadius = 2;
+        specificationImageView.layer.cornerRadius = 3;
         [specificationScrollView addSubview:specificationImageView];
         [self.specificationImageViews addObject:specificationImageView];
     }

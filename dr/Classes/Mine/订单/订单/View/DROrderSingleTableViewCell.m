@@ -68,8 +68,14 @@
     
     //赋值
     DROrderItemDetailModel * orderItemDetailModel = _storeOrderModel.detail.firstObject;
-    NSString * urlStr = [NSString stringWithFormat:@"%@%@%@",baseUrl,orderItemDetailModel.goods.spreadPics,smallPicUrl];
-    [self.goodImageView sd_setImageWithURL:[NSURL URLWithString:urlStr] placeholderImage:[UIImage imageNamed:@"placeholder"]];
+    if (DRObjectIsEmpty(orderItemDetailModel.specification)) {
+        NSString * urlStr = [NSString stringWithFormat:@"%@%@%@", baseUrl, orderItemDetailModel.goods.spreadPics, smallPicUrl];
+        [self.goodImageView sd_setImageWithURL:[NSURL URLWithString:urlStr] placeholderImage:[UIImage imageNamed:@"placeholder"]];
+    }else
+    {
+        NSString * urlStr = [NSString stringWithFormat:@"%@%@%@", baseUrl, orderItemDetailModel.specification.picUrl, smallPicUrl];
+        [self.goodImageView sd_setImageWithURL:[NSURL URLWithString:urlStr] placeholderImage:[UIImage imageNamed:@"placeholder"]];
+    }
     
     if (DRStringIsEmpty(orderItemDetailModel.goods.description_)) {
         self.goodNameLabel.text = orderItemDetailModel.goods.name;

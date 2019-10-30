@@ -17,5 +17,7 @@
 @property (nonatomic,strong) UIImage *pic;//图片
 @property (nonatomic,copy) NSString *picUrl;
 @property (nonatomic,assign) NSInteger delFlag;
+@property (nonatomic,copy) NSString *goodsId;
+@property (nonatomic,copy) NSString *id;
 
 @end

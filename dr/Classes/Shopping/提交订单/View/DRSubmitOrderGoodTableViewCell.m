@@ -12,6 +12,7 @@
 
 @property (nonatomic, weak) UIImageView *goodImageView;//商品图片
 @property (nonatomic, weak) UILabel *goodNameLabel;//商品名称
+@property (nonatomic, weak) UILabel *goodSpecificationLabel;//商品规格
 @property (nonatomic, weak) UILabel *goodCountLabel;//商品数量
 @property (nonatomic, weak) UILabel *goodPriceLabel;//商品价格
 
@@ -52,8 +53,18 @@
     UILabel * goodNameLabel = [[UILabel alloc]init];
     self.goodNameLabel = goodNameLabel;
     goodNameLabel.textColor = DRBlackTextColor;
-    goodNameLabel.font = [UIFont systemFontOfSize:DRGetFontSize(24)];
+    goodNameLabel.font = [UIFont systemFontOfSize:DRGetFontSize(28)];
     [self addSubview:goodNameLabel];
+    
+    //商品规格
+    UILabel * goodSpecificationLabel = [[UILabel alloc] init];
+    self.goodSpecificationLabel = goodSpecificationLabel;
+    goodSpecificationLabel.backgroundColor = DRWhiteLineColor;
+    goodSpecificationLabel.textColor = DRGrayTextColor;
+    goodSpecificationLabel.font = [UIFont systemFontOfSize:DRGetFontSize(24)];
+    goodSpecificationLabel.textAlignment = NSTextAlignmentCenter;
+    goodSpecificationLabel.layer.masksToBounds = YES;
+    [self addSubview:goodSpecificationLabel];
     
     //商品数量
     UILabel * goodCountLabel = [[UILabel alloc] init];
@@ -79,40 +90,39 @@
 {
     _model = model;
     
-    NSString * urlStr = [NSString stringWithFormat:@"%@%@%@",baseUrl,_model.goods.spreadPics,smallPicUrl];
-    [self.goodImageView sd_setImageWithURL:[NSURL URLWithString:urlStr] placeholderImage:[UIImage imageNamed:@"placeholder"]];
-    self.goodNameLabel.text = _model.goods.name;
-    self.goodCountLabel.text = [NSString stringWithFormat:@"数量：%@",_model.purchaseCount];
-    if ([DRTool showDiscountPriceWithGoodModel:_model.goods]) {
-        NSString * newPriceStr = [NSString stringWithFormat:@"¥%@", [DRTool formatFloat:[_model.goods.discountPrice doubleValue] / 100]];
-        NSString * oldPriceStr = [NSString stringWithFormat:@"¥%@", [DRTool formatFloat:[_model.goods.price doubleValue] / 100]];
-        NSString * priceStr = [NSString stringWithFormat:@"%@ %@", newPriceStr, oldPriceStr];
-        NSMutableAttributedString * priceAttStr = [[NSMutableAttributedString alloc]initWithString:priceStr];
-        [priceAttStr addAttribute:NSFontAttributeName value:[UIFont systemFontOfSize:DRGetFontSize(26)] range:NSMakeRange(0, newPriceStr.length)];
-        [priceAttStr addAttribute:NSFontAttributeName value:[UIFont systemFontOfSize:DRGetFontSize(22)] range:NSMakeRange(priceStr.length - oldPriceStr.length, oldPriceStr.length)];
-        [priceAttStr addAttribute:NSForegroundColorAttributeName value:DRRedTextColor range:NSMakeRange(0, newPriceStr.length)];
-        [priceAttStr addAttribute:NSForegroundColorAttributeName value:DRGrayTextColor range:NSMakeRange(priceStr.length - oldPriceStr.length, oldPriceStr.length)];
-        [priceAttStr addAttribute:NSStrikethroughStyleAttributeName value:@(NSUnderlinePatternSolid | NSUnderlineStyleSingle) range:NSMakeRange(priceStr.length - oldPriceStr.length, oldPriceStr.length)];
-        self.goodPriceLabel.attributedText = priceAttStr;
+    if (DRObjectIsEmpty(_model.specification)) {
+        NSString * urlStr = [NSString stringWithFormat:@"%@%@%@", baseUrl, _model.goods.spreadPics, smallPicUrl];
+        [self.goodImageView sd_setImageWithURL:[NSURL URLWithString:urlStr] placeholderImage:[UIImage imageNamed:@"placeholder"]];
     }else
     {
-        self.goodPriceLabel.text = [NSString stringWithFormat:@"¥%@", [DRTool formatFloat:[_model.goods.price doubleValue] / 100]];
+        NSString * urlStr = [NSString stringWithFormat:@"%@%@%@", baseUrl, _model.specification.picUrl, smallPicUrl];
+        [self.goodImageView sd_setImageWithURL:[NSURL URLWithString:urlStr] placeholderImage:[UIImage imageNamed:@"placeholder"]];
+        self.goodSpecificationLabel.text = _model.specification.name;
     }
+    self.goodNameLabel.text = _model.goods.name;
+    self.goodCountLabel.text = [NSString stringWithFormat:@"数量：%@",_model.purchaseCount];
+    self.goodPriceLabel.text = [NSString stringWithFormat:@"¥%@", [DRTool formatFloat:[_model.goods.price doubleValue] / 100]];
     
     //frame
-    CGSize goodNameLabelSize = [self.goodNameLabel.text sizeWithLabelFont:self.goodNameLabel.font];
-    CGFloat goodNameLabelX = CGRectGetMaxX(self.goodImageView.frame) + 10;
-    self.goodNameLabel.frame = CGRectMake(goodNameLabelX, 10, goodNameLabelSize.width, goodNameLabelSize.height);
-    
-    CGSize goodCountLabelSize = [self.goodCountLabel.text sizeWithLabelFont:self.goodCountLabel.font];
-    self.goodCountLabel.frame = CGRectMake(goodNameLabelX, 0, goodCountLabelSize.width, goodCountLabelSize.height);
-    self.goodCountLabel.centerY = self.goodImageView.centerY;
-    
-    CGSize goodPriceLabelSize = [self.goodPriceLabel.text sizeWithLabelFont:self.goodPriceLabel.font];
-    CGFloat goodPriceLabelY = 90 - goodPriceLabelSize.height;
-    CGFloat goodPriceLabelW = goodPriceLabelSize.width;
-    self.goodPriceLabel.frame = CGRectMake(goodNameLabelX, goodPriceLabelY, goodPriceLabelW, goodPriceLabelSize.height);
-    
+    CGFloat labelX = CGRectGetMaxX(self.goodImageView.frame) + 10;
+    CGFloat labelW = self.width - labelX;
+    CGFloat labelH = 20;
+    if (DRObjectIsEmpty(_model.specification)) {
+        self.goodNameLabel.frame = CGRectMake(labelX, 12, labelW, labelH);
+        self.goodSpecificationLabel.hidden = YES;
+        self.goodCountLabel.frame = CGRectMake(labelX, CGRectGetMaxY(self.goodNameLabel.frame) + 10, labelW, labelH);
+        self.goodPriceLabel.frame = CGRectMake(labelX, CGRectGetMaxY(self.goodCountLabel.frame) + 5, labelW, labelH);
+    }else
+    {
+        self.goodNameLabel.frame = CGRectMake(labelX, 12, labelW, labelH);
+        self.goodSpecificationLabel.hidden = NO;
+        CGSize goodSpecificationLabelSize = [self.goodSpecificationLabel.text sizeWithLabelFont:self.goodSpecificationLabel.font];
+        CGFloat goodSpecificationLabelH = goodSpecificationLabelSize.height + 4;
+        self.goodSpecificationLabel.frame = CGRectMake(labelX, CGRectGetMaxY(self.goodNameLabel.frame) + 2, goodSpecificationLabelSize.width + 15, goodSpecificationLabelH);
+        self.goodSpecificationLabel.layer.cornerRadius = goodSpecificationLabelH / 2;
+        self.goodCountLabel.frame = CGRectMake(labelX, CGRectGetMaxY(self.goodSpecificationLabel.frame) + 3, labelW, goodSpecificationLabelH);
+        self.goodPriceLabel.frame = CGRectMake(labelX, CGRectGetMaxY(self.goodCountLabel.frame), labelW, labelH);
+    }
 }
 
 

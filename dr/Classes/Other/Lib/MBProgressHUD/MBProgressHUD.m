@@ -330,6 +330,7 @@ static const CGFloat MBDefaultDetailsLabelFontSize = 12.f;
     label.textColor = defaultColor;
     label.font = [UIFont boldSystemFontOfSize:MBDefaultLabelFontSize];
     label.opaque = NO;
+    label.numberOfLines = 0;
     label.backgroundColor = [UIColor clearColor];
     _label = label;
     

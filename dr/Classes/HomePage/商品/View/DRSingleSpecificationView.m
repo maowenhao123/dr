@@ -26,7 +26,7 @@
 
 @implementation DRSingleSpecificationView
 
-- (instancetype)initWithFrame:(CGRect)frame goodModel:(DRGoodModel *)goodModel type:(int) type
+- (instancetype)initWithFrame:(CGRect)frame goodModel:(DRGoodModel *)goodModel type:(int)type
 {
     self = [super initWithFrame:frame];
     if (self) {
@@ -92,7 +92,7 @@
             DRGoodSpecificationModel * specificationModel = _goodModel.specifications[i];
             UIButton * specificationButton = [UIButton buttonWithType:UIButtonTypeCustom];
             specificationButton.tag = i;
-            specificationButton.backgroundColor = DRColor(240, 240, 240, 1);
+            specificationButton.backgroundColor = DRWhiteLineColor;
             CGFloat x = CGRectGetMaxX(lastView.frame) + 20;
             CGFloat y = lastView.y;
             if (!lastView) {
@@ -104,9 +104,9 @@
                 x = 20;
                 y = CGRectGetMaxY(lastView.frame) + 15;
             }
-            specificationButton.frame = CGRectMake(x, y, w, 40);
+            specificationButton.frame = CGRectMake(x, y, w, 38);
             specificationButton.layer.masksToBounds = YES;
-            specificationButton.layer.cornerRadius = 10;
+            specificationButton.layer.cornerRadius = 4;
             specificationButton.layer.borderColor = DRDefaultColor.CGColor;
             if (i == 0) {
                 self.selectedSpecificationButton = specificationButton;
@@ -138,6 +138,13 @@
                 specificationNameLabel.textColor = DRDefaultColor;
             }
         }
+    }else
+    {
+        NSString * imageUrlStr = [NSString stringWithFormat:@"%@%@%@",baseUrl,self.goodModel.spreadPics,smallPicUrl];
+        [goodImageView sd_setImageWithURL:[NSURL URLWithString:imageUrlStr] placeholderImage:[UIImage imageNamed:@"placeholder"]];
+        
+        goodPriceLabel.text =[NSString stringWithFormat:@"¥%@", [DRTool formatFloat:[self.goodModel.price doubleValue] / 100]];
+        stockLabel.text = [NSString stringWithFormat:@"库存%@", self.goodModel.plusCount];
     }
     //分割线
     UIView * line2 = [[UIView alloc]initWithFrame:CGRectMake(0, CGRectGetMaxY(lastView.frame) + 15, self.width, 1)];
@@ -164,14 +171,20 @@
     numberView.frame = CGRectMake(numberViewX, numberViewY, numberViewW, numberViewH);
     numberView.delegate = self;
     numberView.textField.font = [UIFont systemFontOfSize:DRGetFontSize(22)];
-    //plusCount
-    DRGoodSpecificationModel * specificationModel = _goodModel.specifications[0];
-    numberView.max = [specificationModel.storeCount intValue];//最大
-    numberView.min = 1;
     numberView.textField.placeholder = [NSString stringWithFormat:@"%d", 1];
     numberView.textField.text = @"1";
     [scrollView addSubview:numberView];
     
+    if (self.goodModel.specifications.count > 0) {
+        //plusCount
+        DRGoodSpecificationModel * specificationModel = _goodModel.specifications[0];
+        numberView.max = [specificationModel.storeCount intValue];//最大
+        numberView.min = 1;
+    }else
+    {
+        numberView.max = [self.goodModel.plusCount intValue];//最大
+        numberView.min = 1;
+    }
     //分割线
     UIView * line3 = [[UIView alloc]initWithFrame:CGRectMake(0, CGRectGetMaxY(line2.frame) + 57, self.width, 1)];
     line3.backgroundColor = DRWhiteLineColor;
@@ -273,8 +286,16 @@
     {
         isBuy = YES;
     }
-    if (_delegate && [_delegate respondsToSelector:@selector(goodSelectedNumber:price:isBuy:)]) {
-        [_delegate goodSelectedNumber:number price:[price doubleValue] isBuy:isBuy];
+    if (DRArrayIsEmpty(_goodModel.specifications)) {
+        if (_delegate && [_delegate respondsToSelector:@selector(goodSelectedNumber:price:isBuy:specificationModel:)]) {
+            [_delegate goodSelectedNumber:number price:[price doubleValue] isBuy:isBuy specificationModel:nil];
+        }
+    }else
+    {
+        DRGoodSpecificationModel * specificationModel = _goodModel.specifications[self.selectedSpecificationButton.tag];
+        if (_delegate && [_delegate respondsToSelector:@selector(goodSelectedNumber:price:isBuy:specificationModel:)]) {
+            [_delegate goodSelectedNumber:number price:[price doubleValue] isBuy:isBuy specificationModel:specificationModel];
+        }
     }
     
     [self removeFromSuperview];

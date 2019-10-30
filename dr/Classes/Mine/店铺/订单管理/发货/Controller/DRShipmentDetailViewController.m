@@ -8,6 +8,7 @@
 
 #import "DRShipmentDetailViewController.h"
 #import "DRChatViewController.h"
+#import "DRGoodDetailViewController.h"
 #import "DRShipmentConfirmViewController.h"
 #import "DRShipmentGrouponConfirmViewController.h"
 #import "DRSellerLogisticsViewController.h"
@@ -766,23 +767,32 @@
 
 - (void)tableView:(UITableView *)tableView didSelectRowAtIndexPath:(NSIndexPath *)indexPath
 {
-    int statusInt = [self.shipmentModel.status intValue];
-    if (statusInt == 5) {
-        if ([self.shipmentModel.orderType intValue] == 2) {//团购
-            if (indexPath.section == 1) {
-                DRShipmentGroupon *shipmentGroupon = self.shipmentModel.groupItemDetailList[indexPath.row];
-                NSString * nickName;
-                if (DRStringIsEmpty(shipmentGroupon.user.nickName)) {
-                    nickName = shipmentGroupon.user.loginName;
-                }else
-                {
-                    nickName = shipmentGroupon.user.nickName;
+    UITableViewCell * cell = [tableView cellForRowAtIndexPath:indexPath];
+    if ([cell isKindOfClass:[DRShipmentGoodTableViewCell class]]) {
+        DRGoodDetailViewController * goodVC = [[DRGoodDetailViewController alloc] init];
+        DROrderItemDetailModel * detail = self.shipmentModel.order.detail[indexPath.row];
+        goodVC.goodId = detail.goods.id;
+        [self.navigationController pushViewController:goodVC animated:YES];
+    }else
+    {
+        int statusInt = [self.shipmentModel.status intValue];
+        if (statusInt == 5) {
+            if ([self.shipmentModel.orderType intValue] == 2) {//团购
+                if (indexPath.section == 1) {
+                    DRShipmentGroupon *shipmentGroupon = self.shipmentModel.groupItemDetailList[indexPath.row];
+                    NSString * nickName;
+                    if (DRStringIsEmpty(shipmentGroupon.user.nickName)) {
+                        nickName = shipmentGroupon.user.loginName;
+                    }else
+                    {
+                        nickName = shipmentGroupon.user.nickName;
+                    }
+                    DRChatViewController *chatVC = [[DRChatViewController alloc] initWithConversationChatter:shipmentGroupon.user.id conversationType:EMConversationTypeChat];
+                    chatVC.title = nickName;
+                    NSString * imageUrlStr = [NSString stringWithFormat:@"%@%@", baseUrl, shipmentGroupon.user.headImg];
+                    [DRIMTool saveUserProfileWithUsername:shipmentGroupon.user.id forNickName:nickName avatarURLPath:imageUrlStr];
+                    [self.navigationController pushViewController:chatVC animated:YES];
                 }
-                DRChatViewController *chatVC = [[DRChatViewController alloc] initWithConversationChatter:shipmentGroupon.user.id conversationType:EMConversationTypeChat];
-                chatVC.title = nickName;
-                NSString * imageUrlStr = [NSString stringWithFormat:@"%@%@", baseUrl, shipmentGroupon.user.headImg];
-                [DRIMTool saveUserProfileWithUsername:shipmentGroupon.user.id forNickName:nickName avatarURLPath:imageUrlStr];
-                [self.navigationController pushViewController:chatVC animated:YES];
             }
         }
     }

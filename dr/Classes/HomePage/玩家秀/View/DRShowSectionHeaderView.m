@@ -215,7 +215,7 @@
     self.nickNameButton.frame = CGRectMake(CGRectGetMaxX(self.avatarImageView.frame) + 7, 9 + 7, nickNameButtonSize.width, nickNameButtonSize.height);
     
     CGSize timeLabelSize = [self.timeLabel.text sizeWithLabelFont:self.timeLabel.font];
-    self.timeLabel.frame = CGRectMake(self.nickNameButton.x, CGRectGetMaxY(self.nickNameButton.frame) + 7, timeLabelSize.width, timeLabelSize.height);
+    self.timeLabel.frame = CGRectMake(self.nickNameButton.x, CGRectGetMaxY(self.nickNameButton.frame) + 3, timeLabelSize.width, timeLabelSize.height);
 
     self.titleLabel.frame = _model.titleLabelF;
     self.detailLabel.frame = _model.detailLabelF;

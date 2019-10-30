@@ -14,6 +14,7 @@
 #import "DRShoppingCarShopTableViewCell.h"
 #import "DRShoppingCarTableViewCell.h"
 #import "DRShoppingCarRecommendTableViewCell.h"
+#import "DRShoppingCarCache.h"
 
 @interface DRShoppingCarViewController ()<UITableViewDelegate, UITableViewDataSource, ShoppingCarShopTableViewCellDelegate, ShoppingCarTableViewCellDelegate, ShoppingCarBottomViewDelegate>
 
@@ -69,7 +70,7 @@
 }
 - (void)upData
 {
-    self.dataArray = [NSMutableArray arrayWithArray:[DRUserDefaultTool getShoppingCarGoods]];
+    self.dataArray = [NSMutableArray arrayWithArray:[DRShoppingCarCache getShoppingCarGoods]];
     self.navigationItem.rightBarButtonItem.title = @"编辑";
     self.isEdit = NO;
     [self.shoppingBottomView updataWithData:self.dataArray isEdit:self.isEdit];
@@ -78,7 +79,7 @@
 }
 - (void)setupChilds
 {
-    self.dataArray = [NSMutableArray arrayWithArray:[DRUserDefaultTool getShoppingCarGoods]];
+    self.dataArray = [NSMutableArray arrayWithArray:[DRShoppingCarCache getShoppingCarGoods]];
     //编辑按钮
     self.navigationItem.rightBarButtonItem = [[UIBarButtonItem alloc]initWithTitle:@"编辑" style:UIBarButtonItemStylePlain target:self action:@selector(editDidClick:)];
     
@@ -240,10 +241,10 @@
         //删除数据
         DRShoppingCarShopModel * carShopModel = self.dataArray[indexPath.section];
         DRShoppingCarGoodModel * carGoodModel = carShopModel.goodArr[indexPath.row - 1];
-        [DRUserDefaultTool deleteGoodInShoppingCarWithGood:carGoodModel.goodModel];
+        [DRShoppingCarCache deleteGoodInShoppingCarWithCarGoodModel:carGoodModel];
         
         //刷新数据
-        self.dataArray = [NSMutableArray arrayWithArray:[DRUserDefaultTool getShoppingCarGoods]];
+        self.dataArray = [NSMutableArray arrayWithArray:[DRShoppingCarCache getShoppingCarGoods]];
 
         if (carShopModel.goodArr.count == 1) {
              [self.tableView reloadData];
@@ -272,7 +273,7 @@
 
 - (void)upDataGoodTableViewCell:(DRShoppingCarTableViewCell *)cell isSelected:(BOOL)isSelected currentNumber:(NSString *)number
 {
-    self.dataArray = [NSMutableArray arrayWithArray:[DRUserDefaultTool getShoppingCarGoods]];
+    self.dataArray = [NSMutableArray arrayWithArray:[DRShoppingCarCache getShoppingCarGoods]];
     
     NSIndexPath * indexPath = [self.tableView indexPathForCell:cell];
     if (indexPath == nil) {
@@ -340,7 +341,7 @@
             carShopModel_.shopModel = carShopModel.shopModel;
             for (DRShoppingCarGoodModel * carGoodModel in carShopModel.goodArr) {
                 if (carGoodModel.selected) {
-                    [carShopModel_.goodDic setValue:carGoodModel forKey:carGoodModel.goodModel.id];
+                    [carShopModel_.goodDic setValue:carGoodModel forKey:carGoodModel.carGoodId];
                     [carShopModel_.goodArr addObject:carGoodModel];
                 }
             }
@@ -361,7 +362,7 @@
     for (DRShoppingCarShopModel * carShopModel in self.dataArray) {
         for (DRShoppingCarGoodModel * carGoodModel in carShopModel.goodArr) {
             if (carGoodModel.selected) {
-                [DRUserDefaultTool deleteGoodInShoppingCarWithGood:carGoodModel.goodModel];
+                [DRShoppingCarCache deleteGoodInShoppingCarWithCarGoodModel:carGoodModel];
             }
         }
     }

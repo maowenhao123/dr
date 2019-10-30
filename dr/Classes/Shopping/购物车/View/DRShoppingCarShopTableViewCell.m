@@ -7,6 +7,7 @@
 //
 
 #import "DRShoppingCarShopTableViewCell.h"
+#import "DRShoppingCarCache.h"
 
 @interface DRShoppingCarShopTableViewCell ()
 
@@ -79,16 +80,16 @@
 {
     _model = model;
     //赋值
+    self.selectedButton.selected = _model.isSelected;
     NSString * avatarUrlStr = [NSString stringWithFormat:@"%@%@",baseUrl,_model.shopModel.storeImg];
     [self.logoImageView sd_setImageWithURL:[NSURL URLWithString:avatarUrlStr] placeholderImage:[UIImage imageNamed:@"avatar_placeholder"]];
-    self.selectedButton.selected = _model.isSelected;
     self.shopNameLabel.text = _model.shopModel.storeName;
 }
 
 - (void)selectedButtonDidClick:(UIButton *)button
 {
     BOOL selected = !self.selectedButton.selected;
-    [DRUserDefaultTool upDataShopSelectedInShoppingCarWithShopId:self.model.shopModel.id selected:selected];
+    [DRShoppingCarCache upDataShopSelectedInShoppingCarWithShopId:self.model.shopModel.id selected:selected];
     if (_delegate && [_delegate respondsToSelector:@selector(upDataShopTableViewCell:isSelected:)]) {
         [_delegate upDataShopTableViewCell:self isSelected:selected];
     }

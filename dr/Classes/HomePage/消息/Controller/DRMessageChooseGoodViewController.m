@@ -11,6 +11,7 @@
 #import "UITableView+DRNoData.h"
 #import "DRShoppingCarShopModel.h"
 #import "DROrderModel.h"
+#import "DRShoppingCarCache.h"
 
 @interface DRMessageChooseGoodViewController ()<UITableViewDataSource, UITableViewDelegate, MessageChooseGoodTableViewCellDelegate>
 
@@ -215,7 +216,7 @@
 
 - (void)getShoppingCarGoodData
 {
-    NSMutableArray * shopDataArray = [[NSMutableArray arrayWithArray:[DRUserDefaultTool getShoppingCarGoods]] mutableCopy];
+    NSMutableArray * shopDataArray = [[NSMutableArray arrayWithArray:[DRShoppingCarCache getShoppingCarGoods]] mutableCopy];
     NSMutableArray * goodDataArray = [NSMutableArray array];
     for (DRShoppingCarShopModel * carShopModel in shopDataArray) {
         for (DRShoppingCarGoodModel * carGoodModel in carShopModel.goodArr) {

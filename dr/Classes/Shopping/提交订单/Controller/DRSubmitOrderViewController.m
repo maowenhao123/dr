@@ -17,6 +17,7 @@
 #import "DRSubmitOrderGoodFooterView.h"
 #import "DRSubmitOrderGoodTableViewCell.h"
 #import "DRShoppingCarShopModel.h"
+#import "DRShoppingCarCache.h"
 
 @interface DRSubmitOrderViewController ()<UITableViewDelegate, UITableViewDataSource, ManageAddressViewControllerDelegate, ChooseRedPacketViewControllerDelegate>
 
@@ -63,7 +64,11 @@
                                         @"purchaseCount":[NSNumber numberWithInt:carGoodModel.count],
                                         @"goodsId":carGoodModel.goodModel.id,
                                         };
-                [items addObject:item];
+                NSMutableDictionary *item_mu = [NSMutableDictionary dictionaryWithDictionary:item];
+                if (!DRObjectIsEmpty(carGoodModel.specificationModel)) {
+                    [item_mu setObject:carGoodModel.specificationModel.id forKey:@"specificationId"];
+                }
+                [items addObject:item_mu];
             }
         }
         
@@ -396,10 +401,14 @@
         for (DRStoreOrderModel * storeOrderModel in self.storeOrderList) {
             for (DROrderItemDetailModel * orderItemDetailModel in storeOrderModel.detail) {
                 NSDictionary * item = @{
-                                      @"purchaseCount":orderItemDetailModel.purchaseCount,
+                                        @"purchaseCount":orderItemDetailModel.purchaseCount,
                                         @"goodsId":orderItemDetailModel.goods.id,
                                         };
-                [items addObject:item];
+                NSMutableDictionary *item_mu = [NSMutableDictionary dictionaryWithDictionary:item];
+                if (!DRObjectIsEmpty(orderItemDetailModel.specification)) {
+                    [item_mu setObject:orderItemDetailModel.specification.id forKey:@"specificationId"];
+                }
+                [items addObject:item_mu];
             }
         }
         NSDictionary * order = @{
@@ -460,7 +469,7 @@
                     }
                 }
                 for (DRShoppingCarGoodModel * carGoodModel in goodArray) {
-                    [DRUserDefaultTool deleteGoodInShoppingCarWithGood:carGoodModel.goodModel];
+                    [DRShoppingCarCache deleteGoodInShoppingCarWithCarGoodModel:carGoodModel];
                 }
                 [[NSNotificationCenter defaultCenter] postNotificationName:@"upSataShoppingCar" object:nil];
             }

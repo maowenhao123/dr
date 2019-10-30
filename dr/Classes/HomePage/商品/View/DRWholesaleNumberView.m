@@ -24,7 +24,7 @@
 
 @implementation DRWholesaleNumberView
 
-- (instancetype)initWithFrame:(CGRect)frame goodModel:(DRGoodModel *)goodModel type:(int) type
+- (instancetype)initWithFrame:(CGRect)frame goodModel:(DRGoodModel *)goodModel type:(int)type
 {
     self = [super initWithFrame:frame];
     if (self) {
@@ -294,8 +294,8 @@
         isBuy = YES;
     }
     price = [price stringByReplacingOccurrencesOfString:@"¥" withString:@""];
-    if (_delegate && [_delegate respondsToSelector:@selector(goodSelectedNumber:price:isBuy:)]) {
-        [_delegate goodSelectedNumber:number price:[price doubleValue] isBuy:isBuy];
+    if (_delegate && [_delegate respondsToSelector:@selector(goodSelectedNumber:price:isBuy:specificationModel:)]) {
+        [_delegate goodSelectedNumber:number price:[price doubleValue] isBuy:isBuy specificationModel:nil];
     }
     
     [self removeFromSuperview];

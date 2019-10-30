@@ -94,6 +94,9 @@
                 selectedCount += carGoodModel.count;
                 if ([DRTool showDiscountPriceWithGoodModel:carGoodModel.goodModel]) {
                     totalPrice += [carGoodModel.goodModel.discountPrice doubleValue] / 100 * carGoodModel.count;
+                }else if (!DRObjectIsEmpty(carGoodModel.specificationModel))
+                {
+                    totalPrice += [carGoodModel.specificationModel.price doubleValue] / 100 * carGoodModel.count;
                 }else
                 {
                     totalPrice += [carGoodModel.goodModel.price doubleValue] / 100 * carGoodModel.count;

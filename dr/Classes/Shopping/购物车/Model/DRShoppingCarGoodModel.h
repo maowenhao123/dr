@@ -14,5 +14,7 @@
 @property (nonatomic,assign) long long creatTime;//添加进购物车的时间
 @property (nonatomic,assign) int count;//购物车中该商品的数量
 @property (nonatomic,strong) DRGoodModel *goodModel;
+@property (nonatomic,strong) DRGoodSpecificationModel *specificationModel;
+@property (nonatomic,copy) NSString * carGoodId;
 
 @end

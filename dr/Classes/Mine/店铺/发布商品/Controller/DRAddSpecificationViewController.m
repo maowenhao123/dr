@@ -115,7 +115,13 @@
             [self.addImageView setImagesWithImage:@[self.goodSpecificationModel.pic]];
         } else
         {
-            NSString * imageUrlStr = [NSString stringWithFormat:@"%@%@%@", baseUrl, self.goodSpecificationModel.picUrl,smallPicUrl];
+            NSString * imageUrlStr = @"";
+            if ([self.goodSpecificationModel.picUrl containsString:@"http"]) {
+                imageUrlStr = self.goodSpecificationModel.picUrl;
+            }else
+            {
+                imageUrlStr = [NSString stringWithFormat:@"%@%@%@", baseUrl, self.goodSpecificationModel.picUrl, smallPicUrl];
+            }
             [self.addImageView setImagesWithImage:@[imageUrlStr]];
         }
     }
@@ -150,8 +156,14 @@
     specificationModel.name = self.nameTF.text;
     specificationModel.price = self.priceTF.text;
     specificationModel.storeCount = self.countTF.text;
-    specificationModel.pic = self.addImageView.images.firstObject;
+    if ([self.addImageView.images.firstObject isKindOfClass:[UIImage class]]) {
+        specificationModel.pic = self.addImageView.images.firstObject;
+    }else
+    {
+        specificationModel.picUrl = self.addImageView.images.firstObject;
+    }
     if (self.goodSpecificationModel) {
+        specificationModel.index = self.goodSpecificationModel.index;
         if (_delegate && [_delegate respondsToSelector:@selector(editSpecificationWithSpecificationModel:)]) {
             [_delegate editSpecificationWithSpecificationModel:specificationModel];
         }

@@ -136,9 +136,16 @@
     self.indexLabel.text = [NSString stringWithFormat:@"规格%ld", _goodSpecificationModel.index + 1];
     if (_goodSpecificationModel.pic) {
         self.goodImageView.image = _goodSpecificationModel.pic;
-    } else
+    }else
     {
-        NSString * imageUrlStr = [NSString stringWithFormat:@"%@%@%@", baseUrl, _goodSpecificationModel.picUrl,smallPicUrl];
+        NSString * picUrl = [NSString stringWithFormat:@"%@", _goodSpecificationModel.picUrl];
+        NSString * imageUrlStr = @"";
+        if ([picUrl containsString:@"http"]) {
+            imageUrlStr = picUrl;
+        }else
+        {
+            imageUrlStr = [NSString stringWithFormat:@"%@%@%@", baseUrl, picUrl, smallPicUrl];
+        }
         [self.goodImageView sd_setImageWithURL:[NSURL URLWithString:imageUrlStr] placeholderImage:[UIImage imageNamed:@"placeholder"]];
     }
     self.goodNameLabel.text = [NSString stringWithFormat:@"名称：%@", _goodSpecificationModel.name];

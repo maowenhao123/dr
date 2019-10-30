@@ -62,7 +62,11 @@
         DRLog(@"%@",json);
         if (SUCCESS) {
             DRGoodModel * goodModel = [DRGoodModel mj_objectWithKeyValues:json[@"goods"]];
-            goodModel.specifications = [DRGoodSpecificationModel mj_objectArrayWithKeyValuesArray:json[@"goods"][@"specifications"]];
+            NSArray * specifications = [DRGoodSpecificationModel mj_objectArrayWithKeyValuesArray:json[@"goods"][@"specifications"]];
+            for (DRGoodSpecificationModel * specificationModel in specifications) {
+                specificationModel.price = [NSString stringWithFormat:@"%@", [DRTool formatFloat:[specificationModel.price doubleValue] / 100]];
+            }
+            goodModel.specifications = specifications;
             self.goodModel = goodModel;
             [self setData];
         }else

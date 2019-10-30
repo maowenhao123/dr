@@ -289,11 +289,6 @@
 //判断是否设置邮费
 - (void)judgeMailWithGoodId:(NSString *)goodId
 {
-    DRPublishGoodViewController * addGoodVC = [[DRPublishGoodViewController alloc] init];
-    addGoodVC.goodId = goodId;
-    [self.navigationController pushViewController:addGoodVC animated:YES];
-    return;
-    
     NSDictionary *bodyDic = @{
                               
                               };

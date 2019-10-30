@@ -15,5 +15,6 @@
 @property (nonatomic,strong) NSNumber *priceCount;//总价格
 @property (nonatomic,strong) NSNumber *commentStatus;//0 为评价  1 已评价
 @property (nonatomic,strong) NSNumber *refundStatus;//0 未退款  10 待审核退款 20 审核通过 -1 驳回
+@property (nonatomic,strong) DRGoodSpecificationModel *specification;
 
 @end

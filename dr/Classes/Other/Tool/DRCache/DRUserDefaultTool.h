@@ -27,13 +27,4 @@
 + (DRMyShopModel *)myShopModel;//取出我的店铺信息
 + (void)removeShop;
 
-+ (void)addGoodInShoppingCarWithGood:(DRGoodModel *)goodModel count:(int)count;//把商品存入购物车
-+ (void)upDataGoodInShoppingCarWithGood:(DRGoodModel *)goodModel count:(int)count;//更新购物车中商品数量
-+ (void)deleteGoodInShoppingCarWithGood:(DRGoodModel *)goodModel;//丛购物车中删除商品
-+ (void)reduceGoodInShoppingCarWithGood:(DRGoodModel *)goodModel;//丛购物车中减少单商品
-+ (void)upDataShopSelectedInShoppingCarWithShopId:(NSString *)shopId selected:(BOOL)selected;//跟新购物车里店铺选中状态
-+ (void)upDataGoodSelectedInShoppingCarWithGood:(DRGoodModel *)goodModel selected:(BOOL)selected;//跟新购物车里商品选中状态
-+ (NSArray *)getShoppingCarGoods;//获取购物车中的商品
-+ (NSInteger)getShoppingCarGoodCount;//获取购物车中的商品数量
-
 @end

@@ -93,9 +93,6 @@ static NSString *kConversationChatter = @"ConversationChatter";
     [self setupUnreadMessageCount];
     
     //评分
-    [self addAppReview];
-    return;
-    
     long long currentTimeSp = [[NSDate date] timeIntervalSince1970];
     long long lastGradeTimeSp = [[[NSUserDefaults standardUserDefaults] objectForKey:@"lastGradeTimeSp"] longLongValue];
     if (currentTimeSp - lastGradeTimeSp > 7 * 24 * 60 * 60) {

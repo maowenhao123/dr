@@ -12,13 +12,13 @@ NS_ASSUME_NONNULL_BEGIN
 
 @protocol SingleSpecificationViewDelegate <NSObject>
 
-- (void)goodSelectedNumber:(int)number price:(float)price isBuy:(BOOL)isBuy;
+- (void)goodSelectedNumber:(int)number price:(float)price isBuy:(BOOL)isBuy specificationModel:(DRGoodSpecificationModel *)specificationModel;
 
 @end
 
 @interface DRSingleSpecificationView : UIView
 
-- (instancetype)initWithFrame:(CGRect)frame goodModel:(DRGoodModel *)goodModel type:(int) type;
+- (instancetype)initWithFrame:(CGRect)frame goodModel:(DRGoodModel *)goodModel type:(int)type;
 /**
  协议
  */

@@ -39,14 +39,14 @@
  */
 - (void)postWithHeadDic:(NSDictionary *)headDic bodyDic:(NSDictionary *)bodyDic  success:(void (^)(id json))success failure:(void (^)(NSError *error))failure
 {
-    NSMutableDictionary *bodyDic_mu = [NSMutableDictionary dictionaryWithDictionary:bodyDic];
-    [bodyDic_mu setObject:@"IOS" forKey:@"clien"];
+    NSMutableDictionary *headDic_mu = [NSMutableDictionary dictionaryWithDictionary:headDic];
+    [headDic_mu setObject:@"IOS" forKey:@"clien"];
     NSString *currentVersion = [NSBundle mainBundle].infoDictionary[@"CFBundleShortVersionString"];
-    [bodyDic_mu setObject:currentVersion forKey:@"version"];
+    [headDic_mu setObject:currentVersion forKey:@"version"];
     
     // 参数
-    id headJson = [headDic JSONFragment];
-    id bodyJson = [bodyDic_mu JSONFragment];
+    id headJson = [headDic_mu JSONFragment];
+    id bodyJson = [bodyDic JSONFragment];
     //网址
     NSURL *url = [NSURL URLWithString:mcpUrl];
     //设置NSMutableURLRequest

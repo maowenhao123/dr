@@ -14,6 +14,7 @@
 		1D0DB5BB22E845D1008E7B97 /* DRAddSpecificationViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 1D0DB5BA22E845D1008E7B97 /* DRAddSpecificationViewController.m */; };
 		1D0DB5BE22E845FB008E7B97 /* DRSpecificationTableViewCell.m in Sources */ = {isa = PBXBuildFile; fileRef = 1D0DB5BD22E845FB008E7B97 /* DRSpecificationTableViewCell.m */; };
 		1D0DB5C122E84FF5008E7B97 /* DRGoodSpecificationModel.m in Sources */ = {isa = PBXBuildFile; fileRef = 1D0DB5BF22E84FF5008E7B97 /* DRGoodSpecificationModel.m */; };
+		1D0F3D8E23695A5000EDA647 /* DRShoppingCarCache.m in Sources */ = {isa = PBXBuildFile; fileRef = 1D0F3D8D23695A5000EDA647 /* DRShoppingCarCache.m */; };
 		1D7C898D2305426A00D6F2B2 /* DRIdentityAuditViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 1D7C898C2305426A00D6F2B2 /* DRIdentityAuditViewController.m */; };
 		1D8D1A2822E80B02009185B2 /* DRPublishGoodMessageView.m in Sources */ = {isa = PBXBuildFile; fileRef = 1D8D1A2722E80B02009185B2 /* DRPublishGoodMessageView.m */; };
 		1DABCE5222FAA582009C5D33 /* DRShoppingCarRecommendTableViewCell.m in Sources */ = {isa = PBXBuildFile; fileRef = 1DABCE5122FAA582009C5D33 /* DRShoppingCarRecommendTableViewCell.m */; };
@@ -711,6 +712,8 @@
 		1D0DB5BD22E845FB008E7B97 /* DRSpecificationTableViewCell.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = DRSpecificationTableViewCell.m; sourceTree = "<group>"; };
 		1D0DB5BF22E84FF5008E7B97 /* DRGoodSpecificationModel.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = DRGoodSpecificationModel.m; sourceTree = "<group>"; };
 		1D0DB5C022E84FF5008E7B97 /* DRGoodSpecificationModel.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = DRGoodSpecificationModel.h; sourceTree = "<group>"; };
+		1D0F3D8C23695A5000EDA647 /* DRShoppingCarCache.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = DRShoppingCarCache.h; sourceTree = "<group>"; };
+		1D0F3D8D23695A5000EDA647 /* DRShoppingCarCache.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = DRShoppingCarCache.m; sourceTree = "<group>"; };
 		1D76804722DC0A72007C1154 /* HealthKit.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = HealthKit.framework; path = System/Library/Frameworks/HealthKit.framework; sourceTree = SDKROOT; };
 		1D7C898B2305426A00D6F2B2 /* DRIdentityAuditViewController.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = DRIdentityAuditViewController.h; sourceTree = "<group>"; };
 		1D7C898C2305426A00D6F2B2 /* DRIdentityAuditViewController.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = DRIdentityAuditViewController.m; sourceTree = "<group>"; };
@@ -4599,9 +4602,11 @@
 			path = DRValidateTool;
 			sourceTree = "<group>";
 		};
-		AAC5F92C1EA05BA10051C81B /* DRUserDefaultTool */ = {
+		AAC5F92C1EA05BA10051C81B /* DRCache */ = {
 			isa = PBXGroup;
 			children = (
+				1D0F3D8C23695A5000EDA647 /* DRShoppingCarCache.h */,
+				1D0F3D8D23695A5000EDA647 /* DRShoppingCarCache.m */,
 				AAC5F92D1EA05BB50051C81B /* DRUserDefaultTool.h */,
 				AAC5F92E1EA05BB50051C81B /* DRUserDefaultTool.m */,
 				AA721F181ED669EA00324715 /* DRSearchTool.h */,
@@ -4609,7 +4614,7 @@
 				AA91921D204E6F7C00060A83 /* DRIMTool.h */,
 				AA91921E204E6F7C00060A83 /* DRIMTool.m */,
 			);
-			path = DRUserDefaultTool;
+			path = DRCache;
 			sourceTree = "<group>";
 		};
 		AAE38F111FCD327000F49104 /* DRShareTool */ = {
@@ -5644,8 +5649,8 @@
 				AAF439041FAFF8A500CA31DE /* 资金明细 */,
 				AAF4395E1FAFFAAE00CA31DE /* 订单 */,
 				AAF4393A1FAFF96E00CA31DE /* 我的关注 */,
-				AA8DF8EC2192CB8000EABD17 /* 新建店铺 */,
 				AAF439B01FAFFEB100CA31DE /* 店铺 */,
+				AA8DF8EC2192CB8000EABD17 /* 新建店铺 */,
 			);
 			path = Mine;
 			sourceTree = "<group>";
@@ -5669,7 +5674,7 @@
 			children = (
 				AAC5F7641E9DB53E0051C81B /* DRTool */,
 				AAC5F7681E9DB59D0051C81B /* DRHttpTool */,
-				AAC5F92C1EA05BA10051C81B /* DRUserDefaultTool */,
+				AAC5F92C1EA05BA10051C81B /* DRCache */,
 				AAC5F9281EA05A5D0051C81B /* DRValidateTool */,
 				AAE38F111FCD327000F49104 /* DRShareTool */,
 			);
@@ -6612,6 +6617,7 @@
 				AA27E6EB21B7AA1D0067F72B /* EaseUI.m in Sources */,
 				AAAFE83E204652E80066E6B1 /* DRGoodCommentCollectionReusableView.m in Sources */,
 				AA23806E214B973200BC47BB /* JSONValueTransformer.m in Sources */,
+				1D0F3D8E23695A5000EDA647 /* DRShoppingCarCache.m in Sources */,
 				A9827164206CD8150032A672 /* DROrderListHeaderView.m in Sources */,
 				AAA7830720B2ACCB003B6B09 /* PGDatePicker+DateHourMinuteSecond.m in Sources */,
 				AAC5F7D61E9DF4A10051C81B /* MJExtensionConst.m in Sources */,

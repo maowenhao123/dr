@@ -29,6 +29,7 @@
 #import "DRVideoFloatingWindow.h"
 #import "DRDateTool.h"
 #import "DRIMTool.h"
+#import "DRShoppingCarCache.h"
 
 NSString * const GoodCommentHeaderId = @"GoodCommentHeaderId";
 NSString * const GoodTitleHeaderId = @"GoodTitleHeaderId";
@@ -58,7 +59,8 @@ NSString * const GoodDetailRecommendGoodCellId = @"GoodDetailRecommendGoodCellId
 @property (nonatomic,strong) DRGrouponModel *grouponModel;
 @property (nonatomic,strong) id groupJson;
 @property (nonatomic, strong) NSArray * commentDataArray;
-@property (nonatomic,strong) NSArray *goodDataArray;
+@property (nonatomic,strong) NSArray *shopGoodsArray;
+@property (nonatomic,strong) NSArray *similarGoodArray;
 @property (nonatomic, weak) MJRefreshGifHeader *headerView;
 @property (nonatomic,assign) BOOL isAttention;
 @property (nonatomic, strong) NSTimer *timer;
@@ -112,8 +114,6 @@ NSString * const GoodDetailRecommendGoodCellId = @"GoodDetailRecommendGoodCellId
     }else
     {
         [self getGoodData];
-        [self getCommentData];
-        [self getAttentionData];
     }
     if (@available(iOS 11.0, *)) {
         self.collectionView.contentInsetAdjustmentBehavior = UIScrollViewContentInsetAdjustmentNever;
@@ -140,8 +140,6 @@ NSString * const GoodDetailRecommendGoodCellId = @"GoodDetailRecommendGoodCellId
             self.grouponModel = [DRGrouponModel mj_objectWithKeyValues:json[@"group"]];
             self.goodId = self.grouponModel.goods.id;
             [self getGoodData];
-            [self getCommentData];
-            [self getAttentionData];
         }else
         {
             ShowErrorView
@@ -150,6 +148,7 @@ NSString * const GoodDetailRecommendGoodCellId = @"GoodDetailRecommendGoodCellId
         DRLog(@"error:%@",error);
     }];
 }
+
 - (void)getGoodData
 {
     if (!self.goodId) {
@@ -165,6 +164,7 @@ NSString * const GoodDetailRecommendGoodCellId = @"GoodDetailRecommendGoodCellId
     waitingView
     [[DRHttpTool shareInstance] postWithTarget:self headDic:headDic bodyDic:bodyDic success:^(id json) {
         DRLog(@"%@",json);
+        [self.headerView endRefreshing];
         [MBProgressHUD hideHUDForView:self.view];
         if (SUCCESS) {
             DRGoodModel * goodModel = [DRGoodModel mj_objectWithKeyValues:json[@"goods"]];
@@ -173,16 +173,21 @@ NSString * const GoodDetailRecommendGoodCellId = @"GoodDetailRecommendGoodCellId
             if (self.grouponModel) {
                 self.grouponModel.goods = goodModel;
             }
-            [self getRecommendData];
+            [self getCommentData];
+            [self getAttentionData];
+//            [self getShopGoodData];
+//            [self getSimilarGoodData];
         }else
         {
             ShowErrorView
         }
     } failure:^(NSError *error) {
+        [self.headerView endRefreshing];
         [MBProgressHUD hideHUDForView:self.view];
         DRLog(@"error:%@",error);
     }];
 }
+
 - (void)getAttentionData
 {
     if (!Token || !UserId || !self.goodId) {
@@ -218,6 +223,7 @@ NSString * const GoodDetailRecommendGoodCellId = @"GoodDetailRecommendGoodCellId
         DRLog(@"error:%@",error);
     }];
 }
+
 - (void)attentionButonDidClick
 {
     if (!Token || !UserId || !self.goodId) {
@@ -258,6 +264,7 @@ NSString * const GoodDetailRecommendGoodCellId = @"GoodDetailRecommendGoodCellId
         DRLog(@"error:%@",error);
     }];
 }
+
 - (void)grouponButtonDidClick
 {
     if(!UserId || !Token)
@@ -284,6 +291,7 @@ NSString * const GoodDetailRecommendGoodCellId = @"GoodDetailRecommendGoodCellId
         DRLog(@"error:%@",error);
     }];
 }
+
 - (void)getCommentData
 {
     if (!self.goodId) {
@@ -303,53 +311,51 @@ NSString * const GoodDetailRecommendGoodCellId = @"GoodDetailRecommendGoodCellId
         if (SUCCESS) {
             self.commentDataArray = [DRGoodCommentModel mj_objectArrayWithKeyValuesArray:json[@"list"]];
             [self.collectionView reloadSections:[NSIndexSet indexSetWithIndex:1]];//刷新数据
-        }else
-        {
-            ShowErrorView
-        }
-        //结束刷新
-        if ([self.headerView isRefreshing]) {
-            [self.headerView endRefreshing];
         }
     } failure:^(NSError *error) {
         DRLog(@"error:%@",error);
-        //结束刷新
-        if ([self.headerView isRefreshing]) {
-            [self.headerView endRefreshing];
-        }
     }];
 }
-- (void)getRecommendData
+
+- (void)getShopGoodData
 {
     if (!self.goodId) {
         return;
     }
-    NSDictionary *bodyDic = @{
-                              };
     
     NSDictionary *headDic = @{
                               @"goodsId": self.goodId,
                               @"cmd": @"GET_SAME_SUBJECT_RECOMMEND_GOODS_LIST",
                               };
     
-    [[DRHttpTool shareInstance] postWithHeadDic:headDic bodyDic:bodyDic success:^(id json) {
+    [[DRHttpTool shareInstance] postWithHeadDic:headDic bodyDic:@{} success:^(id json) {
         if (SUCCESS) {
-            self.goodDataArray = [DRGoodModel mj_objectArrayWithKeyValuesArray:json[@"list"]];
+            self.shopGoodsArray = [DRGoodModel mj_objectArrayWithKeyValuesArray:json[@"list"]];
             [self.collectionView reloadSections:[NSIndexSet indexSetWithIndex:4]];//刷新数据
-        }else
-        {
-            ShowErrorView
-        }
-        //结束刷新
-        if ([self.headerView isRefreshing]) {
-            [self.headerView endRefreshing];
         }
     } failure:^(NSError *error) {
         DRLog(@"error:%@",error);
-        //结束刷新
-        if ([self.headerView isRefreshing]) {
-            [self.headerView endRefreshing];
+    }];
+}
+
+- (void)getSimilarGoodData
+{
+    if (!self.goodId) {
+        return;
+    }
+
+    NSDictionary *headDic = @{
+                              @"goodsId": self.goodId,
+                              @"cmd": @"GET_SAME_STORE_RECOMMEND_GOODS_LIST",
+                              };
+    
+    [[DRHttpTool shareInstance] postWithHeadDic:headDic bodyDic:@{} success:^(id json) {
+        if (SUCCESS) {
+            self.similarGoodArray = [DRGoodModel mj_objectArrayWithKeyValuesArray:json[@"list"]];
+            [self.collectionView reloadSections:[NSIndexSet indexSetWithIndex:5]];//刷新数据
         }
+    } failure:^(NSError *error) {
+        DRLog(@"error:%@",error);
     }];
 }
 #pragma mark - 布局视图
@@ -621,11 +627,11 @@ NSString * const GoodDetailRecommendGoodCellId = @"GoodDetailRecommendGoodCellId
 }
 - (void)setBageText
 {
-    if ([DRUserDefaultTool getShoppingCarGoodCount] > 99) {
+    if ([DRShoppingCarCache getShoppingCarGoodCount] > 99) {
         self.bageLabel.text = @"...";
     }else
     {
-        self.bageLabel.text = [NSString stringWithFormat:@"%ld",(long)[DRUserDefaultTool getShoppingCarGoodCount]];
+        self.bageLabel.text = [NSString stringWithFormat:@"%ld",(long)[DRShoppingCarCache getShoppingCarGoodCount]];
     }
     self.bageLabel.hidden = [self.bageLabel.text isEqualToString:@"0"];
 }
@@ -714,7 +720,8 @@ NSString * const GoodDetailRecommendGoodCellId = @"GoodDetailRecommendGoodCellId
         }
     }
 }
-- (void)goodSelectedNumber:(int)number price:(float)price isBuy:(BOOL)isBuy
+
+- (void)goodSelectedNumber:(int)number price:(float)price isBuy:(BOOL)isBuy specificationModel:(nonnull DRGoodSpecificationModel *)specificationModel
 {
     if (isBuy) {
         if(!UserId || !Token)
@@ -742,6 +749,7 @@ NSString * const GoodDetailRecommendGoodCellId = @"GoodDetailRecommendGoodCellId
         }
         
         carGoodModel.goodModel = self.goodModel;
+        carGoodModel.specificationModel = specificationModel;
         [goodArray addObject:carGoodModel];
         DRSubmitOrderViewController * submitOrderVC = [[DRSubmitOrderViewController alloc] init];
         DRShoppingCarShopModel *carShopModel = [[DRShoppingCarShopModel alloc] init];
@@ -753,7 +761,7 @@ NSString * const GoodDetailRecommendGoodCellId = @"GoodDetailRecommendGoodCellId
     }else
     {
         [MBProgressHUD showSuccess:@"加入购物车成功"];
-        [DRUserDefaultTool addGoodInShoppingCarWithGood:self.goodModel count:number];
+        [DRShoppingCarCache addGoodInShoppingCarWithGood:self.goodModel count:number specificationModel:specificationModel];
         [self setBageText];
         [[NSNotificationCenter defaultCenter] postNotificationName:@"upSataShoppingCar" object:nil];
     }
@@ -924,14 +932,14 @@ NSString * const GoodDetailRecommendGoodCellId = @"GoodDetailRecommendGoodCellId
 #pragma mark - UICollectionViewDelegateFlowLayout
 - (CGFloat)collectionView:(UICollectionView *)collectionView layout:(UICollectionViewLayout *)collectionViewLayout minimumLineSpacingForSectionAtIndex:(NSInteger)section
 {
-    if (section == 4) {
+    if (section == 4 || section == 5) {
         return 5;
     }
     return 0;
 }
 - (CGFloat)collectionView:(UICollectionView *)collectionView layout:(UICollectionViewLayout *)collectionViewLayout minimumInteritemSpacingForSectionAtIndex:(NSInteger)section
 {
-    if (section == 4) {
+    if (section == 4 || section == 5) {
         return 5;
     }
     return 0;
@@ -958,6 +966,10 @@ NSString * const GoodDetailRecommendGoodCellId = @"GoodDetailRecommendGoodCellId
     {
         CGFloat width = (screenWidth - 5) / 2;
         return CGSizeMake(width, width + 75);
+    }else if (indexPath.section == 5)
+    {
+        CGFloat width = (screenWidth - 5) / 2;
+        return CGSizeMake(width, width + 75);
     }
     return CGSizeZero;
 }
@@ -968,7 +980,10 @@ NSString * const GoodDetailRecommendGoodCellId = @"GoodDetailRecommendGoodCellId
     }else if (section == 3 && !DRStringIsEmpty(self.goodModel.detail))
     {
         return CGSizeMake(screenWidth, 9 + 40);
-    }else if (section == 4 && self.goodDataArray.count > 0)
+    }else if (section == 4 && self.shopGoodsArray.count > 0)
+    {
+        return CGSizeMake(screenWidth, 9 + 40);
+    }else if (section == 5 && self.similarGoodArray.count > 0)
     {
         return CGSizeMake(screenWidth, 9 + 40);
     }
@@ -977,8 +992,9 @@ NSString * const GoodDetailRecommendGoodCellId = @"GoodDetailRecommendGoodCellId
 #pragma mark - UICollectionViewDataSource
 - (NSInteger)numberOfSectionsInCollectionView:(UICollectionView *)collectionView
 {
-    return 5;
+    return 6;
 }
+
 - (NSInteger)collectionView:(UICollectionView *)collectionView numberOfItemsInSection:(NSInteger)section
 {
     if (section == 0 || section == 2 || section == 3) {
@@ -988,10 +1004,14 @@ NSString * const GoodDetailRecommendGoodCellId = @"GoodDetailRecommendGoodCellId
         return self.commentDataArray.count;
     }else if (section == 4)
     {
-        return self.goodDataArray.count;
+        return self.shopGoodsArray.count;
+    }else if (section == 5)
+    {
+        return self.similarGoodArray.count;
     }
     return 0;
 }
+
 - (UICollectionViewCell *)collectionView:(UICollectionView *)collectionView cellForItemAtIndexPath:(NSIndexPath *)indexPath
 {
     if (indexPath.section == 0) {
@@ -1018,25 +1038,34 @@ NSString * const GoodDetailRecommendGoodCellId = @"GoodDetailRecommendGoodCellId
     }else if (indexPath.section == 4)
     {
         DRRecommendGoodCollectionViewCell *cell = [collectionView dequeueReusableCellWithReuseIdentifier:GoodDetailRecommendGoodCellId forIndexPath:indexPath];
-        cell.model = self.goodDataArray[indexPath.item];
+        cell.model = self.shopGoodsArray[indexPath.item];
+        return cell;
+    }else if (indexPath.section == 5)
+    {
+        DRRecommendGoodCollectionViewCell *cell = [collectionView dequeueReusableCellWithReuseIdentifier:GoodDetailRecommendGoodCellId forIndexPath:indexPath];
+        cell.model = self.similarGoodArray[indexPath.item];
         return cell;
     }
     return nil;
 }
+
 - (UICollectionReusableView *)collectionView:(UICollectionView *)collectionView viewForSupplementaryElementOfKind:(NSString *)kind atIndexPath:(NSIndexPath *)indexPath
 {
     if (kind == UICollectionElementKindSectionHeader && (indexPath.section == 1 && [self.goodModel.commentCount intValue] > 0)) {
         DRGoodCommentCollectionReusableView *headerView = [collectionView dequeueReusableSupplementaryViewOfKind:kind withReuseIdentifier:GoodCommentId forIndexPath:indexPath];
         headerView.goodModel = self.goodModel;
         return headerView;
-    }else if (kind == UICollectionElementKindSectionHeader && ((indexPath.section == 3 && !DRStringIsEmpty(self.goodModel.detail)) || (indexPath.section == 4 && self.goodDataArray.count > 0)))
+    }else if (kind == UICollectionElementKindSectionHeader && ((indexPath.section == 3 && !DRStringIsEmpty(self.goodModel.detail)) || (indexPath.section == 4 && self.shopGoodsArray.count > 0)  || (indexPath.section == 5 && self.similarGoodArray.count > 0)))
     {
         DRGoodTitleCollectionReusableView *headerView = [collectionView dequeueReusableSupplementaryViewOfKind:kind withReuseIdentifier:GoodTitleHeaderId forIndexPath:indexPath];
         if (indexPath.section == 3 && !DRStringIsEmpty(self.goodModel.detail)) {
             headerView.title = @"—— 商品详情 ——";
-        }else if (indexPath.section == 4 && self.goodDataArray.count > 0)
+        }else if (indexPath.section == 4 && self.shopGoodsArray.count > 0)
         {
-            headerView.title = @"—— 同类推荐 ——";
+            headerView.title = @"—— 同类优选 ——";
+        }else if (indexPath.section == 4 && self.similarGoodArray.count > 0)
+        {
+            headerView.title = @"—— 同店推荐 ——";
         }
         return headerView;
     }
@@ -1047,7 +1076,13 @@ NSString * const GoodDetailRecommendGoodCellId = @"GoodDetailRecommendGoodCellId
 {
     if (indexPath.section == 4) {
         DRGoodDetailViewController * goodVC = [[DRGoodDetailViewController alloc] init];
-        DRGoodModel * goodModel = self.goodDataArray[indexPath.item];
+        DRGoodModel * goodModel = self.shopGoodsArray[indexPath.item];
+        goodVC.goodId = goodModel.id;
+        [self.navigationController pushViewController:goodVC animated:YES];
+    }else if (indexPath.section == 5)
+    {
+        DRGoodDetailViewController * goodVC = [[DRGoodDetailViewController alloc] init];
+        DRGoodModel * goodModel = self.similarGoodArray[indexPath.item];
         goodVC.goodId = goodModel.id;
         [self.navigationController pushViewController:goodVC animated:YES];
     }
@@ -1120,13 +1155,23 @@ NSString * const GoodDetailRecommendGoodCellId = @"GoodDetailRecommendGoodCellId
     }
     return _commentDataArray;
 }
-- (NSArray *)goodDataArray
+
+- (NSArray *)shopGoodsArray
 {
-    if (!_goodDataArray) {
-        _goodDataArray = [NSArray array];
+    if (!_shopGoodsArray) {
+        _shopGoodsArray = [NSArray array];
     }
-    return _goodDataArray;
+    return _shopGoodsArray;
 }
+
+- (NSArray *)similarGoodArray
+{
+    if (!_similarGoodArray) {
+        _similarGoodArray = [NSArray array];
+    }
+    return _similarGoodArray;
+}
+
 - (DRGoodHeaderFrameModel *)goodHeaderFrameModel
 {
     if (!_goodHeaderFrameModel) {
