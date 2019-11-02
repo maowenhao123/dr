@@ -89,8 +89,9 @@
         
         for (NSDictionary * wholesaleRuleDic in wholesaleRule) {
             int count = [wholesaleRuleDic[@"count"] intValue];
+            int price = [wholesaleRuleDic[@"price"] intValue];
             if (carGoodModel.count >= count) {
-                carGoodModel.goodModel.price = [NSNumber numberWithInt:[wholesaleRuleDic[@"price"] intValue]];
+                carGoodModel.goodModel.price = @(price);
                 break;
             }
         }
@@ -105,7 +106,7 @@
 {
     NSMutableDictionary *carShopDic = [NSKeyedUnarchiver unarchiveObjectWithFile:DRShoppingCarFile];
     
-    DRShoppingCarShopModel * carShopModel = carShopDic[carGoodModel.carGoodId];
+    DRShoppingCarShopModel * carShopModel = carShopDic[carGoodModel.goodModel.store.id];
     if (carShopModel.goodDic.allKeys.count == 1) {//商店只有这一种商品
         [carShopDic removeObjectForKey:carGoodModel.goodModel.store.id];
     }else

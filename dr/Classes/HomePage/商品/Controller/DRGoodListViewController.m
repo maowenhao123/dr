@@ -126,6 +126,10 @@ NSString * const collectionCellId = @"GoodCollectionViewCellId";
         [MBProgressHUD hideHUDForView:self.view];
         if (SUCCESS) {
             NSArray * newDataArray = [DRGoodModel mj_objectArrayWithKeyValuesArray:json[@"list"]];
+            for (DRGoodModel * goodModel in newDataArray) {
+                NSInteger index = [newDataArray indexOfObject:goodModel];
+                goodModel.specifications = [DRGoodSpecificationModel mj_objectArrayWithKeyValuesArray:json[@"list"][index][@"specifications"]];
+            }
             [self.dataArray addObjectsFromArray:newDataArray];
             self.backTopBtn.hidden = YES;
             [self.collectionView reloadData];

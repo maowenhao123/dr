@@ -13,8 +13,8 @@
 @property (nonatomic, weak) UIImageView * avatarImageView;
 @property (nonatomic, weak) UILabel * nickNameLabel;
 @property (nonatomic, weak) UILabel * timeLabel;
-@property (nonatomic, weak) UILabel * floorLabel;
 @property (nonatomic, weak) UILabel * commentLabel;
+@property (nonatomic, weak) UILabel * levelLabel;
 
 @end
 
@@ -59,14 +59,6 @@
     timeLabel.textColor = DRGrayTextColor;
     [self addSubview:timeLabel];
     
-    //楼
-    UILabel * floorLabel = [[UILabel alloc] init];
-    self.floorLabel = floorLabel;
-    floorLabel.font = [UIFont systemFontOfSize:DRGetFontSize(24)];
-    floorLabel.textColor = DRGrayTextColor;
-    floorLabel.textAlignment = NSTextAlignmentRight;
-    [self addSubview:floorLabel];
-    
     //评论
     UILabel * commentLabel = [[UILabel alloc] init];
     self.commentLabel = commentLabel;
@@ -74,25 +66,34 @@
     commentLabel.textColor = DRBlackTextColor;
     commentLabel.numberOfLines = 0;
     [self addSubview:commentLabel];
+    
+    //等级
+    UILabel * levelLabel = [[UILabel alloc] init];
+    self.levelLabel = levelLabel;
+    levelLabel.backgroundColor = DRColor(255, 242, 204, 1);
+    levelLabel.font = [UIFont systemFontOfSize:DRGetFontSize(22)];
+    levelLabel.textColor = DRViceColor;
+    levelLabel.textAlignment = NSTextAlignmentCenter;
+    levelLabel.layer.masksToBounds = YES;
+    levelLabel.layer.cornerRadius = 3;
+    [self addSubview:levelLabel];
 }
+
 - (void)setModel:(DRGoodCommentModel *)model
 {
     _model = model;
     
-    NSString * avatarUrlStr = [NSString stringWithFormat:@"%@%@",baseUrl,_model.userHeadImg];
+    NSString * avatarUrlStr = [NSString stringWithFormat:@"%@%@", baseUrl, _model.userHeadImg];
     [self.avatarImageView sd_setImageWithURL:[NSURL URLWithString:avatarUrlStr] placeholderImage:[UIImage imageNamed:@"avatar_placeholder"]];
     self.nickNameLabel.text = _model.userNickName;
-    
     self.timeLabel.text = _model.timeStr;
-    
-    self.floorLabel.text = [NSString stringWithFormat:@"%ld楼",_model.floor];
-    
     self.commentLabel.text = _model.content;
+    self.levelLabel.text = _model.levelDesc;
     
     //frame
     self.nickNameLabel.frame = _model.nickNameLabelF;
     self.timeLabel.frame = _model.timeLabelF;
-    self.floorLabel.frame = _model.floorLabelF;
+    self.levelLabel.frame = _model.levelLabelF;
     self.commentLabel.frame = _model.commentLabelF;
 }
 

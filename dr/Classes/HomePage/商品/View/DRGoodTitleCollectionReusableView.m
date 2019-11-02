@@ -26,10 +26,10 @@
         lineView.backgroundColor = DRBackgroundColor;
         [self addSubview:lineView];
         
-        UILabel * titleLabel = [[UILabel alloc] initWithFrame:CGRectMake(0, 9, screenWidth, 40)];
+        UILabel * titleLabel = [[UILabel alloc] initWithFrame:CGRectMake(0, 9, screenWidth, 80)];
         self.titleLabel = titleLabel;
         titleLabel.backgroundColor = [UIColor whiteColor];
-        titleLabel.font = [UIFont boldSystemFontOfSize:DRGetFontSize(28)];
+        titleLabel.font = [UIFont boldSystemFontOfSize:DRGetFontSize(34)];
         titleLabel.textColor = DRBlackTextColor;
         titleLabel.textAlignment = NSTextAlignmentCenter;
         [self addSubview:titleLabel];

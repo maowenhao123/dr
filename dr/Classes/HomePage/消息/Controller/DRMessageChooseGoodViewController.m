@@ -199,6 +199,7 @@
                     messageChooseGoodModel.selected = NO;
                     messageChooseGoodModel.goodModel = orderItemDetailModel.goods;
                     messageChooseGoodModel.type = 1;
+                    messageChooseGoodModel.goodModel.price = orderItemDetailModel.priceCount;
                     [dataArray addObject:messageChooseGoodModel];
                 }
             }

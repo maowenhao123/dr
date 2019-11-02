@@ -7,6 +7,9 @@
 //
 
 #import "DRShoppingCarViewController.h"
+#import "DRShopDetailViewController.h"
+#import "DRGoodDetailViewController.h"
+#import "DRPaySuccessViewController.h"
 #import "DRSubmitOrderViewController.h"
 #import "DRLoginViewController.h"
 #import "DRShoppingCarBottomView.h"
@@ -57,7 +60,12 @@
         DRLog(@"%@",json);
         [MBProgressHUD hideHUDForView:self.view];
         if (SUCCESS) {
-            self.goodArray = [DRGoodModel mj_objectArrayWithKeyValuesArray:json[@"list"]];
+            NSArray * dataArray = [DRGoodModel mj_objectArrayWithKeyValuesArray:json[@"list"]];
+            for (DRGoodModel * goodModel in dataArray) {
+                NSInteger index = [dataArray indexOfObject:goodModel];
+                goodModel.specifications = [DRGoodSpecificationModel mj_objectArrayWithKeyValuesArray:json[@"list"][index][@"specifications"]];
+            }
+            self.goodArray = [NSArray arrayWithArray:dataArray];
             [self.tableView reloadData];
         }else
         {
@@ -253,6 +261,30 @@
             [self.tableView deleteRowsAtIndexPaths:@[indexPath] withRowAnimation:UITableViewRowAnimationNone];
         }
         [self upDataAllSelectedButtonStatus];
+    }
+}
+
+- (void)tableView:(UITableView *)tableView didSelectRowAtIndexPath:(NSIndexPath *)indexPath
+{
+    if (indexPath.section < self.dataArray.count) {
+        if (self.dataArray.count == 0 && indexPath.section == 0) {
+            return;
+        }
+        if (indexPath.row == 0) {
+            DRShoppingCarShopModel * carShopModel = self.dataArray[indexPath.section];
+            
+            DRShopDetailViewController * shopVC = [[DRShopDetailViewController alloc] init];
+            shopVC.shopId = carShopModel.shopModel.id;
+            [self.navigationController pushViewController:shopVC animated:YES];
+        }else
+        {
+            DRShoppingCarShopModel * carShopModel = self.dataArray[indexPath.section];
+            DRShoppingCarGoodModel * carGoodModel = carShopModel.goodArr[indexPath.row - 1];
+            
+            DRGoodDetailViewController * goodVC = [[DRGoodDetailViewController alloc] init];
+            goodVC.goodId = carGoodModel.goodModel.id;
+            [self.navigationController pushViewController:goodVC animated:YES];
+        }
     }
 }
 

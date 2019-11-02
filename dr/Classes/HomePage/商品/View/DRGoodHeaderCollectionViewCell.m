@@ -171,6 +171,7 @@
         UIImageView *specificationImageView = [[UIImageView alloc] initWithFrame:CGRectMake((specificationImageViewWH + DRMargin) * i, 0, specificationImageViewWH, specificationImageViewWH)];
         specificationImageView.image = [UIImage imageNamed:@"placeholder"];
         specificationImageView.hidden = YES;
+        specificationImageView.contentMode = UIViewContentModeScaleAspectFill;
         specificationImageView.layer.masksToBounds = YES;
         specificationImageView.layer.cornerRadius = 3;
         [specificationScrollView addSubview:specificationImageView];

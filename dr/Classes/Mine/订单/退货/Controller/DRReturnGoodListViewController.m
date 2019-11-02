@@ -126,6 +126,7 @@
     self.pageIndex++;
     [self getData];
 }
+
 #pragma mark - UITableViewDelegate
 - (NSInteger)numberOfSectionsInTableView:(UITableView *)tableView
 {
@@ -134,7 +135,7 @@
 
 - (NSInteger)tableView:(UITableView *)tableView numberOfRowsInSection:(NSInteger)section
 {
-    [tableView showNoDataWithTitle:@"" description:@"暂无数据" rowCount:self.dataArray.count];
+    [tableView showNoDataWithTitle:@"您还没有相关的订单" description:@"去买个多肉萌翻自己~" rowCount:self.dataArray.count];
     return self.dataArray.count;
 }
 
@@ -157,6 +158,9 @@
     if ([returnGoodModel.status intValue] != 0) {
         DRReturnGoodDetailViewController * returnGoodVC = [[DRReturnGoodDetailViewController alloc] init];
         returnGoodVC.returnGoodId = returnGoodModel.id;
+        if (!DRObjectIsEmpty(returnGoodModel.specification)) {
+            returnGoodVC.specificationId = returnGoodModel.specification.id;
+        }
         [self.navigationController pushViewController:returnGoodVC animated:YES];
     }else
     {

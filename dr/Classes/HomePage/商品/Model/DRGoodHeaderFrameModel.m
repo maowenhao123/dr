@@ -64,7 +64,12 @@
                     }
                     maxPrice = price < maxPrice ? maxPrice : price;
                 }
-                goodPriceStr = [NSString stringWithFormat:@"¥%@ ~ ¥%@", [DRTool formatFloat:minPrice / 100], [DRTool formatFloat:maxPrice / 100]];
+                if (maxPrice == minPrice) {
+                    goodPriceStr = [NSString stringWithFormat:@"¥%@", [DRTool formatFloat:maxPrice/ 100]];
+                }else
+                {
+                    goodPriceStr = [NSString stringWithFormat:@"¥%@ ~ ¥%@", [DRTool formatFloat:maxPrice/ 100], [DRTool formatFloat:minPrice / 100]];
+                }
             }else
             {
                 goodPriceStr = [NSString stringWithFormat:@"¥%@", [DRTool formatFloat:[_goodModel.price doubleValue] / 100]];
@@ -96,6 +101,18 @@
         NSMutableAttributedString * priceAttStr = [[NSMutableAttributedString alloc]initWithString:goodPriceStr];
         [priceAttStr addAttribute:NSFontAttributeName value:[UIFont systemFontOfSize:DRGetFontSize(36)] range:NSMakeRange(0, priceAttStr.length)];
         [priceAttStr addAttribute:NSForegroundColorAttributeName value:DRDefaultColor range:NSMakeRange(0, priceAttStr.length)];
+        for (NSString * tag in _goodModel.tags) {
+            NSMutableAttributedString * tagAttStr = [[NSMutableAttributedString alloc]initWithString:[NSString stringWithFormat:@" %@ ", tag]];
+            [tagAttStr addAttribute:NSFontAttributeName value:[UIFont systemFontOfSize:DRGetFontSize(22)] range:NSMakeRange(0, tagAttStr.length)];
+            [tagAttStr addAttribute:NSForegroundColorAttributeName value:DRViceColor range:NSMakeRange(0, tagAttStr.length)];
+            [tagAttStr addAttribute:NSBackgroundColorAttributeName value:DRColor(255, 242, 204, 1) range:NSMakeRange(0, tagAttStr.length)];
+            NSMutableParagraphStyle *paragraphStyle = [NSMutableParagraphStyle new];
+            paragraphStyle.maximumLineHeight = 18;
+            [priceAttStr addAttribute:NSParagraphStyleAttributeName value:paragraphStyle range:NSMakeRange(0, priceAttStr.length)];
+            [priceAttStr appendAttributedString:[[NSAttributedString alloc] initWithString:@" "]];
+            [priceAttStr appendAttributedString:tagAttStr];
+        }
+        
         _goodPriceAttStr = priceAttStr;
     }
     CGSize goodPriceLabelSize = [_goodPriceAttStr boundingRectWithSize:CGSizeMake(screenWidth - 2 * DRMargin, MAXFLOAT) options:NSStringDrawingUsesLineFragmentOrigin context:nil].size;

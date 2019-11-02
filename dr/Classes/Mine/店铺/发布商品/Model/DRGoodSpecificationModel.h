@@ -16,7 +16,7 @@
 @property (nonatomic,copy) NSString *storeCount;//库存数量
 @property (nonatomic,strong) UIImage *pic;//图片
 @property (nonatomic,copy) NSString *picUrl;
-@property (nonatomic,assign) NSInteger delFlag;
+@property (nonatomic,assign) int delFlag;
 @property (nonatomic,copy) NSString *goodsId;
 @property (nonatomic,copy) NSString *id;
 

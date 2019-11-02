@@ -169,14 +169,16 @@ NSString * const GoodDetailRecommendGoodCellId = @"GoodDetailRecommendGoodCellId
         if (SUCCESS) {
             DRGoodModel * goodModel = [DRGoodModel mj_objectWithKeyValues:json[@"goods"]];
             goodModel.specifications = [DRGoodSpecificationModel mj_objectArrayWithKeyValuesArray:json[@"goods"][@"specifications"]];
+            NSSortDescriptor *sortDescriptor = [NSSortDescriptor sortDescriptorWithKey:@"count" ascending:YES];
+            goodModel.wholesaleRule = [goodModel.wholesaleRule sortedArrayUsingDescriptors:@[sortDescriptor]];//排序
             self.goodModel = goodModel;
             if (self.grouponModel) {
                 self.grouponModel.goods = goodModel;
             }
             [self getCommentData];
             [self getAttentionData];
-//            [self getShopGoodData];
-//            [self getSimilarGoodData];
+            [self getShopGoodData];
+            [self getSimilarGoodData];
         }else
         {
             ShowErrorView
@@ -323,14 +325,22 @@ NSString * const GoodDetailRecommendGoodCellId = @"GoodDetailRecommendGoodCellId
         return;
     }
     
-    NSDictionary *headDic = @{
-                              @"goodsId": self.goodId,
-                              @"cmd": @"GET_SAME_SUBJECT_RECOMMEND_GOODS_LIST",
+    NSDictionary *bodyDic = @{
+                              @"goodsId":self.goodId,
                               };
     
-    [[DRHttpTool shareInstance] postWithHeadDic:headDic bodyDic:@{} success:^(id json) {
+    NSDictionary *headDic = @{
+                              @"cmd": @"GET_SAME_STORE_RECOMMEND_GOODS_LIST",
+                              };
+    
+    [[DRHttpTool shareInstance] postWithHeadDic:headDic bodyDic:bodyDic success:^(id json) {
         if (SUCCESS) {
-            self.shopGoodsArray = [DRGoodModel mj_objectArrayWithKeyValuesArray:json[@"list"]];
+            NSArray * dataArray = [DRGoodModel mj_objectArrayWithKeyValuesArray:json[@"sameStoreRecommendGoodsList"]];
+            for (DRGoodModel * goodModel in dataArray) {
+                NSInteger index = [dataArray indexOfObject:goodModel];
+                goodModel.specifications = [DRGoodSpecificationModel mj_objectArrayWithKeyValuesArray:json[@"sameStoreRecommendGoodsList"][index][@"specifications"]];
+            }
+            self.shopGoodsArray = [NSArray arrayWithArray:dataArray];
             [self.collectionView reloadSections:[NSIndexSet indexSetWithIndex:4]];//刷新数据
         }
     } failure:^(NSError *error) {
@@ -344,14 +354,22 @@ NSString * const GoodDetailRecommendGoodCellId = @"GoodDetailRecommendGoodCellId
         return;
     }
 
-    NSDictionary *headDic = @{
-                              @"goodsId": self.goodId,
-                              @"cmd": @"GET_SAME_STORE_RECOMMEND_GOODS_LIST",
+    NSDictionary *bodyDic = @{
+                              @"goodsId":self.goodId,
                               };
     
-    [[DRHttpTool shareInstance] postWithHeadDic:headDic bodyDic:@{} success:^(id json) {
+    NSDictionary *headDic = @{
+                              @"cmd": @"GET_SAME_SUBJECT_RECOMMEND_GOODS_LIST",
+                              };
+    
+    [[DRHttpTool shareInstance] postWithHeadDic:headDic bodyDic:bodyDic success:^(id json) {
         if (SUCCESS) {
-            self.similarGoodArray = [DRGoodModel mj_objectArrayWithKeyValuesArray:json[@"list"]];
+            NSArray * dataArray = [DRGoodModel mj_objectArrayWithKeyValuesArray:json[@"sameSubjectRecommendGoodsList"]];
+            for (DRGoodModel * goodModel in dataArray) {
+                NSInteger index = [dataArray indexOfObject:goodModel];
+                goodModel.specifications = [DRGoodSpecificationModel mj_objectArrayWithKeyValuesArray:json[@"sameSubjectRecommendGoodsList"][index][@"specifications"]];
+            }
+            self.similarGoodArray = [NSArray arrayWithArray:dataArray];
             [self.collectionView reloadSections:[NSIndexSet indexSetWithIndex:5]];//刷新数据
         }
     } failure:^(NSError *error) {
@@ -979,13 +997,13 @@ NSString * const GoodDetailRecommendGoodCellId = @"GoodDetailRecommendGoodCellId
         return CGSizeMake(screenWidth, 9 + 35);
     }else if (section == 3 && !DRStringIsEmpty(self.goodModel.detail))
     {
-        return CGSizeMake(screenWidth, 9 + 40);
+        return CGSizeMake(screenWidth, 9 + 80);
     }else if (section == 4 && self.shopGoodsArray.count > 0)
     {
-        return CGSizeMake(screenWidth, 9 + 40);
+        return CGSizeMake(screenWidth, 9 + 80);
     }else if (section == 5 && self.similarGoodArray.count > 0)
     {
-        return CGSizeMake(screenWidth, 9 + 40);
+        return CGSizeMake(screenWidth, 9 + 80);
     }
     return CGSizeZero;
 }
@@ -1062,10 +1080,10 @@ NSString * const GoodDetailRecommendGoodCellId = @"GoodDetailRecommendGoodCellId
             headerView.title = @"—— 商品详情 ——";
         }else if (indexPath.section == 4 && self.shopGoodsArray.count > 0)
         {
-            headerView.title = @"—— 同类优选 ——";
-        }else if (indexPath.section == 4 && self.similarGoodArray.count > 0)
-        {
             headerView.title = @"—— 同店推荐 ——";
+        }else if (indexPath.section == 5 && self.similarGoodArray.count > 0)
+        {
+            headerView.title = @"—— 同类优选 ——";
         }
         return headerView;
     }

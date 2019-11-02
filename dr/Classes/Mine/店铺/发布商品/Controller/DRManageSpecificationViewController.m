@@ -120,16 +120,24 @@
 #pragma mark - UITableViewDataSource
 - (NSInteger)tableView:(UITableView *)tableView numberOfRowsInSection:(NSInteger)section
 {
-    return self.dataArray.count;
+    NSMutableArray * dataArray = [NSMutableArray array];
+    for (DRGoodSpecificationModel *specificationModel in self.dataArray) {
+        if (specificationModel.delFlag == 0) {
+            [dataArray addObject:specificationModel];
+        }
+    }
+    return dataArray.count;
 }
 
 - (UITableViewCell *)tableView:(UITableView *)tableView cellForRowAtIndexPath:(NSIndexPath *)indexPath
 {
     DRSpecificationTableViewCell *cell = [DRSpecificationTableViewCell cellWithTableView:tableView];
     DRGoodSpecificationModel *specificationModel = self.dataArray[indexPath.row];
-    specificationModel.index = indexPath.row;
-    cell.goodSpecificationModel = specificationModel;
-    cell.delegate = self;
+    if (specificationModel.delFlag == 0) {
+        specificationModel.index = indexPath.row;
+        cell.goodSpecificationModel = specificationModel;
+        cell.delegate = self;
+    }
     return cell;
 }
 
@@ -150,7 +158,8 @@
     UIAlertController * alertController = [UIAlertController alertControllerWithTitle:@"温馨提示" message:@"确认删除该规格?" preferredStyle:UIAlertControllerStyleAlert];
     UIAlertAction * alertAction1 = [UIAlertAction actionWithTitle:@"取消" style:UIAlertActionStyleCancel handler:nil];
     UIAlertAction * alertAction2 = [UIAlertAction actionWithTitle:@"删除" style:UIAlertActionStyleDestructive handler:^(UIAlertAction * _Nonnull action) {
-        [self.dataArray removeObjectAtIndex:indexPath.row];
+        DRGoodSpecificationModel *specificationModel = self.dataArray[indexPath.row];
+        specificationModel.delFlag = 1;
         [self.tableView deleteRowsAtIndexPaths:@[indexPath] withRowAnimation:UITableViewRowAnimationAutomatic];
         if (self.dataArray.count == 0) {
             self.tableView.hidden = YES;

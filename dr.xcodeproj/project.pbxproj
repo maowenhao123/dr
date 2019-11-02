@@ -2146,10 +2146,10 @@
 		A98270FA206CD5A80032A672 /* View */ = {
 			isa = PBXGroup;
 			children = (
-				A982710A206CD6340032A672 /* DRReturnGoodOrderTableViewCell.h */,
-				A9827107206CD6340032A672 /* DRReturnGoodOrderTableViewCell.m */,
 				A9827108206CD6340032A672 /* DRReturnGoodTableViewCell.h */,
 				A9827109206CD6340032A672 /* DRReturnGoodTableViewCell.m */,
+				A982710A206CD6340032A672 /* DRReturnGoodOrderTableViewCell.h */,
+				A9827107206CD6340032A672 /* DRReturnGoodOrderTableViewCell.m */,
 			);
 			path = View;
 			sourceTree = "<group>";
@@ -4856,14 +4856,14 @@
 		AAE55C35207DB8B700A29844 /* View */ = {
 			isa = PBXGroup;
 			children = (
-				AADF7BB7218AE92D00AED4A5 /* DRChangeGrouponNumberView.h */,
-				AADF7BB8218AE92E00AED4A5 /* DRChangeGrouponNumberView.m */,
-				AAE55C42207DB8B700A29844 /* DRShipmentGoodTableViewCell.h */,
-				AAE55C38207DB8B700A29844 /* DRShipmentGoodTableViewCell.m */,
 				AAE55C3E207DB8B700A29844 /* DRShipmentDetaiSingleTableViewCell.h */,
 				AAE55C47207DB8B700A29844 /* DRShipmentDetaiSingleTableViewCell.m */,
 				AAE55C44207DB8B700A29844 /* DRShipmentDetaiMultipleTableViewCell.h */,
 				AAE55C3D207DB8B700A29844 /* DRShipmentDetaiMultipleTableViewCell.m */,
+				AADF7BB7218AE92D00AED4A5 /* DRChangeGrouponNumberView.h */,
+				AADF7BB8218AE92E00AED4A5 /* DRChangeGrouponNumberView.m */,
+				AAE55C42207DB8B700A29844 /* DRShipmentGoodTableViewCell.h */,
+				AAE55C38207DB8B700A29844 /* DRShipmentGoodTableViewCell.m */,
 				AAE55C3F207DB8B700A29844 /* DRShipmentUserInfoTableViewCell.h */,
 				AAE55C36207DB8B700A29844 /* DRShipmentUserInfoTableViewCell.m */,
 				AAE55C39207DB8B700A29844 /* DRShipmentAddressTableViewCell.h */,
@@ -6811,7 +6811,7 @@
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				ASSETCATALOG_COMPILER_LAUNCHIMAGE_NAME = LaunchImage;
 				CODE_SIGN_ENTITLEMENTS = dr/dr.entitlements;
-				CODE_SIGN_IDENTITY = "iPhone Distribution";
+				CODE_SIGN_IDENTITY = "iPhone Developer";
 				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "iPhone Distribution";
 				CODE_SIGN_INJECT_BASE_ENTITLEMENTS = YES;
 				CODE_SIGN_STYLE = Manual;
@@ -6861,7 +6861,7 @@
 				PRODUCT_BUNDLE_IDENTIFIER = com.lottery.dr;
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				PROVISIONING_PROFILE = "6f5a7e46-78a2-4fda-b373-7cfe84d78868";
-				PROVISIONING_PROFILE_SPECIFIER = dr_adHoc_29;
+				PROVISIONING_PROFILE_SPECIFIER = dr_adHoc_32;
 				VALID_ARCHS = "arm64 armv7 armv7s";
 			};
 			name = "ad hoc distribution";
@@ -7066,7 +7066,7 @@
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				ASSETCATALOG_COMPILER_LAUNCHIMAGE_NAME = LaunchImage;
 				CODE_SIGN_ENTITLEMENTS = dr/dr.entitlements;
-				CODE_SIGN_IDENTITY = "iPhone Distribution";
+				CODE_SIGN_IDENTITY = "iPhone Developer";
 				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "iPhone Distribution";
 				CODE_SIGN_INJECT_BASE_ENTITLEMENTS = YES;
 				CODE_SIGN_STYLE = Manual;
@@ -7116,7 +7116,7 @@
 				PRODUCT_BUNDLE_IDENTIFIER = com.lottery.dr;
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				PROVISIONING_PROFILE = "f2f787af-7dc5-4b11-8227-9f0c491abb2c";
-				PROVISIONING_PROFILE_SPECIFIER = dr_appstore;
+				PROVISIONING_PROFILE_SPECIFIER = dr_adHoc_29;
 				VALID_ARCHS = "arm64 armv7 armv7s";
 			};
 			name = Release;

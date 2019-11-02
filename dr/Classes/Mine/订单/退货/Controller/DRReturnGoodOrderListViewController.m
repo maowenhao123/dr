@@ -10,6 +10,7 @@
 #import "DRReturnGoodViewController.h"
 #import "DRReturnGoodDetailViewController.h"
 #import "DRReturnGoodOrderTableViewCell.h"
+#import "UITableView+DRNoData.h"
 
 @interface DRReturnGoodOrderListViewController ()<UITableViewDelegate,UITableViewDataSource, ReturnGoodOrderTableViewCellDelegate>
 
@@ -74,15 +75,19 @@
     headerView.backgroundColor = DRBackgroundColor;
     tableView.tableHeaderView = headerView;
 }
+
 #pragma mark - UITableViewDelegate
 - (NSInteger)numberOfSectionsInTableView:(UITableView *)tableView
 {
     return 1;
 }
+
 - (NSInteger)tableView:(UITableView *)tableView numberOfRowsInSection:(NSInteger)section
 {
+    [tableView showNoDataWithTitle:@"您还没有相关的订单" description:@"去买个多肉萌翻自己~" rowCount:self.dataArray.count];
     return self.dataArray.count;
 }
+
 - (UITableViewCell *)tableView:(UITableView *)tableView cellForRowAtIndexPath:(NSIndexPath *)indexPath
 {
     DRReturnGoodOrderTableViewCell * cell = [DRReturnGoodOrderTableViewCell cellWithTableView:tableView];
@@ -96,18 +101,24 @@
     cell.commentGoodModel = self.dataArray[indexPath.row];
     return cell;
 }
+
 - (CGFloat)tableView:(UITableView *)tableView heightForRowAtIndexPath:(nonnull NSIndexPath *)indexPath
 {
     return 100;
 }
+
 - (void)tableView:(UITableView *)tableView didSelectRowAtIndexPath:(NSIndexPath *)indexPath
 {
     DRCommentGoodModel * commentGoodModel = self.dataArray[indexPath.row];
     if ([commentGoodModel.refundStatus intValue] != 0) {
-        DRReturnGoodDetailViewController * returnGoodVC = [[DRReturnGoodDetailViewController alloc] init];
-        returnGoodVC.goodsId = commentGoodModel.goods.id;
-        returnGoodVC.orderId = commentGoodModel.orderId;
-        [self.navigationController pushViewController:returnGoodVC animated:YES];
+//        DRReturnGoodDetailViewController * returnGoodVC = [[DRReturnGoodDetailViewController alloc] init];
+//        returnGoodVC.goodsId = commentGoodModel.goods.id;
+//        returnGoodVC.orderId = commentGoodModel.orderId;
+//        returnGoodVC.id = commentGoodModel.id;
+//        if (!DRObjectIsEmpty(commentGoodModel.specification)) {
+//            returnGoodVC.specificationId = commentGoodModel.specification.id;
+//        }
+//        [self.navigationController pushViewController:returnGoodVC animated:YES];
     }else
     {
         DRReturnGoodViewController * returnGoodVC = [[DRReturnGoodViewController alloc] init];
@@ -115,6 +126,7 @@
         [self.navigationController pushViewController:returnGoodVC animated:YES];
     }
 }
+
 - (void)returnGoodOrderTableViewCell:(DRReturnGoodOrderTableViewCell *)cell returnGoodButtonDidClick:(UIButton *)button
 {
     NSIndexPath * indexPath = [self.tableView indexPathForCell:cell];
@@ -123,6 +135,7 @@
     returnGoodVC.commentGoodModel = self.dataArray[indexPath.row];
     [self.navigationController pushViewController:returnGoodVC animated:YES];
 }
+
 #pragma mark - 初始化
 - (NSArray *)dataArray
 {

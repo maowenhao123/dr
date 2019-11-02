@@ -40,7 +40,7 @@
 - (void)postWithHeadDic:(NSDictionary *)headDic bodyDic:(NSDictionary *)bodyDic  success:(void (^)(id json))success failure:(void (^)(NSError *error))failure
 {
     NSMutableDictionary *headDic_mu = [NSMutableDictionary dictionaryWithDictionary:headDic];
-    [headDic_mu setObject:@"IOS" forKey:@"clien"];
+    [headDic_mu setObject:@"IOS" forKey:@"client"];
     NSString *currentVersion = [NSBundle mainBundle].infoDictionary[@"CFBundleShortVersionString"];
     [headDic_mu setObject:currentVersion forKey:@"version"];
     

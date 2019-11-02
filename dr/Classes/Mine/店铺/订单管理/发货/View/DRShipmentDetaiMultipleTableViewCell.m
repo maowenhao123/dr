@@ -150,8 +150,14 @@
         goodImageView.frame = CGRectMake((goodImageViewWH + padding) * i, 12, goodImageViewWH, goodImageViewWH);
         goodImageView.contentMode = UIViewContentModeScaleAspectFill;
         goodImageView.layer.masksToBounds = YES;
-        NSString * urlStr = [NSString stringWithFormat:@"%@%@%@",baseUrl,orderItemDetailModel.goods.spreadPics,smallPicUrl];
-        [goodImageView sd_setImageWithURL:[NSURL URLWithString:urlStr] placeholderImage:[UIImage imageNamed:@"placeholder"]];
+        if (DRObjectIsEmpty(orderItemDetailModel.specification)) {
+            NSString * urlStr = [NSString stringWithFormat:@"%@%@%@", baseUrl, orderItemDetailModel.goods.spreadPics, smallPicUrl];
+            [goodImageView sd_setImageWithURL:[NSURL URLWithString:urlStr] placeholderImage:[UIImage imageNamed:@"placeholder"]];
+        }else
+        {
+            NSString * urlStr = [NSString stringWithFormat:@"%@%@%@", baseUrl, orderItemDetailModel.specification.picUrl, smallPicUrl];
+            [goodImageView sd_setImageWithURL:[NSURL URLWithString:urlStr] placeholderImage:[UIImage imageNamed:@"placeholder"]];
+        }
         [self.goodScrollView addSubview:goodImageView];
     }
     self.goodScrollView.contentSize = CGSizeMake((goodImageViewWH + padding) * _orderModel.storeOrders.firstObject.detail.count, 100);

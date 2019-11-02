@@ -192,7 +192,7 @@
     [contentView addSubview:line3];
     
     //确定
-    UIView * buttonView = [[UIView alloc] initWithFrame:CGRectMake(DRMargin, contentView.height - 45, screenWidth - 2 * DRMargin, 45)];
+    UIView * buttonView = [[UIView alloc] initWithFrame:CGRectMake(DRMargin, contentView.height - 45 - 5, screenWidth - 2 * DRMargin, 45)];
     buttonView.layer.masksToBounds = YES;
     buttonView.layer.cornerRadius = buttonView.height / 2;
     [contentView addSubview:buttonView];

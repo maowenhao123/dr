@@ -9,6 +9,7 @@
 #import "DRCommentOrderListViewController.h"
 #import "DRCommentOrderViewController.h"
 #import "DRCommentOrderTableViewCell.h"
+#import "UITableView+DRNoData.h"
 
 @interface DRCommentOrderListViewController ()<UITableViewDelegate,UITableViewDataSource, CommentOrderTableViewCellDelegate>
 
@@ -56,6 +57,7 @@
         DRLog(@"error:%@",error);
     }];
 }
+
 - (void)setupChilds
 {
     //tableView
@@ -73,15 +75,19 @@
     headerView.backgroundColor = DRBackgroundColor;
     tableView.tableHeaderView = headerView;
 }
+
 #pragma mark - UITableViewDelegate
 - (NSInteger)numberOfSectionsInTableView:(UITableView *)tableView
 {
     return 1;
 }
+
 - (NSInteger)tableView:(UITableView *)tableView numberOfRowsInSection:(NSInteger)section
 {
+    [tableView showNoDataWithTitle:@"您还没有相关的订单" description:@"去买个多肉萌翻自己~" rowCount:self.dataArray.count];
     return self.dataArray.count;
 }
+
 - (UITableViewCell *)tableView:(UITableView *)tableView cellForRowAtIndexPath:(NSIndexPath *)indexPath
 {
     DRCommentOrderTableViewCell * cell = [DRCommentOrderTableViewCell cellWithTableView:tableView];

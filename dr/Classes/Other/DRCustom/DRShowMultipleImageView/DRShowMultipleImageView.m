@@ -58,7 +58,10 @@
     for (int i = 0; i < count; i++) {
         CGFloat imageViewX = 2 * padding + (imageViewWH + padding) * (i % maxCount);
         CGFloat imageViewY = CGRectGetMaxY(self.titleLabel.frame) + padding + (imageViewWH + padding) * (i / maxCount);
-        NSString * imageUrlStr = [NSString stringWithFormat:@"%@%@", baseUrl,imageUrlStrs[i]];
+        NSString * imageUrlStr = [NSString stringWithFormat:@"%@", imageUrlStrs[i]];
+        if (![imageUrlStr containsString:@"http"]) {
+            imageUrlStr = [NSString stringWithFormat:@"%@%@", baseUrl, imageUrlStr];
+        }
         UIImageView * imageView = [[UIImageView alloc] initWithFrame:CGRectMake(imageViewX, imageViewY, imageViewWH, imageViewWH)];
         imageView.tag = i;
         imageView.contentMode = UIViewContentModeScaleAspectFill;

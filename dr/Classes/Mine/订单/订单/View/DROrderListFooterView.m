@@ -108,7 +108,10 @@
     NSInteger status = [_orderModel.status integerValue];
     //支付倒计时 15分钟
     NSDateComponents * components = [DRDateTool getDeltaDateToTimestampg:_orderModel.createTime + 15 * 60 * 1000];
-    if ((components.minute < 0 || components.second < 0) || status != 0) {
+    if (components.minute == 0 && components.second == 0 && status == 0) {
+        //更新数据发送通知
+        [[NSNotificationCenter defaultCenter] postNotificationName:@"upDataOrderStatus" object:nil];
+    }else if ((components.minute < 0 || components.second < 0) || status != 0) {
         self.timeLabel.hidden = YES;
     }else
     {

@@ -25,6 +25,7 @@
 {
     self = [super initWithFrame:frame];
     if (self) {
+        self.userInteractionEnabled = YES;
         self.layer.masksToBounds = YES;
         self.layer.cornerRadius = 5;
         [self setupChildViews];
@@ -70,20 +71,41 @@
 {
     _activityModel = activityModel;
     
-//    NSString *colorStr = _activityModel.background;
-//    colorStr = [colorStr stringByReplacingOccurrencesOfString:@"#" withString:@"0x"];
-//    unsigned long colorInt = strtoul([colorStr UTF8String], 0, 0);//转换成16进制
-//    self.backgroundColor = UIColorFromRGB(colorInt);
     if ([self.activityModel.type intValue] == 1) {//分享
         self.image = [UIImage imageNamed:@"order_redPacket"];
     }else if ([self.activityModel.type intValue] == 2)//H5
     {
         self.image = [UIImage imageNamed:@"order_water"];
+    }else
+    {
+        NSString *colorStr = _activityModel.background;
+        colorStr = [colorStr stringByReplacingOccurrencesOfString:@"#" withString:@"0x"];
+        unsigned long colorInt = strtoul([colorStr UTF8String], 0, 0);//转换成16进制
+        self.backgroundColor = UIColorFromRGB(colorInt);
     }
     
+    if ([self.activityModel.type intValue] == 1) {//分享
+        [self.button setTitle:@"开" forState:UIControlStateNormal];
+        self.button.titleLabel.font = [UIFont boldSystemFontOfSize:DRGetFontSize(35)];
+        [self.button setTitleColor:[UIColor whiteColor] forState:UIControlStateNormal];
+        self.button.backgroundColor = [UIColor clearColor];
+        self.titleLabel.frame = CGRectMake(5, 7, self.width - 10, 20);
+        self.button.frame = CGRectMake(5, CGRectGetMaxY(self.titleLabel.frame), self.width - 10, 42);
+        self.contentLabel.frame = CGRectMake(5, CGRectGetMaxY(self.button.frame) + 5, self.width - 10, 20);
+    }else
+    {
+        [self.button setTitle:_activityModel.button forState:UIControlStateNormal];
+        [self.button setTitleColor:DRGrayTextColor forState:UIControlStateNormal];
+        self.button.backgroundColor = [UIColor whiteColor];
+        self.button.titleLabel.font = [UIFont systemFontOfSize:DRGetFontSize(26)];
+        self.titleLabel.frame = CGRectMake(5, 10, self.width - 10, 20);
+        self.contentLabel.frame = CGRectMake(5, CGRectGetMaxY(self.titleLabel.frame), self.width - 10, 32);
+        CGFloat buttonW = 80;
+        CGFloat buttonH = 25;
+        self.button.frame = CGRectMake((self.width - buttonW) / 2, CGRectGetMaxY(self.contentLabel.frame) + 2, buttonW, buttonH);
+    }
     self.titleLabel.text = _activityModel.title;
     self.contentLabel.text = _activityModel.content;
-    [self.button setTitle:_activityModel.button forState:UIControlStateNormal];
 }
 
 - (void)buttonDidClick

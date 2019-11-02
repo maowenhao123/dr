@@ -202,14 +202,15 @@
 
 #pragma mark - 压缩图片
 + (UIImage *)imageCompressionWithImage:(UIImage *)myimage{
-    NSData *data = UIImageJPEGRepresentation(myimage, 1.0);
+    myimage = [myimage fixOrientation];
+    NSData *data = UIImageJPEGRepresentation(myimage, 1);
     if (data.length>100*1024) {
         if (data.length>1024*1024) {//1M以及以上
             data=UIImageJPEGRepresentation(myimage, 0.1);
         }else if (data.length>512*1024) {//0.5M-1M
-            data=UIImageJPEGRepresentation(myimage, 0.5);
+            data=UIImageJPEGRepresentation(myimage, 0.3);
         }else if (data.length>200*1024) {//0.25M-0.5M
-            data=UIImageJPEGRepresentation(myimage, 0.9);
+            data=UIImageJPEGRepresentation(myimage, 0.5);
         }
     }
     return [UIImage imageWithData:data];

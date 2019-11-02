@@ -232,7 +232,7 @@
         UIAlertAction * alertAction1 = [UIAlertAction actionWithTitle:@"好，去联系买家" style:UIAlertActionStyleDefault handler:^(UIAlertAction * _Nonnull action) {
             [self chatWithBuyer];
         }];
-        UIAlertAction * alertAction2 = [UIAlertAction actionWithTitle:@"继续无货扯单操作" style:UIAlertActionStyleDestructive handler:^(UIAlertAction * _Nonnull action) {
+        UIAlertAction * alertAction2 = [UIAlertAction actionWithTitle:@"继续无货撤单操作" style:UIAlertActionStyleDestructive handler:^(UIAlertAction * _Nonnull action) {
             NSDictionary *bodyDic = @{
                                       @"orderId":self.orderId,
                                       };

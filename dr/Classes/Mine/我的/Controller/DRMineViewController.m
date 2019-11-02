@@ -254,11 +254,11 @@
     [headerView addSubview:allFunctionItemView];
     
     NSArray *functionItemTitles = @[@"我的拼团", @"我的消息", @"我的秀场", @"我的关注", @"我要开店"];
-    NSArray *functionItemImageNames = @[@"my_groupon_icon", @"my_message_icon", @"my_show_icon", @"my_attention_icon", @"shop"];
+    NSArray *functionItemImageNames = @[@"my_groupon_icon", @"my_message_icon", @"my_show_icon", @"my_attention_icon", @"my_shop_icon"];
     DRUser *user = [DRUserDefaultTool user];
     if ([user.type intValue] == 1) {//已开店
         functionItemTitles = @[@"我的拼团", @"我的消息", @"我的秀场", @"我的关注", @"我的店铺"];
-        functionItemImageNames = @[@"my_groupon_icon", @"my_message_icon", @"my_show_icon", @"my_attention_icon", @"my_shop_icon"];
+        functionItemImageNames = @[@"my_groupon_icon", @"my_message_icon", @"my_show_icon", @"my_attention_icon", @"shop"];
     }
     CGFloat functionItemViewW = screenWidth / functionItemTitles.count;
     for (int i = 0; i < functionItemTitles.count; i++) {
@@ -288,7 +288,7 @@
     }else
     {
         itemView.text = @"我的店铺";
-        itemView.imageName = @"my_shop_icon";
+        itemView.imageName = @"shop";
     }
     [self.mineTableHeaderView reloadData];
     

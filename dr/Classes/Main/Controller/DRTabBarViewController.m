@@ -87,13 +87,22 @@ static NSString *kConversationChatter = @"ConversationChatter";
     [self getGiveVoucherData];
     
     //抽奖能力
-    [self getRewardDrawAbilty];
+    long long currentTimeSp = [[NSDate date] timeIntervalSince1970];
+    NSArray *closeRewardTimeSps = [[NSUserDefaults standardUserDefaults] objectForKey:@"closeRewardTimeSps"];
+    if (closeRewardTimeSps && closeRewardTimeSps.count >= 3) {
+        long long lastGradeTimeSp = [closeRewardTimeSps[2] longLongValue];
+        if (currentTimeSp - lastGradeTimeSp > 7 * 24 * 60 * 60) {//一周最多显示三次
+            [self getRewardDrawAbilty];
+        }
+    }else
+    {
+        [self getRewardDrawAbilty];
+    }
     
     //小红点
     [self setupUnreadMessageCount];
     
     //评分
-    long long currentTimeSp = [[NSDate date] timeIntervalSince1970];
     long long lastGradeTimeSp = [[[NSUserDefaults standardUserDefaults] objectForKey:@"lastGradeTimeSp"] longLongValue];
     if (currentTimeSp - lastGradeTimeSp > 7 * 24 * 60 * 60) {
         [self addAppReview];
@@ -104,7 +113,17 @@ static NSString *kConversationChatter = @"ConversationChatter";
 - (void)loginSuccess
 {
     [self getGiveVoucherData];
-    [self getRewardDrawAbilty];
+    long long currentTimeSp = [[NSDate date] timeIntervalSince1970];
+    NSArray *closeRewardTimeSps = [[NSUserDefaults standardUserDefaults] objectForKey:@"closeRewardTimeSps"];
+    if (closeRewardTimeSps && closeRewardTimeSps.count >= 3) {
+        long long lastGradeTimeSp = [closeRewardTimeSps[2] longLongValue];
+        if (currentTimeSp - lastGradeTimeSp > 7 * 24 * 60 * 60) {//一周最多显示三次
+            [self getRewardDrawAbilty];
+        }
+    }else
+    {
+        [self getRewardDrawAbilty];
+    }
 }
 // 统计未读消息数
 -(void)setupUnreadMessageCount

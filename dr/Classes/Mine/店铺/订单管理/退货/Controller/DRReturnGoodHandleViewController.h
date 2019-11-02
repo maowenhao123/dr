@@ -11,5 +11,6 @@
 @interface DRReturnGoodHandleViewController : DRBaseViewController
 
 @property (nonatomic,copy) NSString *returnGoodId;
+@property (nonatomic,copy) NSString *specificationId;
 
 @end

@@ -12,6 +12,7 @@
 
 @property (nonatomic, weak) UIImageView *goodImageView;//商品图片
 @property (nonatomic, weak) UILabel *goodNameLabel;//商品名称
+@property (nonatomic, weak) UILabel *goodSpecificationLabel;//商品规格
 @property (nonatomic,weak) UILabel * goodPriceLabel;
 @property (nonatomic,weak) UIButton *returnGoodButton;
 
@@ -63,6 +64,16 @@
     goodNameLabel.font = [UIFont systemFontOfSize:DRGetFontSize(24)];
     [self addSubview:goodNameLabel];
     
+    //商品规格
+    UILabel * goodSpecificationLabel = [[UILabel alloc] init];
+    self.goodSpecificationLabel = goodSpecificationLabel;
+    goodSpecificationLabel.backgroundColor = DRWhiteLineColor;
+    goodSpecificationLabel.textColor = DRGrayTextColor;
+    goodSpecificationLabel.font = [UIFont systemFontOfSize:DRGetFontSize(24)];
+    goodSpecificationLabel.textAlignment = NSTextAlignmentCenter;
+    goodSpecificationLabel.layer.masksToBounds = YES;
+    [self addSubview:goodSpecificationLabel];
+    
     //商品价格
     UILabel * goodPriceLabel = [[UILabel alloc] init];
     self.goodPriceLabel = goodPriceLabel;
@@ -85,38 +96,51 @@
     returnGoodButton.layer.cornerRadius = 4;
     [self addSubview:returnGoodButton];
 }
+
 - (void)returnGoodButtonDidClick:(UIButton *)button
 {
     if (_delegate && [_delegate respondsToSelector:@selector(returnGoodOrderTableViewCell:returnGoodButtonDidClick:)]) {
         [_delegate returnGoodOrderTableViewCell:self returnGoodButtonDidClick:button];
     }
 }
+
 - (void)setCommentGoodModel:(DRCommentGoodModel *)commentGoodModel
 {
     _commentGoodModel = commentGoodModel;
     
-    NSString * urlStr = [NSString stringWithFormat:@"%@%@%@",baseUrl,_commentGoodModel.goods.spreadPics,smallPicUrl];
-    [self.goodImageView sd_setImageWithURL:[NSURL URLWithString:urlStr] placeholderImage:[UIImage imageNamed:@"placeholder"]];
-    
-    CGFloat goodNameLabelX = CGRectGetMaxX(self.goodImageView.frame) + 10;
-    if (DRStringIsEmpty(_commentGoodModel.goods.description_)) {
-        self.goodNameLabel.text = _commentGoodModel.goods.name;
-        
-        CGSize goodNameLabelSize = [self.goodNameLabel.text sizeWithFont:self.goodNameLabel.font maxSize:CGSizeMake(screenWidth - goodNameLabelX - 2 * DRMargin, MAXFLOAT)];
-        self.goodNameLabel.frame = CGRectMake(goodNameLabelX, self.goodImageView.y + 3, goodNameLabelSize.width, goodNameLabelSize.height);
+    if (DRObjectIsEmpty(_commentGoodModel.specification)) {
+        NSString * urlStr = [NSString stringWithFormat:@"%@%@%@", baseUrl, _commentGoodModel.goods.spreadPics, smallPicUrl];
+        [self.goodImageView sd_setImageWithURL:[NSURL URLWithString:urlStr] placeholderImage:[UIImage imageNamed:@"placeholder"]];
     }else
     {
-        NSMutableAttributedString * nameAttStr = [[NSMutableAttributedString alloc] initWithString:[NSString stringWithFormat:@"%@ %@", _commentGoodModel.goods.name, _commentGoodModel.goods.description_]];
-        [nameAttStr addAttribute:NSFontAttributeName value:self.goodNameLabel.font range:NSMakeRange(0, nameAttStr.length)];
-        [nameAttStr addAttribute:NSForegroundColorAttributeName value:DRBlackTextColor range:NSMakeRange(0, _commentGoodModel.goods.name.length)];
-        [nameAttStr addAttribute:NSForegroundColorAttributeName value:DRGrayTextColor range:NSMakeRange( _commentGoodModel.goods.name.length, nameAttStr.length - _commentGoodModel.goods.name.length)];
-        self.goodNameLabel.attributedText = nameAttStr;
-        
-        CGSize goodNameLabelSize = [self.goodNameLabel.attributedText boundingRectWithSize:CGSizeMake(screenWidth - goodNameLabelX - 2 * DRMargin, MAXFLOAT) options:NSStringDrawingUsesLineFragmentOrigin context:nil].size;
-        self.goodNameLabel.frame = CGRectMake(goodNameLabelX, self.goodImageView.y + 3, goodNameLabelSize.width, goodNameLabelSize.height);
+        NSString * urlStr = [NSString stringWithFormat:@"%@%@%@", baseUrl, _commentGoodModel.specification.picUrl, smallPicUrl];
+        [self.goodImageView sd_setImageWithURL:[NSURL URLWithString:urlStr] placeholderImage:[UIImage imageNamed:@"placeholder"]];
+        self.goodSpecificationLabel.text = _commentGoodModel.specification.name;
+    }
+    
+    self.goodNameLabel.text = _commentGoodModel.goods.name;
+    
+    CGFloat labelX = CGRectGetMaxX(self.goodImageView.frame) + 10;
+    CGFloat labelW = self.width - labelX;
+    CGFloat labelH = 20;
+    if (DRObjectIsEmpty(_commentGoodModel.specification)) {
+        self.goodNameLabel.frame = CGRectMake(labelX, 12, labelW, labelH);
+        self.goodSpecificationLabel.hidden = YES;
+    }else
+    {
+        self.goodNameLabel.frame = CGRectMake(labelX, 12, labelW, labelH);
+        self.goodSpecificationLabel.hidden = NO;
+        CGSize goodSpecificationLabelSize = [self.goodSpecificationLabel.text sizeWithLabelFont:self.goodSpecificationLabel.font];
+        CGFloat goodSpecificationLabelH = goodSpecificationLabelSize.height + 4;
+        self.goodSpecificationLabel.frame = CGRectMake(labelX, CGRectGetMaxY(self.goodNameLabel.frame) + 2, goodSpecificationLabelSize.width + 15, goodSpecificationLabelH);
+        self.goodSpecificationLabel.layer.cornerRadius = goodSpecificationLabelH / 2;
     }
     
     self.goodPriceLabel.text = [NSString stringWithFormat:@"¥%@", [DRTool formatFloat:[_commentGoodModel.priceCount doubleValue] / 100]];
+    CGSize goodPriceLabelSize = [self.goodPriceLabel.text sizeWithLabelFont:self.goodPriceLabel.font];
+    CGFloat goodPriceLabelX = self.goodNameLabel.x;
+    self.goodPriceLabel.frame = CGRectMake(goodPriceLabelX, CGRectGetMaxY(self.goodImageView.frame) - 3 - goodPriceLabelSize.height, goodPriceLabelSize.width, goodPriceLabelSize.height);
+
 
     if ([_commentGoodModel.refundStatus intValue] == 0) {
         self.returnGoodButton.backgroundColor = DRDefaultColor;
@@ -140,10 +164,6 @@
             [self.returnGoodButton setTitleColor:DRGrayTextColor forState:UIControlStateNormal];
         }
     }
-    
-    CGSize goodPriceLabelSize = [self.goodPriceLabel.text sizeWithLabelFont:self.goodPriceLabel.font];
-    CGFloat goodPriceLabelX = self.goodNameLabel.x;
-    self.goodPriceLabel.frame = CGRectMake(goodPriceLabelX, CGRectGetMaxY(self.goodImageView.frame) - 3 - goodPriceLabelSize.height, goodPriceLabelSize.width, goodPriceLabelSize.height);
 }
 
 @end

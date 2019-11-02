@@ -14,7 +14,8 @@
 
 @property (nonatomic, weak) UIImageView *goodImageView;//商品图片
 @property (nonatomic, weak) UILabel *goodNameLabel;//商品名称
-@property (nonatomic,weak) DRTextView *commentContentTV;
+@property (nonatomic, weak) UIButton *selectedEvaluateButton;
+@property (nonatomic, weak) DRTextView *commentContentTV;
 
 @end
 
@@ -29,7 +30,7 @@
 - (void)setupChilds
 {
     //contentView
-    UIView * contentView = [[UIView alloc] initWithFrame:CGRectMake(0, 9, screenWidth, 50 + 100)];
+    UIView * contentView = [[UIView alloc] initWithFrame:CGRectMake(0, 9, screenWidth, 0)];
     contentView.backgroundColor = [UIColor whiteColor];
     [self.view addSubview:contentView];
     
@@ -46,18 +47,24 @@
     goodNameLabel.font = [UIFont systemFontOfSize:DRGetFontSize(24)];
     [contentView addSubview:goodNameLabel];
     
-    NSString * urlStr = [NSString stringWithFormat:@"%@%@%@",baseUrl,_commentGoodModel.goods.spreadPics,smallPicUrl];
-    [self.goodImageView sd_setImageWithURL:[NSURL URLWithString:urlStr] placeholderImage:[UIImage imageNamed:@"placeholder"]];
+    if (DRObjectIsEmpty(self.commentGoodModel.specification)) {
+        NSString * urlStr = [NSString stringWithFormat:@"%@%@%@", baseUrl, self.commentGoodModel.goods.spreadPics, smallPicUrl];
+        [self.goodImageView sd_setImageWithURL:[NSURL URLWithString:urlStr] placeholderImage:[UIImage imageNamed:@"placeholder"]];
+    }else
+    {
+        NSString * urlStr = [NSString stringWithFormat:@"%@%@%@", baseUrl, self.commentGoodModel.specification.picUrl, smallPicUrl];
+        [self.goodImageView sd_setImageWithURL:[NSURL URLWithString:urlStr] placeholderImage:[UIImage imageNamed:@"placeholder"]];
+    }
     
-    if (DRStringIsEmpty(_commentGoodModel.goods.description_)) {
-        self.goodNameLabel.text = _commentGoodModel.goods.name;
+    if (DRStringIsEmpty(self.commentGoodModel.goods.description_)) {
+        self.goodNameLabel.text = self.commentGoodModel.goods.name;
         
         CGFloat goodNameLabelX = CGRectGetMaxX(self.goodImageView.frame) + 10;
         CGSize goodNameLabelSize = [self.goodNameLabel.text sizeWithFont:self.goodNameLabel.font maxSize:CGSizeMake(screenWidth - goodNameLabelX - DRMargin, 50)];
         self.goodNameLabel.frame = CGRectMake(goodNameLabelX, (50 - goodNameLabelSize.height) / 2, goodNameLabelSize.width, goodNameLabelSize.height);
     }else
     {
-        NSMutableAttributedString * nameAttStr = [[NSMutableAttributedString alloc] initWithString:[NSString stringWithFormat:@"%@ %@", _commentGoodModel.goods.name, _commentGoodModel.goods.description_]];
+        NSMutableAttributedString * nameAttStr = [[NSMutableAttributedString alloc] initWithString:[NSString stringWithFormat:@"%@ %@", self.commentGoodModel.goods.name, self.commentGoodModel.goods.description_]];
         [nameAttStr addAttribute:NSForegroundColorAttributeName value:DRBlackTextColor range:NSMakeRange(0, _commentGoodModel.goods.name.length)];
         [nameAttStr addAttribute:NSForegroundColorAttributeName value:DRGrayTextColor range:NSMakeRange( _commentGoodModel.goods.name.length, nameAttStr.length - _commentGoodModel.goods.name.length)];
         [nameAttStr addAttribute:NSFontAttributeName value:self.goodNameLabel.font range:NSMakeRange(0, nameAttStr.string.length)];
@@ -69,12 +76,43 @@
     }
 
     //分割线
-    UIView * line = [[UIView alloc]initWithFrame:CGRectMake(0, 49, screenWidth, 1)];
-    line.backgroundColor = DRWhiteLineColor;
-    [contentView addSubview:line];
+    UIView * line1 = [[UIView alloc]initWithFrame:CGRectMake(0, 50, screenWidth, 1)];
+    line1.backgroundColor = DRWhiteLineColor;
+    [contentView addSubview:line1];
+    
+    //评价等级
+    CGFloat buttonW = 100;
+    CGFloat buttonH = 60;
+    CGFloat buttonPadding = (screenWidth - 3 * buttonW) / 6;
+    NSArray * buttonTitles = @[@"好评", @"中评", @"差评"];
+    for (int i = 0; i < 3; i++) {
+        UIButton * button = [UIButton buttonWithType:UIButtonTypeCustom];
+        button.tag = i;
+        button.frame = CGRectMake(buttonPadding * 2 + (buttonW + buttonPadding) * i, CGRectGetMaxY(line1.frame), buttonW, buttonH);
+        [button setImage:[UIImage imageNamed:[NSString stringWithFormat:@"evaluate%d_gray", i + 1]] forState:UIControlStateNormal];
+        [button setImage:[UIImage imageNamed:[NSString stringWithFormat:@"evaluate%d_light", i + 1]] forState:UIControlStateSelected];
+        [button setTitle:[NSString stringWithFormat:@" %@", buttonTitles[i]] forState:UIControlStateNormal];
+        [button setTitleColor:DRGrayTextColor forState:UIControlStateNormal];
+        [button setTitleColor:DRViceColor forState:UIControlStateSelected];
+        button.titleLabel.font = [UIFont systemFontOfSize:DRGetFontSize(26)];
+        if (i == 0) {
+            button.selected = YES;
+            self.selectedEvaluateButton = button;
+        }else
+        {
+            button.selected = NO;
+        }
+        [button addTarget:self action:@selector(evaluateButtonDidClick:) forControlEvents:UIControlEventTouchUpInside];
+        [contentView addSubview:button];
+    }
+    
+    //分割线
+    UIView * line2 = [[UIView alloc]initWithFrame:CGRectMake(0, CGRectGetMaxY(line1.frame) + buttonH, screenWidth, 1)];
+    line2.backgroundColor = DRWhiteLineColor;
+    [contentView addSubview:line2];
     
     //评论内容
-    DRTextView *commentContentTV = [[DRTextView alloc] initWithFrame:CGRectMake(5, 50, screenWidth - 2 * 5, 100)];
+    DRTextView *commentContentTV = [[DRTextView alloc] initWithFrame:CGRectMake(5, CGRectGetMaxY(line2.frame), screenWidth - 2 * 5, 150)];
     self.commentContentTV = commentContentTV;
     commentContentTV.font = [UIFont systemFontOfSize:DRGetFontSize(28)];
     commentContentTV.textColor = DRBlackTextColor;
@@ -82,6 +120,7 @@
     commentContentTV.maxLimitNums = 100;
     commentContentTV.tintColor = DRDefaultColor;
     [contentView addSubview:commentContentTV];
+    contentView.height = CGRectGetMaxY(commentContentTV.frame);
     
     //评价
     UIButton * commentButton = [UIButton buttonWithType:UIButtonTypeCustom];
@@ -95,6 +134,18 @@
     [commentButton addTarget:self action:@selector(commentButtonDidClick) forControlEvents:UIControlEventTouchUpInside];
     [self.view addSubview:commentButton];
 }
+
+- (void)evaluateButtonDidClick:(UIButton *)button
+{
+    if (self.selectedEvaluateButton == button) {
+        return;
+    }
+    
+    button.selected = YES;
+    self.selectedEvaluateButton.selected = NO;
+    self.selectedEvaluateButton = button;
+}
+
 - (void)commentButtonDidClick
 {
     [self.view endEditing:YES];
@@ -107,6 +158,7 @@
     
     NSDictionary *bodyDic_ = @{
                               @"content":self.commentContentTV.text,
+                              @"level": @(self.selectedEvaluateButton.tag + 1)
                               };
     NSMutableDictionary *bodyDic = [NSMutableDictionary dictionaryWithDictionary:bodyDic_];
     if (!DRStringIsEmpty(self.commentGoodModel.orderId)) {
@@ -115,7 +167,10 @@
     if (!DRStringIsEmpty(self.commentGoodModel.goods.id)) {
         [bodyDic setObject:self.commentGoodModel.goods.id forKey:@"goodsId"];
     }
-    
+    if (!DRObjectIsEmpty(self.commentGoodModel.specification)) {
+        [bodyDic setObject:self.commentGoodModel.specification.id forKey:@"specificationId"];
+    }
+        
     NSDictionary *headDic = @{
                               @"digest":[DRTool getDigestByBodyDic:bodyDic],
                               @"cmd":@"B20",

@@ -104,7 +104,7 @@
     UIImageView * goodImageView = [[UIImageView alloc] initWithFrame:CGRectMake(DRMargin, 5, 40, 40)];
     goodImageView.contentMode = UIViewContentModeScaleAspectFill;
     goodImageView.layer.masksToBounds = YES;
-    NSString * imageUrlStr = [NSString stringWithFormat:@"%@%@",baseUrl,self.goodModel.spreadPics];
+    NSString * imageUrlStr = [NSString stringWithFormat:@"%@%@", baseUrl, self.goodModel.spreadPics];
     [goodImageView sd_setImageWithURL:[NSURL URLWithString:imageUrlStr] placeholderImage:[UIImage imageNamed:@"placeholder"]];
     [headerView addSubview:goodImageView];
     

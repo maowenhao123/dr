@@ -12,6 +12,7 @@
 
 @property (nonatomic, weak) UIImageView *goodImageView;//商品图片
 @property (nonatomic, weak) UILabel *goodNameLabel;//商品名称
+@property (nonatomic, weak) UILabel *goodSpecificationLabel;//商品规格
 @property (nonatomic,weak) UIButton *returnGoodButton;
 
 @end
@@ -57,15 +58,20 @@
     //商品名称
     UILabel * goodNameLabel = [[UILabel alloc] init];
     self.goodNameLabel = goodNameLabel;
-    goodNameLabel.text = @"商品名称";
     goodNameLabel.textColor = DRBlackTextColor;
     goodNameLabel.numberOfLines = 0;
     goodNameLabel.font = [UIFont systemFontOfSize:DRGetFontSize(24)];
     [self addSubview:goodNameLabel];
     
-    CGSize goodNameLabelSize = [self.goodNameLabel.text sizeWithLabelFont:self.goodNameLabel.font];
-    CGFloat goodNameLabelX = CGRectGetMaxX(self.goodImageView.frame) + 10;
-    self.goodNameLabel.frame = CGRectMake(goodNameLabelX, self.goodImageView.y + 3, goodNameLabelSize.width, goodNameLabelSize.height);
+    //商品规格
+    UILabel * goodSpecificationLabel = [[UILabel alloc] init];
+    self.goodSpecificationLabel = goodSpecificationLabel;
+    goodSpecificationLabel.backgroundColor = DRWhiteLineColor;
+    goodSpecificationLabel.textColor = DRGrayTextColor;
+    goodSpecificationLabel.font = [UIFont systemFontOfSize:DRGetFontSize(24)];
+    goodSpecificationLabel.textAlignment = NSTextAlignmentCenter;
+    goodSpecificationLabel.layer.masksToBounds = YES;
+    [self addSubview:goodSpecificationLabel];
     
     // 退款
     UIButton *returnGoodButton = [UIButton buttonWithType:UIButtonTypeCustom];
@@ -92,14 +98,21 @@
 {
     _returnGoodModel = returnGoodModel;
     
-    NSString * urlStr = [NSString stringWithFormat:@"%@%@%@",baseUrl,_returnGoodModel.goods.spreadPics,smallPicUrl];
-    [self.goodImageView sd_setImageWithURL:[NSURL URLWithString:urlStr] placeholderImage:[UIImage imageNamed:@"placeholder"]];
+    if (DRObjectIsEmpty(self.returnGoodModel.specification)) {
+        NSString * urlStr = [NSString stringWithFormat:@"%@%@%@", baseUrl, _returnGoodModel.goods.spreadPics, smallPicUrl];
+        [self.goodImageView sd_setImageWithURL:[NSURL URLWithString:urlStr] placeholderImage:[UIImage imageNamed:@"placeholder"]];
+    }else
+    {
+        NSString * urlStr = [NSString stringWithFormat:@"%@%@%@", baseUrl, _returnGoodModel.specification.picUrl, smallPicUrl];
+        [self.goodImageView sd_setImageWithURL:[NSURL URLWithString:urlStr] placeholderImage:[UIImage imageNamed:@"placeholder"]];
+        self.goodSpecificationLabel.text = self.returnGoodModel.specification.name;
+    }
     
+    CGFloat goodNameLabelX = CGRectGetMaxX(self.goodImageView.frame) + 10;
     if (DRStringIsEmpty(_returnGoodModel.goods.description_)) {
         self.goodNameLabel.text = _returnGoodModel.goods.name;
         
-        CGSize goodNameLabelSize = [self.goodNameLabel.text sizeWithLabelFont:self.goodNameLabel.font];
-        CGFloat goodNameLabelX = CGRectGetMaxX(self.goodImageView.frame) + 10;
+        CGSize goodNameLabelSize = [self.goodNameLabel.text sizeWithFont:self.goodNameLabel.font maxSize:CGSizeMake(screenWidth - goodNameLabelX - 10, 40)];
         self.goodNameLabel.frame = CGRectMake(goodNameLabelX, self.goodImageView.y + 3, goodNameLabelSize.width, goodNameLabelSize.height);
     }else
     {
@@ -108,10 +121,21 @@
         [nameAttStr addAttribute:NSForegroundColorAttributeName value:DRBlackTextColor range:NSMakeRange(0, _returnGoodModel.goods.name.length)];
         [nameAttStr addAttribute:NSForegroundColorAttributeName value:DRGrayTextColor range:NSMakeRange( _returnGoodModel.goods.name.length, nameAttStr.length - _returnGoodModel.goods.name.length)];
         self.goodNameLabel.attributedText = nameAttStr;
-
-        CGFloat goodNameLabelX = CGRectGetMaxX(self.goodImageView.frame) + 10;
+        
         CGSize goodNameLabelSize = [self.goodNameLabel.attributedText boundingRectWithSize:CGSizeMake(screenWidth - goodNameLabelX - 10, 40) options:NSStringDrawingUsesLineFragmentOrigin context:nil].size;
         self.goodNameLabel.frame = CGRectMake(goodNameLabelX, self.goodImageView.y + 3, goodNameLabelSize.width, goodNameLabelSize.height);
+    }
+    
+    if (DRObjectIsEmpty(_returnGoodModel.specification)) {
+        self.goodSpecificationLabel.hidden = YES;
+    }else
+    {
+        self.goodSpecificationLabel.hidden = NO;
+        self.goodSpecificationLabel.text = _returnGoodModel.specification.name;
+        CGSize goodSpecificationLabelSize = [self.goodSpecificationLabel.text sizeWithLabelFont:self.goodSpecificationLabel.font];
+        CGFloat goodSpecificationLabelH = goodSpecificationLabelSize.height + 4;
+        self.goodSpecificationLabel.frame = CGRectMake(self.goodNameLabel.x, CGRectGetMaxY(self.goodNameLabel.frame) + 10, goodSpecificationLabelSize.width + 15, goodSpecificationLabelH);
+        self.goodSpecificationLabel.layer.cornerRadius = goodSpecificationLabelH / 2;
     }
     
     if ([_returnGoodModel.status intValue] == 10) {

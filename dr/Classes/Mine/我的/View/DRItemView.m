@@ -78,6 +78,7 @@
     }else
     {
         self.imageView.image = [UIImage imageNamed:_imageName];
+        [self.imageView stopAnimating];
     }
 }
 - (void)setText:(NSString *)text

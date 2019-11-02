@@ -450,7 +450,7 @@
     //支付倒计时 15分钟
     NSDateComponents * components = [DRDateTool getDeltaDateToTimestampg:_orderModel.createTime + 15 * 60 * 1000];
     int statusInt = [_orderModel.status intValue];
-    if ((components.minute <= 0 && components.second < 0) || statusInt != 0) {
+    if ((components.minute <= 0 && components.second <= 0) || statusInt != 0) {
         self.timeLabel.hidden = YES;
     }else
     {

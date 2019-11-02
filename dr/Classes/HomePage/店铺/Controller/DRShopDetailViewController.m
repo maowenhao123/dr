@@ -61,6 +61,7 @@ NSString * const ShopHeaderCellId = @"ShopHeaderCellId";
     {
         self.automaticallyAdjustsScrollViewInsets = NO;
     }
+    waitingView
     [self getData];
 }
 #pragma mark - 请求数据
@@ -112,8 +113,13 @@ NSString * const ShopHeaderCellId = @"ShopHeaderCellId";
     
     [[DRHttpTool shareInstance] postWithHeadDic:headDic bodyDic:bodyDic success:^(id json) {
         DRLog(@"%@",json);
+        [MBProgressHUD hideHUDForView:self.view];
         if (SUCCESS) {
             NSArray *goodDataArray = [DRGoodModel mj_objectArrayWithKeyValuesArray:json[@"list"]];
+            for (DRGoodModel * goodModel in goodDataArray) {
+                NSInteger index = [goodDataArray indexOfObject:goodModel];
+                goodModel.specifications = [DRGoodSpecificationModel mj_objectArrayWithKeyValuesArray:json[@"list"][index][@"specifications"]];
+            }
             [self.goodDataArray addObjectsFromArray:goodDataArray];
             [UIView performWithoutAnimation:^{
                 [self.collectionView reloadSections:[NSIndexSet indexSetWithIndex:1]];
@@ -134,6 +140,7 @@ NSString * const ShopHeaderCellId = @"ShopHeaderCellId";
         }
     } failure:^(NSError *error) {
         DRLog(@"error:%@",error);
+        [MBProgressHUD hideHUDForView:self.view];
         //结束刷新
         [self.headerView endRefreshing];
         [self.footerView endRefreshing];

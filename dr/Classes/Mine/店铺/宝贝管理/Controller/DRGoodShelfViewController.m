@@ -83,6 +83,10 @@
         if (SUCCESS) {
             NSMutableArray *dataArray_ = self.dataArray[self.currentIndex];
             NSArray * newDataArray_ = [DRGoodModel mj_objectArrayWithKeyValuesArray:json[@"list"]];
+            for (DRGoodModel * goodModel in newDataArray_) {
+                NSInteger index = [newDataArray_ indexOfObject:goodModel];
+                goodModel.specifications = [DRGoodSpecificationModel mj_objectArrayWithKeyValuesArray:json[@"list"][index][@"specifications"]];
+            }
             [dataArray_ addObjectsFromArray:newDataArray_];
             [tableView reloadData];
             //结束刷新

@@ -21,4 +21,6 @@
  */
 + (UIImage *)ImageFromColor:(UIColor *)color WithRect:(CGRect)rect;
 
+- (UIImage *)fixOrientation;
+
 @end

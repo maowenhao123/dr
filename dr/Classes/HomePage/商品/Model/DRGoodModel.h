@@ -53,6 +53,7 @@
 @property (nonatomic,assign) long long systemTime;
 @property (nonatomic,assign) long long dayBeginTime;
 @property (nonatomic,assign) long long dayEndTime;
+@property (nonatomic,strong) NSArray <NSString *>*tags;
 @property (nonatomic,strong) NSArray <DRGoodSpecificationModel *>*specifications;
 //自定义
 @property (nonatomic,assign) int type;//1:已上架 2:审核中 3:已驳回 4:已下架

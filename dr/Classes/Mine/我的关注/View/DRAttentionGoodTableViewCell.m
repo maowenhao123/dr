@@ -89,7 +89,8 @@
         CGSize goodNameLabelSize = [self.goodNameLabel.text sizeWithLabelFont:self.goodNameLabel.font];
         CGFloat goodNameLabelX = CGRectGetMaxX(self.goodImageView.frame) + 10;
         self.goodNameLabel.frame = CGRectMake(goodNameLabelX, self.goodImageView.y + 5, goodNameLabelSize.width, goodNameLabelSize.height);
-    }else{
+    }else
+    {
         NSMutableAttributedString * nameAttStr = [[NSMutableAttributedString alloc] initWithString:[NSString stringWithFormat:@"%@ %@", name, description]];
         [nameAttStr addAttribute:NSForegroundColorAttributeName value:DRBlackTextColor range:NSMakeRange(0, name.length)];
         [nameAttStr addAttribute:NSForegroundColorAttributeName value:DRGrayTextColor range:NSMakeRange(name.length, nameAttStr.length - name.length)];

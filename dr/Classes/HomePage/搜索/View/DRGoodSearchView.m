@@ -52,6 +52,10 @@ NSString * const goodSearchCollectionCellId = @"goodSearchCollectionCellId";
         DRLog(@"%@",json);
         if (SUCCESS) {
             NSArray * newDataArray = [DRGoodModel mj_objectArrayWithKeyValuesArray:json[@"list"]];
+            for (DRGoodModel * goodModel in newDataArray) {
+                NSInteger index = [newDataArray indexOfObject:goodModel];
+                goodModel.specifications = [DRGoodSpecificationModel mj_objectArrayWithKeyValuesArray:json[@"list"][index][@"specifications"]];
+            }
             [self.dataArray addObjectsFromArray:newDataArray];
             [self.collectionView reloadData];
             if (newDataArray.count == 0) {

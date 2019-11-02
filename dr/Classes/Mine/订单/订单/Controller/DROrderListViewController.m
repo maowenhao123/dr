@@ -9,7 +9,6 @@
 #import "DROrderListViewController.h"
 #import "DROrderDetailViewController.h"
 #import "DRReturnGoodViewController.h"
-#import "DRReturnGoodListViewController.h"
 #import "DRPayViewController.h"
 #import "DRCommentOrderListViewController.h"
 #import "DRSellerLogisticsViewController.h"
@@ -122,9 +121,12 @@
                     NSArray *detail_ = [DROrderItemDetailModel  mj_objectArrayWithKeyValuesArray:detail[index_][@"detail"]];
                     storeOrder.detail = detail_;
                 }
+                NSDateComponents * components = [DRDateTool getDeltaDateToTimestampg:orderModel.createTime + 15 * 60 * 1000];
+                if (components.minute > 0 || components.second > 0 || status != 0) {
+                    [dataArray_ addObject:orderModel];
+                }
             }
             
-            [dataArray_ addObjectsFromArray:newDataArray_];
             [tableView reloadData];
             if (newDataArray_.count == 0) {//没有新的数据
                 [footerView endRefreshingWithNoMoreData];
@@ -527,7 +529,7 @@
     }
     return _dataArray;
 }
-#pragma  mark - 销毁对象
+#pragma mark - 销毁对象
 - (void)removeSetDeadlineTimer
 {
     [self.timer invalidate];

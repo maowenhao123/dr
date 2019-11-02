@@ -93,6 +93,7 @@
         [self setImagePickerControllerNav];
         [tzImagePickerVc showProgressHUD];
         UIImage *image = [info objectForKey:UIImagePickerControllerOriginalImage];
+        image = [DRTool imageCompressionWithImage:image];
         
         // save photo and get asset / 保存图片，获取到asset
         [[TZImageManager manager] savePhotoWithImage:image completion:^(PHAsset *asset, NSError *error) {

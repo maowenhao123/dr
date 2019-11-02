@@ -214,8 +214,13 @@
                                        @"priceCount":money,
                                        @"pictures":self.uploadImageUrlArray,
                                        };
+    NSMutableDictionary *orderGoodsRefund_mu = [NSMutableDictionary dictionaryWithDictionary:orderGoodsRefund];
+    if (!DRObjectIsEmpty(self.commentGoodModel.specification)) {
+        [orderGoodsRefund_mu setObject:self.commentGoodModel.specification.id forKey:@"specificationId"];
+    }
+    
     NSDictionary *bodyDic = @{
-                              @"orderGoodsRefund":orderGoodsRefund,
+                              @"orderGoodsRefund":orderGoodsRefund_mu,
                               };
     
     NSDictionary *headDic = @{

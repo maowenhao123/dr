@@ -8,8 +8,9 @@
 
 #import "DRSingleSpecificationView.h"
 #import "DRAdjustNumberView.h"
+#import "XLPhotoBrowser.h"
 
-@interface DRSingleSpecificationView ()<UIGestureRecognizerDelegate, DRAdjustNumberViewDelegate>
+@interface DRSingleSpecificationView ()<UIGestureRecognizerDelegate, DRAdjustNumberViewDelegate, XLPhotoBrowserDelegate, XLPhotoBrowserDatasource>
 
 @property (nonatomic,weak) UIView * contentView;
 @property (nonatomic,weak) UIImageView * goodImageView;
@@ -59,6 +60,9 @@
     goodImageView.layer.borderWidth = 2;
     goodImageView.layer.masksToBounds = YES;
     goodImageView.layer.cornerRadius = 4;
+    goodImageView.userInteractionEnabled = YES;
+    UITapGestureRecognizer * imageTap = [[UITapGestureRecognizer alloc] initWithTarget:self action:@selector(imageDidTap)];
+    [goodImageView addGestureRecognizer:imageTap];
     [contentView addSubview:goodImageView];
     
     //商品价格
@@ -77,7 +81,7 @@
     [contentView addSubview:stockLabel];
     
     //scrollView
-    UIScrollView *scrollView = [[UIScrollView alloc] initWithFrame:CGRectMake(0, 85, screenWidth, contentView.height - 85 - 45)];
+    UIScrollView *scrollView = [[UIScrollView alloc] initWithFrame:CGRectMake(0, 85, screenWidth, contentView.height - 85 - 45 - 5)];
     scrollView.showsVerticalScrollIndicator = NO;
     [contentView addSubview:scrollView];
     
@@ -108,17 +112,14 @@
             specificationButton.layer.masksToBounds = YES;
             specificationButton.layer.cornerRadius = 4;
             specificationButton.layer.borderColor = DRDefaultColor.CGColor;
-            if (i == 0) {
-                self.selectedSpecificationButton = specificationButton;
-                specificationButton.selected = YES;
-                specificationButton.layer.borderWidth = 1;
-            }
             [specificationButton addTarget:self action:@selector(specificationButtonDidClick:) forControlEvents:UIControlEventTouchUpInside];
             [scrollView addSubview:specificationButton];
             lastView = specificationButton;
             
             UIImageView * specificationImageView = [[UIImageView alloc] initWithFrame:CGRectMake(15, (40 - 25) / 2, 25, 25)];
             self.specificationImageView = specificationImageView;
+            specificationImageView.contentMode = UIViewContentModeScaleAspectFill;
+            specificationImageView.layer.masksToBounds = YES;
             NSString * imageUrlStr = [NSString stringWithFormat:@"%@%@%@", baseUrl, specificationModel.picUrl,smallPicUrl];
             [specificationImageView sd_setImageWithURL:[NSURL URLWithString:imageUrlStr] placeholderImage:[UIImage imageNamed:@"placeholder"]];
             [specificationButton addSubview:specificationImageView];
@@ -127,15 +128,28 @@
             self.specificationNameLabel = specificationNameLabel;
             specificationNameLabel.text = specificationModel.name;
             specificationNameLabel.font = [UIFont systemFontOfSize:DRGetFontSize(28)];
-            specificationNameLabel.textColor = DRBlackTextColor;
+            if ([specificationModel.storeCount intValue] == 0) {
+                specificationButton.enabled = NO;
+                specificationNameLabel.textColor = DRGrayLineColor;
+            }else
+            {
+                specificationButton.enabled = YES;
+                specificationNameLabel.textColor = DRBlackTextColor;
+            }
             [specificationButton addSubview:specificationNameLabel];
             
-            if (i == 0) {
-                stockLabel.text = [NSString stringWithFormat:@"库存%@", specificationModel.storeCount];
-                goodPriceLabel.text = [NSString stringWithFormat:@"¥%@", [DRTool formatFloat:[specificationModel.price doubleValue] / 100]];
-                NSString * imageUrlStr = [NSString stringWithFormat:@"%@%@%@",baseUrl, specificationModel.picUrl, smallPicUrl];
-                [goodImageView sd_setImageWithURL:[NSURL URLWithString:imageUrlStr] placeholderImage:[UIImage imageNamed:@"placeholder"]];
-                specificationNameLabel.textColor = DRDefaultColor;
+            if ([specificationModel.storeCount intValue] > 0) {
+                if (!self.selectedSpecificationButton) {
+                    self.selectedSpecificationButton = specificationButton;
+                    specificationButton.selected = YES;
+                    specificationButton.layer.borderWidth = 1;
+                    
+                    stockLabel.text = [NSString stringWithFormat:@"库存%@", specificationModel.storeCount];
+                    goodPriceLabel.text = [NSString stringWithFormat:@"¥%@", [DRTool formatFloat:[specificationModel.price doubleValue] / 100]];
+                    NSString * imageUrlStr = [NSString stringWithFormat:@"%@%@%@",baseUrl, specificationModel.picUrl, smallPicUrl];
+                    [goodImageView sd_setImageWithURL:[NSURL URLWithString:imageUrlStr] placeholderImage:[UIImage imageNamed:@"placeholder"]];
+                    specificationNameLabel.textColor = DRDefaultColor;
+                }
             }
         }
     }else
@@ -192,7 +206,7 @@
     scrollView.contentSize = CGSizeMake(screenWidth, CGRectGetMaxY(line3.frame) + 100);
     
     //确定
-    UIView * buttonView = [[UIView alloc] initWithFrame:CGRectMake(DRMargin, contentView.height - 45, screenWidth - 2 * DRMargin, 45)];
+    UIView * buttonView = [[UIView alloc] initWithFrame:CGRectMake(DRMargin, contentView.height - 45 - 5, screenWidth - 2 * DRMargin, 45)];
     buttonView.layer.masksToBounds = YES;
     buttonView.layer.cornerRadius = buttonView.height / 2;
     [contentView addSubview:buttonView];
@@ -253,10 +267,16 @@
             specificationNameLabel.textColor = DRBlackTextColor;
         }
     }
+    DRGoodSpecificationModel * specificationModel = _goodModel.specifications[button.tag];
     for (UIView * subView in button.subviews) {
         if ([subView isKindOfClass:[UILabel class]]) {
             UILabel *specificationNameLabel = (UILabel *)subView;
-            specificationNameLabel.textColor = DRDefaultColor;
+            if ([specificationModel.storeCount intValue] > 0) {
+                specificationNameLabel.textColor = DRDefaultColor;
+            }else
+            {
+                specificationNameLabel.textColor = DRGrayLineColor;
+            }
         }
     }
     
@@ -266,12 +286,18 @@
     button.layer.borderWidth = 1;
     self.selectedSpecificationButton = button;
     
-    DRGoodSpecificationModel * specificationModel = _goodModel.specifications[button.tag];
     self.stockLabel.text = [NSString stringWithFormat:@"库存%@", specificationModel.storeCount];
     self.goodPriceLabel.text = [NSString stringWithFormat:@"¥%@", [DRTool formatFloat:[specificationModel.price doubleValue] / 100]];
     NSString * imageUrlStr = [NSString stringWithFormat:@"%@%@%@",baseUrl, specificationModel.picUrl, smallPicUrl];
     [self.goodImageView sd_setImageWithURL:[NSURL URLWithString:imageUrlStr] placeholderImage:[UIImage imageNamed:@"placeholder"]];
     self.numberView.max = [specificationModel.storeCount intValue];
+}
+
+- (void)imageDidTap
+{
+    XLPhotoBrowser * photoBrowser = [XLPhotoBrowser showPhotoBrowserWithCurrentImageIndex:0 imageCount:1 datasource:self];
+    photoBrowser.delegate = self;
+    photoBrowser.browserStyle = XLPhotoBrowserStyleSimple;
 }
 
 - (void)confirmButtonDidClick:(UIButton *)button
@@ -299,6 +325,14 @@
     }
     
     [self removeFromSuperview];
+}
+
+#pragma mark - XLPhotoBrowserDelegate
+- (NSURL *)photoBrowser:(XLPhotoBrowser *)browser highQualityImageURLForIndex:(NSInteger)index
+{
+    DRGoodSpecificationModel * specificationModel = _goodModel.specifications[self.selectedSpecificationButton.tag];
+    NSString * imageUrlStr = [NSString stringWithFormat:@"%@%@%@",baseUrl, specificationModel.picUrl, smallPicUrl];
+    return [NSURL URLWithString:imageUrlStr];
 }
 
 #pragma mark - UIGestureRecognizerDelegate

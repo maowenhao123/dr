@@ -10,6 +10,7 @@
 #import "DRPublishWholesaleGoodView.h"
 #import "DRPublishSingleGoodView.h"
 #import "DRBottomPickerView.h"
+#import "EaseEmoji.h"
 
 @interface DRPublishGoodViewController ()<PublishGoodMessageViewDelegate>
 
@@ -164,6 +165,9 @@
             wself.scrollView.contentSize = CGSizeMake(screenWidth, CGRectGetMaxY(self.confirmBtn.frame) + 10);
         }else//批发
         {
+            for (DRGoodSpecificationModel *specificationModel in self.goodModel.specifications) {
+                specificationModel.delFlag = 1;
+            }
             wself.singleView.hidden = YES;
             wself.wholesaleView.hidden = NO;
             wself.confirmBtn.y = CGRectGetMaxY(self.wholesaleView.frame) + 29;
@@ -304,6 +308,12 @@
 - (void)confirmBtnDidClick
 {
     [self.view endEditing:YES];
+    
+    if ([self stringContainsEmoji:self.goodMessageView.nameTF.text] || [self stringContainsEmoji:self.goodMessageView.descriptionTV.text]) {
+        [MBProgressHUD showError:@"请删掉特殊符号或表情后，再提交哦~"];
+        return;
+    }
+    
     //判空
     if (DRStringIsEmpty(self.goodMessageView.sortTF.text)) {
         [MBProgressHUD showError:@"未输入商品分类"];
@@ -347,29 +357,84 @@
         double priceFloat1 = [self.wholesaleView.priceTF1.text doubleValue];
         double priceFloat2 = [self.wholesaleView.priceTF2.text doubleValue];
         double priceFloat3 = [self.wholesaleView.priceTF3.text doubleValue];
+        
         int numberInt1 = [self.wholesaleView.numberTF1.text intValue];
         int numberInt2 = [self.wholesaleView.numberTF2.text intValue];
         int numberInt3 = [self.wholesaleView.numberTF3.text intValue];
         
-        if ((DRStringIsEmpty(self.wholesaleView.priceTF1.text) || DRStringIsEmpty(self.wholesaleView.numberTF1.text)) && (DRStringIsEmpty(self.wholesaleView.priceTF2.text) || DRStringIsEmpty(self.wholesaleView.numberTF2.text)) && (DRStringIsEmpty(self.wholesaleView.priceTF3.text) || DRStringIsEmpty(self.wholesaleView.numberTF3.text))) {
+        if ((priceFloat1 == 0 && numberInt1 == 0) && (priceFloat2 == 0 && numberInt2 == 0) && (priceFloat3 == 0 && numberInt3 == 0)) {
             [MBProgressHUD showError:@"不符合批发模式价格设置，请重新选择售卖类型。"];
             return;
         }
-        if (numberInt1 == 1 && (DRStringIsEmpty(self.wholesaleView.priceTF2.text) || DRStringIsEmpty(self.wholesaleView.numberTF2.text)) && (DRStringIsEmpty(self.wholesaleView.priceTF3.text) || DRStringIsEmpty(self.wholesaleView.numberTF3.text))) {
+        if ((priceFloat1 > 0 && numberInt1 == 0) || (priceFloat1 == 0 && numberInt1 > 0)) {
             [MBProgressHUD showError:@"不符合批发模式价格设置，请重新选择售卖类型。"];
             return;
         }
-        if ((priceFloat2 > 0 && priceFloat2 >= priceFloat1) || (priceFloat3 > 0 && priceFloat3 >= priceFloat2) || (priceFloat3 > 0 && priceFloat3 >= priceFloat1)) {
+        if ((priceFloat2 > 0 && numberInt2 == 0) || (priceFloat2 == 0 && numberInt2 > 0)) {
             [MBProgressHUD showError:@"不符合批发模式价格设置，请重新选择售卖类型。"];
             return;
         }
-        if ((numberInt1 > 0 && numberInt2 > 0 && numberInt2 <= numberInt1) || (numberInt3 > 0 && numberInt2 > 0 && priceFloat3 <= numberInt2) || (numberInt3 > 0 && numberInt1 > 0 && numberInt3 <= numberInt1)) {
+        if ((priceFloat3 > 0 && numberInt3 == 0) || (priceFloat3 == 0 && numberInt3 > 0)) {
             [MBProgressHUD showError:@"不符合批发模式价格设置，请重新选择售卖类型。"];
             return;
+        }
+        if (numberInt1 == 1 && ((priceFloat2 == 0 && numberInt2 == 0) && (priceFloat3 == 0 && numberInt3 == 0))) {
+            [MBProgressHUD showError:@"不符合批发模式价格设置，请重新选择售卖类型。"];
+            return;
+        }
+        if (numberInt2 == 1 && ((priceFloat1 == 0 && numberInt1 == 0) && (priceFloat3 == 0 && numberInt3 == 0))) {
+            [MBProgressHUD showError:@"不符合批发模式价格设置，请重新选择售卖类型。"];
+            return;
+        }
+        if (numberInt3 == 1 && ((priceFloat1 == 0 && numberInt1 == 0) && (priceFloat2 == 0 && numberInt2 == 0))) {
+            [MBProgressHUD showError:@"不符合批发模式价格设置，请重新选择售卖类型。"];
+            return;
+        }
+        if (priceFloat1 > 0 && priceFloat2 > 0 && numberInt1 > 0 && numberInt2 > 0){
+            if (priceFloat2 > priceFloat1 && numberInt2 > numberInt1) {
+                [MBProgressHUD showError:@"不符合批发模式价格设置，请重新选择售卖类型。"];
+                return;
+            }
+            if (priceFloat2 < priceFloat1 && numberInt2 < numberInt1) {
+                [MBProgressHUD showError:@"不符合批发模式价格设置，请重新选择售卖类型。"];
+                return;
+            }
+        }
+        if (priceFloat3 > 0 && priceFloat2 > 0 && numberInt3 > 0 && numberInt2 > 0){
+            if (priceFloat2 > priceFloat3 && numberInt2 > numberInt3) {
+                [MBProgressHUD showError:@"不符合批发模式价格设置，请重新选择售卖类型。"];
+                return;
+            }
+            if (priceFloat2 < priceFloat3 && numberInt2 < numberInt3) {
+                [MBProgressHUD showError:@"不符合批发模式价格设置，请重新选择售卖类型。"];
+                return;
+            }
+        }
+        if (priceFloat3 > 0 && priceFloat1 > 0 && numberInt3 > 0 && numberInt1 > 0){
+            if (priceFloat1 > priceFloat3 && numberInt1 > numberInt3) {
+                [MBProgressHUD showError:@"不符合批发模式价格设置，请重新选择售卖类型。"];
+                return;
+            }
+            if (priceFloat1 < priceFloat3 && numberInt1 < numberInt3) {
+                [MBProgressHUD showError:@"不符合批发模式价格设置，请重新选择售卖类型。"];
+                return;
+            }
         }
         
         if (DRStringIsEmpty(self.wholesaleView.countTF.text)) {
             [MBProgressHUD showError:@"未输入商品库存"];
+            return;
+        }
+        
+        int maxNumber = numberInt1;
+        if (numberInt2 > maxNumber) {
+            maxNumber = numberInt2;
+        }
+        if (numberInt3 > maxNumber) {
+            maxNumber = numberInt3;
+        }
+        if (maxNumber > [self.wholesaleView.countTF.text intValue]) {
+            [MBProgressHUD showError:@"库存数必须大于等于批发中的最大数量"];
             return;
         }
     }
@@ -601,9 +666,16 @@
                                                @"price": specificationPrice,
                                                @"storeCount": @([specificationModel.storeCount longLongValue]),
                                                @"picUrl": specificationModel.picUrl,
-                                               @"delFlag": @"0",
+                                               @"delFlag": @(specificationModel.delFlag),
                                                };
-            [specifications addObject:specificationDic];
+            NSMutableDictionary *specificationDic_mu = [NSMutableDictionary dictionaryWithDictionary:specificationDic];
+            if (self.goodModel) {
+                [specificationDic_mu setObject:self.goodModel.id forKey:@"goodsId"];
+            }
+            if (!DRStringIsEmpty(specificationModel.id)) {
+                [specificationDic_mu setObject:specificationModel.id forKey:@"id"];
+            }
+            [specifications addObject:specificationDic_mu];
         }
         [bodyDic setObject:specifications forKey:@"specifications"];
     }
@@ -615,6 +687,7 @@
     [MBProgressHUD showMessage:@"上传商品中" toView:self.view];
     [[DRHttpTool shareInstance] postWithHeadDic:headDic bodyDic:bodyDic success:^(id json) {
         DRLog(@"%@", json);
+        [self.view endEditing:YES];
         if (SUCCESS) {
             [MBProgressHUD showSuccess:@"上传成功"];
             [self.navigationController popViewControllerAnimated:YES];
@@ -638,5 +711,55 @@
     }
     return _uploadImageUrlArray;
 }
+
+/**
+ *  判断字符串中是否存在emoji
+ * @param string 字符串
+ * @return YES(含有表情)
+ */
+- (BOOL)stringContainsEmoji:(NSString *)string {
+    
+    __block BOOL returnValue = NO;
+    
+    [string enumerateSubstringsInRange:NSMakeRange(0, [string length]) options:NSStringEnumerationByComposedCharacterSequences usingBlock:
+     ^(NSString *substring, NSRange substringRange, NSRange enclosingRange, BOOL *stop) {
+         
+         const unichar hs = [substring characterAtIndex:0];
+         // surrogate pair
+         if (0xd800 <= hs && hs <= 0xdbff) {
+             if (substring.length > 1) {
+                 const unichar ls = [substring characterAtIndex:1];
+                 const int uc = ((hs - 0xd800) * 0x400) + (ls - 0xdc00) + 0x10000;
+                 if (0x1d000 <= uc && uc <= 0x1f77f) {
+                     returnValue = YES;
+                 }
+             }
+         } else if (substring.length > 1) {
+             const unichar ls = [substring characterAtIndex:1];
+             if (ls == 0x20e3) {
+                 returnValue = YES;
+             }
+             
+         } else {
+             // non surrogate
+             if (0x2100 <= hs && hs <= 0x27ff) {
+                 returnValue = YES;
+             } else if (0x2B05 <= hs && hs <= 0x2b07) {
+                 returnValue = YES;
+             } else if (0x2934 <= hs && hs <= 0x2935) {
+                 returnValue = YES;
+             } else if (0x3297 <= hs && hs <= 0x3299) {
+                 returnValue = YES;
+             } else if (hs == 0xa9 || hs == 0xae || hs == 0x303d || hs == 0x3030 || hs == 0x2b55 || hs == 0x2b1c || hs == 0x2b1b || hs == 0x2b50) {
+                 returnValue = YES;
+             }
+         }
+     }];
+    
+    return returnValue;
+}
+
+
+
 
 @end

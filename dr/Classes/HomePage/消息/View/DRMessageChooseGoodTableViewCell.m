@@ -136,31 +136,7 @@
         self.goodPriceLabel.text = [NSString stringWithFormat:@"¥%@",[DRTool formatFloat:[_model.group.goods.price doubleValue] / 100]];
     }else
     {
-        if ([_model.goodModel.sellType intValue] == 1) {
-            self.goodPriceLabel.text = [NSString stringWithFormat:@"¥%@",[DRTool formatFloat:[_model.goodModel.price doubleValue] / 100]];
-        }else
-        {
-            double minPrice = 0;
-            double maxPrice = 0;
-            for (NSDictionary * wholesaleRuleDic in _model.goodModel.wholesaleRule) {
-                NSInteger index = [ _model.goodModel.wholesaleRule indexOfObject:wholesaleRuleDic];
-                int price = [wholesaleRuleDic[@"price"] intValue];
-                if (index == 0) {
-                    minPrice = price;
-                }else
-                {
-                    minPrice = price < minPrice ? price : minPrice;
-                }
-                maxPrice = price < maxPrice ? maxPrice : price;
-            }
-            
-            if (maxPrice == minPrice) {
-                self.goodPriceLabel.text = [NSString stringWithFormat:@"¥%@", [DRTool formatFloat:maxPrice / 100]];
-            }else
-            {
-                self.goodPriceLabel.text = [NSString stringWithFormat:@"¥%@ ~ ¥%@", [DRTool formatFloat:maxPrice / 100], [DRTool formatFloat:minPrice / 100]];
-            }
-        }
+        self.goodPriceLabel.text = [NSString stringWithFormat:@"¥%@",[DRTool formatFloat:[_model.goodModel.price doubleValue] / 100]];
     }
     
     CGSize goodPriceLabelSize = [self.goodPriceLabel.text sizeWithLabelFont:self.goodPriceLabel.font];

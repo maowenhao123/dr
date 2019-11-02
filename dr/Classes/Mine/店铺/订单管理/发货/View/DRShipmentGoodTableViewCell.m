@@ -14,6 +14,7 @@
 @property (nonatomic, weak) UILabel *goodNameLabel;//商品名称
 @property (nonatomic,weak) UILabel * goodCountLabel;//商品数量
 @property (nonatomic, weak) UILabel *goodPriceLabel;//商品价格
+@property (nonatomic, weak) UILabel *goodSpecificationLabel;//商品规格
 
 @end
 
@@ -61,6 +62,16 @@
     goodNameLabel.numberOfLines = 0;
     [self addSubview:goodNameLabel];
     
+    //商品规格
+    UILabel * goodSpecificationLabel = [[UILabel alloc] init];
+    self.goodSpecificationLabel = goodSpecificationLabel;
+    goodSpecificationLabel.backgroundColor = DRWhiteLineColor;
+    goodSpecificationLabel.textColor = DRGrayTextColor;
+    goodSpecificationLabel.font = [UIFont systemFontOfSize:DRGetFontSize(24)];
+    goodSpecificationLabel.textAlignment = NSTextAlignmentCenter;
+    goodSpecificationLabel.layer.masksToBounds = YES;
+    [self addSubview:goodSpecificationLabel];
+    
     //商品价格
     UILabel * goodPriceLabel = [[UILabel alloc] init];
     self.goodPriceLabel = goodPriceLabel;
@@ -82,8 +93,15 @@
     _orderItemDetailModel = orderItemDetailModel;
     
     //赋值
-    NSString * avatarUrlStr = [NSString stringWithFormat:@"%@%@%@",baseUrl, _orderItemDetailModel.goods.spreadPics,smallPicUrl];
-    [self.goodImageView sd_setImageWithURL:[NSURL URLWithString:avatarUrlStr] placeholderImage:[UIImage imageNamed:@"placeholder"]];
+    if (DRObjectIsEmpty(_orderItemDetailModel.specification)) {
+        NSString * urlStr = [NSString stringWithFormat:@"%@%@%@", baseUrl, _orderItemDetailModel.goods.spreadPics, smallPicUrl];
+        [self.goodImageView sd_setImageWithURL:[NSURL URLWithString:urlStr] placeholderImage:[UIImage imageNamed:@"placeholder"]];
+    }else
+    {
+        NSString * urlStr = [NSString stringWithFormat:@"%@%@%@", baseUrl, _orderItemDetailModel.specification.picUrl, smallPicUrl];
+        [self.goodImageView sd_setImageWithURL:[NSURL URLWithString:urlStr] placeholderImage:[UIImage imageNamed:@"placeholder"]];
+        self.goodSpecificationLabel.text = _orderItemDetailModel.specification.name;
+    }
     
     CGSize goodNameLabelSize;
     CGFloat labelX = CGRectGetMaxX(self.goodImageView.frame) + 10;
@@ -111,12 +129,23 @@
     self.goodPriceLabel.text = [NSString stringWithFormat:@"价格：%@元", [DRTool formatFloat:[_orderItemDetailModel.priceCount doubleValue] / 100]];
     
     //frame
-    CGSize goodPriceLabelSize = [self.goodPriceLabel.text sizeWithLabelFont:self.goodPriceLabel.font];
-    CGSize goodCountLabelSize = [self.goodCountLabel.text sizeWithLabelFont:self.goodCountLabel.font];
-    CGFloat padding = (self.goodImageView.height - goodNameLabelSize.height - goodPriceLabelSize.height - goodCountLabelSize.height) / 2;
-    self.goodNameLabel.frame = CGRectMake(labelX, self.goodImageView.y, labelW, goodNameLabelSize.height);
-    self.goodPriceLabel.frame = CGRectMake(labelX, CGRectGetMaxY(self.goodNameLabel.frame) + padding, labelW, goodPriceLabelSize.height);
-    self.goodCountLabel.frame = CGRectMake(labelX, CGRectGetMaxY(self.goodPriceLabel.frame) + padding, labelW, goodCountLabelSize.height);
+    CGFloat labelH = 20;
+    if (DRObjectIsEmpty(_orderItemDetailModel.specification)) {
+        self.goodNameLabel.frame = CGRectMake(labelX, 12, labelW, labelH);
+        self.goodSpecificationLabel.hidden = YES;
+        self.goodCountLabel.frame = CGRectMake(labelX, CGRectGetMaxY(self.goodNameLabel.frame) + 10, labelW, labelH);
+        self.goodPriceLabel.frame = CGRectMake(labelX, CGRectGetMaxY(self.goodCountLabel.frame) + 5, labelW, labelH);
+    }else
+    {
+        self.goodNameLabel.frame = CGRectMake(labelX, 12, labelW, labelH);
+        self.goodSpecificationLabel.hidden = NO;
+        CGSize goodSpecificationLabelSize = [self.goodSpecificationLabel.text sizeWithLabelFont:self.goodSpecificationLabel.font];
+        CGFloat goodSpecificationLabelH = goodSpecificationLabelSize.height + 4;
+        self.goodSpecificationLabel.frame = CGRectMake(labelX, CGRectGetMaxY(self.goodNameLabel.frame) + 2, goodSpecificationLabelSize.width + 15, goodSpecificationLabelH);
+        self.goodSpecificationLabel.layer.cornerRadius = goodSpecificationLabelH / 2;
+        self.goodCountLabel.frame = CGRectMake(labelX, CGRectGetMaxY(self.goodSpecificationLabel.frame) + 3, labelW, goodSpecificationLabelH);
+        self.goodPriceLabel.frame = CGRectMake(labelX, CGRectGetMaxY(self.goodCountLabel.frame), labelW, labelH);
+    }
 }
 
 

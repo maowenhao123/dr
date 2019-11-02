@@ -55,7 +55,7 @@
     [self addSubview:goodNameLabel];
     
     //价格
-    UILabel * goodPriceLabel = [[UILabel alloc] initWithFrame:CGRectMake(10, CGRectGetMaxY(goodNameLabel.frame), width - 2 * 10, 25)];
+    UILabel * goodPriceLabel = [[UILabel alloc] init];
     self.goodPriceLabel = goodPriceLabel;
     goodPriceLabel.font = [UIFont systemFontOfSize:DRGetFontSize(30)];
     goodPriceLabel.textColor = DRRedTextColor;
@@ -132,9 +132,34 @@
             self.goodPriceLabel.attributedText = priceAttStr;
         }else
         {
-            self.goodPriceLabel.text = [NSString stringWithFormat:@"¥%@", [DRTool formatFloat:[_model.price doubleValue] / 100]];
+            if (_model.specifications.count > 0) {
+                double minPrice = 0;
+                double maxPrice = 0;
+                for (DRGoodSpecificationModel * specificationModel in _model.specifications) {
+                    NSInteger index = [_model.specifications indexOfObject:specificationModel];
+                    int price = [specificationModel.price intValue];
+                    if (index == 0) {
+                        minPrice = price;
+                    }else
+                    {
+                        minPrice = price < minPrice ? price : minPrice;
+                    }
+                    maxPrice = price < maxPrice ? maxPrice : price;
+                }
+                
+                if (maxPrice == minPrice) {
+                    self.goodPriceLabel.text = [NSString stringWithFormat:@"¥%@", [DRTool formatFloat:maxPrice / 100]];
+                }else
+                {
+                    self.goodPriceLabel.text = [NSString stringWithFormat:@"¥%@ ~ ¥%@", [DRTool formatFloat:maxPrice / 100], [DRTool formatFloat:minPrice / 100]];
+                }
+            }else
+            {
+                self.goodPriceLabel.text = [NSString stringWithFormat:@"¥%@", [DRTool formatFloat:[_model.price doubleValue] / 100]];
+            }
         }
-    } else {//批发
+    }else//批发
+    {
         double minPrice = 0;
         double maxPrice = 0;
         for (NSDictionary * wholesaleRuleDic in _model.wholesaleRule) {
@@ -170,6 +195,13 @@
     {
         self.mailLabel.text = @"";
         self.mailLabel.frame = CGRectZero;
+    }
+    
+    if (self.mailLabel.text) {
+        self.goodPriceLabel.frame = CGRectMake(10, CGRectGetMaxY(self.goodNameLabel.frame), self.mailLabel.x - 10, 25);
+    }else
+    {
+        self.goodPriceLabel.frame = CGRectMake(10, CGRectGetMaxY(self.goodNameLabel.frame), self.width - 10 * 2, 25);
     }
 }
 

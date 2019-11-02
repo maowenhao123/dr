@@ -105,8 +105,14 @@
         id imageObj = self.images[indexPath.row - self.supportVideo];
         if ([imageObj isKindOfClass:[UIImage class]]) {
             cell.imageView.image = imageObj;
-        }else{
-            [cell.imageView sd_setImageWithURL:[NSURL URLWithString:[NSString stringWithFormat:@"%@", imageObj]] placeholderImage:[UIImage imageNamed:@"placeholder"]];
+        }else
+        {
+            if ([imageObj containsString:@"http"]) {
+                [cell.imageView sd_setImageWithURL:[NSURL URLWithString:[NSString stringWithFormat:@"%@", imageObj]] placeholderImage:[UIImage imageNamed:@"placeholder"]];
+            }else
+            {
+                [cell.imageView sd_setImageWithURL:[NSURL URLWithString:[NSString stringWithFormat:@"%@%@", baseUrl, imageObj]] placeholderImage:[UIImage imageNamed:@"placeholder"]];
+            }
         }
     }
     cell.deleteBtn.tag = indexPath.row;
@@ -196,13 +202,9 @@
 {
     NSString *mediaType = info[UIImagePickerControllerMediaType];
     if ([mediaType isEqualToString:(NSString *)kUTTypeImage]) {
-        [MBProgressHUD showMessage:@"处理中.." toView:KEY_WINDOW];
         UIImage *image = [info objectForKey:UIImagePickerControllerOriginalImage];
-        //保存图片，获取到asset
-        [[TZImageManager manager] savePhotoWithImage:image completion:^(PHAsset *asset, NSError *error) {
-            [MBProgressHUD hideHUD];
-            [self refreshCollectionViewWithAddedAsset:asset image:image];
-        }];
+        [self.images addObject:[DRTool imageCompressionWithImage:image]];
+        [self refreshView];
     }else if ([mediaType isEqualToString:(NSString *)kUTTypeMovie])
     {
         NSURL *videoURL = [info objectForKey:UIImagePickerControllerMediaURL];
@@ -232,19 +234,12 @@
     [picker dismissViewControllerAnimated:YES completion:nil];
 }
 
-- (void)refreshCollectionViewWithAddedAsset:(id)asset image:(UIImage *)image
-{
-    [self.images addObject:[DRTool imageCompressionWithImage:image]];
-    [self refreshView];
-}
-
 //调用相册
 - (void)pushPhotoLibraryIsVideo:(BOOL)isVideo {
     TZImagePickerController *imagePickerVc = [[TZImagePickerController alloc] initWithMaxImagesCount:self.maxImageCount columnNumber:4 delegate:self pushPhotoPickerVc:YES];
     [self setImagePickerControllerNav];
     
     if (!isVideo) {
-        imagePickerVc.allowCrop = YES;
         imagePickerVc.needCircleCrop = NO;
     }
     imagePickerVc.allowTakePicture = YES;
@@ -340,10 +335,7 @@
 
 - (void)setImagesWithImageUrlStrs:(NSArray *)imageUrlStrs
 {
-    self.images = [NSMutableArray array];
-    for (NSString * imageUrlStr in imageUrlStrs) {
-        [self.images addObject:[NSString stringWithFormat:@"%@%@", baseUrl, imageUrlStr]];
-    }
+    self.images = [NSMutableArray arrayWithArray:imageUrlStrs];
     [self refreshView];
 }
 

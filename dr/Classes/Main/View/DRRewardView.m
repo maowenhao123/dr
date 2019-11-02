@@ -33,7 +33,7 @@
     self.backgroundColor = DRColor(0, 0, 0, 0.4);
     
     //添加点击事件
-    UITapGestureRecognizer * tap = [[UITapGestureRecognizer alloc] initWithTarget:self action:@selector(removeFromSuperview)];
+    UITapGestureRecognizer * tap = [[UITapGestureRecognizer alloc] initWithTarget:self action:@selector(closeView)];
     tap.delegate = self;
     [self addGestureRecognizer:tap];
     
@@ -72,8 +72,24 @@
     UIButton * cancelBtn = [UIButton buttonWithType:UIButtonTypeCustom];
     cancelBtn.frame = CGRectMake(contentView.centerX - cancelButtonW / 2, CGRectGetMaxY(contentView.frame), cancelButtonW, cancelButtonH);
     [cancelBtn setBackgroundImage:[UIImage imageNamed:@"up_grade_cancel"] forState:UIControlStateNormal];
-    [cancelBtn addTarget:self action:@selector(removeFromSuperview) forControlEvents:UIControlEventTouchUpInside];
+    [cancelBtn addTarget:self action:@selector(closeView) forControlEvents:UIControlEventTouchUpInside];
     [self addSubview:cancelBtn];
+}
+
+- (void)closeView
+{
+    NSUserDefaults *defaults = [NSUserDefaults standardUserDefaults];
+    NSArray *closeRewardTimeSps_ = [defaults objectForKey:@"closeRewardTimeSps"];
+    NSMutableArray * closeRewardTimeSps = [NSMutableArray arrayWithArray:closeRewardTimeSps_];
+    if (!closeRewardTimeSps) {
+        closeRewardTimeSps = [NSMutableArray array];
+    }
+    long long currentTimeSp = [[NSDate date] timeIntervalSince1970];
+    [closeRewardTimeSps insertObject:@(currentTimeSp) atIndex:0];
+    [defaults setObject:closeRewardTimeSps forKey:@"closeRewardTimeSps"];
+    [defaults synchronize];
+    
+    [self removeFromSuperview];
 }
 
 - (void)jumpBtnClick

@@ -26,6 +26,7 @@
 @property (nonatomic,assign) long long createTime;//退款发起时间
 @property (nonatomic,assign) long long processTime;//处理时间
 @property (nonatomic,copy) NSString *memo;//卖家备注
+@property (nonatomic,strong) DRGoodSpecificationModel *specification;
 
 @end
 

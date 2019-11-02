@@ -82,14 +82,11 @@
 {
     CGFloat activityViewPadding = 20;
     CGFloat activityViewW = (screenWidth - activityViewPadding * 3) / 2;
-    if (activityList.count == 1) {
-        activityViewW = screenWidth - activityViewPadding * 2;
-    }
     CGFloat activityViewH = 100;
-    for (int i = 0; i < 5; i++) {
+    for (int i = 0; i < activityList.count; i++) {
         DRActivityView * activityView = [[DRActivityView alloc] initWithFrame: CGRectMake(activityViewPadding + (activityViewPadding + activityViewW) * (i % 2), CGRectGetMaxY(self.lastView.frame) + 30 + (activityViewPadding + activityViewH) * (i / 2), activityViewW, activityViewH)];
-        activityView.activityModel = activityList[0];
-        if (i % 2 == 0 && i == activityList.count - 1) {//最后一个居中
+        activityView.activityModel = activityList[i];
+        if ((i % 2 == 0 && i == activityList.count - 1) || activityList.count == 1) {//最后一个居中
             activityView.centerX = screenWidth / 2;
         }
         [self.scrollView addSubview:activityView];

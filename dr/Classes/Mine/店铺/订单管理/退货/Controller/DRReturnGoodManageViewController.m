@@ -10,6 +10,7 @@
 #import "DRReturnGoodHandleViewController.h"
 #import "DRReturnGoodDetailViewController.h"
 #import "DRReturnGoodManageTableViewCell.h"
+#import "UITableView+DRNoData.h"
 
 @interface DRReturnGoodManageViewController ()<UITableViewDataSource,UITableViewDelegate, ReturnGoodManageTableViewCellDelegate>
 
@@ -175,6 +176,7 @@
 - (NSInteger)tableView:(UITableView *)tableView numberOfRowsInSection:(NSInteger)section
 {
     NSMutableArray * dataArray_ = self.dataArray[self.currentIndex];
+    [tableView showNoDataWithTitle:@"" description:@"您还没有相关的订单" rowCount:dataArray_.count];
     return dataArray_.count;
 }
 - (UITableViewCell *)tableView:(UITableView *)tableView cellForRowAtIndexPath:(NSIndexPath *)indexPath
@@ -202,11 +204,17 @@
     if (self.currentIndex == 0 && [returnGoodModel.status intValue] == 10) {
         DRReturnGoodHandleViewController * returnGoodVC = [[DRReturnGoodHandleViewController alloc] init];
         returnGoodVC.returnGoodId = returnGoodModel.id;
+        if (!DRObjectIsEmpty(returnGoodModel.specification)) {
+            returnGoodVC.specificationId = returnGoodModel.specification.id;
+        }
         [self.navigationController pushViewController:returnGoodVC animated:YES];
     }else
     {
         DRReturnGoodDetailViewController * returnGoodVC = [[DRReturnGoodDetailViewController alloc] init];
         returnGoodVC.returnGoodId = returnGoodModel.id;
+        if (!DRObjectIsEmpty(returnGoodModel.specification)) {
+            returnGoodVC.specificationId = returnGoodModel.specification.id;
+        }
         [self.navigationController pushViewController:returnGoodVC animated:YES];
     }
 }

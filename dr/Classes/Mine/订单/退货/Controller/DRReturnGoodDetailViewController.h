@@ -13,4 +13,7 @@
 @property (nonatomic,copy) NSString *orderId;
 @property (nonatomic,copy) NSString *goodsId;
 @property (nonatomic,copy) NSString *returnGoodId;
+@property (nonatomic,copy) NSString *id;
+@property (nonatomic,copy) NSString *specificationId;
+
 @end
