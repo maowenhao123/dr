@@ -133,7 +133,7 @@
 {
     _goodSpecificationModel = goodSpecificationModel;
     
-    self.indexLabel.text = [NSString stringWithFormat:@"规格%ld", _goodSpecificationModel.index + 1];
+    self.indexLabel.text = [NSString stringWithFormat:@"规格%ld", _goodSpecificationModel.index_ + 1];
     if (_goodSpecificationModel.pic) {
         self.goodImageView.image = _goodSpecificationModel.pic;
     }else

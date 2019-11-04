@@ -1,24 +1,24 @@
 //
-//  DRActivityManageViewController.m
+//  DRShopActivityViewController.m
 //  dr
 //
 //  Created by 毛文豪 on 2019/1/17.
 //  Copyright © 2019 JG. All rights reserved.
 //
 
-#import "DRActivityManageViewController.h"
+#import "DRShopActivityViewController.h"
 #import "DRSeckillGoodListViewController.h"
-#import "DRActivityManageTableViewCell.h"
+#import "DRActivityTableViewCell.h"
 #import "UITableView+DRNoData.h"
 
-@interface DRActivityManageViewController ()<UITableViewDataSource, UITableViewDelegate>
+@interface DRShopActivityViewController ()<UITableViewDataSource, UITableViewDelegate>
 
 @property (nonatomic, strong) NSMutableArray * dataArray;
 @property (nonatomic, strong) NSMutableArray *headerViews;
 
 @end
 
-@implementation DRActivityManageViewController
+@implementation DRShopActivityViewController
 
 - (void)viewDidLoad
 {
@@ -120,7 +120,7 @@
 
 - (UITableViewCell *)tableView:(UITableView *)tableView cellForRowAtIndexPath:(NSIndexPath *)indexPath
 {
-    DRActivityManageTableViewCell *cell = [DRActivityManageTableViewCell cellWithTableView:tableView];
+    DRActivityTableViewCell *cell = [DRActivityTableViewCell cellWithTableView:tableView];
     NSMutableArray * activityArray = self.dataArray[self.currentIndex];
     cell.activityModel = activityArray[indexPath.section];
     return cell;

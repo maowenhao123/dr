@@ -1,31 +1,31 @@
 //
-//  DRActivityManageTableViewCell.m
+//  DRActivityTableViewCell.m
 //  dr
 //
 //  Created by 毛文豪 on 2019/1/18.
 //  Copyright © 2019 JG. All rights reserved.
 //
 
-#import "DRActivityManageTableViewCell.h"
+#import "DRActivityTableViewCell.h"
 #import "DRSeckillGoodListViewController.h"
 #import "DRActivityDetailView.h"
 
-@interface DRActivityManageTableViewCell ()
+@interface DRActivityTableViewCell ()
 
 @property (nonatomic, weak) UILabel * titleLabel;
 @property (nonatomic, weak) UILabel * describeLabel;
 
 @end
 
-@implementation DRActivityManageTableViewCell
+@implementation DRActivityTableViewCell
 
-+ (DRActivityManageTableViewCell *)cellWithTableView:(UITableView *)tableView
++ (DRActivityTableViewCell *)cellWithTableView:(UITableView *)tableView
 {
     static NSString *ID = @"ActivityManageTableViewCellId";
-    DRActivityManageTableViewCell *cell = [tableView dequeueReusableCellWithIdentifier:ID];
+    DRActivityTableViewCell *cell = [tableView dequeueReusableCellWithIdentifier:ID];
     if(cell == nil)
     {
-        cell = [[DRActivityManageTableViewCell alloc] initWithStyle:UITableViewCellStyleSubtitle reuseIdentifier:ID];
+        cell = [[DRActivityTableViewCell alloc] initWithStyle:UITableViewCellStyleSubtitle reuseIdentifier:ID];
         cell.selectionStyle = UITableViewCellSelectionStyleNone;
         cell.backgroundColor = [UIColor whiteColor];
     }

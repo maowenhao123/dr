@@ -1,8 +1,8 @@
 //
-//  DRActivityGoodModel.h
+//  DRSeckillGoodModel.h
 //  dr
 //
-//  Created by 毛文豪 on 2019/1/24.
+//  Created by dahe on 2019/11/4.
 //  Copyright © 2019 JG. All rights reserved.
 //
 
@@ -10,7 +10,7 @@
 
 NS_ASSUME_NONNULL_BEGIN
 
-@interface DRActivityGoodModel : NSObject
+@interface DRSeckillGoodModel : NSObject
 
 @property (nonatomic, copy) NSString *activityStock;
 @property (nonatomic, copy) NSString *discountPrice;
@@ -25,7 +25,6 @@ NS_ASSUME_NONNULL_BEGIN
  status=2  驳回
  status=3  下架*/
 @property (nonatomic, copy) NSString *status;
-
 
 @end
 

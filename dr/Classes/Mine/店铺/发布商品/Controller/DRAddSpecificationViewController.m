@@ -106,6 +106,21 @@
     confirmBtn.layer.cornerRadius = confirmBtn.height / 2;
     [self.view addSubview:confirmBtn];
     
+    //温馨提示
+    UILabel * promptLabel = [[UILabel alloc]init];
+    promptLabel.numberOfLines = 0;
+    NSString * promptStr = @"注意：本商品所有图片请在“商品图片”部分上传，规格图片仅为方便买家挑选规格。";
+    NSMutableAttributedString * promptAttStr = [[NSMutableAttributedString alloc]initWithString:promptStr];
+    [promptAttStr addAttribute:NSFontAttributeName value:[UIFont systemFontOfSize:DRGetFontSize(22)] range:NSMakeRange(0, promptAttStr.length)];
+    [promptAttStr addAttribute:NSForegroundColorAttributeName value:DRGrayTextColor range:NSMakeRange(0, promptAttStr.length)];
+    NSMutableParagraphStyle *paragraphStyle = [[NSMutableParagraphStyle alloc] init];
+    [paragraphStyle setLineSpacing:5];
+    [promptAttStr addAttribute:NSParagraphStyleAttributeName value:paragraphStyle range:NSMakeRange(0, promptAttStr.length)];
+    promptLabel.attributedText = promptAttStr;
+    CGSize promptSize = [promptLabel.attributedText boundingRectWithSize:CGSizeMake(screenWidth - DRMargin * 2, MAXFLOAT) options:NSStringDrawingUsesLineFragmentOrigin context:nil].size;
+    promptLabel.frame = CGRectMake(DRMargin, CGRectGetMaxY(confirmBtn.frame) + 10, screenWidth - DRMargin * 2, promptSize.height);
+    [self.view addSubview:promptLabel];
+    
     if (self.goodSpecificationModel) {
         self.nameTF.text = self.goodSpecificationModel.name;
         self.priceTF.text = self.goodSpecificationModel.price;
@@ -131,9 +146,15 @@
 - (void)confirmBtnDidClick
 {
     [self.view endEditing:YES];
+    
     //判空
     if (DRStringIsEmpty(self.nameTF.text)) {
         [MBProgressHUD showError:@"未输入规格名称"];
+        return;
+    }
+    
+    if ([DRTool stringContainsEmoji:self.nameTF.text]) {
+        [MBProgressHUD showError:@"请删掉特殊符号或表情后，再提交哦~"];
         return;
     }
     
@@ -164,6 +185,8 @@
     }
     if (self.goodSpecificationModel) {
         specificationModel.index = self.goodSpecificationModel.index;
+        specificationModel.id = self.goodSpecificationModel.id;
+        specificationModel.delFlag = self.goodSpecificationModel.delFlag;
         if (_delegate && [_delegate respondsToSelector:@selector(editSpecificationWithSpecificationModel:)]) {
             [_delegate editSpecificationWithSpecificationModel:specificationModel];
         }

@@ -25,6 +25,7 @@
 @property (nonatomic,weak) UIButton * typeSelectedButton;
 @property (nonatomic,weak) UIView * baseView;
 @property (nonatomic, weak) DRAddMultipleImageView * addImageView;
+@property (nonatomic, weak) UITextField * addressTF;
 @property (nonatomic,weak) UIView *agreementView;
 @property (nonatomic,weak) UIButton *agreementButton;
 @property (nonatomic,assign) BOOL haveImage1;
@@ -168,7 +169,7 @@
     typeTitleLabel.font = [UIFont systemFontOfSize:DRGetFontSize(28)];
     [typeView addSubview:typeTitleLabel];
     
-    NSArray * typeTexts = @[@"基地大棚", @"玩家"];
+    NSArray * typeTexts = @[@"基地大棚", @"玩家", @"代理商"];
     for (int i = 0; i < typeTexts.count; i++) {
         UIButton * typeButton = [UIButton buttonWithType:UIButtonTypeCustom];
         typeButton.tag = i;
@@ -179,6 +180,10 @@
         [typeButton setTitleColor:DRBlackTextColor forState:UIControlStateNormal];
         typeButton.titleLabel.font = [UIFont systemFontOfSize:DRGetFontSize(28)];
         [typeButton setButtonTitleWithImageAlignment:UIButtonTitleWithImageAlignmentLeft imgTextDistance:5];
+        if (i == 0) {
+            self.typeSelectedButton = typeButton;
+            typeButton.selected = YES;
+        }
         [typeButton addTarget:self action:@selector(typeButtonDidClick:) forControlEvents:UIControlEventTouchUpInside];
         [typeView addSubview:typeButton];
     }
@@ -186,7 +191,6 @@
     //基地
     UIView * baseView = [[UIView alloc] initWithFrame:CGRectMake(0, CGRectGetMaxY(typeView.frame), screenWidth, 200)];
     self.baseView = baseView;
-    baseView.hidden = YES;
     baseView.backgroundColor = [UIColor whiteColor];
     [scrollView addSubview:baseView];
     
@@ -194,17 +198,38 @@
     baseLine.backgroundColor = DRWhiteLineColor;
     [baseView addSubview:baseLine];
     
-    DRAddMultipleImageView * addImageView = [[DRAddMultipleImageView alloc] initWithFrame:CGRectMake(0, 1, screenWidth, 0)];
+    DRAddMultipleImageView * addImageView = [[DRAddMultipleImageView alloc] initWithFrame:CGRectMake(10, 1, screenWidth - 20, 0)];
     self.addImageView = addImageView;
     addImageView.titleLabel.text = @"请提供至少三张基地大棚实拍图";
-    addImageView.maxImageCount = 9;
+    addImageView.maxImageCount = 3;
     addImageView.height = [addImageView getViewHeight];
     addImageView.delegate = self;
     [baseView addSubview:addImageView];
     
+    //基地大棚地址
+    UILabel * addressLabel = [[UILabel alloc] init];
+    addressLabel.text = @"基地大棚地址";
+    addressLabel.textColor = DRBlackTextColor;
+    addressLabel.font = [UIFont systemFontOfSize:DRGetFontSize(28)];
+    [baseView addSubview:addressLabel];
+    CGSize addressLabelSize = [addressLabel.text sizeWithLabelFont:addressLabel.font];
+    addressLabel.frame = CGRectMake(DRMargin, CGRectGetMaxY(addImageView.frame), addressLabelSize.width, DRCellH);
     
+    UITextField * addressTF = [[UITextField alloc] init];
+    self.addressTF = addressTF;
+    CGFloat addressTFX = CGRectGetMaxX(addressLabel.frame) + DRMargin;
+    addressTF.frame = CGRectMake(addressTFX, CGRectGetMaxY(addImageView.frame), screenWidth - addressTFX - DRMargin, DRCellH);
+    addressTF.textColor = DRBlackTextColor;
+    addressTF.textAlignment = NSTextAlignmentRight;
+    addressTF.font = [UIFont systemFontOfSize:DRGetFontSize(28)];
+    addressTF.tintColor = DRDefaultColor;
+    addressTF.keyboardType = UIKeyboardTypeNumberPad;
+    addressTF.placeholder = @"请具体到街道及门牌号等";
+    [baseView addSubview:addressTF];
+   
+    baseView.height = CGRectGetMaxY(addressLabel.frame);
     //协议
-    UIView *agreementView = [[UIView alloc] initWithFrame:CGRectMake(0, CGRectGetMaxY(typeView.frame), screenWidth, 60)];
+    UIView *agreementView = [[UIView alloc] initWithFrame:CGRectMake(0, CGRectGetMaxY(baseView.frame), screenWidth, 60)];
     self.agreementView = agreementView;
     [scrollView addSubview:agreementView];
     

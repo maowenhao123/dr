@@ -16,11 +16,14 @@
 
 @implementation DRChangeShopNameViewController
 
-- (void)viewDidLoad {
+- (void)viewDidLoad
+{
     [super viewDidLoad];
     self.title = @"修改店铺名称";
     [self setupChilds];
 }
+
+#pragma mark - 布局视图
 - (void)setupChilds
 {
     self.navigationItem.rightBarButtonItem = [[UIBarButtonItem alloc]initWithTitle:@"保存" style:UIBarButtonItemStylePlain target:self action:@selector(saveBarDidClick)];
@@ -41,6 +44,7 @@
     shopNameTF.clearButtonMode = UITextFieldViewModeAlways;
     [shopNameView addSubview:shopNameTF];
 }
+
 - (void)saveBarDidClick
 {
     [self.view endEditing:YES];
@@ -48,6 +52,11 @@
     if (DRStringIsEmpty(self.shopNameTF.text))
     {
         [MBProgressHUD showError:@"您还输入店铺名称"];
+        return;
+    }
+    
+    if ([DRTool stringContainsEmoji:self.shopNameTF.text]) {
+        [MBProgressHUD showError:@"请删掉特殊符号或表情后，再提交哦~"];
         return;
     }
     

@@ -9,6 +9,7 @@
 #import "DRBankCardViewController.h"
 #import "DRAddBankCardViewController.h"
 #import "DRBankCardTableViewCell.h"
+#import "UITableView+DRNoData.h"
 
 @interface DRBankCardViewController ()<UITableViewDelegate, UITableViewDataSource, AddBankCardDelegate>
 
@@ -20,12 +21,14 @@
 
 @implementation DRBankCardViewController
 
-- (void)viewDidLoad {
+- (void)viewDidLoad
+{
     [super viewDidLoad];
     self.title = @"我的银行卡";
     [self setupChilds];
     [self getData];
 }
+
 #pragma mark - 请求数据
 - (void)getData
 {
@@ -61,6 +64,7 @@
         }
     }];
 }
+
 - (void)deleteDataWithBankCardId:(NSString *)cardId indexPath:(NSIndexPath *)indexPath
 {
     
@@ -87,6 +91,7 @@
         DRLog(@"error:%@",error);
     }];
 }
+
 #pragma mark - 布局视图
 - (void)setupChilds
 {
@@ -109,22 +114,27 @@
     [DRTool setRefreshHeaderData:header];
     tableView.mj_header = header;
 }
+
 - (void)addBankCardBtnClick
 {
     DRAddBankCardViewController * addBankCardVC = [[DRAddBankCardViewController alloc] init];
     addBankCardVC.delegate = self;
     [self.navigationController pushViewController:addBankCardVC animated:YES];
 }
+
 //添加银行卡成功后刷新
 - (void)addBankSuccess
 {
     [self getData];
 }
+
 #pragma mark - Table view data source
 - (NSInteger)numberOfSectionsInTableView:(UITableView *)tableView
 {
+    [tableView showNoDataWithTitle:@"" description:@"暂无数据" rowCount:self.dataArray.count];
     return self.dataArray.count;
 }
+
 - (NSInteger)tableView:(UITableView *)tableView numberOfRowsInSection:(NSInteger)section
 {
     return 1;

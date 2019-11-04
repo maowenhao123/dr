@@ -17,11 +17,14 @@
 
 @implementation DRChangeShopDescriptionViewController
 
-- (void)viewDidLoad {
+- (void)viewDidLoad
+{
     [super viewDidLoad];
     self.title = @"修改店铺简介";
     [self setupChilds];
 }
+
+#pragma mark - 布局视图
 - (void)setupChilds
 {
     self.navigationItem.rightBarButtonItem = [[UIBarButtonItem alloc]initWithTitle:@"保存" style:UIBarButtonItemStylePlain target:self action:@selector(saveBarDidClick)];
@@ -45,6 +48,11 @@
     if (DRStringIsEmpty(self.shopDescriptionTV.text))
     {
         [MBProgressHUD showError:@"您还未输入店铺简介"];
+        return;
+    }
+    
+    if ([DRTool stringContainsEmoji:self.shopDescriptionTV.text]) {
+        [MBProgressHUD showError:@"请删掉特殊符号或表情后，再提交哦~"];
         return;
     }
     

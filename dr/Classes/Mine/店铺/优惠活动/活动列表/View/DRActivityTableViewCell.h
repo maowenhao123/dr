@@ -1,5 +1,5 @@
 //
-//  DRActivityManageTableViewCell.h
+//  DRActivityTableViewCell.h
 //  dr
 //
 //  Created by 毛文豪 on 2019/1/18.
@@ -11,9 +11,9 @@
 
 NS_ASSUME_NONNULL_BEGIN
 
-@interface DRActivityManageTableViewCell : UITableViewCell
+@interface DRActivityTableViewCell : UITableViewCell
 
-+ (DRActivityManageTableViewCell *)cellWithTableView:(UITableView *)tableView;
++ (DRActivityTableViewCell *)cellWithTableView:(UITableView *)tableView;
 
 @property (nonatomic, strong) DRShopActivityModel *activityModel;
 

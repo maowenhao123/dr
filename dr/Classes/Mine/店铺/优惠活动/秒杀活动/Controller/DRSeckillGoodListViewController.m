@@ -52,7 +52,7 @@
         DRLog(@"%@",json);
         [MBProgressHUD hideHUDForView:self.view];
         if (SUCCESS) {
-            NSArray *activityList = [DRActivityGoodModel mj_objectArrayWithKeyValuesArray:json[@"list"]];
+            NSArray *activityList = [DRSeckillGoodModel mj_objectArrayWithKeyValuesArray:json[@"list"]];
             [self.dataArray addObjectsFromArray:activityList];
             [self.tableView reloadData];//刷新数据
             if (activityList.count == 0) {
@@ -148,7 +148,7 @@
 - (UITableViewCell *)tableView:(UITableView *)tableView cellForRowAtIndexPath:(NSIndexPath *)indexPath
 {
     DRSeckillGoodTableViewCell *cell = [DRSeckillGoodTableViewCell cellWithTableView:tableView];
-    cell.activityGoodModel = self.dataArray[indexPath.row];
+    cell.seckillGoodModel = self.dataArray[indexPath.row];
     cell.delegate = self;
     return cell;
 }
@@ -161,21 +161,21 @@
 - (void)tableView:(UITableView *)tableView didSelectRowAtIndexPath:(NSIndexPath *)indexPath
 {
     DRGoodDetailViewController * goodVC = [[DRGoodDetailViewController alloc] init];
-    DRActivityGoodModel * goodModel = self.dataArray[indexPath.row];
-    goodVC.goodId = goodModel.id;
+    DRSeckillGoodModel * seckillGoodModel = self.dataArray[indexPath.row];
+    goodVC.goodId = seckillGoodModel.id;
     [self.navigationController pushViewController:goodVC animated:YES];
 }
 
 - (void)seckillGoodTableViewCell:(DRSeckillGoodTableViewCell *)cell buttonDidClick:(UIButton *)button
 {
     NSIndexPath * indexPath = [self.tableView indexPathForCell:cell];
-    DRActivityGoodModel * activityGoodModel = self.dataArray[indexPath.row];
+    DRSeckillGoodModel * seckillGoodModel = self.dataArray[indexPath.row];
     if ([button.currentTitle isEqualToString:@"下架"]) {
         UIAlertController * alertController = [UIAlertController alertControllerWithTitle:@"温馨提示" message:@"确认下架该商品?" preferredStyle:UIAlertControllerStyleAlert];
         UIAlertAction * alertAction1 = [UIAlertAction actionWithTitle:@"取消" style:UIAlertActionStyleCancel handler:nil];
         UIAlertAction * alertAction2 = [UIAlertAction actionWithTitle:button.currentTitle style:UIAlertActionStyleDestructive handler:^(UIAlertAction * _Nonnull action) {
             NSDictionary *bodyDic = @{
-                                      @"id":activityGoodModel.activityId,
+                                      @"id":seckillGoodModel.activityId,
                                       };
             
             NSDictionary *headDic = @{

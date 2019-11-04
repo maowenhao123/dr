@@ -15,6 +15,9 @@
 		1D0DB5BE22E845FB008E7B97 /* DRSpecificationTableViewCell.m in Sources */ = {isa = PBXBuildFile; fileRef = 1D0DB5BD22E845FB008E7B97 /* DRSpecificationTableViewCell.m */; };
 		1D0DB5C122E84FF5008E7B97 /* DRGoodSpecificationModel.m in Sources */ = {isa = PBXBuildFile; fileRef = 1D0DB5BF22E84FF5008E7B97 /* DRGoodSpecificationModel.m */; };
 		1D0F3D8E23695A5000EDA647 /* DRShoppingCarCache.m in Sources */ = {isa = PBXBuildFile; fileRef = 1D0F3D8D23695A5000EDA647 /* DRShoppingCarCache.m */; };
+		1D7BDF8423700AA60015CD8E /* DRSeckillGoodModel.m in Sources */ = {isa = PBXBuildFile; fileRef = 1D7BDF8323700AA60015CD8E /* DRSeckillGoodModel.m */; };
+		1D7BDF8723700B650015CD8E /* DRChooseGoodViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 1D7BDF8623700B650015CD8E /* DRChooseGoodViewController.m */; };
+		1D7BDF8A23700B980015CD8E /* DRChooseGoodTableViewCell.m in Sources */ = {isa = PBXBuildFile; fileRef = 1D7BDF8923700B980015CD8E /* DRChooseGoodTableViewCell.m */; };
 		1D7C898D2305426A00D6F2B2 /* DRIdentityAuditViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 1D7C898C2305426A00D6F2B2 /* DRIdentityAuditViewController.m */; };
 		1D8D1A2822E80B02009185B2 /* DRPublishGoodMessageView.m in Sources */ = {isa = PBXBuildFile; fileRef = 1D8D1A2722E80B02009185B2 /* DRPublishGoodMessageView.m */; };
 		1DABCE5222FAA582009C5D33 /* DRShoppingCarRecommendTableViewCell.m in Sources */ = {isa = PBXBuildFile; fileRef = 1DABCE5122FAA582009C5D33 /* DRShoppingCarRecommendTableViewCell.m */; };
@@ -225,13 +228,11 @@
 		AA27EC771F7C85000081DB18 /* IQTitleBarButtonItem.m in Sources */ = {isa = PBXBuildFile; fileRef = AA27EC641F7C84C00081DB18 /* IQTitleBarButtonItem.m */; };
 		AA27EC781F7C85000081DB18 /* IQToolbar.m in Sources */ = {isa = PBXBuildFile; fileRef = AA27EC661F7C84C00081DB18 /* IQToolbar.m */; };
 		AA27EC791F7C85110081DB18 /* IQKeyboardManager.bundle in Resources */ = {isa = PBXBuildFile; fileRef = AA27EC6A1F7C84C00081DB18 /* IQKeyboardManager.bundle */; };
-		AA28792C21F07BA7001D9BA7 /* DRActivityManageViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = AA28792B21F07BA7001D9BA7 /* DRActivityManageViewController.m */; };
-		AA28792F21F166FD001D9BA7 /* DRActivityManageTableViewCell.m in Sources */ = {isa = PBXBuildFile; fileRef = AA28792E21F166FD001D9BA7 /* DRActivityManageTableViewCell.m */; };
+		AA28792C21F07BA7001D9BA7 /* DRShopActivityViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = AA28792B21F07BA7001D9BA7 /* DRShopActivityViewController.m */; };
+		AA28792F21F166FD001D9BA7 /* DRActivityTableViewCell.m in Sources */ = {isa = PBXBuildFile; fileRef = AA28792E21F166FD001D9BA7 /* DRActivityTableViewCell.m */; };
 		AA28793221F16E97001D9BA7 /* DRSeckillGoodListViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = AA28793121F16E97001D9BA7 /* DRSeckillGoodListViewController.m */; };
 		AA28793521F16FED001D9BA7 /* DRSeckillGoodTableViewCell.m in Sources */ = {isa = PBXBuildFile; fileRef = AA28793421F16FED001D9BA7 /* DRSeckillGoodTableViewCell.m */; };
 		AA28793821F1719E001D9BA7 /* DRAddSeckillGoodViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = AA28793721F1719E001D9BA7 /* DRAddSeckillGoodViewController.m */; };
-		AA28793B21F1A677001D9BA7 /* DRChooseSeckillGoodViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = AA28793A21F1A677001D9BA7 /* DRChooseSeckillGoodViewController.m */; };
-		AA28793E21F1A721001D9BA7 /* DRChooseSeckillGoodTableViewCell.m in Sources */ = {isa = PBXBuildFile; fileRef = AA28793D21F1A721001D9BA7 /* DRChooseSeckillGoodTableViewCell.m */; };
 		AA28794121F1C3FC001D9BA7 /* DRAddShowSuccessViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = AA28794021F1C3FC001D9BA7 /* DRAddShowSuccessViewController.m */; };
 		AA298AB41FCEA51600763CCA /* DRGoodHeaderCollectionViewCell.m in Sources */ = {isa = PBXBuildFile; fileRef = AA298AB31FCEA51600763CCA /* DRGoodHeaderCollectionViewCell.m */; };
 		AA298ABA1FCEAC3E00763CCA /* DRGoodCommentCollectionViewCell.m in Sources */ = {isa = PBXBuildFile; fileRef = AA298AB91FCEAC3E00763CCA /* DRGoodCommentCollectionViewCell.m */; };
@@ -266,7 +267,6 @@
 		AA2AB54221BA5FE100A345DA /* RSKImageScrollView.m in Sources */ = {isa = PBXBuildFile; fileRef = AA2AB53921BA5FE000A345DA /* RSKImageScrollView.m */; };
 		AA2D0C7921F96181006B3B3F /* DRShopActivityModel.m in Sources */ = {isa = PBXBuildFile; fileRef = AA2D0C7821F96181006B3B3F /* DRShopActivityModel.m */; };
 		AA2D0C7C21F98E2D006B3B3F /* DRActivityDetailView.m in Sources */ = {isa = PBXBuildFile; fileRef = AA2D0C7B21F98E2D006B3B3F /* DRActivityDetailView.m */; };
-		AA2D0C7F21F998AF006B3B3F /* DRActivityGoodModel.m in Sources */ = {isa = PBXBuildFile; fileRef = AA2D0C7E21F998AF006B3B3F /* DRActivityGoodModel.m */; };
 		AA2F9F9721B7ACBE00A059F9 /* EaseBubbleView+MessageGoodInfo.m in Sources */ = {isa = PBXBuildFile; fileRef = AA2F9F9621B7ACBE00A059F9 /* EaseBubbleView+MessageGoodInfo.m */; };
 		AA2F9F9B21B7AE0200A059F9 /* SDWebImageDecoder.m in Sources */ = {isa = PBXBuildFile; fileRef = AA2F9F9921B7AE0100A059F9 /* SDWebImageDecoder.m */; };
 		AA3657C721D0D3CE009BE71B /* DRPraiseChooseAwardView.m in Sources */ = {isa = PBXBuildFile; fileRef = AA3657C621D0D3CE009BE71B /* DRPraiseChooseAwardView.m */; };
@@ -715,6 +715,12 @@
 		1D0F3D8C23695A5000EDA647 /* DRShoppingCarCache.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = DRShoppingCarCache.h; sourceTree = "<group>"; };
 		1D0F3D8D23695A5000EDA647 /* DRShoppingCarCache.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = DRShoppingCarCache.m; sourceTree = "<group>"; };
 		1D76804722DC0A72007C1154 /* HealthKit.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = HealthKit.framework; path = System/Library/Frameworks/HealthKit.framework; sourceTree = SDKROOT; };
+		1D7BDF8223700AA60015CD8E /* DRSeckillGoodModel.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = DRSeckillGoodModel.h; sourceTree = "<group>"; };
+		1D7BDF8323700AA60015CD8E /* DRSeckillGoodModel.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = DRSeckillGoodModel.m; sourceTree = "<group>"; };
+		1D7BDF8523700B650015CD8E /* DRChooseGoodViewController.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = DRChooseGoodViewController.h; sourceTree = "<group>"; };
+		1D7BDF8623700B650015CD8E /* DRChooseGoodViewController.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = DRChooseGoodViewController.m; sourceTree = "<group>"; };
+		1D7BDF8823700B980015CD8E /* DRChooseGoodTableViewCell.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = DRChooseGoodTableViewCell.h; sourceTree = "<group>"; };
+		1D7BDF8923700B980015CD8E /* DRChooseGoodTableViewCell.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = DRChooseGoodTableViewCell.m; sourceTree = "<group>"; };
 		1D7C898B2305426A00D6F2B2 /* DRIdentityAuditViewController.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = DRIdentityAuditViewController.h; sourceTree = "<group>"; };
 		1D7C898C2305426A00D6F2B2 /* DRIdentityAuditViewController.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = DRIdentityAuditViewController.m; sourceTree = "<group>"; };
 		1D8D1A2622E80B02009185B2 /* DRPublishGoodMessageView.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = DRPublishGoodMessageView.h; sourceTree = "<group>"; };
@@ -1143,20 +1149,16 @@
 		AA27EC671F7C84C00081DB18 /* IQUIView+IQKeyboardToolbar.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = "IQUIView+IQKeyboardToolbar.h"; sourceTree = "<group>"; };
 		AA27EC681F7C84C00081DB18 /* IQUIView+IQKeyboardToolbar.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = "IQUIView+IQKeyboardToolbar.m"; sourceTree = "<group>"; };
 		AA27EC6A1F7C84C00081DB18 /* IQKeyboardManager.bundle */ = {isa = PBXFileReference; lastKnownFileType = "wrapper.plug-in"; path = IQKeyboardManager.bundle; sourceTree = "<group>"; };
-		AA28792A21F07BA7001D9BA7 /* DRActivityManageViewController.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = DRActivityManageViewController.h; sourceTree = "<group>"; };
-		AA28792B21F07BA7001D9BA7 /* DRActivityManageViewController.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = DRActivityManageViewController.m; sourceTree = "<group>"; };
-		AA28792D21F166FD001D9BA7 /* DRActivityManageTableViewCell.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = DRActivityManageTableViewCell.h; sourceTree = "<group>"; };
-		AA28792E21F166FD001D9BA7 /* DRActivityManageTableViewCell.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = DRActivityManageTableViewCell.m; sourceTree = "<group>"; };
+		AA28792A21F07BA7001D9BA7 /* DRShopActivityViewController.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = DRShopActivityViewController.h; sourceTree = "<group>"; };
+		AA28792B21F07BA7001D9BA7 /* DRShopActivityViewController.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = DRShopActivityViewController.m; sourceTree = "<group>"; };
+		AA28792D21F166FD001D9BA7 /* DRActivityTableViewCell.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = DRActivityTableViewCell.h; sourceTree = "<group>"; };
+		AA28792E21F166FD001D9BA7 /* DRActivityTableViewCell.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = DRActivityTableViewCell.m; sourceTree = "<group>"; };
 		AA28793021F16E97001D9BA7 /* DRSeckillGoodListViewController.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = DRSeckillGoodListViewController.h; sourceTree = "<group>"; };
 		AA28793121F16E97001D9BA7 /* DRSeckillGoodListViewController.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = DRSeckillGoodListViewController.m; sourceTree = "<group>"; };
 		AA28793321F16FED001D9BA7 /* DRSeckillGoodTableViewCell.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = DRSeckillGoodTableViewCell.h; sourceTree = "<group>"; };
 		AA28793421F16FED001D9BA7 /* DRSeckillGoodTableViewCell.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = DRSeckillGoodTableViewCell.m; sourceTree = "<group>"; };
 		AA28793621F1719E001D9BA7 /* DRAddSeckillGoodViewController.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = DRAddSeckillGoodViewController.h; sourceTree = "<group>"; };
 		AA28793721F1719E001D9BA7 /* DRAddSeckillGoodViewController.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = DRAddSeckillGoodViewController.m; sourceTree = "<group>"; };
-		AA28793921F1A677001D9BA7 /* DRChooseSeckillGoodViewController.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = DRChooseSeckillGoodViewController.h; sourceTree = "<group>"; };
-		AA28793A21F1A677001D9BA7 /* DRChooseSeckillGoodViewController.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = DRChooseSeckillGoodViewController.m; sourceTree = "<group>"; };
-		AA28793C21F1A721001D9BA7 /* DRChooseSeckillGoodTableViewCell.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = DRChooseSeckillGoodTableViewCell.h; sourceTree = "<group>"; };
-		AA28793D21F1A721001D9BA7 /* DRChooseSeckillGoodTableViewCell.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = DRChooseSeckillGoodTableViewCell.m; sourceTree = "<group>"; };
 		AA28793F21F1C3FC001D9BA7 /* DRAddShowSuccessViewController.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = DRAddShowSuccessViewController.h; sourceTree = "<group>"; };
 		AA28794021F1C3FC001D9BA7 /* DRAddShowSuccessViewController.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = DRAddShowSuccessViewController.m; sourceTree = "<group>"; };
 		AA298AB21FCEA51600763CCA /* DRGoodHeaderCollectionViewCell.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = DRGoodHeaderCollectionViewCell.h; sourceTree = "<group>"; };
@@ -1231,8 +1233,6 @@
 		AA2D0C7821F96181006B3B3F /* DRShopActivityModel.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = DRShopActivityModel.m; sourceTree = "<group>"; };
 		AA2D0C7A21F98E2D006B3B3F /* DRActivityDetailView.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = DRActivityDetailView.h; sourceTree = "<group>"; };
 		AA2D0C7B21F98E2D006B3B3F /* DRActivityDetailView.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = DRActivityDetailView.m; sourceTree = "<group>"; };
-		AA2D0C7D21F998AF006B3B3F /* DRActivityGoodModel.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = DRActivityGoodModel.h; sourceTree = "<group>"; };
-		AA2D0C7E21F998AF006B3B3F /* DRActivityGoodModel.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = DRActivityGoodModel.m; sourceTree = "<group>"; };
 		AA2F9F9521B7ACBE00A059F9 /* EaseBubbleView+MessageGoodInfo.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "EaseBubbleView+MessageGoodInfo.h"; sourceTree = "<group>"; };
 		AA2F9F9621B7ACBE00A059F9 /* EaseBubbleView+MessageGoodInfo.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "EaseBubbleView+MessageGoodInfo.m"; sourceTree = "<group>"; };
 		AA2F9F9921B7AE0100A059F9 /* SDWebImageDecoder.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = SDWebImageDecoder.m; sourceTree = "<group>"; };
@@ -2076,6 +2076,55 @@
 /* End PBXFrameworksBuildPhase section */
 
 /* Begin PBXGroup section */
+		1D7BDF7E237003770015CD8E /* 秒杀活动 */ = {
+			isa = PBXGroup;
+			children = (
+				1D7BDF81237003910015CD8E /* Controller */,
+				1D7BDF7F237003900015CD8E /* Model */,
+				1D7BDF80237003910015CD8E /* View */,
+			);
+			path = "秒杀活动";
+			sourceTree = "<group>";
+		};
+		1D7BDF7F237003900015CD8E /* Model */ = {
+			isa = PBXGroup;
+			children = (
+				1D7BDF8223700AA60015CD8E /* DRSeckillGoodModel.h */,
+				1D7BDF8323700AA60015CD8E /* DRSeckillGoodModel.m */,
+			);
+			path = Model;
+			sourceTree = "<group>";
+		};
+		1D7BDF80237003910015CD8E /* View */ = {
+			isa = PBXGroup;
+			children = (
+				AA28793321F16FED001D9BA7 /* DRSeckillGoodTableViewCell.h */,
+				AA28793421F16FED001D9BA7 /* DRSeckillGoodTableViewCell.m */,
+			);
+			path = View;
+			sourceTree = "<group>";
+		};
+		1D7BDF81237003910015CD8E /* Controller */ = {
+			isa = PBXGroup;
+			children = (
+				AA28793021F16E97001D9BA7 /* DRSeckillGoodListViewController.h */,
+				AA28793121F16E97001D9BA7 /* DRSeckillGoodListViewController.m */,
+				AA28793621F1719E001D9BA7 /* DRAddSeckillGoodViewController.h */,
+				AA28793721F1719E001D9BA7 /* DRAddSeckillGoodViewController.m */,
+			);
+			path = Controller;
+			sourceTree = "<group>";
+		};
+		1D7BDF8B23700C680015CD8E /* 活动列表 */ = {
+			isa = PBXGroup;
+			children = (
+				AA28792721F07B48001D9BA7 /* Controller */,
+				AA28792821F07B48001D9BA7 /* Model */,
+				AA28792921F07B48001D9BA7 /* View */,
+			);
+			path = "活动列表";
+			sourceTree = "<group>";
+		};
 		1D7C89872305422E00D6F2B2 /* 身份审核 */ = {
 			isa = PBXGroup;
 			children = (
@@ -3316,9 +3365,8 @@
 		AA28792621F07B48001D9BA7 /* 优惠活动 */ = {
 			isa = PBXGroup;
 			children = (
-				AA28792721F07B48001D9BA7 /* Controller */,
-				AA28792821F07B48001D9BA7 /* Model */,
-				AA28792921F07B48001D9BA7 /* View */,
+				1D7BDF8B23700C680015CD8E /* 活动列表 */,
+				1D7BDF7E237003770015CD8E /* 秒杀活动 */,
 			);
 			path = "优惠活动";
 			sourceTree = "<group>";
@@ -3326,14 +3374,10 @@
 		AA28792721F07B48001D9BA7 /* Controller */ = {
 			isa = PBXGroup;
 			children = (
-				AA28792A21F07BA7001D9BA7 /* DRActivityManageViewController.h */,
-				AA28792B21F07BA7001D9BA7 /* DRActivityManageViewController.m */,
-				AA28793021F16E97001D9BA7 /* DRSeckillGoodListViewController.h */,
-				AA28793121F16E97001D9BA7 /* DRSeckillGoodListViewController.m */,
-				AA28793621F1719E001D9BA7 /* DRAddSeckillGoodViewController.h */,
-				AA28793721F1719E001D9BA7 /* DRAddSeckillGoodViewController.m */,
-				AA28793921F1A677001D9BA7 /* DRChooseSeckillGoodViewController.h */,
-				AA28793A21F1A677001D9BA7 /* DRChooseSeckillGoodViewController.m */,
+				AA28792A21F07BA7001D9BA7 /* DRShopActivityViewController.h */,
+				AA28792B21F07BA7001D9BA7 /* DRShopActivityViewController.m */,
+				1D7BDF8523700B650015CD8E /* DRChooseGoodViewController.h */,
+				1D7BDF8623700B650015CD8E /* DRChooseGoodViewController.m */,
 			);
 			path = Controller;
 			sourceTree = "<group>";
@@ -3343,8 +3387,6 @@
 			children = (
 				AA2D0C7721F96181006B3B3F /* DRShopActivityModel.h */,
 				AA2D0C7821F96181006B3B3F /* DRShopActivityModel.m */,
-				AA2D0C7D21F998AF006B3B3F /* DRActivityGoodModel.h */,
-				AA2D0C7E21F998AF006B3B3F /* DRActivityGoodModel.m */,
 			);
 			path = Model;
 			sourceTree = "<group>";
@@ -3352,14 +3394,12 @@
 		AA28792921F07B48001D9BA7 /* View */ = {
 			isa = PBXGroup;
 			children = (
-				AA28792D21F166FD001D9BA7 /* DRActivityManageTableViewCell.h */,
-				AA28792E21F166FD001D9BA7 /* DRActivityManageTableViewCell.m */,
+				AA28792D21F166FD001D9BA7 /* DRActivityTableViewCell.h */,
+				AA28792E21F166FD001D9BA7 /* DRActivityTableViewCell.m */,
 				AA2D0C7A21F98E2D006B3B3F /* DRActivityDetailView.h */,
 				AA2D0C7B21F98E2D006B3B3F /* DRActivityDetailView.m */,
-				AA28793321F16FED001D9BA7 /* DRSeckillGoodTableViewCell.h */,
-				AA28793421F16FED001D9BA7 /* DRSeckillGoodTableViewCell.m */,
-				AA28793C21F1A721001D9BA7 /* DRChooseSeckillGoodTableViewCell.h */,
-				AA28793D21F1A721001D9BA7 /* DRChooseSeckillGoodTableViewCell.m */,
+				1D7BDF8823700B980015CD8E /* DRChooseGoodTableViewCell.h */,
+				1D7BDF8923700B980015CD8E /* DRChooseGoodTableViewCell.m */,
 			);
 			path = View;
 			sourceTree = "<group>";
@@ -5412,10 +5452,10 @@
 		AAF43A1D1FAFFEB200CA31DE /* Controller */ = {
 			isa = PBXGroup;
 			children = (
+				AAF43A211FAFFEB200CA31DE /* DRBankCardViewController.h */,
 				AAF43A1E1FAFFEB200CA31DE /* DRBankCardViewController.m */,
 				AAF43A1F1FAFFEB200CA31DE /* DRAddBankCardViewController.h */,
 				AAF43A201FAFFEB200CA31DE /* DRAddBankCardViewController.m */,
-				AAF43A211FAFFEB200CA31DE /* DRBankCardViewController.h */,
 			);
 			path = Controller;
 			sourceTree = "<group>";
@@ -6002,7 +6042,7 @@
 					CE468E141E29BD4D00768646 = {
 						CreatedOnToolsVersion = 8.2;
 						DevelopmentTeam = BT38JUEXT9;
-						ProvisioningStyle = Manual;
+						ProvisioningStyle = Automatic;
 						SystemCapabilities = {
 							com.apple.BackgroundModes = {
 								enabled = 1;
@@ -6168,10 +6208,9 @@
 				AA1C33051F8B656900D05713 /* DRGoodListViewController.m in Sources */,
 				AA27E82C21B7AAA60067F72B /* PSTCollectionViewCell.m in Sources */,
 				AAF43A601FAFFEB200CA31DE /* DRBankCardTableViewCell.m in Sources */,
-				AA28792F21F166FD001D9BA7 /* DRActivityManageTableViewCell.m in Sources */,
+				AA28792F21F166FD001D9BA7 /* DRActivityTableViewCell.m in Sources */,
 				AAABE0612027E76100DD3DBE /* DRShoppingCarViewController.m in Sources */,
 				AA1C33061F8B656900D05713 /* DRGoodCommentListViewController.m in Sources */,
-				AA28793B21F1A677001D9BA7 /* DRChooseSeckillGoodViewController.m in Sources */,
 				AA27E82921B7AAA60067F72B /* DACircularProgressView.m in Sources */,
 				AA27E85021B7AAA60067F72B /* EaseUserModel.m in Sources */,
 				AA1C33071F8B656900D05713 /* DRGoodDetailViewController.m in Sources */,
@@ -6190,6 +6229,7 @@
 				AA27DB8921B66D560067F72B /* TZAssetCell.m in Sources */,
 				AA1C32E31F8B636D00D05713 /* DRShopDetailViewController.m in Sources */,
 				AA601D8E21C2490900147514 /* DRGrouponModel.m in Sources */,
+				1D7BDF8423700AA60015CD8E /* DRSeckillGoodModel.m in Sources */,
 				AAE04B0B20ABD72600CFFE35 /* DRBillingDetailViewController.m in Sources */,
 				A9827132206CD79B0032A672 /* DRCommentGoodModel.m in Sources */,
 				AA8E46EF212D261A005DE5CE /* UIImage+GIF.m in Sources */,
@@ -6313,6 +6353,7 @@
 				AA4366D121AD12D6002D5613 /* DRActivityView.m in Sources */,
 				AA75CCC11EE7EBA100D5839F /* DRBottomPickerView.m in Sources */,
 				AAA7831120B2ACCB003B6B09 /* PGDatePickerView.m in Sources */,
+				1D7BDF8723700B650015CD8E /* DRChooseGoodViewController.m in Sources */,
 				AAA7830E20B2ACCB003B6B09 /* PGDatePicker+Common.m in Sources */,
 				AA8E46E8212D261A005DE5CE /* SDWebImageManager.m in Sources */,
 				AA27E81721B7AAA60067F72B /* amrFileCodec.mm in Sources */,
@@ -6382,6 +6423,7 @@
 				AA91921F204E6F7C00060A83 /* DRIMTool.m in Sources */,
 				AA1215421F22EE0600A78C58 /* DRThirdPartyBindingViewController.m in Sources */,
 				AA75CCC51EE7EBD000D5839F /* DRLoadHtmlFileViewController.m in Sources */,
+				1D7BDF8A23700B980015CD8E /* DRChooseGoodTableViewCell.m in Sources */,
 				CE4690041E29DA7300768646 /* MBProgressHUD+MJ.m in Sources */,
 				AA7697241F99CDEC00B5B668 /* DRMessageModel.m in Sources */,
 				AA27E82E21B7AAA60067F72B /* PSTCollectionViewData.m in Sources */,
@@ -6629,10 +6671,9 @@
 				AAF4394C1FAFF96E00CA31DE /* DRMineTableHeaderView.m in Sources */,
 				AA8E46F5212D261A005DE5CE /* NSButton+WebCache.m in Sources */,
 				AA8547B421C8ECD60006A60A /* DRPraiseRealTimeListViewController.m in Sources */,
-				AA2D0C7F21F998AF006B3B3F /* DRActivityGoodModel.m in Sources */,
 				AAF4395D1FAFFA3E00CA31DE /* DRAddressModel.m in Sources */,
 				AA27E73B21B7AA8B0067F72B /* EaseChineseToPinyin.m in Sources */,
-				AA28792C21F07BA7001D9BA7 /* DRActivityManageViewController.m in Sources */,
+				AA28792C21F07BA7001D9BA7 /* DRShopActivityViewController.m in Sources */,
 				AA8E46F3212D261A005DE5CE /* SDWebImagePrefetcher.m in Sources */,
 				AA238067214B966100BC47BB /* JSONModelError.m in Sources */,
 				AA601D7521C2481100147514 /* DRShowSectionFooterView.m in Sources */,
@@ -6678,7 +6719,6 @@
 				CE4690021E29DA7300768646 /* SBJsonParser.m in Sources */,
 				A9827104206CD5F00032A672 /* DRReturnGoodViewController.m in Sources */,
 				AAA7830820B2ACCB003B6B09 /* PGDatePickManagerHeaderView.m in Sources */,
-				AA28793E21F1A721001D9BA7 /* DRChooseSeckillGoodTableViewCell.m in Sources */,
 				AA298AC11FD12ACC00763CCA /* DRMenuView.m in Sources */,
 				AA28793221F16E97001D9BA7 /* DRSeckillGoodListViewController.m in Sources */,
 				AA298AB41FCEA51600763CCA /* DRGoodHeaderCollectionViewCell.m in Sources */,
@@ -7004,11 +7044,11 @@
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				ASSETCATALOG_COMPILER_LAUNCHIMAGE_NAME = LaunchImage;
 				CODE_SIGN_ENTITLEMENTS = dr/dr.entitlements;
-				CODE_SIGN_IDENTITY = "iPhone Developer";
+				CODE_SIGN_IDENTITY = "Apple Development";
 				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "iPhone Developer";
 				CODE_SIGN_INJECT_BASE_ENTITLEMENTS = YES;
-				CODE_SIGN_STYLE = Manual;
-				DEVELOPMENT_TEAM = BT38JUEXT9;
+				CODE_SIGN_STYLE = Automatic;
+				DEVELOPMENT_TEAM = "";
 				ENABLE_BITCODE = NO;
 				FRAMEWORK_SEARCH_PATHS = (
 					"$(inherited)",
@@ -7054,7 +7094,7 @@
 				PRODUCT_BUNDLE_IDENTIFIER = com.lottery.dr;
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				PROVISIONING_PROFILE = "";
-				PROVISIONING_PROFILE_SPECIFIER = dr_dev_28;
+				PROVISIONING_PROFILE_SPECIFIER = "";
 				VALID_ARCHS = "arm64 armv7 armv7s";
 			};
 			name = Debug;

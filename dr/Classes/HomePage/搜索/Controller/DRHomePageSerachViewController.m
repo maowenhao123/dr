@@ -34,23 +34,27 @@
 - (void)viewWillAppear:(BOOL)animated
 {
     [super viewWillAppear:animated];
-    // 取出appearance对象
     UINavigationBar *navBar = self.navigationController.navigationBar;
     [navBar setShadowImage:[UIImage new]];
-    self.searchBar.backgroundImage = [UIImage ImageFromColor:[UIColor clearColor] WithRect:self.searchBar.bounds];
+    
+    [self.searchBar becomeFirstResponder];
 }
+
 - (void)viewDidAppear:(BOOL)animated
 {
     [super viewDidAppear:animated];
     [UIApplication sharedApplication].statusBarStyle = UIStatusBarStyleDefault;
 }
+
 - (void)viewWillDisappear:(BOOL)animated
 {
     [super viewWillDisappear:animated];
-    // 取出appearance对象
     UINavigationBar *navBar = self.navigationController.navigationBar;
     [navBar setShadowImage:nil];
+    
+    [self.searchBar resignFirstResponder];
 }
+
 - (void)viewDidLoad
 {
     [super viewDidLoad];
@@ -88,35 +92,43 @@
     //search
     DRTitleView *titleView = [[DRTitleView alloc] init];
     titleView.x = 40;
-    titleView.y = 7;
-    titleView.width = screenWidth - 40 - 10;
-    titleView.height = 30;
+    titleView.y = 4;
+    titleView.width = screenWidth - 60;
+    titleView.height = 36;
     
     UISearchBar * searchBar = [[UISearchBar alloc] initWithFrame:titleView.bounds];
     self.searchBar = searchBar;
-    searchBar.backgroundImage = [UIImage ImageFromColor:[UIColor clearColor] WithRect:searchBar.bounds];
     searchBar.showsCancelButton = YES;
     searchBar.delegate = self;
     searchBar.placeholder = @"多肉、店铺";
     searchBar.tintColor = DRDefaultColor;
-    UITextField * searchTextField = [searchBar valueForKey:@"_searchField"];
-    searchTextField.backgroundColor = DRColor(242, 242, 242, 1);
-    searchTextField.textColor = DRBlackTextColor;
-    searchTextField.font = [UIFont systemFontOfSize:DRGetFontSize(26)];
+    searchBar.backgroundImage = [UIImage new];
+    if (!iOS13) {
+        UITextField * searchTextField = [searchBar valueForKey:@"_searchField"];
+        searchTextField.backgroundColor = DRColor(242, 242, 242, 1);
+        searchTextField.textColor = DRBlackTextColor;
+        searchTextField.font = [UIFont systemFontOfSize:DRGetFontSize(26)];
+    }else
+    {
+        searchBar.searchTextField.backgroundColor = DRColor(242, 242, 242, 1);
+        searchBar.searchTextField.textColor = DRBlackTextColor;
+        searchBar.searchTextField.font = [UIFont systemFontOfSize:DRGetFontSize(26)];
+    }
+    
     //分类按钮
     UIButton * sortbutton = [UIButton buttonWithType:UIButtonTypeCustom];
     self.sortbutton = sortbutton;
-    sortbutton.frame = CGRectMake(0, 0, 40, 20);
+    sortbutton.frame = CGRectMake(5, 0, 40, searchBar.height);
     [sortbutton setTitle:@"宝贝" forState:UIControlStateNormal];
     [sortbutton setTitleColor:DRBlackTextColor forState:UIControlStateNormal];
     sortbutton.titleLabel.font = [UIFont systemFontOfSize:DRGetFontSize(26)];
     [sortbutton setImage:[UIImage imageNamed:@"search_sort_triangle"] forState:UIControlStateNormal];
     [sortbutton setButtonTitleWithImageAlignment:UIButtonTitleWithImageAlignmentRight imgTextDistance:3];
     [sortbutton addTarget:self action:@selector(sortButtonDidClick) forControlEvents:UIControlEventTouchUpInside];
-    searchTextField.leftView = sortbutton;
+    [searchBar setPositionAdjustment:UIOffsetMake(sortbutton.width + 3, 0) forSearchBarIcon:UISearchBarIconSearch];
+    [searchBar addSubview:sortbutton];
     [titleView addSubview:searchBar];
     self.navigationItem.titleView = titleView;
-    [searchBar becomeFirstResponder];
     
     //搜索页面
     UIView * searchView = [[UIView alloc] initWithFrame:CGRectMake(0, 0, screenWidth, screenHeight - statusBarH - navBarH)];
@@ -214,9 +226,6 @@
     if (DRStringIsEmpty(keyword)) {
         return;
     }
-    
-    UITextField * searchTextField = [self.searchBar valueForKey:@"_searchField"];
-    searchTextField.leftView = nil;
 
     //储存搜索关键字
     [DRSearchTool addGoodKeyWord:keyword];
@@ -239,12 +248,6 @@
 - (void)searchBarCancelButtonClicked:(UISearchBar *)searchBar
 {
     [self.navigationController popViewControllerAnimated:NO];
-}
-
-- (void)searchBarTextDidBeginEditing:(UISearchBar *)searchBar
-{
-    UITextField * searchTextField = [searchBar valueForKey:@"_searchField"];
-    searchTextField.leftView = self.sortbutton;
 }
 
 - (void)searchBarSearchButtonClicked:(UISearchBar *)searchBar

@@ -122,4 +122,12 @@
  */
 + (BOOL)showDiscountPriceWithGoodModel:(DRGoodModel *)goodModel;
 
+#pragma mark - 判断字符串中是否存在emoji
+/**
+ *  判断字符串中是否存在emoji
+ * @param string 字符串
+ * @return YES(含有表情)
+ */
++ (BOOL)stringContainsEmoji:(NSString *)string;
+
 @end

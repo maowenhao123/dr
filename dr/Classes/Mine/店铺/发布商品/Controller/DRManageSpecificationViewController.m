@@ -84,8 +84,14 @@
     [footerView addSubview:addButton];
     tableView.tableFooterView = footerView;
     
-    noDataView.hidden = self.dataArray.count > 0;
-    tableView.hidden = self.dataArray.count == 0;
+    NSMutableArray * dataArray = [NSMutableArray array];
+    for (DRGoodSpecificationModel *specificationModel in self.dataArray) {
+        if (specificationModel.delFlag == 0) {
+            [dataArray addObject:specificationModel];
+        }
+    }
+    noDataView.hidden = dataArray.count > 0;
+    tableView.hidden = dataArray.count == 0;
 }
 
 - (void)confirmBarDidClick
@@ -98,6 +104,17 @@
 
 - (void)addButtonDidClick
 {
+    NSMutableArray * dataArray = [NSMutableArray array];
+    for (DRGoodSpecificationModel *specificationModel in self.dataArray) {
+        if (specificationModel.delFlag == 0) {
+            [dataArray addObject:specificationModel];
+        }
+    }
+    if (dataArray.count > 5) {
+        [MBProgressHUD showError:@"最多添加6个规格"];
+        return;
+    }
+    
     DRAddSpecificationViewController * addSpecificationVC = [[DRAddSpecificationViewController alloc] init];
     addSpecificationVC.delegate = self;
     [self.navigationController pushViewController:addSpecificationVC animated:YES];
@@ -117,33 +134,50 @@
     [self.dataArray replaceObjectAtIndex:specificationModel.index withObject:specificationModel];
     [self.tableView reloadRowsAtIndexPaths:@[[NSIndexPath indexPathForRow:specificationModel.index inSection:0]] withRowAnimation:UITableViewRowAnimationAutomatic];
 }
+
 #pragma mark - UITableViewDataSource
 - (NSInteger)tableView:(UITableView *)tableView numberOfRowsInSection:(NSInteger)section
 {
-    NSMutableArray * dataArray = [NSMutableArray array];
-    for (DRGoodSpecificationModel *specificationModel in self.dataArray) {
-        if (specificationModel.delFlag == 0) {
-            [dataArray addObject:specificationModel];
-        }
-    }
-    return dataArray.count;
+    return self.dataArray.count;
 }
 
 - (UITableViewCell *)tableView:(UITableView *)tableView cellForRowAtIndexPath:(NSIndexPath *)indexPath
 {
-    DRSpecificationTableViewCell *cell = [DRSpecificationTableViewCell cellWithTableView:tableView];
     DRGoodSpecificationModel *specificationModel = self.dataArray[indexPath.row];
     if (specificationModel.delFlag == 0) {
+        DRSpecificationTableViewCell *cell = [DRSpecificationTableViewCell cellWithTableView:tableView];
         specificationModel.index = indexPath.row;
+        NSMutableArray * dataArray = [NSMutableArray array];
+        for (DRGoodSpecificationModel *specificationModel in self.dataArray) {
+            if (specificationModel.delFlag == 0) {
+                [dataArray addObject:specificationModel];
+            }
+        }
+        specificationModel.index_ = [dataArray indexOfObject:specificationModel];
         cell.goodSpecificationModel = specificationModel;
         cell.delegate = self;
+        return cell;
+    }else
+    {
+        static NSString *ID = @"SpecificationTableViewDeleteCellId";
+        UITableViewCell *cell = [tableView dequeueReusableCellWithIdentifier:ID];
+        if(cell == nil)
+        {
+            cell = [[UITableViewCell alloc] initWithStyle:UITableViewCellStyleSubtitle reuseIdentifier:ID];
+        }
+        return  cell;
     }
-    return cell;
 }
 
 - (CGFloat)tableView:(UITableView *)tableView heightForRowAtIndexPath:(NSIndexPath *)indexPath
 {
-    return 9 + 40 + 100;
+    DRGoodSpecificationModel *specificationModel = self.dataArray[indexPath.row];
+    if (specificationModel.delFlag == 0) {
+        return 9 + 40 + 100;
+    }else
+    {
+        return 0;
+    }
 }
 
 - (void)tableView:(UITableView *)tableView commitEditingStyle:(UITableViewCellEditingStyle)editingStyle forRowAtIndexPath:(NSIndexPath *)indexPath
@@ -160,8 +194,15 @@
     UIAlertAction * alertAction2 = [UIAlertAction actionWithTitle:@"删除" style:UIAlertActionStyleDestructive handler:^(UIAlertAction * _Nonnull action) {
         DRGoodSpecificationModel *specificationModel = self.dataArray[indexPath.row];
         specificationModel.delFlag = 1;
-        [self.tableView deleteRowsAtIndexPaths:@[indexPath] withRowAnimation:UITableViewRowAnimationAutomatic];
-        if (self.dataArray.count == 0) {
+        [self.tableView reloadData];
+        
+        NSMutableArray * dataArray = [NSMutableArray array];
+        for (DRGoodSpecificationModel *specificationModel in self.dataArray) {
+            if (specificationModel.delFlag == 0) {
+                [dataArray addObject:specificationModel];
+            }
+        }
+        if (dataArray.count == 0) {
             self.tableView.hidden = YES;
             self.noDataView.hidden = NO;
         }else

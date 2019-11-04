@@ -16,7 +16,7 @@
 #import "DRBillingViewController.h"
 #import "DRPublishGoodViewController.h"
 #import "DRGoodShelfViewController.h"
-#import "DRActivityManageViewController.h"
+#import "DRShopActivityViewController.h"
 #import "DRLoadHtmlFileViewController.h"
 #import "DRShopDetailViewController.h"
 #import "DRItemView.h"
@@ -479,7 +479,7 @@
         [self.navigationController pushViewController:goodShelfVC animated:YES];
     }else if (indexPath.section == 2)//优惠活动
     {
-        DRActivityManageViewController * activityManageVC = [[DRActivityManageViewController alloc] init];
+        DRShopActivityViewController * activityManageVC = [[DRShopActivityViewController alloc] init];
         [self.navigationController pushViewController:activityManageVC animated:YES];
     }else if (indexPath.section == 3)//运费设置
     {

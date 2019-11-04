@@ -1,17 +1,17 @@
 //
-//  DRChooseSeckillGoodViewController.m
+//  DRChooseGoodViewController.m
 //  dr
 //
-//  Created by 毛文豪 on 2019/1/18.
+//  Created by dahe on 2019/11/4.
 //  Copyright © 2019 JG. All rights reserved.
 //
 
-#import "DRChooseSeckillGoodViewController.h"
+#import "DRChooseGoodViewController.h"
 #import "DRGoodDetailViewController.h"
-#import "DRChooseSeckillGoodTableViewCell.h"
+#import "DRChooseGoodTableViewCell.h"
 #import "UITableView+DRNoData.h"
 
-@interface DRChooseSeckillGoodViewController ()<UITableViewDataSource, UITableViewDelegate, ChooseSeckillGoodTableViewCellDelegate>
+@interface DRChooseGoodViewController ()<UITableViewDataSource, UITableViewDelegate, ChooseGoodViewControllerDelegate>
 
 @property (nonatomic, weak) UITableView *tableView;
 @property (nonatomic, strong) NSMutableArray * dataArray;
@@ -21,7 +21,7 @@
 
 @end
 
-@implementation DRChooseSeckillGoodViewController
+@implementation DRChooseGoodViewController
 
 - (void)viewDidLoad
 {
@@ -130,7 +130,7 @@
 
 - (UITableViewCell *)tableView:(UITableView *)tableView cellForRowAtIndexPath:(NSIndexPath *)indexPath
 {
-    DRChooseSeckillGoodTableViewCell *cell = [DRChooseSeckillGoodTableViewCell cellWithTableView:tableView];
+    DRChooseGoodTableViewCell *cell = [DRChooseGoodTableViewCell cellWithTableView:tableView];
     cell.goodModel = self.dataArray[indexPath.row];
     cell.delegate = self;
     return cell;
@@ -150,13 +150,13 @@
 }
 
 #pragma mark - 协议
-- (void)chooseSeckillGoodTableViewCell:(DRChooseSeckillGoodTableViewCell *)cell buttonDidClick:(UIButton *)button
+- (void)ChooseGoodTableViewCell:(DRChooseGoodTableViewCell *)cell buttonDidClick:(UIButton *)button
 {
     NSIndexPath * indexPath = [self.tableView indexPathForCell:cell];
     DRGoodModel * goodModel = self.dataArray[indexPath.row];
     
-    if (_delegate && [_delegate respondsToSelector:@selector(chooseSeckillGoodViewControllerChooseGoodModel:)]) {
-        [_delegate chooseSeckillGoodViewControllerChooseGoodModel:goodModel];
+    if (_delegate && [_delegate respondsToSelector:@selector(ChooseGoodViewControllerChooseGoodModel:)]) {
+        [_delegate ChooseGoodViewControllerChooseGoodModel:goodModel];
     }
     [self.navigationController popViewControllerAnimated:YES];
 }

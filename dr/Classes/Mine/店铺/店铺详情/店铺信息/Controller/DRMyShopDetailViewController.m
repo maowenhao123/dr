@@ -12,6 +12,7 @@
 #import "DRChangeShopDescriptionViewController.h"
 #import "DRChangeRealNameViewController.h"
 #import "DRShowRealNameViewController.h"
+#import "DRIdentityAuditViewController.h"
 #import "DRChangeFunPassWordViewController.h"
 #import "DRSetFunPasswordViewController.h"
 #import "DRBankCardViewController.h"
@@ -131,6 +132,7 @@
     }
     return cell;
 }
+
 - (CGFloat)tableView:(UITableView *)tableView heightForRowAtIndexPath:(NSIndexPath *)indexPath
 {
     DRMyShopModel * myShopModel = [DRUserDefaultTool myShopModel];
@@ -149,6 +151,7 @@
     }
     return DRCellH;
 }
+
 - (CGFloat)tableView:(UITableView *)tableView heightForHeaderInSection:(NSInteger)section
 {
     return 10;
@@ -244,7 +247,7 @@
         DRLog(@"error:%@",error);
     }];
 }
-- (void)upDataMyShopSuccess:(void (^)())success
+- (void)upDataMyShopSuccess:(void (^)(void))success
 {
     NSDictionary *bodyDic = @{
                               };

@@ -17,11 +17,14 @@
 
 @implementation DRChangeShopAddressViewController
 
-- (void)viewDidLoad {
+- (void)viewDidLoad
+{
     [super viewDidLoad];
     self.title = @"修改店铺地址";
     [self setupChilds];
 }
+
+#pragma mark - 布局视图
 - (void)setupChilds
 {
     self.navigationItem.rightBarButtonItem = [[UIBarButtonItem alloc]initWithTitle:@"保存" style:UIBarButtonItemStylePlain target:self action:@selector(saveBarDidClick)];
@@ -44,10 +47,14 @@
     [self.view endEditing:YES];
     
     NSString * addressStr = self.shopAddressTV.text;
-    
     if (DRStringIsEmpty(addressStr))
     {
         [MBProgressHUD showError:@"您还未输入店铺地址"];
+        return;
+    }
+    
+    if ([DRTool stringContainsEmoji:addressStr]) {
+        [MBProgressHUD showError:@"请删掉特殊符号或表情后，再提交哦~"];
         return;
     }
     

@@ -25,7 +25,7 @@
 
 - (void)viewDidLoad {
     [super viewDidLoad];
-    self.title = @"我的银行卡";
+    self.title = @"添加银行卡";
     [self setupChilds];
 }
 - (void)setupChilds

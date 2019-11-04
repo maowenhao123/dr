@@ -7,11 +7,10 @@
 //
 
 #import "DRAddSeckillGoodViewController.h"
-#import "DRChooseSeckillGoodViewController.h"
-#import "DRChooseSeckillGoodViewController.h"
+#import "DRChooseGoodViewController.h"
 #import "DRDecimalTextField.h"
 
-@interface DRAddSeckillGoodViewController ()<ChooseSeckillGoodViewControllerDelegate>
+@interface DRAddSeckillGoodViewController ()<ChooseGoodViewControllerDelegate>
 
 @property (nonatomic, weak) UITextField *nameTF;
 @property (nonatomic, weak) UITextField *priceTF;
@@ -107,12 +106,12 @@
 
 - (void)chooseGoodBtnDidClick
 {
-    DRChooseSeckillGoodViewController * chooseSeckillGoodVC = [[DRChooseSeckillGoodViewController alloc] init];
-    chooseSeckillGoodVC.delegate = self;
-    [self.navigationController pushViewController:chooseSeckillGoodVC animated:YES];
+    DRChooseGoodViewController * ChooseGoodVC = [[DRChooseGoodViewController alloc] init];
+    ChooseGoodVC.delegate = self;
+    [self.navigationController pushViewController:ChooseGoodVC animated:YES];
 }
 
-- (void)chooseSeckillGoodViewControllerChooseGoodModel:(DRGoodModel *)goodModel
+- (void)ChooseGoodViewControllerChooseGoodModel:(DRGoodModel *)goodModel
 {
     self.goodModel = goodModel;
     self.nameTF.text = goodModel.name;

@@ -1,14 +1,14 @@
 //
-//  DRChooseSeckillGoodTableViewCell.m
+//  DRChooseGoodTableViewCell.m
 //  dr
 //
-//  Created by 毛文豪 on 2019/1/18.
+//  Created by dahe on 2019/11/4.
 //  Copyright © 2019 JG. All rights reserved.
 //
 
-#import "DRChooseSeckillGoodTableViewCell.h"
+#import "DRChooseGoodTableViewCell.h"
 
-@interface DRChooseSeckillGoodTableViewCell ()
+@interface DRChooseGoodTableViewCell ()
 
 @property (nonatomic, weak) UIImageView *goodImageView;//商品图片
 @property (nonatomic, weak) UILabel *goodNameLabel;//商品名称
@@ -18,15 +18,15 @@
 
 @end
 
-@implementation DRChooseSeckillGoodTableViewCell
+@implementation DRChooseGoodTableViewCell
 
-+ (DRChooseSeckillGoodTableViewCell *)cellWithTableView:(UITableView *)tableView
++ (DRChooseGoodTableViewCell *)cellWithTableView:(UITableView *)tableView
 {
     static NSString *ID = @"ChooseSeckillGoodTableViewCellId";
-    DRChooseSeckillGoodTableViewCell *cell = [tableView dequeueReusableCellWithIdentifier:ID];
+    DRChooseGoodTableViewCell *cell = [tableView dequeueReusableCellWithIdentifier:ID];
     if(cell == nil)
     {
-        cell = [[DRChooseSeckillGoodTableViewCell alloc] initWithStyle:UITableViewCellStyleSubtitle reuseIdentifier:ID];
+        cell = [[DRChooseGoodTableViewCell alloc] initWithStyle:UITableViewCellStyleSubtitle reuseIdentifier:ID];
         cell.selectionStyle = UITableViewCellSelectionStyleNone;
         cell.backgroundColor = [UIColor whiteColor];
     }

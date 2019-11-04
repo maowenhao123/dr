@@ -49,7 +49,7 @@
     self.maxImageCount = 6;
     
     //标题
-    UILabel * titleLabel = [[UILabel alloc] initWithFrame:CGRectMake(DRMargin, 0, self.width -  2 * DRMargin, 35)];
+    UILabel * titleLabel = [[UILabel alloc] initWithFrame:CGRectMake(_margin, 0, self.width -  2 * DRMargin, 35)];
     self.titleLabel = titleLabel;
     titleLabel.textColor = DRBlackTextColor;
     titleLabel.font = [UIFont systemFontOfSize:DRGetFontSize(28)];

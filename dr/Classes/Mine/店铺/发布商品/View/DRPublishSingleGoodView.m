@@ -171,9 +171,6 @@
         self.specificationView.hidden = YES;
         self.singleGoodMessageView.hidden = NO;
         self.height = CGRectGetMaxY(self.singleGoodMessageView.frame);
-        for (DRGoodSpecificationModel *specificationModel in self.specificationDataArray) {
-            specificationModel.delFlag = 1;
-        }
     }
     
     if (self.hightChangeBlock) {

@@ -216,7 +216,7 @@
     return [UIImage imageWithData:data];
 }
 
-//获取底部安全区域
+#pragma mark - 获取底部安全区域
 + (CGFloat)getSafeAreaBottom
 {
     if (@available(iOS 11.0, *)) {
@@ -225,13 +225,61 @@
     return 0;
 }
 
-//是否显示折扣价格
+#pragma mark - 是否显示折扣价格
 + (BOOL)showDiscountPriceWithGoodModel:(DRGoodModel *)goodModel
 {
     if ([goodModel.sellType intValue] == 1 && goodModel.systemTime < goodModel.dayEndTime && goodModel.systemTime > goodModel.beginTime && !DRObjectIsEmpty(goodModel.discountPrice) && !DRObjectIsEmpty(goodModel.activityStock)) {
         return YES;
     }
     return NO;
+}
+
+#pragma mark - 判断字符串中是否存在emoji
+/**
+ *  判断字符串中是否存在emoji
+ * @param string 字符串
+ * @return YES(含有表情)
+ */
++ (BOOL)stringContainsEmoji:(NSString *)string
+{
+    __block BOOL returnValue = NO;
+    
+    [string enumerateSubstringsInRange:NSMakeRange(0, [string length]) options:NSStringEnumerationByComposedCharacterSequences usingBlock:
+     ^(NSString *substring, NSRange substringRange, NSRange enclosingRange, BOOL *stop) {
+         
+         const unichar hs = [substring characterAtIndex:0];
+         // surrogate pair
+         if (0xd800 <= hs && hs <= 0xdbff) {
+             if (substring.length > 1) {
+                 const unichar ls = [substring characterAtIndex:1];
+                 const int uc = ((hs - 0xd800) * 0x400) + (ls - 0xdc00) + 0x10000;
+                 if (0x1d000 <= uc && uc <= 0x1f77f) {
+                     returnValue = YES;
+                 }
+             }
+         } else if (substring.length > 1) {
+             const unichar ls = [substring characterAtIndex:1];
+             if (ls == 0x20e3) {
+                 returnValue = YES;
+             }
+             
+         } else {
+             // non surrogate
+             if (0x2100 <= hs && hs <= 0x27ff) {
+                 returnValue = YES;
+             } else if (0x2B05 <= hs && hs <= 0x2b07) {
+                 returnValue = YES;
+             } else if (0x2934 <= hs && hs <= 0x2935) {
+                 returnValue = YES;
+             } else if (0x3297 <= hs && hs <= 0x3299) {
+                 returnValue = YES;
+             } else if (hs == 0xa9 || hs == 0xae || hs == 0x303d || hs == 0x3030 || hs == 0x2b55 || hs == 0x2b1c || hs == 0x2b1b || hs == 0x2b50) {
+                 returnValue = YES;
+             }
+         }
+     }];
+    
+    return returnValue;
 }
 
 @end

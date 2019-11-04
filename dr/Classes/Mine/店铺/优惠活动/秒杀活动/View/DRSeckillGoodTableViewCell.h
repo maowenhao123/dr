@@ -7,7 +7,7 @@
 //
 
 #import <UIKit/UIKit.h>
-#import "DRActivityGoodModel.h"
+#import "DRSeckillGoodModel.h"
 
 NS_ASSUME_NONNULL_BEGIN
 
@@ -22,7 +22,7 @@ NS_ASSUME_NONNULL_BEGIN
 
 + (DRSeckillGoodTableViewCell *)cellWithTableView:(UITableView *)tableView;
 
-@property (nonatomic, strong) DRActivityGoodModel *activityGoodModel;
+@property (nonatomic, strong) DRSeckillGoodModel *seckillGoodModel;
 
 /**
  协议

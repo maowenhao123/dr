@@ -106,14 +106,14 @@
     }
 }
 
-- (void)setActivityGoodModel:(DRActivityGoodModel *)activityGoodModel
+- (void)setSeckillGoodModel:(DRSeckillGoodModel *)seckillGoodModel
 {
-    _activityGoodModel = activityGoodModel;
+    _seckillGoodModel = seckillGoodModel;
     
-    NSString * urlStr = [NSString stringWithFormat:@"%@%@%@", baseUrl, _activityGoodModel.spreadPics, smallPicUrl];
+    NSString * urlStr = [NSString stringWithFormat:@"%@%@%@", baseUrl, _seckillGoodModel.spreadPics, smallPicUrl];
     [self.goodImageView sd_setImageWithURL:[NSURL URLWithString:urlStr] placeholderImage:[UIImage imageNamed:@"placeholder"]];
     
-    NSString * goodNameStr = _activityGoodModel.name;
+    NSString * goodNameStr = _seckillGoodModel.name;
     NSString * goodDesStr = @"";
     NSMutableAttributedString * attStr = [[NSMutableAttributedString alloc] initWithString:[NSString stringWithFormat:@"%@ %@", goodNameStr, goodDesStr]];
     [attStr addAttribute:NSFontAttributeName value:[UIFont systemFontOfSize:DRGetFontSize(28)] range:[attStr.string rangeOfString:goodNameStr]];
@@ -122,10 +122,10 @@
     [attStr addAttribute:NSForegroundColorAttributeName value:DRGrayTextColor range:[attStr.string rangeOfString:goodDesStr]];
     self.goodNameLabel.attributedText = attStr;
     
-    self.goodCountLabel.text = [NSString stringWithFormat:@"剩余%@", _activityGoodModel.activityStock];
+    self.goodCountLabel.text = [NSString stringWithFormat:@"剩余%@", _seckillGoodModel.activityStock];
     
-    NSString * newPriceStr = [NSString stringWithFormat:@"¥%@", [DRTool formatFloat:[_activityGoodModel.discountPrice doubleValue] / 100]];
-    NSString * oldPriceStr = [NSString stringWithFormat:@"¥%@", [DRTool formatFloat:[_activityGoodModel.price doubleValue] / 100]];
+    NSString * newPriceStr = [NSString stringWithFormat:@"¥%@", [DRTool formatFloat:[_seckillGoodModel.discountPrice doubleValue] / 100]];
+    NSString * oldPriceStr = [NSString stringWithFormat:@"¥%@", [DRTool formatFloat:[_seckillGoodModel.price doubleValue] / 100]];
     NSString * priceStr = [NSString stringWithFormat:@"%@ %@", newPriceStr, oldPriceStr];
     NSMutableAttributedString * priceAttStr = [[NSMutableAttributedString alloc]initWithString:priceStr];
     [priceAttStr addAttribute:NSFontAttributeName value:[UIFont systemFontOfSize:DRGetFontSize(34)] range:NSMakeRange(1, newPriceStr.length - 1)];
@@ -139,7 +139,7 @@
     self.statusButton.layer.borderColor = [UIColor clearColor].CGColor;
     self.statusButton.contentHorizontalAlignment = UIControlContentHorizontalAlignmentRight;
     self.statusButton.enabled = NO;
-    int status = [_activityGoodModel.status intValue];
+    int status = [_seckillGoodModel.status intValue];
     if (status == 0) {
         [self.statusButton setTitle:@"待审核" forState:UIControlStateNormal];
     }else if (status == 1)

@@ -29,6 +29,9 @@
 /** 是否为iOS12 */
 #define iOS12 (([[[UIDevice currentDevice] systemVersion] floatValue] >= 12.0) ? YES : NO)
 
+/** 是否为iOS13 */
+#define iOS13 (([[[UIDevice currentDevice] systemVersion] floatValue] >= 13.0) ? YES : NO)
+
 //----------------------ABOUT SCREEN & SIZE 屏幕&尺寸 ----------------------------
 #define screenWidth   ([UIScreen mainScreen].bounds.size.width)
 #define screenHeight  ([UIScreen mainScreen].bounds.size.height)

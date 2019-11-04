@@ -10,7 +10,7 @@
 
 NS_ASSUME_NONNULL_BEGIN
 
-@interface DRActivityManageViewController : DRSegementViewController
+@interface DRShopActivityViewController : DRSegementViewController
 
 @end
 
