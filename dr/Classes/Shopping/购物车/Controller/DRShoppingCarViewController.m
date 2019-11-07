@@ -353,6 +353,11 @@
 
 - (void)bottomView:(DRShoppingCarBottomView *)bottomView confirmButtonDidClick:(UIButton *)button
 {
+//    DRPaySuccessViewController * submitOrderVC1 = [[DRPaySuccessViewController alloc] init];
+//    submitOrderVC1.orderId = @"191106134300010049";
+//    [self.navigationController pushViewController:submitOrderVC1 animated:YES];
+//    return;
+//    
     if((!UserId || !Token))//未登录
     {
         DRLoginViewController * loginVC = [[DRLoginViewController alloc] init];

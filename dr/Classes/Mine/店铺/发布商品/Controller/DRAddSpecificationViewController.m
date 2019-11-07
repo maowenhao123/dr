@@ -10,7 +10,6 @@
 #import "DRGoodSpecificationModel.h"
 #import "DRDecimalTextField.h"
 #import "DRAddMultipleImageView.h"
-#import "DRAddMultipleImageView.h"
 
 @interface DRAddSpecificationViewController ()
 
@@ -163,8 +162,18 @@
         return;
     }
     
+    if ([self.priceTF.text intValue] == 0) {
+        [MBProgressHUD showError:@"价格不可为0"];
+        return;
+    }
+    
     if (DRStringIsEmpty(self.countTF.text)) {
         [MBProgressHUD showError:@"未输入规格库存"];
+        return;
+    }
+    
+    if ([self.countTF.text intValue] == 0) {
+        [MBProgressHUD showError:@"库存数不可为0"];
         return;
     }
     

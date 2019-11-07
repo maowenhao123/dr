@@ -172,6 +172,8 @@
             [self.addImageManage addImage];
         }else if (indexPath.row == 1)//昵称
         {
+//            DRIdentityAuditViewController * shopNameVC = [[DRIdentityAuditViewController alloc] init];
+//            [self.navigationController pushViewController:shopNameVC animated:YES];
             DRChangeShopNameViewController * shopNameVC = [[DRChangeShopNameViewController alloc] init];
             [self.navigationController pushViewController:shopNameVC animated:YES];
         }else if (indexPath.row == 2)

@@ -61,6 +61,7 @@
 {
     [super viewDidLoad];
     self.delegate = self;
+    self.modalPresentationStyle = UIModalPresentationFullScreen;
 }
 
 #pragma mark - 跳转下个页面

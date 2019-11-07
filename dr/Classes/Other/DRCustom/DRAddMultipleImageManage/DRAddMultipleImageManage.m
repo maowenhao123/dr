@@ -49,7 +49,8 @@
     [self.viewController presentViewController:alertController animated:YES completion:nil];
 }
 #pragma mark - 调用相册
-- (void)pushTZImagePickerController {
+- (void)pushTZImagePickerController
+{
     TZImagePickerController *imagePickerVc = [[TZImagePickerController alloc] initWithMaxImagesCount:self.maxImageCount columnNumber:4 delegate:self pushPhotoPickerVc:YES];
     [self setImagePickerControllerNav];
     
@@ -61,6 +62,7 @@
     imagePickerVc.allowCrop = YES;
     imagePickerVc.needCircleCrop = NO;
     imagePickerVc.allowPickingVideo = NO;
+    imagePickerVc.modalPresentationStyle = UIModalPresentationFullScreen;
     [self.viewController presentViewController:imagePickerVc animated:YES completion:nil];
 }
 - (void)imagePickerController:(TZImagePickerController *)picker didFinishPickingPhotos:(NSArray *)photos sourceAssets:(NSArray *)assets isSelectOriginalPhoto:(BOOL)isSelectOriginalPhoto {
@@ -78,7 +80,7 @@
     UIImagePickerControllerSourceType sourceType = UIImagePickerControllerSourceTypeCamera;
     if ([UIImagePickerController isSourceTypeAvailable: UIImagePickerControllerSourceTypeCamera]) {
         self.imagePickerVc.sourceType = sourceType;
-        self.imagePickerVc.modalPresentationStyle = UIModalPresentationOverCurrentContext;
+        self.imagePickerVc.modalPresentationStyle = UIModalPresentationFullScreen;
         [self.viewController presentViewController:self.imagePickerVc animated:YES completion:nil];
     } else {
         NSLog(@"模拟器中无法打开照相机,请在真机中使用");
@@ -115,6 +117,7 @@
                         imagePicker.allowCrop = YES;
                         imagePicker.allowPickingVideo = NO;
                         imagePicker.statusBarStyle = YES;
+                        imagePicker.modalPresentationStyle = UIModalPresentationFullScreen;
                         [self.viewController presentViewController:imagePicker animated:YES completion:nil];
                 }];
             }

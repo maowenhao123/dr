@@ -89,20 +89,26 @@
         self.button.titleLabel.font = [UIFont boldSystemFontOfSize:DRGetFontSize(35)];
         [self.button setTitleColor:[UIColor whiteColor] forState:UIControlStateNormal];
         self.button.backgroundColor = [UIColor clearColor];
-        self.titleLabel.frame = CGRectMake(5, 7, self.width - 10, 20);
-        self.button.frame = CGRectMake(5, CGRectGetMaxY(self.titleLabel.frame), self.width - 10, 42);
-        self.contentLabel.frame = CGRectMake(5, CGRectGetMaxY(self.button.frame) + 5, self.width - 10, 20);
+        self.titleLabel.frame = CGRectMake(5, 5, self.width - 10, 20);
+        if (iPhone4 || iPhone5 || iPhone6) {
+            self.button.frame = CGRectMake(5, CGRectGetMaxY(self.titleLabel.frame), self.width - 10, 40);
+        }else
+        {
+            self.button.frame = CGRectMake(5, CGRectGetMaxY(self.titleLabel.frame), self.width - 10, 42);
+            self.button.centerY = self.height / 2;
+        }
+        self.contentLabel.frame = CGRectMake(5, self.height - 20 - 3, self.width - 10, 20);
     }else
     {
         [self.button setTitle:_activityModel.button forState:UIControlStateNormal];
         [self.button setTitleColor:DRGrayTextColor forState:UIControlStateNormal];
         self.button.backgroundColor = [UIColor whiteColor];
         self.button.titleLabel.font = [UIFont systemFontOfSize:DRGetFontSize(26)];
-        self.titleLabel.frame = CGRectMake(5, 10, self.width - 10, 20);
+        self.titleLabel.frame = CGRectMake(5, 5, self.width - 10, 20);
         self.contentLabel.frame = CGRectMake(5, CGRectGetMaxY(self.titleLabel.frame), self.width - 10, 32);
         CGFloat buttonW = 80;
         CGFloat buttonH = 25;
-        self.button.frame = CGRectMake((self.width - buttonW) / 2, CGRectGetMaxY(self.contentLabel.frame) + 2, buttonW, buttonH);
+        self.button.frame = CGRectMake((self.width - buttonW) / 2, self.height - buttonH - 3, buttonW, buttonH);
     }
     self.titleLabel.text = _activityModel.title;
     self.contentLabel.text = _activityModel.content;

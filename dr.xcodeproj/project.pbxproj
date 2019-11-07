@@ -2125,6 +2125,37 @@
 			path = "活动列表";
 			sourceTree = "<group>";
 		};
+		1D7BDF8D23700E520015CD8E /* 团购 */ = {
+			isa = PBXGroup;
+			children = (
+				1D7BDF8F23700E640015CD8E /* Controller */,
+				1D7BDF9023700E640015CD8E /* Model */,
+				1D7BDF8E23700E630015CD8E /* View */,
+			);
+			path = "团购";
+			sourceTree = "<group>";
+		};
+		1D7BDF8E23700E630015CD8E /* View */ = {
+			isa = PBXGroup;
+			children = (
+			);
+			path = View;
+			sourceTree = "<group>";
+		};
+		1D7BDF8F23700E640015CD8E /* Controller */ = {
+			isa = PBXGroup;
+			children = (
+			);
+			path = Controller;
+			sourceTree = "<group>";
+		};
+		1D7BDF9023700E640015CD8E /* Model */ = {
+			isa = PBXGroup;
+			children = (
+			);
+			path = Model;
+			sourceTree = "<group>";
+		};
 		1D7C89872305422E00D6F2B2 /* 身份审核 */ = {
 			isa = PBXGroup;
 			children = (
@@ -3367,6 +3398,7 @@
 			children = (
 				1D7BDF8B23700C680015CD8E /* 活动列表 */,
 				1D7BDF7E237003770015CD8E /* 秒杀活动 */,
+				1D7BDF8D23700E520015CD8E /* 团购 */,
 			);
 			path = "优惠活动";
 			sourceTree = "<group>";
@@ -5358,9 +5390,9 @@
 		AAF43A0B1FAFFEB200CA31DE /* 店铺详情 */ = {
 			isa = PBXGroup;
 			children = (
-				1D7C89872305422E00D6F2B2 /* 身份审核 */,
 				AAF43A281FAFFEB200CA31DE /* 店铺信息 */,
 				AAF43A0C1FAFFEB200CA31DE /* 实名认证 */,
+				1D7C89872305422E00D6F2B2 /* 身份审核 */,
 				AAF43A141FAFFEB200CA31DE /* 密码 */,
 				AAF43A1C1FAFFEB200CA31DE /* 银行卡 */,
 			);
@@ -6855,6 +6887,7 @@
 				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "iPhone Distribution";
 				CODE_SIGN_INJECT_BASE_ENTITLEMENTS = YES;
 				CODE_SIGN_STYLE = Manual;
+				CURRENT_PROJECT_VERSION = 1.4.2;
 				DEVELOPMENT_TEAM = BT38JUEXT9;
 				ENABLE_BITCODE = NO;
 				FRAMEWORK_SEARCH_PATHS = (
@@ -6896,6 +6929,7 @@
 					"$(PROJECT_DIR)/dr/Classes/Other/Lib/EaseUI/EMUIKit/3rdparty/DeviceHelper/VoiceConvert/opencore-amrwb",
 					"$(PROJECT_DIR)/dr/Classes/Other/Lib/EaseUI/EMUIKit/3rdparty/DeviceHelper/VoiceConvert/opencore-amrnb",
 				);
+				MARKETING_VERSION = 1.4.2;
 				OTHER_LDFLAGS = "-ObjC";
 				OTHER_LIBTOOLFLAGS = "";
 				PRODUCT_BUNDLE_IDENTIFIER = com.lottery.dr;
@@ -7048,68 +7082,7 @@
 				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "iPhone Developer";
 				CODE_SIGN_INJECT_BASE_ENTITLEMENTS = YES;
 				CODE_SIGN_STYLE = Automatic;
-				DEVELOPMENT_TEAM = "";
-				ENABLE_BITCODE = NO;
-				FRAMEWORK_SEARCH_PATHS = (
-					"$(inherited)",
-					"$(PROJECT_DIR)",
-					"$(PROJECT_DIR)/dr/Classes/Other/Lib/RSKImageCropper",
-					"$(PROJECT_DIR)/dr/Classes/Other/SDK/AliSDK",
-					"$(PROJECT_DIR)/dr/Classes/Other/SDK/UMSocial/SocialLibraries/QQ/QQSDK",
-					"$(PROJECT_DIR)/dr/Classes/Other/SDK/UMSocial/UMSocialSDK",
-					"$(PROJECT_DIR)/dr/Classes/Other/SDK/UMSocial/UMSocialUI",
-					"$(PROJECT_DIR)/dr/Classes/Other/SDK/UMSocial/analytics",
-					"$(PROJECT_DIR)/dr/Classes/Other/SDK/HyphenateSDK",
-				);
-				GCC_PRECOMPILE_PREFIX_HEADER = YES;
-				GCC_PREFIX_HEADER = "$(SRCROOT)/dr/dr-Prefix.pch";
-				GCC_VERSION = "";
-				HEADER_SEARCH_PATHS = /Users/maowenhao/data/dr/dr/dr/dr/Classes/Other/SDK/AliSDK;
-				INFOPLIST_FILE = dr/Info.plist;
-				IPHONEOS_DEPLOYMENT_TARGET = 8.0;
-				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks";
-				LIBRARY_SEARCH_PATHS = (
-					"$(inherited)",
-					"$(PROJECT_DIR)",
-					"\"$(SRCROOT)/dr/Classes/Other/SDK/AliSDK\"",
-					"$(PROJECT_DIR)/dr/Classes/Other/SDK/AliSDK",
-					"$(PROJECT_DIR)/dr/Classes/Other/SDK/UMSocial/SocialLibraries/QQ",
-					"$(PROJECT_DIR)/dr/Classes/Other/SDK/UMSocial/SocialLibraries/UniqueId",
-					"$(PROJECT_DIR)/dr/Classes/Other/SDK/UMSocial/SocialLibraries/WeChat",
-					"$(PROJECT_DIR)/dr/Classes/Other/SDK/UMSocial/SocialLibraries/WeChat/WechatSDK",
-					"$(PROJECT_DIR)/dr/Classes/Other/SDK/UMSocial/UMSocialSDKPlugin",
-					"$(PROJECT_DIR)/dr/Classes/Other/SDK/JPUSH",
-					"$(PROJECT_DIR)/dr/Classes/Other/SDK/IM/EaseUI/EMUIKit/3rdparty/DeviceHelper/VoiceConvert/opencore-amrwb",
-					"$(PROJECT_DIR)/dr/Classes/Other/SDK/IM/EaseUI/EMUIKit/3rdparty/DeviceHelper/VoiceConvert/opencore-amrnb",
-					"$(PROJECT_DIR)/dr/Classes/Other/SDK/IM/3rdparty/UMeng",
-					"$(PROJECT_DIR)/dr/Classes/Other/SDK/mwSDK",
-					"$(PROJECT_DIR)/dr/Classes/Other/SDK/mwSDK/otherSDK/WeChatSDK",
-					"$(PROJECT_DIR)/dr/Classes/Other/SDK/New\\ Group/EaseUI/EMUIKit/3rdparty/DeviceHelper/VoiceConvert/opencore-amrwb",
-					"$(PROJECT_DIR)/dr/Classes/Other/SDK/New\\ Group/EaseUI/EMUIKit/3rdparty/DeviceHelper/VoiceConvert/opencore-amrnb",
-					"$(PROJECT_DIR)/dr/Classes/Other/Lib/EaseUI/EMUIKit/3rdparty/DeviceHelper/VoiceConvert/opencore-amrwb",
-					"$(PROJECT_DIR)/dr/Classes/Other/Lib/EaseUI/EMUIKit/3rdparty/DeviceHelper/VoiceConvert/opencore-amrnb",
-				);
-				OTHER_LDFLAGS = "-ObjC";
-				OTHER_LIBTOOLFLAGS = "";
-				PRODUCT_BUNDLE_IDENTIFIER = com.lottery.dr;
-				PRODUCT_NAME = "$(TARGET_NAME)";
-				PROVISIONING_PROFILE = "";
-				PROVISIONING_PROFILE_SPECIFIER = "";
-				VALID_ARCHS = "arm64 armv7 armv7s";
-			};
-			name = Debug;
-		};
-		CE468E441E29BD4E00768646 /* Release */ = {
-			isa = XCBuildConfiguration;
-			buildSettings = {
-				ALWAYS_SEARCH_USER_PATHS = NO;
-				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
-				ASSETCATALOG_COMPILER_LAUNCHIMAGE_NAME = LaunchImage;
-				CODE_SIGN_ENTITLEMENTS = dr/dr.entitlements;
-				CODE_SIGN_IDENTITY = "iPhone Developer";
-				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "iPhone Distribution";
-				CODE_SIGN_INJECT_BASE_ENTITLEMENTS = YES;
-				CODE_SIGN_STYLE = Manual;
+				CURRENT_PROJECT_VERSION = 1.4.2;
 				DEVELOPMENT_TEAM = BT38JUEXT9;
 				ENABLE_BITCODE = NO;
 				FRAMEWORK_SEARCH_PATHS = (
@@ -7151,6 +7124,71 @@
 					"$(PROJECT_DIR)/dr/Classes/Other/Lib/EaseUI/EMUIKit/3rdparty/DeviceHelper/VoiceConvert/opencore-amrwb",
 					"$(PROJECT_DIR)/dr/Classes/Other/Lib/EaseUI/EMUIKit/3rdparty/DeviceHelper/VoiceConvert/opencore-amrnb",
 				);
+				MARKETING_VERSION = 1.4.2;
+				OTHER_LDFLAGS = "-ObjC";
+				OTHER_LIBTOOLFLAGS = "";
+				PRODUCT_BUNDLE_IDENTIFIER = com.lottery.dr;
+				PRODUCT_NAME = "$(TARGET_NAME)";
+				PROVISIONING_PROFILE = "";
+				PROVISIONING_PROFILE_SPECIFIER = "";
+				VALID_ARCHS = "arm64 armv7 armv7s";
+			};
+			name = Debug;
+		};
+		CE468E441E29BD4E00768646 /* Release */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				ALWAYS_SEARCH_USER_PATHS = NO;
+				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
+				ASSETCATALOG_COMPILER_LAUNCHIMAGE_NAME = LaunchImage;
+				CODE_SIGN_ENTITLEMENTS = dr/dr.entitlements;
+				CODE_SIGN_IDENTITY = "iPhone Developer";
+				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "iPhone Distribution";
+				CODE_SIGN_INJECT_BASE_ENTITLEMENTS = YES;
+				CODE_SIGN_STYLE = Manual;
+				CURRENT_PROJECT_VERSION = 1.4.2;
+				DEVELOPMENT_TEAM = BT38JUEXT9;
+				ENABLE_BITCODE = NO;
+				FRAMEWORK_SEARCH_PATHS = (
+					"$(inherited)",
+					"$(PROJECT_DIR)",
+					"$(PROJECT_DIR)/dr/Classes/Other/Lib/RSKImageCropper",
+					"$(PROJECT_DIR)/dr/Classes/Other/SDK/AliSDK",
+					"$(PROJECT_DIR)/dr/Classes/Other/SDK/UMSocial/SocialLibraries/QQ/QQSDK",
+					"$(PROJECT_DIR)/dr/Classes/Other/SDK/UMSocial/UMSocialSDK",
+					"$(PROJECT_DIR)/dr/Classes/Other/SDK/UMSocial/UMSocialUI",
+					"$(PROJECT_DIR)/dr/Classes/Other/SDK/UMSocial/analytics",
+					"$(PROJECT_DIR)/dr/Classes/Other/SDK/HyphenateSDK",
+				);
+				GCC_PRECOMPILE_PREFIX_HEADER = YES;
+				GCC_PREFIX_HEADER = "$(SRCROOT)/dr/dr-Prefix.pch";
+				GCC_VERSION = "";
+				HEADER_SEARCH_PATHS = /Users/maowenhao/data/dr/dr/dr/dr/Classes/Other/SDK/AliSDK;
+				INFOPLIST_FILE = dr/Info.plist;
+				IPHONEOS_DEPLOYMENT_TARGET = 8.0;
+				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks";
+				LIBRARY_SEARCH_PATHS = (
+					"$(inherited)",
+					"$(PROJECT_DIR)",
+					"\"$(SRCROOT)/dr/Classes/Other/SDK/AliSDK\"",
+					"$(PROJECT_DIR)/dr/Classes/Other/SDK/AliSDK",
+					"$(PROJECT_DIR)/dr/Classes/Other/SDK/UMSocial/SocialLibraries/QQ",
+					"$(PROJECT_DIR)/dr/Classes/Other/SDK/UMSocial/SocialLibraries/UniqueId",
+					"$(PROJECT_DIR)/dr/Classes/Other/SDK/UMSocial/SocialLibraries/WeChat",
+					"$(PROJECT_DIR)/dr/Classes/Other/SDK/UMSocial/SocialLibraries/WeChat/WechatSDK",
+					"$(PROJECT_DIR)/dr/Classes/Other/SDK/UMSocial/UMSocialSDKPlugin",
+					"$(PROJECT_DIR)/dr/Classes/Other/SDK/JPUSH",
+					"$(PROJECT_DIR)/dr/Classes/Other/SDK/IM/EaseUI/EMUIKit/3rdparty/DeviceHelper/VoiceConvert/opencore-amrwb",
+					"$(PROJECT_DIR)/dr/Classes/Other/SDK/IM/EaseUI/EMUIKit/3rdparty/DeviceHelper/VoiceConvert/opencore-amrnb",
+					"$(PROJECT_DIR)/dr/Classes/Other/SDK/IM/3rdparty/UMeng",
+					"$(PROJECT_DIR)/dr/Classes/Other/SDK/mwSDK",
+					"$(PROJECT_DIR)/dr/Classes/Other/SDK/mwSDK/otherSDK/WeChatSDK",
+					"$(PROJECT_DIR)/dr/Classes/Other/SDK/New\\ Group/EaseUI/EMUIKit/3rdparty/DeviceHelper/VoiceConvert/opencore-amrwb",
+					"$(PROJECT_DIR)/dr/Classes/Other/SDK/New\\ Group/EaseUI/EMUIKit/3rdparty/DeviceHelper/VoiceConvert/opencore-amrnb",
+					"$(PROJECT_DIR)/dr/Classes/Other/Lib/EaseUI/EMUIKit/3rdparty/DeviceHelper/VoiceConvert/opencore-amrwb",
+					"$(PROJECT_DIR)/dr/Classes/Other/Lib/EaseUI/EMUIKit/3rdparty/DeviceHelper/VoiceConvert/opencore-amrnb",
+				);
+				MARKETING_VERSION = 1.4.2;
 				OTHER_LDFLAGS = "-ObjC";
 				OTHER_LIBTOOLFLAGS = "";
 				PRODUCT_BUNDLE_IDENTIFIER = com.lottery.dr;

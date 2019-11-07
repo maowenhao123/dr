@@ -26,7 +26,7 @@
 @property (nonatomic, copy) NSURL *videoURL;
 
 @property (nonatomic, assign) int maxImageCount;
-
+@property (assign, nonatomic) NSTimeInterval videoMaximumDuration;
 @property (nonatomic, assign) BOOL supportVideo;
 
 - (void)setImagesWithImageUrlStrs:(NSArray *)imageUrlStrs;

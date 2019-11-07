@@ -19,7 +19,6 @@
 
 @interface DRAddMultipleImageView ()<TZImagePickerControllerDelegate,UICollectionViewDataSource,UICollectionViewDelegate,UIActionSheetDelegate,UIImagePickerControllerDelegate,UINavigationControllerDelegate> {
     CGFloat _itemWH;
-    CGFloat _margin;
 }
 @property (nonatomic, strong) UIImagePickerController *imagePickerVc;
 
@@ -47,9 +46,9 @@
 {
     self.backgroundColor = [UIColor whiteColor];
     self.maxImageCount = 6;
-    
+    self.videoMaximumDuration = 10;
     //标题
-    UILabel * titleLabel = [[UILabel alloc] initWithFrame:CGRectMake(_margin, 0, self.width -  2 * DRMargin, 35)];
+    UILabel * titleLabel = [[UILabel alloc] initWithFrame:CGRectMake(DRMargin, 0, self.width, 35)];
     self.titleLabel = titleLabel;
     titleLabel.textColor = DRBlackTextColor;
     titleLabel.font = [UIFont systemFontOfSize:DRGetFontSize(28)];
@@ -57,17 +56,16 @@
     
     // 如不需要长按排序效果，将LxGridViewFlowLayout类改成UICollectionViewFlowLayout即可
     UICollectionViewFlowLayout *layout = [[UICollectionViewFlowLayout alloc] init];
-    _margin = 4;
-    _itemWH = (self.tz_width - 2 * _margin - 5) / 4 - _margin;
+    _itemWH = (self.width - 5 * DRMargin) / 4;
     layout.itemSize = CGSizeMake(_itemWH, _itemWH);
-    layout.minimumInteritemSpacing = _margin;
-    layout.minimumLineSpacing = _margin;
-    UICollectionView * collectionView = [[UICollectionView alloc] initWithFrame:CGRectMake(0, CGRectGetMaxY(titleLabel.frame), self.tz_width, _margin * 2 + _itemWH) collectionViewLayout:layout];
+    layout.minimumInteritemSpacing = DRMargin;
+    layout.minimumLineSpacing = DRMargin;
+    layout.sectionInset = UIEdgeInsetsMake(0, DRMargin, 0, DRMargin);
+    UICollectionView * collectionView = [[UICollectionView alloc] initWithFrame:CGRectMake(0, CGRectGetMaxY(titleLabel.frame), self.width, DRMargin + _itemWH) collectionViewLayout:layout];
     self.collectionView = collectionView;
     collectionView.alwaysBounceVertical = NO;
     collectionView.scrollEnabled = NO;
     collectionView.backgroundColor = [UIColor whiteColor];
-    collectionView.contentInset = UIEdgeInsetsMake(4, 4, 4, 4);
     collectionView.dataSource = self;
     collectionView.delegate = self;
     collectionView.keyboardDismissMode = UIScrollViewKeyboardDismissModeOnDrag;
@@ -83,7 +81,8 @@
     return self.images.count + 1;
 }
 
-- (UICollectionViewCell *)collectionView:(UICollectionView *)collectionView cellForItemAtIndexPath:(NSIndexPath *)indexPath {
+- (UICollectionViewCell *)collectionView:(UICollectionView *)collectionView cellForItemAtIndexPath:(NSIndexPath *)indexPath
+{
     DRAddImageCollectionViewCell *cell = [collectionView dequeueReusableCellWithReuseIdentifier:@"AddImageCollectionViewCellID" forIndexPath:indexPath];
     cell.deleteBtn.hidden = NO;
     if (self.supportVideo && indexPath.row == 0) {
@@ -193,7 +192,7 @@
         {
             self.imagePickerVc.mediaTypes = @[(NSString*)kUTTypeImage];
         }
-        self.imagePickerVc.modalPresentationStyle = UIModalPresentationOverCurrentContext;
+        self.imagePickerVc.modalPresentationStyle = UIModalPresentationFullScreen;
         [self.viewController presentViewController:self.imagePickerVc animated:YES completion:nil];
     }
 }
@@ -246,7 +245,8 @@
     imagePickerVc.allowPickingOriginalPhoto = NO;
     imagePickerVc.allowPickingVideo = isVideo;
     imagePickerVc.allowPickingImage = !isVideo;
-    imagePickerVc.videoMaximumDuration = 10;
+    imagePickerVc.videoMaximumDuration = self.videoMaximumDuration;
+    imagePickerVc.modalPresentationStyle = UIModalPresentationFullScreen;
     [self.viewController presentViewController:imagePickerVc animated:YES completion:nil];
 }
 
@@ -312,10 +312,10 @@
 {
     [self.collectionView reloadData];
     if (self.supportVideo) {
-        self.collectionView.height = ((1 + self.images.count + 4) / 4 ) * (_margin + _itemWH) + _margin;
+        self.collectionView.height = ((1 + self.images.count + 4) / 4 ) * (DRMargin + _itemWH);
     }else
     {
-        self.collectionView.height = ((self.images.count + 4) / 4 ) * (_margin + _itemWH) + _margin;
+        self.collectionView.height = ((self.images.count + 4) / 4 ) * (DRMargin + _itemWH);
     }
     self.height = CGRectGetMaxY(self.collectionView.frame);
     if (_delegate && [_delegate respondsToSelector:@selector(viewHeightchange)]) {
@@ -358,7 +358,7 @@
     if (_imagePickerVc == nil) {
         _imagePickerVc = [[UIImagePickerController alloc] init];
         _imagePickerVc.delegate = self;
-        _imagePickerVc.videoMaximumDuration = 10;
+        _imagePickerVc.videoMaximumDuration = self.videoMaximumDuration;
     }
     return _imagePickerVc;
 }

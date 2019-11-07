@@ -198,7 +198,8 @@
     baseLine.backgroundColor = DRWhiteLineColor;
     [baseView addSubview:baseLine];
     
-    DRAddMultipleImageView * addImageView = [[DRAddMultipleImageView alloc] initWithFrame:CGRectMake(10, 1, screenWidth - 20, 0)];
+    //图片
+    DRAddMultipleImageView * addImageView = [[DRAddMultipleImageView alloc] initWithFrame:CGRectMake(0, 1, screenWidth, 0)];
     self.addImageView = addImageView;
     addImageView.titleLabel.text = @"请提供至少三张基地大棚实拍图";
     addImageView.maxImageCount = 3;
@@ -206,28 +207,38 @@
     addImageView.delegate = self;
     [baseView addSubview:addImageView];
     
+    //视频
+    UILabel * videoTitleLabel = [[UILabel alloc] initWithFrame:CGRectMake(DRMargin, CGRectGetMaxY(addImageView.frame), screenWidth - 2 * DRMargin, 35)];
+    videoTitleLabel.textColor = DRBlackTextColor;
+    videoTitleLabel.font = [UIFont systemFontOfSize:DRGetFontSize(28)];
+    videoTitleLabel.text = @"请提供至少1个长于15s的基地大棚实拍视频";
+    [baseView addSubview:videoTitleLabel];
+    
     //基地大棚地址
+    UIView * addressView = [[UIView alloc] initWithFrame:CGRectMake(0, CGRectGetMaxY(videoTitleLabel.frame), screenWidth, DRCellH)];
+    [baseView addSubview:addressView];
+    
     UILabel * addressLabel = [[UILabel alloc] init];
     addressLabel.text = @"基地大棚地址";
     addressLabel.textColor = DRBlackTextColor;
     addressLabel.font = [UIFont systemFontOfSize:DRGetFontSize(28)];
-    [baseView addSubview:addressLabel];
     CGSize addressLabelSize = [addressLabel.text sizeWithLabelFont:addressLabel.font];
-    addressLabel.frame = CGRectMake(DRMargin, CGRectGetMaxY(addImageView.frame), addressLabelSize.width, DRCellH);
+    addressLabel.frame = CGRectMake(DRMargin, 0, addressLabelSize.width, DRCellH);
+    [addressView addSubview:addressLabel];
     
     UITextField * addressTF = [[UITextField alloc] init];
     self.addressTF = addressTF;
     CGFloat addressTFX = CGRectGetMaxX(addressLabel.frame) + DRMargin;
-    addressTF.frame = CGRectMake(addressTFX, CGRectGetMaxY(addImageView.frame), screenWidth - addressTFX - DRMargin, DRCellH);
+    addressTF.frame = CGRectMake(addressTFX, 0, screenWidth - addressTFX - DRMargin, DRCellH);
     addressTF.textColor = DRBlackTextColor;
     addressTF.textAlignment = NSTextAlignmentRight;
     addressTF.font = [UIFont systemFontOfSize:DRGetFontSize(28)];
     addressTF.tintColor = DRDefaultColor;
     addressTF.keyboardType = UIKeyboardTypeNumberPad;
     addressTF.placeholder = @"请具体到街道及门牌号等";
-    [baseView addSubview:addressTF];
+    [addressView addSubview:addressTF];
    
-    baseView.height = CGRectGetMaxY(addressLabel.frame);
+    baseView.height = CGRectGetMaxY(addressView.frame);
     //协议
     UIView *agreementView = [[UIView alloc] initWithFrame:CGRectMake(0, CGRectGetMaxY(baseView.frame), screenWidth, 60)];
     self.agreementView = agreementView;

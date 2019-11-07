@@ -11,7 +11,7 @@
 #import "DRChooseGoodTableViewCell.h"
 #import "UITableView+DRNoData.h"
 
-@interface DRChooseGoodViewController ()<UITableViewDataSource, UITableViewDelegate, ChooseGoodViewControllerDelegate>
+@interface DRChooseGoodViewController ()<UITableViewDataSource, UITableViewDelegate>
 
 @property (nonatomic, weak) UITableView *tableView;
 @property (nonatomic, strong) NSMutableArray * dataArray;
@@ -170,6 +170,5 @@
     }
     return _dataArray;
 }
-
 
 @end

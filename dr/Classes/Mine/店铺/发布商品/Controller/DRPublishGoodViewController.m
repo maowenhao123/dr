@@ -347,8 +347,16 @@
                 [MBProgressHUD showError:@"未输入商品价格"];
                 return;
             }
+            if ([self.singleView.priceTF.text intValue] == 0) {
+                [MBProgressHUD showError:@"价格不可为0"];
+                return;
+            }
             if (DRStringIsEmpty(self.singleView.countTF.text)) {
                 [MBProgressHUD showError:@"未输入商品库存"];
+                return;
+            }
+            if ([self.singleView.countTF.text intValue] == 0) {
+                [MBProgressHUD showError:@"库存数不可为0"];
                 return;
             }
         }

@@ -80,9 +80,9 @@
 
 - (void)setupActivityViewWithActivityList:(NSArray *)activityList
 {
-    CGFloat activityViewPadding = 20;
+    CGFloat activityViewPadding = 15;
     CGFloat activityViewW = (screenWidth - activityViewPadding * 3) / 2;
-    CGFloat activityViewH = 100;
+    CGFloat activityViewH = activityViewW / 2;
     for (int i = 0; i < activityList.count; i++) {
         DRActivityView * activityView = [[DRActivityView alloc] initWithFrame: CGRectMake(activityViewPadding + (activityViewPadding + activityViewW) * (i % 2), CGRectGetMaxY(self.lastView.frame) + 30 + (activityViewPadding + activityViewH) * (i / 2), activityViewW, activityViewH)];
         activityView.activityModel = activityList[i];
