@@ -17,10 +17,6 @@
 + (BOOL) validateMobile:(NSString *)mobile;
 
 
-//用户名
-+ (BOOL) validateUserName:(NSString *)name;
-
-
 //密码
 + (BOOL) validatePassword:(NSString *)passWord;
 

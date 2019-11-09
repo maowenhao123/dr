@@ -22,32 +22,9 @@
 + (BOOL) validateMobile:(NSString *)mobile
 {
     //手机号以13， 15，18开头，八个 \d 数字字符
-    NSString *phoneRegex = @"^1[0123356789]\\d{10}$";
+    NSString *phoneRegex = @"^1[0123356789]\\d{9}$";
     NSPredicate *phoneTest = [NSPredicate predicateWithFormat:@"SELF MATCHES %@",phoneRegex];
     return [phoneTest evaluateWithObject:mobile];
-}
-
-//用户名
-+ (BOOL) validateUserName:(NSString *)name
-{
-    NSString *userNameRegex = @"^[A-Za-z0-9\u4e00-\u9fa5]{2,16}+$";
-    NSPredicate *userNamePredicate = [NSPredicate predicateWithFormat:@"SELF MATCHES %@",userNameRegex];
-    BOOL B = [userNamePredicate evaluateWithObject:name];
-    if(B)
-    {
-        int chinaCount = (int)([name lengthOfBytesUsingEncoding:NSUTF8StringEncoding]-name.length)/2;
-        int engCount = (int)name.length-chinaCount;
-        if((chinaCount*2+engCount)>16){
-            return false;
-        }
-        if((chinaCount*2+engCount)<4){
-            return false;
-        }
-        return true;
-    }else
-    {
-        return NO;
-    }
 }
 
 

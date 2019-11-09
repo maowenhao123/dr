@@ -15,6 +15,8 @@
 		1D0DB5BE22E845FB008E7B97 /* DRSpecificationTableViewCell.m in Sources */ = {isa = PBXBuildFile; fileRef = 1D0DB5BD22E845FB008E7B97 /* DRSpecificationTableViewCell.m */; };
 		1D0DB5C122E84FF5008E7B97 /* DRGoodSpecificationModel.m in Sources */ = {isa = PBXBuildFile; fileRef = 1D0DB5BF22E84FF5008E7B97 /* DRGoodSpecificationModel.m */; };
 		1D0F3D8E23695A5000EDA647 /* DRShoppingCarCache.m in Sources */ = {isa = PBXBuildFile; fileRef = 1D0F3D8D23695A5000EDA647 /* DRShoppingCarCache.m */; };
+		1D12B36B2376578900490252 /* HyphenateLite.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 1D12B36A2376578900490252 /* HyphenateLite.framework */; };
+		1D12B36C2376579000490252 /* HyphenateLite.framework in Embed Frameworks */ = {isa = PBXBuildFile; fileRef = 1D12B36A2376578900490252 /* HyphenateLite.framework */; settings = {ATTRIBUTES = (CodeSignOnCopy, RemoveHeadersOnCopy, ); }; };
 		1D7BDF8423700AA60015CD8E /* DRSeckillGoodModel.m in Sources */ = {isa = PBXBuildFile; fileRef = 1D7BDF8323700AA60015CD8E /* DRSeckillGoodModel.m */; };
 		1D7BDF8723700B650015CD8E /* DRChooseGoodViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 1D7BDF8623700B650015CD8E /* DRChooseGoodViewController.m */; };
 		1D7BDF8A23700B980015CD8E /* DRChooseGoodTableViewCell.m in Sources */ = {isa = PBXBuildFile; fileRef = 1D7BDF8923700B980015CD8E /* DRChooseGoodTableViewCell.m */; };
@@ -25,9 +27,6 @@
 		1DABCE5822FAAEBC009C5D33 /* DRShoppingCarNoDataTableViewCell.m in Sources */ = {isa = PBXBuildFile; fileRef = 1DABCE5722FAAEBC009C5D33 /* DRShoppingCarNoDataTableViewCell.m */; };
 		1DCA15EA2320E04E00F2061B /* DRRewardView.m in Sources */ = {isa = PBXBuildFile; fileRef = 1DCA15E92320E04D00F2061B /* DRRewardView.m */; };
 		1DDDEB4722D57BD3003A9C07 /* DRVoucherModel.m in Sources */ = {isa = PBXBuildFile; fileRef = 1DDDEB4622D57BD3003A9C07 /* DRVoucherModel.m */; };
-		1DDEE46C22F91215003EACE6 /* HyphenateLite.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 1DDEE46B22F91215003EACE6 /* HyphenateLite.framework */; };
-		1DDEE46D22F9121D003EACE6 /* HyphenateLite.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 1DDEE46B22F91215003EACE6 /* HyphenateLite.framework */; };
-		1DDEE46E22F9121D003EACE6 /* HyphenateLite.framework in Embed Frameworks */ = {isa = PBXBuildFile; fileRef = 1DDEE46B22F91215003EACE6 /* HyphenateLite.framework */; settings = {ATTRIBUTES = (CodeSignOnCopy, RemoveHeadersOnCopy, ); }; };
 		1DDEE47122F9257F003EACE6 /* DRSingleSpecificationView.m in Sources */ = {isa = PBXBuildFile; fileRef = 1DDEE47022F9257F003EACE6 /* DRSingleSpecificationView.m */; };
 		A94696661E8A5BB000B4711F /* ULBCollectionViewFlowLayout.m in Sources */ = {isa = PBXBuildFile; fileRef = A94696651E8A5BB000B4711F /* ULBCollectionViewFlowLayout.m */; };
 		A98270CD206A3B100032A672 /* DRSubmitOrderViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = A98270CC206A3B100032A672 /* DRSubmitOrderViewController.m */; };
@@ -690,7 +689,7 @@
 			dstPath = "";
 			dstSubfolderSpec = 10;
 			files = (
-				1DDEE46E22F9121D003EACE6 /* HyphenateLite.framework in Embed Frameworks */,
+				1D12B36C2376579000490252 /* HyphenateLite.framework in Embed Frameworks */,
 			);
 			name = "Embed Frameworks";
 			runOnlyForDeploymentPostprocessing = 0;
@@ -714,6 +713,7 @@
 		1D0DB5C022E84FF5008E7B97 /* DRGoodSpecificationModel.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = DRGoodSpecificationModel.h; sourceTree = "<group>"; };
 		1D0F3D8C23695A5000EDA647 /* DRShoppingCarCache.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = DRShoppingCarCache.h; sourceTree = "<group>"; };
 		1D0F3D8D23695A5000EDA647 /* DRShoppingCarCache.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = DRShoppingCarCache.m; sourceTree = "<group>"; };
+		1D12B36A2376578900490252 /* HyphenateLite.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; path = HyphenateLite.framework; sourceTree = "<group>"; };
 		1D76804722DC0A72007C1154 /* HealthKit.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = HealthKit.framework; path = System/Library/Frameworks/HealthKit.framework; sourceTree = SDKROOT; };
 		1D7BDF8223700AA60015CD8E /* DRSeckillGoodModel.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = DRSeckillGoodModel.h; sourceTree = "<group>"; };
 		1D7BDF8323700AA60015CD8E /* DRSeckillGoodModel.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = DRSeckillGoodModel.m; sourceTree = "<group>"; };
@@ -735,7 +735,6 @@
 		1DCA15E92320E04D00F2061B /* DRRewardView.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = DRRewardView.m; sourceTree = "<group>"; };
 		1DDDEB4522D57BD3003A9C07 /* DRVoucherModel.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = DRVoucherModel.h; sourceTree = "<group>"; };
 		1DDDEB4622D57BD3003A9C07 /* DRVoucherModel.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = DRVoucherModel.m; sourceTree = "<group>"; };
-		1DDEE46B22F91215003EACE6 /* HyphenateLite.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; path = HyphenateLite.framework; sourceTree = "<group>"; };
 		1DDEE46F22F9257F003EACE6 /* DRSingleSpecificationView.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = DRSingleSpecificationView.h; sourceTree = "<group>"; };
 		1DDEE47022F9257F003EACE6 /* DRSingleSpecificationView.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = DRSingleSpecificationView.m; sourceTree = "<group>"; };
 		A94696641E8A5BB000B4711F /* ULBCollectionViewFlowLayout.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ULBCollectionViewFlowLayout.h; sourceTree = "<group>"; };
@@ -2036,7 +2035,7 @@
 				AAA9284F1F91A5E400C52510 /* CoreFoundation.framework in Frameworks */,
 				AAA2C82F1F17D20D0046A335 /* libSocialQQ.a in Frameworks */,
 				AAADEAAC1FD77C9F007BD4AD /* libMagicWindowSDK.a in Frameworks */,
-				1DDEE46C22F91215003EACE6 /* HyphenateLite.framework in Frameworks */,
+				1D12B36B2376578900490252 /* HyphenateLite.framework in Frameworks */,
 				AA89127B1EFA6B3F0038EB2F /* CoreMotion.framework in Frameworks */,
 				AA2643581FC566BF000474F7 /* UMMobClick.framework in Frameworks */,
 				AA8912781EFA6A870038EB2F /* libcrypto.a in Frameworks */,
@@ -2050,7 +2049,6 @@
 				AA8911A71EFA618D0038EB2F /* QuartzCore.framework in Frameworks */,
 				AA27E81421B7AAA60067F72B /* libopencore-amrwb.a in Frameworks */,
 				AAA2C8371F17D20E0046A335 /* UMSocialNetwork.framework in Frameworks */,
-				1DDEE46D22F9121D003EACE6 /* HyphenateLite.framework in Frameworks */,
 				AA27E81521B7AAA60067F72B /* libopencore-amrnb.a in Frameworks */,
 				AAA2C83B1F17D20E0046A335 /* UShareUI.framework in Frameworks */,
 				AAADEAB51FD78278007BD4AD /* libsqlite3.0.tbd in Frameworks */,
@@ -2875,7 +2873,7 @@
 		AA27E43921B7A4FA0067F72B /* HyphenateSDK */ = {
 			isa = PBXGroup;
 			children = (
-				1DDEE46B22F91215003EACE6 /* HyphenateLite.framework */,
+				1D12B36A2376578900490252 /* HyphenateLite.framework */,
 			);
 			path = HyphenateSDK;
 			sourceTree = "<group>";
@@ -6888,6 +6886,7 @@
 				CODE_SIGN_INJECT_BASE_ENTITLEMENTS = YES;
 				CODE_SIGN_STYLE = Manual;
 				CURRENT_PROJECT_VERSION = 1.4.2;
+				DEVELOPMENT_ASSET_PATHS = "";
 				DEVELOPMENT_TEAM = BT38JUEXT9;
 				ENABLE_BITCODE = NO;
 				FRAMEWORK_SEARCH_PATHS = (
@@ -6900,6 +6899,7 @@
 					"$(PROJECT_DIR)/dr/Classes/Other/SDK/UMSocial/UMSocialUI",
 					"$(PROJECT_DIR)/dr/Classes/Other/SDK/UMSocial/analytics",
 					"$(PROJECT_DIR)/dr/Classes/Other/SDK/HyphenateSDK",
+					"$(PROJECT_DIR)/dr/Classes/Other/SDK",
 				);
 				GCC_PRECOMPILE_PREFIX_HEADER = YES;
 				GCC_PREFIX_HEADER = "$(SRCROOT)/dr/dr-Prefix.pch";
@@ -7083,6 +7083,7 @@
 				CODE_SIGN_INJECT_BASE_ENTITLEMENTS = YES;
 				CODE_SIGN_STYLE = Automatic;
 				CURRENT_PROJECT_VERSION = 1.4.2;
+				DEVELOPMENT_ASSET_PATHS = "";
 				DEVELOPMENT_TEAM = BT38JUEXT9;
 				ENABLE_BITCODE = NO;
 				FRAMEWORK_SEARCH_PATHS = (
@@ -7095,6 +7096,7 @@
 					"$(PROJECT_DIR)/dr/Classes/Other/SDK/UMSocial/UMSocialUI",
 					"$(PROJECT_DIR)/dr/Classes/Other/SDK/UMSocial/analytics",
 					"$(PROJECT_DIR)/dr/Classes/Other/SDK/HyphenateSDK",
+					"$(PROJECT_DIR)/dr/Classes/Other/SDK",
 				);
 				GCC_PRECOMPILE_PREFIX_HEADER = YES;
 				GCC_PREFIX_HEADER = "$(SRCROOT)/dr/dr-Prefix.pch";
@@ -7147,6 +7149,7 @@
 				CODE_SIGN_INJECT_BASE_ENTITLEMENTS = YES;
 				CODE_SIGN_STYLE = Manual;
 				CURRENT_PROJECT_VERSION = 1.4.2;
+				DEVELOPMENT_ASSET_PATHS = "";
 				DEVELOPMENT_TEAM = BT38JUEXT9;
 				ENABLE_BITCODE = NO;
 				FRAMEWORK_SEARCH_PATHS = (
@@ -7159,6 +7162,7 @@
 					"$(PROJECT_DIR)/dr/Classes/Other/SDK/UMSocial/UMSocialUI",
 					"$(PROJECT_DIR)/dr/Classes/Other/SDK/UMSocial/analytics",
 					"$(PROJECT_DIR)/dr/Classes/Other/SDK/HyphenateSDK",
+					"$(PROJECT_DIR)/dr/Classes/Other/SDK",
 				);
 				GCC_PRECOMPILE_PREFIX_HEADER = YES;
 				GCC_PREFIX_HEADER = "$(SRCROOT)/dr/dr-Prefix.pch";

@@ -110,9 +110,9 @@
         searchTextField.font = [UIFont systemFontOfSize:DRGetFontSize(26)];
     }else
     {
-        searchBar.searchTextField.backgroundColor = DRColor(242, 242, 242, 1);
-        searchBar.searchTextField.textColor = DRBlackTextColor;
-        searchBar.searchTextField.font = [UIFont systemFontOfSize:DRGetFontSize(26)];
+//        searchBar.searchTextField.backgroundColor = DRColor(242, 242, 242, 1);
+//        searchBar.searchTextField.textColor = DRBlackTextColor;
+//        searchBar.searchTextField.font = [UIFont systemFontOfSize:DRGetFontSize(26)];
     }
     
     //分类按钮

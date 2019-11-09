@@ -23,6 +23,7 @@
     self.view.backgroundColor = DRBackgroundColor;
     self.modalPresentationStyle = UIModalPresentationFullScreen;
 }
+
 - (void)viewWillAppear:(BOOL)animated
 {
     [super viewWillAppear:animated];

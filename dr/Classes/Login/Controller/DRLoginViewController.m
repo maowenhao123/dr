@@ -277,6 +277,9 @@
         if (SUCCESS) {
             DRMyShopModel *shopModel = [DRMyShopModel mj_objectWithKeyValues:json];
             [DRUserDefaultTool saveMyShopModel:shopModel];
+        }else
+        {
+            [DRUserDefaultTool removeShop];
         }
     } failure:^(NSError *error) {
         DRLog(@"error:%@",error);

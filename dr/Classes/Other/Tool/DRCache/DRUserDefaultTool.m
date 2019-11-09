@@ -82,8 +82,8 @@
 + (void)removeShop
 {
     NSFileManager *defaultManager = [NSFileManager defaultManager];
-    if ([defaultManager isDeletableFileAtPath:DRUserFile]) {
-        [defaultManager removeItemAtPath:DRUserFile error:nil];
+    if ([defaultManager isDeletableFileAtPath:DRMyShopModelFile]) {
+        [defaultManager removeItemAtPath:DRMyShopModelFile error:nil];
     }
 }
 
