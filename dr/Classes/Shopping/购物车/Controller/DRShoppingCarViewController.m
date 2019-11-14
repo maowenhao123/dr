@@ -22,9 +22,12 @@
 @interface DRShoppingCarViewController ()<UITableViewDelegate, UITableViewDataSource, ShoppingCarShopTableViewCellDelegate, ShoppingCarTableViewCellDelegate, ShoppingCarBottomViewDelegate>
 
 @property (nonatomic, weak) UITableView *tableView;
+@property (nonatomic, weak) MJRefreshGifHeader *headerView;
+@property (nonatomic, weak) MJRefreshBackGifFooter *footerView;
 @property (nonatomic, weak) DRShoppingCarBottomView * shoppingBottomView;
+@property (nonatomic, assign) int pageIndex;//页数
 @property (nonatomic, strong) NSMutableArray *dataArray;
-@property (nonatomic, strong) NSArray *goodArray;
+@property (nonatomic, strong) NSMutableArray *goodArray;
 @property (nonatomic, assign) BOOL isEdit;//是否是编辑状态
 
 @end
@@ -36,21 +39,24 @@
     [super viewDidAppear:animated];
     [UIApplication sharedApplication].statusBarStyle = UIStatusBarStyleDefault;
 }
+
 - (void)viewDidLoad
 {
     [super viewDidLoad];
     self.view.backgroundColor = [UIColor whiteColor];
     self.navigationItem.title = @"购物车";
+    self.pageIndex = 1;
     [self setupChilds];
     [self getGoodData];
     
     //接收去购物车的通知
     [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(upData) name:@"upSataShoppingCar" object:nil];
 }
+
 - (void)getGoodData
 {
     NSDictionary *bodyDic = @{
-                               @"pageIndex": @(1),
+                               @"pageIndex": @(self.pageIndex),
                                @"pageSize": DRPageSize,
                                };
     NSDictionary *headDic = @{
@@ -58,24 +64,33 @@
                               };
     [[DRHttpTool shareInstance] postWithTarget:self headDic:headDic bodyDic:bodyDic success:^(id json) {
         DRLog(@"%@",json);
-        [MBProgressHUD hideHUDForView:self.view];
         if (SUCCESS) {
             NSArray * dataArray = [DRGoodModel mj_objectArrayWithKeyValuesArray:json[@"list"]];
             for (DRGoodModel * goodModel in dataArray) {
                 NSInteger index = [dataArray indexOfObject:goodModel];
                 goodModel.specifications = [DRGoodSpecificationModel mj_objectArrayWithKeyValuesArray:json[@"list"][index][@"specifications"]];
             }
-            self.goodArray = [NSArray arrayWithArray:dataArray];
+            if (dataArray.count == 0) {
+                [self.footerView endRefreshingWithNoMoreData];
+            }else
+            {
+                [self.footerView endRefreshing];
+            }
+            [self.goodArray addObjectsFromArray:dataArray];
             [self.tableView reloadData];
         }else
         {
             ShowErrorView
+            [self.footerView endRefreshing];
         }
+        [self.headerView endRefreshing];
     } failure:^(NSError *error) {
         DRLog(@"error:%@",error);
-        [MBProgressHUD hideHUDForView:self.view];
+        [self.headerView endRefreshing];
+        [self.footerView endRefreshing];
     }];
 }
+
 - (void)upData
 {
     self.dataArray = [NSMutableArray arrayWithArray:[DRShoppingCarCache getShoppingCarGoods]];
@@ -85,6 +100,7 @@
     [self.tableView reloadData];
     [self upDataAllSelectedButtonStatus];
 }
+
 - (void)setupChilds
 {
     self.dataArray = [NSMutableArray arrayWithArray:[DRShoppingCarCache getShoppingCarGoods]];
@@ -110,6 +126,18 @@
     [tableView setEstimatedSectionHeaderHeightAndFooterHeight];
     [self.view addSubview:tableView];
     
+    //初始化头部刷新控件
+    MJRefreshGifHeader *headerView = [MJRefreshGifHeader headerWithRefreshingTarget:self refreshingAction:@selector(headerRefreshViewBeginRefreshing)];
+    self.headerView = headerView;
+    [DRTool setRefreshHeaderData:headerView];
+    tableView.mj_header = headerView;
+    
+    //初始化底部刷新控件
+    MJRefreshBackGifFooter *footerView = [MJRefreshBackGifFooter footerWithRefreshingTarget:self refreshingAction:@selector(footerRefreshViewBeginRefreshing)];
+    self.footerView = footerView;
+    [DRTool setRefreshFooterData:footerView];
+    tableView.mj_footer = footerView;
+    
     //ShoppingBottomView
     DRShoppingCarBottomView * shoppingCarBottomView = [[DRShoppingCarBottomView alloc]initWithFrame:CGRectMake(0, CGRectGetMaxY(tableView.frame), screenWidth, bottomViewH)];
     self.shoppingBottomView = shoppingCarBottomView;
@@ -132,6 +160,19 @@
     }
     [self.shoppingBottomView updataWithData:self.dataArray isEdit:self.isEdit];
     [self.tableView reloadData];
+}
+
+#pragma mark - 刷新
+- (void)headerRefreshViewBeginRefreshing
+{
+    self.pageIndex = 1;
+    [self.goodArray removeAllObjects];
+    [self getGoodData];
+}
+- (void)footerRefreshViewBeginRefreshing
+{
+    self.pageIndex++;
+    [self getGoodData];
 }
 
 #pragma mark - UITableViewDelegate
@@ -429,10 +470,10 @@
     return _dataArray;
 }
 
-- (NSArray *)goodArray
+- (NSMutableArray *)goodArray
 {
     if (!_goodArray) {
-        _goodArray = [NSArray array];
+        _goodArray = [NSMutableArray array];
     }
     return _goodArray;
 }

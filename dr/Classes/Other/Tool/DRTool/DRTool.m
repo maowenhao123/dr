@@ -282,4 +282,24 @@
     return returnValue;
 }
 
+#pragma mark - 通过类名找view的subview
++ (UIView *)findViewWithClassName:(NSString *)className inView:(UIView *)view
+{
+    Class specificView = NSClassFromString(className);
+    if ([view isKindOfClass:specificView]) {
+        return view;
+    }
+    
+    if (view.subviews.count > 0) {
+        for (UIView *subView in view.subviews) {
+            UIView *targetView = [self findViewWithClassName:className inView:subView];
+            if (targetView != nil) {
+                return targetView;
+            }
+        }
+    }
+    return nil;
+}
+
+
 @end

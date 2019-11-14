@@ -11,7 +11,7 @@
 #import "DRChooseGoodTableViewCell.h"
 #import "UITableView+DRNoData.h"
 
-@interface DRChooseGoodViewController ()<UITableViewDataSource, UITableViewDelegate>
+@interface DRChooseGoodViewController ()<UITableViewDataSource, UITableViewDelegate, ChooseSeckillGoodTableViewCellDelegate>
 
 @property (nonatomic, weak) UITableView *tableView;
 @property (nonatomic, strong) NSMutableArray * dataArray;
@@ -115,6 +115,7 @@
     [self.dataArray removeAllObjects];
     [self getGoodData];
 }
+
 - (void)footerRefreshViewBeginRefreshing
 {
     self.pageIndex++;
@@ -150,7 +151,7 @@
 }
 
 #pragma mark - 协议
-- (void)ChooseGoodTableViewCell:(DRChooseGoodTableViewCell *)cell buttonDidClick:(UIButton *)button
+- (void)chooseSeckillGoodTableViewCell:(DRChooseGoodTableViewCell *)cell buttonDidClick:(UIButton *)button
 {
     NSIndexPath * indexPath = [self.tableView indexPathForCell:cell];
     DRGoodModel * goodModel = self.dataArray[indexPath.row];

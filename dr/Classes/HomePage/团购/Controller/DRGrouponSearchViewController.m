@@ -63,9 +63,9 @@
     //search
     DRTitleView *titleView = [[DRTitleView alloc] init];
     titleView.x = 40;
-    titleView.y = 4;
     titleView.width = screenWidth - 60;
-    titleView.height = 36;
+    titleView.height = 33;
+    titleView.y = (navBarH - titleView.height) / 2;
     
     UISearchBar * searchBar = [[UISearchBar alloc] initWithFrame:titleView.bounds];
     self.searchBar = searchBar;
@@ -74,16 +74,17 @@
     searchBar.placeholder = @"商品名称";
     searchBar.tintColor = DRDefaultColor;
     searchBar.backgroundImage = [UIImage new];
-    if (!iOS13) {
-        UITextField * searchTextField = [searchBar valueForKey:@"_searchField"];
+    UITextField * searchTextField = nil;
+    if (iOS13) {
+        searchTextField = (UITextField *)[DRTool findViewWithClassName:@"UITextField" inView:_searchBar];
+    }else
+    {
+        searchTextField = [_searchBar valueForKey:@"_searchField"];
+    }
+    if (!DRObjectIsEmpty(searchTextField)) {
         searchTextField.backgroundColor = DRColor(242, 242, 242, 1);
         searchTextField.textColor = DRBlackTextColor;
         searchTextField.font = [UIFont systemFontOfSize:DRGetFontSize(26)];
-    }else
-    {
-//        searchBar.searchTextField.backgroundColor = DRColor(242, 242, 242, 1);
-//        searchBar.searchTextField.textColor = DRBlackTextColor;
-//        searchBar.searchTextField.font = [UIFont systemFontOfSize:DRGetFontSize(26)];
     }
     [titleView addSubview:searchBar];
     self.navigationItem.titleView = titleView;

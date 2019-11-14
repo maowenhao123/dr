@@ -74,7 +74,8 @@
             {
                 goodPriceStr = [NSString stringWithFormat:@"¥%@", [DRTool formatFloat:[_goodModel.price doubleValue] / 100]];
             }
-        } else {//批发
+        }else//批发
+        {
             double minPrice = 0;
             double maxPrice = 0;
             for (NSDictionary * wholesaleRuleDic in _goodModel.wholesaleRule) {

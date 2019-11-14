@@ -93,7 +93,13 @@
     //frame
     self.nickNameLabel.frame = _model.nickNameLabelF;
     self.timeLabel.frame = _model.timeLabelF;
-    self.levelLabel.frame = _model.levelLabelF;
+    if (DRStringIsEmpty(_model.levelDesc)) {
+        self.levelLabel.hidden = YES;
+    }else
+    {
+        self.levelLabel.hidden = NO;
+        self.levelLabel.frame = _model.levelLabelF;
+    }
     self.commentLabel.frame = _model.commentLabelF;
 }
 

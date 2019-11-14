@@ -92,9 +92,9 @@
     //search
     DRTitleView *titleView = [[DRTitleView alloc] init];
     titleView.x = 40;
-    titleView.y = 4;
     titleView.width = screenWidth - 60;
-    titleView.height = 36;
+    titleView.height = 33;
+    titleView.y = (navBarH - titleView.height) / 2;
     
     UISearchBar * searchBar = [[UISearchBar alloc] initWithFrame:titleView.bounds];
     self.searchBar = searchBar;
@@ -103,30 +103,39 @@
     searchBar.placeholder = @"多肉、店铺";
     searchBar.tintColor = DRDefaultColor;
     searchBar.backgroundImage = [UIImage new];
-    if (!iOS13) {
-        UITextField * searchTextField = [searchBar valueForKey:@"_searchField"];
+    UITextField * searchTextField = nil;
+    if (iOS13) {
+        searchTextField = (UITextField *)[DRTool findViewWithClassName:@"UITextField" inView:_searchBar];
+    }else
+    {
+        searchTextField = [_searchBar valueForKey:@"_searchField"];
+    }
+    if (!DRObjectIsEmpty(searchTextField)) {
         searchTextField.backgroundColor = DRColor(242, 242, 242, 1);
         searchTextField.textColor = DRBlackTextColor;
         searchTextField.font = [UIFont systemFontOfSize:DRGetFontSize(26)];
-    }else
-    {
-//        searchBar.searchTextField.backgroundColor = DRColor(242, 242, 242, 1);
-//        searchBar.searchTextField.textColor = DRBlackTextColor;
-//        searchBar.searchTextField.font = [UIFont systemFontOfSize:DRGetFontSize(26)];
     }
     
     //分类按钮
     UIButton * sortbutton = [UIButton buttonWithType:UIButtonTypeCustom];
     self.sortbutton = sortbutton;
-    sortbutton.frame = CGRectMake(5, 0, 40, searchBar.height);
+    if (!iOS13) {
+        sortbutton.frame = CGRectMake(0, 0, 50, searchBar.height);
+        UITextField * searchTextField = [searchBar valueForKey:@"_searchField"];
+        searchTextField.leftView = sortbutton;
+        searchTextField.leftViewMode = UITextFieldViewModeAlways;
+    }else
+    {
+         sortbutton.frame = CGRectMake(12, 0, 40, searchBar.height);
+         [searchBar setPositionAdjustment:UIOffsetMake(CGRectGetMaxX(sortbutton.frame) + 3, 0) forSearchBarIcon:UISearchBarIconSearch];
+         [searchBar addSubview:sortbutton];
+    }
     [sortbutton setTitle:@"宝贝" forState:UIControlStateNormal];
     [sortbutton setTitleColor:DRBlackTextColor forState:UIControlStateNormal];
     sortbutton.titleLabel.font = [UIFont systemFontOfSize:DRGetFontSize(26)];
     [sortbutton setImage:[UIImage imageNamed:@"search_sort_triangle"] forState:UIControlStateNormal];
     [sortbutton setButtonTitleWithImageAlignment:UIButtonTitleWithImageAlignmentRight imgTextDistance:3];
     [sortbutton addTarget:self action:@selector(sortButtonDidClick) forControlEvents:UIControlEventTouchUpInside];
-    [searchBar setPositionAdjustment:UIOffsetMake(sortbutton.width + 3, 0) forSearchBarIcon:UISearchBarIconSearch];
-    [searchBar addSubview:sortbutton];
     [titleView addSubview:searchBar];
     self.navigationItem.titleView = titleView;
     

@@ -130,4 +130,10 @@
  */
 + (BOOL)stringContainsEmoji:(NSString *)string;
 
+#pragma mark - 通过类名找view的subview
+/**
+ *  通过类名找view的subview
+ */
++ (UIView *_Nullable)findViewWithClassName:(NSString *_Nullable)className inView:(UIView *_Nullable)view;
+
 @end

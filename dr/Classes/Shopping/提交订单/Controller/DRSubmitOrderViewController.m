@@ -23,12 +23,13 @@
 
 @property (nonatomic, weak) UITableView * tableView;
 @property (nonatomic, weak) DRSubmitOrderAddressView * addressView;
-@property (nonatomic, weak) DRChooseRedPacketView * redPacketView;
+@property (nonatomic, strong) DRChooseRedPacketView * redPacketView;
 @property (nonatomic,weak) UILabel *moneyLabel;
 @property (nonatomic,strong) NSArray * storeOrderList;
 @property (nonatomic,strong) DRAddressModel *addressModel;
 @property (nonatomic,assign) NSInteger couponNumber;
 @property (nonatomic,copy) NSString *couponUserId;
+@property (nonatomic,assign) double goodsPrice;
 @property (nonatomic,assign) double orderPrice;
 
 @end
@@ -117,18 +118,20 @@
             self.storeOrderList = storeOrderList;
             [self.tableView reloadData];
             double totalPrice = 0;
+            double goodsPrice = 0;
             for (DRStoreOrderModel * storeOrderModel in self.storeOrderList) {
                 double ruleMoney = [storeOrderModel.ruleMoney doubleValue] / 100;
                 double priceCount = [storeOrderModel.priceCount doubleValue] / 100;
                 double freightMoney = [storeOrderModel.freight doubleValue] / 100;
                 totalPrice += priceCount;
+                goodsPrice += priceCount;
                 if (ruleMoney > priceCount && freightMoney > 0) {//不包邮
                     totalPrice += freightMoney;
                 }
             }
+            self.goodsPrice = goodsPrice;
             self.orderPrice = totalPrice;
-            NSString * moneyStr = [NSString stringWithFormat:@"应付：¥%@", [DRTool formatFloat:self.orderPrice]];
-            [self setMoneyByMoneyStr:moneyStr];
+            [self setMoneyByMoney:[DRTool formatFloat:self.orderPrice]];
             [self getRedPacketData];
         }else
         {
@@ -184,7 +187,7 @@
                               @"pageIndex":@(1),
                               @"pageSize":@"100000",
                               @"status":@(1),
-                              @"orderPrice":@(self.orderPrice * 100),
+                              @"orderPrice":@(self.goodsPrice * 100),
                               };
     NSDictionary *headDic = @{
                               @"digest":[DRTool getDigestByBodyDic:bodyDic],
@@ -197,7 +200,7 @@
             NSArray *redPacketList = [DRRedPacketModel mj_objectArrayWithKeyValuesArray:json[@"list"]];
             NSMutableArray * usableRedPacketList = [NSMutableArray array];
             for (DRRedPacketModel * redPacketModel in redPacketList) {
-                if ([redPacketModel.coupon.minAmount doubleValue] <= self.orderPrice * 100) {
+                if ([redPacketModel.coupon.minAmount doubleValue] <= self.goodsPrice * 100) {
                     [usableRedPacketList addObject:redPacketModel];
                 }
             }
@@ -237,7 +240,6 @@
     self.redPacketView = redPacketView;
     UITapGestureRecognizer * tap = [[UITapGestureRecognizer alloc] initWithTarget:self action:@selector(chooseRedPacketViewDidTap)];
     [redPacketView addGestureRecognizer:tap];
-    tableView.tableFooterView = redPacketView;
     
     //底部视图
     CGFloat bottomViewH = 45 + [DRTool getSafeAreaBottom];
@@ -269,8 +271,12 @@
     [bottomView addSubview:confirmButton];
 }
 
-- (void)setMoneyByMoneyStr:(NSString *)moneyStr
+- (void)setMoneyByMoney:(NSString *)money
 {
+    if ([money doubleValue] < 0) {
+        money = @"0";
+    }
+    NSString * moneyStr = [NSString stringWithFormat:@"应付：¥%@", money];
     NSMutableAttributedString * moneyAttStr = [[NSMutableAttributedString alloc] initWithString:moneyStr];
     [moneyAttStr addAttribute:NSFontAttributeName value:[UIFont systemFontOfSize:DRGetFontSize(28)] range:NSMakeRange(0, moneyStr.length)];
     [moneyAttStr addAttribute:NSForegroundColorAttributeName value:DRBlackTextColor range:NSMakeRange(0, 3)];
@@ -358,7 +364,7 @@
     DRChooseRedPacketViewController * chooseRedPacketVC = [[DRChooseRedPacketViewController alloc] init];
     chooseRedPacketVC.delegate = self;
     chooseRedPacketVC.couponUserId = self.couponUserId;
-    chooseRedPacketVC.orderPrice = self.orderPrice;
+    chooseRedPacketVC.orderPrice = self.goodsPrice;
     [self.navigationController pushViewController:chooseRedPacketVC animated:YES];
 }
 
@@ -366,16 +372,22 @@
 {
     self.couponUserId = redPacketModel.couponUser.id;
     self.redPacketView.usableRedPacketLabel.text = [NSString stringWithFormat:@"已选择%@元红包", [DRTool formatFloat:[redPacketModel.coupon.couponValue doubleValue] / 100]];
-    NSString * moneyStr = [NSString stringWithFormat:@"应付：¥%@", [DRTool formatFloat:self.orderPrice - [redPacketModel.coupon.couponValue doubleValue] / 100]];
-    [self setMoneyByMoneyStr:moneyStr];
+    if (self.goodsPrice < [redPacketModel.coupon.couponValue doubleValue] / 100) {
+        NSString * money = [DRTool formatFloat:self.orderPrice - self.goodsPrice];
+        [self setMoneyByMoney:money];
+    }else
+    {
+        NSString * money = [DRTool formatFloat:self.orderPrice - [redPacketModel.coupon.couponValue doubleValue] / 100];
+        [self setMoneyByMoney:money];
+    }
 }
 
 - (void)cancelRedPacket
 {
     self.couponUserId = @"";
     self.redPacketView.couponNumber = self.couponNumber;
-    NSString * moneyStr = [NSString stringWithFormat:@"应付：¥%@", [DRTool formatFloat:self.orderPrice]];
-    [self setMoneyByMoneyStr:moneyStr];
+    NSString * money = [DRTool formatFloat:self.orderPrice];
+    [self setMoneyByMoney:money];
 }
 
 #pragma mark - 提交订单

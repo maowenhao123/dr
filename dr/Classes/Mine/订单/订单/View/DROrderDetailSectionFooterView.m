@@ -104,8 +104,14 @@
     }
     self.goodMoneyLabel.text = [NSString stringWithFormat:@"%ld件商品，共￥%@", (long)goodCount, [DRTool formatFloat:[_storeOrderModel.priceCount doubleValue] / 100]];
     
-    NSArray * mailTypes = @[@"包邮", @"肉币支付", @"快递到付"];
-    self.mailmentLabel.text = mailTypes[[_storeOrderModel.mailType intValue] - 1];
+    NSArray * mailTypes = @[@"混合", @"包邮", @"肉币支付", @"快递到付"];
+    int mailType = [_storeOrderModel.mailType intValue];
+    if (mailType < mailTypes.count) {
+        self.mailmentLabel.text = mailTypes[mailType];
+    }else
+    {
+        self.mailmentLabel.text = @"未知";
+    }
 }
 
 @end

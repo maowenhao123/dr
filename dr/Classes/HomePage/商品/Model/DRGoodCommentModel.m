@@ -20,9 +20,15 @@
     CGSize timeLabelSize = [_timeStr sizeWithLabelFont:[UIFont systemFontOfSize:DRGetFontSize(22)]];
     _timeLabelF = CGRectMake(screenWidth - DRMargin - timeLabelSize.width, 9, timeLabelSize.width, 30);
     
-    CGSize levelLabelSize = [_levelDesc sizeWithLabelFont:[UIFont systemFontOfSize:DRGetFontSize(22)]];
-    CGFloat levelLabelW = levelLabelSize.width + 17;
-    _levelLabelF = CGRectMake(screenWidth - 10 - levelLabelW, CGRectGetMaxY(_nickNameLabelF), levelLabelW, 20);
+    if (DRStringIsEmpty(_levelDesc)) {
+        CGSize levelLabelSize = [_levelDesc sizeWithLabelFont:[UIFont systemFontOfSize:DRGetFontSize(22)]];
+        CGFloat levelLabelW = levelLabelSize.width + 17;
+        _levelLabelF = CGRectMake(screenWidth - 10 - levelLabelW, CGRectGetMaxY(_nickNameLabelF), levelLabelW, 20);
+    }else
+    {
+        _levelLabelF = CGRectZero;
+    }
+    
     
     CGSize commentLabelSize = [_content sizeWithFont:[UIFont systemFontOfSize:DRGetFontSize(24)] maxSize:CGSizeMake(_levelLabelF.origin.x - _nickNameLabelF.origin.x - 10, MAXFLOAT)];
     _commentLabelF = CGRectMake(_nickNameLabelF.origin.x, CGRectGetMaxY(_nickNameLabelF), commentLabelSize.width, commentLabelSize.height);
