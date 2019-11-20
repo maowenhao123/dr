@@ -420,7 +420,7 @@ typedef NS_ENUM(NSInteger, CLPanDirection){
 }
 //MARK:JmoVxia---滑动调节音量和亮度
 - (void)verticalMoved:(CGFloat)value {
-    self.isVolume ? (self.volumeViewSlider.value -= value / 10000) : ([UIScreen mainScreen].brightness -= value / 10000);
+//    self.isVolume ? (self.volumeViewSlider.value -= value / 10000) : ([UIScreen mainScreen].brightness -= value / 10000);
 }
 //MARK:JmoVxia---水平移动调节进度
 - (void)horizontalMoved:(CGFloat)value {
@@ -471,14 +471,14 @@ typedef NS_ENUM(NSInteger, CLPanDirection){
 }
 //MARK:JmoVxia---获取系统音量
 - (void)configureVolume {
-    MPVolumeView *volumeView = [[MPVolumeView alloc] init];
-    _volumeViewSlider        = nil;
-    for (UIView *view in [volumeView subviews]){
-        if ([view.class.description isEqualToString:@"MPVolumeSlider"]){
-            _volumeViewSlider = (UISlider *)view;
-            break;
-        }
-    }
+//    MPVolumeView *volumeView = [[MPVolumeView alloc] init];
+//    _volumeViewSlider        = nil;
+//    for (UIView *view in [volumeView subviews]){
+//        if ([view.class.description isEqualToString:@"MPVolumeSlider"]){
+//            _volumeViewSlider = (UISlider *)view;
+//            break;
+//        }
+//    }
 }
 //MARK:JmoVxia---缓冲较差时候
 //卡顿缓冲几秒

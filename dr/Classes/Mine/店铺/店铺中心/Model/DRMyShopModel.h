@@ -35,5 +35,6 @@
 @property (nonatomic, strong) NSNumber * waitReceiveCount;	//待收货数量
 @property (nonatomic, strong) NSNumber * waitRefundCount;	//待退款数量
 @property (nonatomic, strong) NSNumber * waitPendingRegimentCount;//待成团
+@property (nonatomic,strong) NSArray <NSString *>*tags;
 
 @end

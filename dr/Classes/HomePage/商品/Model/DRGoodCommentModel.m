@@ -29,7 +29,6 @@
         _levelLabelF = CGRectZero;
     }
     
-    
     CGSize commentLabelSize = [_content sizeWithFont:[UIFont systemFontOfSize:DRGetFontSize(24)] maxSize:CGSizeMake(_levelLabelF.origin.x - _nickNameLabelF.origin.x - 10, MAXFLOAT)];
     _commentLabelF = CGRectMake(_nickNameLabelF.origin.x, CGRectGetMaxY(_nickNameLabelF), commentLabelSize.width, commentLabelSize.height);
     

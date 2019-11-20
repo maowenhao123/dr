@@ -197,7 +197,7 @@
         self.mailLabel.frame = CGRectZero;
     }
     
-    if (self.mailLabel.text) {
+    if (!DRObjectIsEmpty(self.mailLabel.text)) {
         self.goodPriceLabel.frame = CGRectMake(10, CGRectGetMaxY(self.goodNameLabel.frame), self.mailLabel.x - 10, 25);
     }else
     {

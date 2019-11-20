@@ -185,8 +185,10 @@
     shopLogoImageView.layer.cornerRadius = shopLogoImageView.width / 2;
     [shopLogoView addSubview:shopLogoImageView];
     
-    //用户名
-    UILabel * shopNameLabel = [[UILabel alloc] initWithFrame:CGRectMake(CGRectGetMaxX(shopLogoView.frame) + 15, 0, 0, 20)];
+    //店铺名
+    CGFloat shopNameLabelX = CGRectGetMaxX(shopLogoView.frame) + 15;
+    CGFloat shopNameLabelW = screenWidth - shopNameLabelX - 20;
+    UILabel * shopNameLabel = [[UILabel alloc] initWithFrame:CGRectMake(shopNameLabelX, 0, shopNameLabelW, 20)];
     self.shopNameLabel = shopNameLabel;
     shopNameLabel.centerY = shopLogoView.centerY;
     shopNameLabel.textColor = [UIColor whiteColor];
@@ -393,10 +395,29 @@
 {
     DRMyShopModel * shopModel = [DRUserDefaultTool myShopModel];
     [self.shopLogoImageView sd_setImageWithURL:[NSURL URLWithString:[NSString stringWithFormat: @"%@%@",baseUrl,shopModel.storeImg]] placeholderImage:[UIImage imageNamed:@"avatar_placeholder"]];
-    self.shopNameLabel.text = shopModel.storeName;
-    CGSize shopNameLabelSize = [self.shopNameLabel.text sizeWithLabelFont:self.shopNameLabel.font];
-    self.shopNameLabel.width = shopNameLabelSize.width;
-
+    
+    //店铺名
+    NSMutableAttributedString * shopNameAttStr = [[NSMutableAttributedString alloc] initWithString:shopModel.storeName];
+    NSAttributedString * spaceAttStr = [[NSAttributedString alloc] initWithString:@" "];
+    for (NSString * tag in shopModel.tags) {
+        NSURL * imageUrl = [NSURL URLWithString:[NSString stringWithFormat:@"%@%@", baseUrl, tag]];
+        NSData * imageData = [NSData dataWithContentsOfURL:imageUrl];
+        NSTextAttachment *certificationTextAttachment = [[NSTextAttachment alloc] init];
+        UIImage * image = [UIImage imageWithData:imageData];
+        CGFloat certificationTextAttachmentH = self.shopNameLabel.font.pointSize - 1;
+        if ([tag containsString:@"base_authentication_yes"])
+        {
+            certificationTextAttachmentH = self.shopNameLabel.font.pointSize + 4;
+        }
+        CGFloat certificationTextAttachmentW = image.size.width * (certificationTextAttachmentH / image.size.height);
+        certificationTextAttachment.bounds = CGRectMake(0, -1 + (self.shopNameLabel.font.pointSize - certificationTextAttachmentH) / 2, certificationTextAttachmentW, certificationTextAttachmentH);
+        certificationTextAttachment.image = image;
+        NSAttributedString *certificationTextAttStr = [NSAttributedString attributedStringWithAttachment:certificationTextAttachment];
+        [shopNameAttStr appendAttributedString:spaceAttStr];
+        [shopNameAttStr appendAttributedString:certificationTextAttStr];
+    }
+    self.shopNameLabel.attributedText = shopNameAttStr;
+    
     [self setMoneyLabelText];
     
     for (int i = 0; i < self.orderItemViews.count; i++) {

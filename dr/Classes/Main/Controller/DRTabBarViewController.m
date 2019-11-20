@@ -103,11 +103,11 @@ static NSString *kConversationChatter = @"ConversationChatter";
     [self setupUnreadMessageCount];
     
     //评分
-//    long long lastGradeTimeSp = [[[NSUserDefaults standardUserDefaults] objectForKey:@"lastGradeTimeSp"] longLongValue];
-//    if (currentTimeSp - lastGradeTimeSp > 7 * 24 * 60 * 60) {
-//        [self addAppReview];
-//    }
-//    [[NSUserDefaults standardUserDefaults] setObject:@(currentTimeSp) forKey:@"lastGradeTimeSp"];
+    long long lastGradeTimeSp = [[[NSUserDefaults standardUserDefaults] objectForKey:@"lastGradeTimeSp"] longLongValue];
+    if (currentTimeSp - lastGradeTimeSp > 7 * 24 * 60 * 60) {
+        [self addAppReview];
+    }
+    [[NSUserDefaults standardUserDefaults] setObject:@(currentTimeSp) forKey:@"lastGradeTimeSp"];
 }
 
 - (void)loginSuccess
@@ -231,8 +231,8 @@ static NSString *kConversationChatter = @"ConversationChatter";
 
 //评分
 - (void)addAppReview{
-    UIAlertController * alertVC = [UIAlertController alertControllerWithTitle:@"喜欢吾花肉么?给个五星好评吧亲!" message:nil preferredStyle:UIAlertControllerStyleAlert];
-    UIAlertAction *fiveStar = [UIAlertAction actionWithTitle:@"五星好评" style:UIAlertActionStyleDefault handler:^(UIAlertAction * _Nonnull action) {
+    UIAlertController * alertVC = [UIAlertController alertControllerWithTitle:@"去给吾花肉APP打个分吧！" message:nil preferredStyle:UIAlertControllerStyleAlert];
+    UIAlertAction *fiveStar = [UIAlertAction actionWithTitle:@"去评分" style:UIAlertActionStyleDefault handler:^(UIAlertAction * _Nonnull action) {
         NSURL *appReviewUrl = [NSURL URLWithString:[NSString stringWithFormat: @"itms-apps://itunes.apple.com/app/id%@?action=write-review", @"1276983899"]];
         CGFloat version = [[[UIDevice currentDevice]systemVersion]floatValue];
         if (version >= 10.0) {

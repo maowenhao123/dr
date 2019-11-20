@@ -163,7 +163,6 @@ NSString * const ShopHeaderCellId = @"ShopHeaderCellId";
                               };
     [[DRHttpTool shareInstance] postWithHeadDic:headDic bodyDic:bodyDic success:^(id json) {
         DRLog(@"%@",json);
-        [MBProgressHUD hideHUDForView:self.view];
         if (SUCCESS) {
             self.isAttention = [json[@"focus"] boolValue];
             [UIView performWithoutAnimation:^{
@@ -171,7 +170,6 @@ NSString * const ShopHeaderCellId = @"ShopHeaderCellId";
             }];
         }
     } failure:^(NSError *error) {
-        [MBProgressHUD hideHUDForView:self.view];
         DRLog(@"error:%@",error);
     }];
 }
@@ -340,10 +338,14 @@ NSString * const ShopHeaderCellId = @"ShopHeaderCellId";
 - (CGSize)collectionView:(UICollectionView *)collectionView layout:(UICollectionViewLayout *)collectionViewLayout sizeForItemAtIndexPath:(NSIndexPath *)indexPath
 {
     if (indexPath.section == 0) {
-        if (!self.shopModel) {
+        if (DRObjectIsEmpty(self.shopModel)) {
             return CGSizeMake(screenWidth, 202 + 16 + 9);
         }
  
+        CGFloat tagH = 0;
+        if (!DRArrayIsEmpty(self.shopModel.tags) && _shopModel.storeName.length > 4) {
+            tagH = 24;
+        }
         NSString * detailStr = self.shopModel.description_;
         NSMutableAttributedString * detailAttStr = [[NSMutableAttributedString alloc] initWithString:detailStr];
         [detailAttStr addAttribute:NSFontAttributeName value:[UIFont systemFontOfSize:DRGetFontSize(24)] range:NSMakeRange(0, detailStr.length)];
@@ -353,7 +355,7 @@ NSString * const ShopHeaderCellId = @"ShopHeaderCellId";
         [detailAttStr addAttribute:NSParagraphStyleAttributeName value:paragraphStyle range:NSMakeRange(0, detailStr.length)];
         //frmae
         CGSize detailLabelSize = [detailAttStr boundingRectWithSize:CGSizeMake(screenWidth - 2 * DRMargin, MAXFLOAT) options:NSStringDrawingUsesLineFragmentOrigin context:nil].size;
-        return CGSizeMake(screenWidth, 202 + detailLabelSize.height + 16 + 9);
+        return CGSizeMake(screenWidth, 202 + tagH + detailLabelSize.height + 16 + 9);
     }
     CGFloat width = (screenWidth - 5) / 2;
     return CGSizeMake(width, width + 75);

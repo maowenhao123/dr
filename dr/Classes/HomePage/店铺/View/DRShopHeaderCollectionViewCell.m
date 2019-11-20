@@ -10,8 +10,10 @@
 
 @interface DRShopHeaderCollectionViewCell ()
 
+@property (nonatomic, weak) UIImageView * backImageView;
 @property (nonatomic, weak) UIImageView *avatarImageView;//头像
 @property (nonatomic, weak) UILabel * shopNameLabel;//店名
+@property (nonatomic,weak) UILabel * tagLabel;
 @property (nonatomic,weak) UILabel * detailLabel;
 @property (nonatomic,weak) UIView * lineView;
 @property (nonatomic,strong) NSMutableArray *labelArray;
@@ -32,6 +34,7 @@
 - (void)setupChildViews
 {
     UIImageView * backImageView = [[UIImageView alloc] initWithFrame:CGRectMake(0, 0, screenWidth, 202)];
+    self.backImageView = backImageView;
     if (iPhone4 || iPhone5)
     {
         backImageView.image = [UIImage imageNamed:@"mine_top_back_320"];
@@ -48,7 +51,7 @@
     backImageView.contentMode = UIViewContentModeScaleAspectFill;
     backImageView.userInteractionEnabled = YES;
     [self addSubview:backImageView];
-
+    
     //头像
     UIImageView * avatarImageView = [[UIImageView alloc]initWithFrame:CGRectMake((screenWidth - 55) / 2, 45, 55, 55)];
     self.avatarImageView = avatarImageView;
@@ -57,16 +60,22 @@
     avatarImageView.layer.borderColor = [UIColor colorWithWhite:1 alpha:0.3].CGColor;
     avatarImageView.layer.borderWidth = 3;
     [backImageView addSubview:avatarImageView];
-
+    
     //店名
-    UILabel * shopNameLabel = [[UILabel alloc] init];
+    UILabel * shopNameLabel = [[UILabel alloc] initWithFrame:CGRectMake(DRMargin, CGRectGetMaxY(self.avatarImageView.frame) + 12, screenWidth - 2 * DRMargin, [UIFont systemFontOfSize:DRGetFontSize(32)].lineHeight)];
     self.shopNameLabel = shopNameLabel;
     shopNameLabel.textColor = [UIColor whiteColor];
     shopNameLabel.font = [UIFont systemFontOfSize:DRGetFontSize(32)];
     shopNameLabel.textAlignment = NSTextAlignmentCenter;
-    shopNameLabel.frame = CGRectMake(0, CGRectGetMaxY(self.avatarImageView.frame) + 12, backImageView.width, shopNameLabel.font.lineHeight);
     [backImageView addSubview:shopNameLabel];
-
+    
+    //标签
+    UILabel * tagLabel = [[UILabel alloc] init];
+    self.tagLabel = tagLabel;
+    tagLabel.textAlignment = NSTextAlignmentCenter;
+    tagLabel.hidden = YES;
+    [backImageView addSubview:tagLabel];
+    
     CGFloat buttonW = 65;
     CGFloat buttonH = 24;
     CGFloat buttonPadding = 50;
@@ -90,9 +99,9 @@
         button.layer.borderWidth = 1;
         [backImageView addSubview:button];
     }
-
+    
     for (int i = 0; i < 3; i++) {
-        UILabel * label = [[UILabel alloc] initWithFrame:CGRectMake(screenWidth / 3 * i, 170, screenWidth / 3, 30)];
+        UILabel * label = [[UILabel alloc] initWithFrame:CGRectMake(screenWidth / 3 * i, CGRectGetMaxY(self.attentionButton.frame) + 3, screenWidth / 3, 30)];
         label.textColor = [UIColor whiteColor];
         label.font = [UIFont systemFontOfSize:DRGetFontSize(26)];
         label.textAlignment = NSTextAlignmentCenter;
@@ -101,13 +110,13 @@
     }
     
     //详情
-    UILabel * detailLabel = [[UILabel alloc] initWithFrame:CGRectMake(DRMargin, CGRectGetMaxY(backImageView.frame), screenWidth - 2 * DRMargin, 50)];
+    UILabel * detailLabel = [[UILabel alloc] init];
     self.detailLabel = detailLabel;
     detailLabel.numberOfLines = 0;
     [self addSubview:detailLabel];
-
+    
     //分割线
-    UIView * lineView = [[UIView alloc]initWithFrame:CGRectMake(0, CGRectGetMaxY(detailLabel.frame), screenWidth, 9)];
+    UIView * lineView = [[UIView alloc]init];
     self.lineView = lineView;
     lineView.backgroundColor = DRBackgroundColor;
     [self addSubview:lineView];
@@ -125,6 +134,29 @@
     [self.avatarImageView sd_setImageWithURL:[NSURL URLWithString:imageUrlStr] placeholderImage:[UIImage imageNamed:@"avatar_placeholder"]];
     
     self.shopNameLabel.text = _shopModel.storeName;
+    
+    NSAttributedString * spaceAttStr = [[NSAttributedString alloc] initWithString:@" "];
+    NSMutableAttributedString * tagAttStr = [[NSMutableAttributedString alloc] init];
+    for (NSString * tag in _shopModel.tags) {
+        NSURL * imageUrl = [NSURL URLWithString:[NSString stringWithFormat:@"%@%@", baseUrl, tag]];
+        NSData * imageData = [NSData dataWithContentsOfURL:imageUrl];
+        NSTextAttachment *certificationTextAttachment = [[NSTextAttachment alloc] init];
+        UIImage * image = [UIImage imageWithData:imageData];
+        CGFloat certificationTextAttachmentH = self.shopNameLabel.font.pointSize - 1;
+        if ([tag containsString:@"base_authentication_yes"])
+        {
+            certificationTextAttachmentH = self.shopNameLabel.font.pointSize + 4;
+        }
+        CGFloat certificationTextAttachmentW = image.size.width * (certificationTextAttachmentH / image.size.height);
+        certificationTextAttachment.bounds = CGRectMake(0, -1 + (self.shopNameLabel.font.pointSize - certificationTextAttachmentH) / 2, certificationTextAttachmentW, certificationTextAttachmentH);
+        certificationTextAttachment.image = image;
+        NSAttributedString *certificationTextAttStr = [NSAttributedString attributedStringWithAttachment:certificationTextAttachment];
+        [tagAttStr appendAttributedString:spaceAttStr];
+        [tagAttStr appendAttributedString:certificationTextAttStr];
+    }
+    if (!DRArrayIsEmpty(_shopModel.tags) && tagAttStr) {
+        self.tagLabel.attributedText = tagAttStr;
+    }
     
     NSString * detailStr = _shopModel.description_;
     NSMutableAttributedString * detailAttStr = [[NSMutableAttributedString alloc] initWithString:detailStr];
@@ -149,9 +181,36 @@
     }
     
     //frmae
+    CGSize shopNameLabelSize = [self.shopNameLabel.text sizeWithFont:self.shopNameLabel.font maxSize:CGSizeMake(screenWidth - 2 * DRMargin, 25)];
+    if (!DRArrayIsEmpty(_shopModel.tags) && tagAttStr) {
+        CGSize tagLabelSize = [tagAttStr boundingRectWithSize:CGSizeMake(screenWidth - 2 * DRMargin, 25) options:NSStringDrawingUsesLineFragmentOrigin context:nil].size;
+        if (_shopModel.storeName.length > 4) {
+            self.shopNameLabel.frame = CGRectMake(DRMargin, CGRectGetMaxY(self.avatarImageView.frame) + 12, screenWidth - 2 * DRMargin, shopNameLabelSize.height);
+            self.tagLabel.frame = CGRectMake(DRMargin, CGRectGetMaxY(self.shopNameLabel.frame) + 3, screenWidth - 2 * DRMargin, self.shopNameLabel.font.lineHeight);
+        }else
+        {
+            self.shopNameLabel.frame = CGRectMake((screenWidth - shopNameLabelSize.width) / 2, CGRectGetMaxY(self.avatarImageView.frame) + 12, shopNameLabelSize.width, shopNameLabelSize.height);
+            self.tagLabel.frame = CGRectMake(CGRectGetMaxX(self.shopNameLabel.frame), self.shopNameLabel.y, tagLabelSize.width + 6, self.shopNameLabel.font.lineHeight);
+        }
+        self.tagLabel.hidden = NO;
+        self.attentionButton.y = CGRectGetMaxY(self.tagLabel.frame) + 10;
+        self.chatButton.y = CGRectGetMaxY(self.tagLabel.frame) + 10;
+    }else
+    {
+        self.shopNameLabel.frame = CGRectMake(DRMargin, CGRectGetMaxY(self.avatarImageView.frame) + 12, screenWidth - 2 * DRMargin, shopNameLabelSize.height);
+        self.tagLabel.hidden = YES;
+        self.attentionButton.y = CGRectGetMaxY(self.shopNameLabel.frame) + 10;
+        self.chatButton.y = CGRectGetMaxY(self.shopNameLabel.frame) + 10;
+    }
+    for (int i = 0; i < self.labelArray.count; i++) {
+        UILabel * label = self.labelArray[i];
+        label.y = CGRectGetMaxY(self.attentionButton.frame) + 3;
+        self.backImageView.height = CGRectGetMaxY(label.frame) + 3;
+    }
+    
     CGSize detailLabelSize = [self.detailLabel.attributedText boundingRectWithSize:CGSizeMake(screenWidth - 2 * DRMargin, MAXFLOAT) options:NSStringDrawingUsesLineFragmentOrigin context:nil].size;
-    self.detailLabel.height = detailLabelSize.height + 16;
-    self.lineView.y = CGRectGetMaxY(self.detailLabel.frame);
+    self.detailLabel.frame = CGRectMake(DRMargin, CGRectGetMaxY(self.backImageView.frame), screenWidth - 2 * DRMargin, detailLabelSize.height + 16);
+    self.lineView.frame = CGRectMake(0, CGRectGetMaxY(self.detailLabel.frame), screenWidth, 9);
 }
 
 #pragma mark - 初始化
