@@ -12,7 +12,6 @@
 #import "DRShipmentConfirmViewController.h"
 #import "DRShipmentGrouponConfirmViewController.h"
 #import "DRSellerLogisticsViewController.h"
-#import "DRChatViewController.h"
 #import "DRShipmentGoodTableViewCell.h"
 #import "DRShipmentAddressTableViewCell.h"
 #import "DRShipmentUserInfoTableViewCell.h"

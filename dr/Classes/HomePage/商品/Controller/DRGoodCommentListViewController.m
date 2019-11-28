@@ -27,6 +27,7 @@
     [super viewDidAppear:animated];
     [UIApplication sharedApplication].statusBarStyle = UIStatusBarStyleDefault;
 }
+
 - (void)viewDidLoad
 {
     [super viewDidLoad];
@@ -35,6 +36,8 @@
     [self getData];
     [self setupChilds];
 }
+
+#pragma mark - 请求数据
 - (void)getData
 {
     if (!self.goodModel.id) {
@@ -85,6 +88,8 @@
         }
     }];
 }
+
+#pragma mark - 布局视图
 - (void)setupChilds
 {
     UITableView * tableView = [[UITableView alloc] initWithFrame:CGRectMake(0, 0, screenWidth, screenHeight - statusBarH - navBarH)];

@@ -84,7 +84,6 @@
         status = @(0);
     }else if (self.currentIndex == 2) {//待成团
         cmd = @"S34";
-//        status = @(5);
     }else if (self.currentIndex == 3) {//待发货
         status = @(10);
     }else if (self.currentIndex == 4) {//已发货

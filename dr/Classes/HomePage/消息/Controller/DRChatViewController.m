@@ -11,10 +11,13 @@
 #import "DRShopDetailViewController.h"
 #import "DRGoodDetailViewController.h"
 #import "DRMessageGoodInfoTableViewCell.h"
+#import "DRChatOrderView.h"
 #import "IQKeyboardManager.h"
 #import "DRIMTool.h"
 
 @interface DRChatViewController ()<EaseMessageViewControllerDelegate, EaseMessageViewControllerDataSource, MessageChooseGoodViewControllerDelegate>
+
+@property (nonatomic, strong) DRChatOrderView * orderView;
 
 @end
 
@@ -27,6 +30,7 @@
     keyboardManager.enable = NO;
     keyboardManager.enableAutoToolbar = NO;
 }
+
 - (void)viewWillDisappear:(BOOL)animated
 {
     [super viewWillDisappear:animated];
@@ -34,6 +38,7 @@
     keyboardManager.enable = YES;
     keyboardManager.enableAutoToolbar = YES;
 }
+
 - (void)viewDidLoad
 {
     [super viewDidLoad];
@@ -43,9 +48,11 @@
     self.dataSource = self;
     [self _setupBarButtonItem];
     [self.chatBarMoreView insertItemWithImage:[UIImage imageNamed:@"send_goods_info"] highlightedImage:[UIImage imageNamed:@"send_goods_info"] title:@"发送商品"];
-    if (!DRDictIsEmpty(self.goodInfo)) {
-        [self setHeaderView];
-    }
+    
+    self.orderView = [[DRChatOrderView alloc] initWithFrame:CGRectMake(0, 0, screenWidth, 0) style:UITableViewStylePlain];
+    [self.view addSubview:self.orderView];
+    
+    [self getOrderList];
 }
 
 - (void)_setupBarButtonItem
@@ -53,6 +60,54 @@
     self.navigationItem.leftBarButtonItem = [[UIBarButtonItem alloc] initWithImage:[UIImage imageNamed:@"black_back_bar"] style:UIBarButtonItemStylePlain target:self action:@selector(backAction)];
    
     self.navigationItem.rightBarButtonItem = [[UIBarButtonItem alloc] initWithTitle:@"清空" style:UIBarButtonItemStylePlain target:self action:@selector(deleteAllMessages:)];
+}
+
+- (void)getOrderList
+{
+    NSDictionary *bodyDic = @{
+                              @"pageIndex":@(1),
+                              @"pageSize":@(1000000),
+                              @"buyerUserId": self.conversation.conversationId
+                              };
+    NSDictionary *headDic = @{
+                              @"digest":[DRTool getDigestByBodyDic:bodyDic],
+                              @"cmd":@"S20",
+                              @"userId":UserId,
+                              };
+    [[DRHttpTool shareInstance] postWithTarget:self headDic:headDic bodyDic:bodyDic success:^(id json) {
+        DRLog(@"%@",json);
+        if (SUCCESS) {
+            NSMutableArray * dataArray = [NSMutableArray array];
+            NSArray * newDataArray = [DROrderModel  mj_objectArrayWithKeyValuesArray:json[@"list"]];
+            NSArray *orders = json[@"list"];
+            for (DROrderModel * orderModel in newDataArray) {
+                NSInteger index = [newDataArray indexOfObject:orderModel];
+                NSArray *storeOrders = [DRStoreOrderModel  mj_objectArrayWithKeyValuesArray:orders[index][@"storeOrders"]];
+                orderModel.storeOrders = storeOrders;
+                
+                NSArray *detail = orders[index][@"storeOrders"];
+                for (DRStoreOrderModel * storeOrder in orderModel.storeOrders) {
+                    NSInteger index_ = [orderModel.storeOrders indexOfObject:storeOrder];
+                    NSArray *detail_ = [DROrderItemDetailModel  mj_objectArrayWithKeyValuesArray:detail[index_][@"detail"]];
+                    storeOrder.detail = detail_;
+                }
+            }
+            dataArray = [NSMutableArray arrayWithArray:newDataArray];
+            if (!DRDictIsEmpty(self.goodInfo)) {
+                [self setHeaderView];
+            }else
+            {
+                if (dataArray.count > 0) {
+                    UIView * headerView = [[UIView alloc] initWithFrame:CGRectMake(0, 0, screenWidth, 30)];
+                    headerView.backgroundColor = self.tableView.backgroundColor;
+                    self.tableView.tableHeaderView = headerView;
+                }
+                self.orderView.dataArray = dataArray;
+            }
+        }
+    } failure:^(NSError *error) {
+        DRLog(@"error:%@",error);
+    }];
 }
 
 - (void)setHeaderView
@@ -111,6 +166,7 @@
     
     self.tableView.tableHeaderView = headerView;
 }
+
 - (void)sendGoodsInfo
 {
     NSDictionary * ext = @{

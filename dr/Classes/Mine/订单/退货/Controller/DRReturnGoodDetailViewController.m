@@ -7,10 +7,13 @@
 //
 
 #import "DRReturnGoodDetailViewController.h"
+#import "DRShipmentDetailViewController.h"
+#import "DRChatViewController.h"
 #import "DRShowMultipleImageView.h"
 #import "DRTextView.h"
 #import "DRReturnGoodModel.h"
 #import "XLPhotoBrowser.h"
+#import "DRIMTool.h"
 
 @interface DRReturnGoodDetailViewController ()<ShowMultipleImageViewDelegate, XLPhotoBrowserDatasource>
 
@@ -21,6 +24,7 @@
 @property (nonatomic,weak) UILabel * goodNameLabel;
 @property (nonatomic, weak) UILabel *goodSpecificationLabel;//商品规格
 @property (nonatomic,weak) UILabel * goodPriceLabel;
+@property (nonatomic,weak) UIButton *orderButton;
 @property (nonatomic, weak) UILabel * countLabel;
 @property (nonatomic, weak) UILabel * moneyLabel;
 @property (nonatomic, weak) DRTextView *detailTV;
@@ -45,14 +49,14 @@
     NSDictionary *bodyDic = [NSDictionary dictionary];
     if (!DRStringIsEmpty(self.goodsId) && !DRStringIsEmpty(self.orderId)) {
         bodyDic = @{
-                     @"goodsId":self.goodsId,
-                     @"orderId":self.orderId,
-                     };
+            @"goodsId":self.goodsId,
+            @"orderId":self.orderId,
+        };
     }else if (!DRStringIsEmpty(self.returnGoodId))
     {
         bodyDic = @{
-                    @"id":self.returnGoodId,
-                    };
+            @"id":self.returnGoodId,
+        };
     }else
     {
         return;
@@ -66,10 +70,10 @@
     }
     
     NSDictionary *headDic = @{
-                              @"digest":[DRTool getDigestByBodyDic:bodyDic_mu],
-                              @"cmd":@"S28",
-                              @"userId":UserId,
-                              };
+        @"digest":[DRTool getDigestByBodyDic:bodyDic_mu],
+        @"cmd":@"S28",
+        @"userId":UserId,
+    };
     [[DRHttpTool shareInstance] postWithTarget:self headDic:headDic bodyDic:bodyDic_mu success:^(id json) {
         DRLog(@"%@",json);
         if (SUCCESS) {
@@ -86,6 +90,9 @@
 }
 - (void)setupChilds
 {
+    if (self.isSeller) {
+        self.navigationItem.rightBarButtonItem = [[UIBarButtonItem alloc] initWithTitle:@"联系买家" style:UIBarButtonItemStylePlain target:self action:@selector(chat)];
+    }
     //scrollView
     UIScrollView * scrollView = [[UIScrollView alloc] initWithFrame:CGRectMake(0, 0, screenWidth, screenHeight - statusBarH - navBarH)];
     self.scrollView = scrollView;
@@ -140,6 +147,21 @@
     goodPriceLabel.textColor = DRBlackTextColor;
     goodPriceLabel.font = [UIFont systemFontOfSize:DRGetFontSize(24)];
     [contentView addSubview:goodPriceLabel];
+    
+    //查看订单
+    if (self.isSeller) {
+        UIButton *orderButton = [UIButton buttonWithType:UIButtonTypeCustom];
+        self.orderButton = orderButton;
+        [orderButton setTitle:@"订单详情" forState:UIControlStateNormal];
+        [orderButton setTitleColor:DRBlackTextColor forState:UIControlStateNormal];
+        orderButton.titleLabel.font = [UIFont systemFontOfSize:DRGetFontSize(24)];
+        [orderButton addTarget:self action:@selector(orderButtonDidClick) forControlEvents:UIControlEventTouchUpInside];
+        orderButton.layer.masksToBounds = YES;
+        orderButton.layer.cornerRadius = 4;
+        orderButton.layer.borderColor = DRGrayTextColor.CGColor;
+        orderButton.layer.borderWidth = 1;
+        [contentView addSubview:orderButton];
+    }
     
     //分割线
     UIView * line1 = [[UIView alloc]initWithFrame:CGRectMake(0, CGRectGetMaxY(goodImageView.frame) + 7, screenWidth, 1)];
@@ -214,7 +236,7 @@
     self.memoView = memoView;
     memoView.backgroundColor = [UIColor whiteColor];
     [contentView addSubview:memoView];
-
+    
     UIView * line4 = [[UIView alloc] initWithFrame:CGRectMake(0, 0, screenWidth, 1)];
     line4.backgroundColor = DRWhiteLineColor;
     [memoView addSubview:line4];
@@ -226,7 +248,7 @@
     CGSize memoLabelSize = [memoLabel.text sizeWithLabelFont:memoLabel.font];
     memoLabel.frame = CGRectMake(DRMargin, 9, memoLabelSize.width, memoLabelSize.height);
     [memoView addSubview:memoLabel];
- 
+    
     DRTextView *memoTV = [[DRTextView alloc] initWithFrame:CGRectMake(5, CGRectGetMaxY(memoLabel.frame) + 1, screenWidth - 2 * 5, 100)];
     self.memoTV = memoTV;
     memoTV.font = [UIFont systemFontOfSize:DRGetFontSize(28)];
@@ -240,6 +262,23 @@
     contentView.height = CGRectGetMaxY(memoView.frame);
     scrollView.contentSize = CGSizeMake(screenWidth, CGRectGetMaxY(contentView.frame));
 }
+
+- (void)chat
+{
+    DRChatViewController *chatVC = [[DRChatViewController alloc] initWithConversationChatter:self.returnGoodModel.user.id conversationType:EMConversationTypeChat];
+    chatVC.title = self.returnGoodModel.user.nickName;
+    NSString * imageUrlStr = [NSString stringWithFormat:@"%@%@", baseUrl, self.returnGoodModel.user.headImg];
+    [DRIMTool saveUserProfileWithUsername:self.returnGoodModel.user.id forNickName:self.returnGoodModel.user.nickName avatarURLPath:imageUrlStr];
+    [self.navigationController pushViewController:chatVC animated:YES];
+}
+
+- (void)orderButtonDidClick
+{
+    DRShipmentDetailViewController * shipmentDetailVC = [[DRShipmentDetailViewController alloc] init];
+    shipmentDetailVC.orderId = self.returnGoodModel.orderId;
+    [self.navigationController pushViewController:shipmentDetailVC animated:YES];
+}
+
 - (void)setData
 {
     if ([self.returnGoodModel.status intValue] == 0) {
@@ -286,7 +325,7 @@
         self.showImageView.hidden = YES;
         self.showImageView.height = 0;
     }
-
+    
     //frame
     CGFloat goodNameLabelX = CGRectGetMaxX(self.goodImageView.frame) + 10;
     if (DRStringIsEmpty(self.returnGoodModel.goods.description_)) {
@@ -321,6 +360,9 @@
     CGSize goodPriceLabelSize = [self.goodPriceLabel.text sizeWithLabelFont:self.goodPriceLabel.font];
     CGFloat goodPriceLabelX = goodNameLabelX;
     self.goodPriceLabel.frame = CGRectMake(goodPriceLabelX, CGRectGetMaxY(self.goodImageView.frame) - 3 - goodPriceLabelSize.height, goodPriceLabelSize.width, goodPriceLabelSize.height);
+    
+    self.orderButton.frame = CGRectMake(screenWidth - 70 - DRMargin, 0, 70, 25);
+    self.orderButton.centerY = self.goodPriceLabel.centerY;
     
     CGSize detailTVSize = [self.detailTV.text sizeWithFont:self.detailTV.font maxSize:CGSizeMake(self.detailTV.width, MAXFLOAT)];
     self.detailTV.height = detailTVSize.height + 2 * 9;

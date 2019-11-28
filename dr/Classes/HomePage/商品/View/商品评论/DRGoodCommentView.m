@@ -1,14 +1,14 @@
 //
-//  DRGoodCommentTableViewCell.m
+//  DRGoodCommentView.m
 //  dr
 //
-//  Created by 毛文豪 on 2017/7/16.
-//  Copyright © 2017年 JG. All rights reserved.
+//  Created by dahe on 2019/11/20.
+//  Copyright © 2019 JG. All rights reserved.
 //
 
-#import "DRGoodCommentTableViewCell.h"
+#import "DRGoodCommentView.h"
 
-@interface DRGoodCommentTableViewCell ()
+@interface DRGoodCommentView ()
 
 @property (nonatomic, weak) UIImageView * avatarImageView;
 @property (nonatomic, weak) UILabel * nickNameLabel;
@@ -18,35 +18,20 @@
 
 @end
 
-@implementation DRGoodCommentTableViewCell
+@implementation DRGoodCommentView
 
-+ (DRGoodCommentTableViewCell *)cellWithTableView:(UITableView *)tableView
+- (instancetype)initWithFrame:(CGRect)frame
 {
-    static NSString *ID = @"GoodCommentTableViewCellId";
-    DRGoodCommentTableViewCell *cell = [tableView dequeueReusableCellWithIdentifier:ID];
-    if(cell == nil)
-    {
-        cell = [[DRGoodCommentTableViewCell alloc] initWithStyle:UITableViewCellStyleSubtitle reuseIdentifier:ID];
-        cell.selectionStyle = UITableViewCellSelectionStyleNone;
-    }
-    return  cell;
-}
-- (id)initWithStyle:(UITableViewCellStyle)style reuseIdentifier:(NSString *)reuseIdentifier
-{
-    self = [super initWithStyle:style reuseIdentifier:reuseIdentifier];
+    self = [super initWithFrame:frame];
     if (self) {
+        self.backgroundColor = [UIColor whiteColor];
         [self setupChildViews];
     }
     return self;
 }
+
 - (void)setupChildViews
-{
-    //分割线
-    UIView * line = [[UIView alloc]initWithFrame:CGRectMake(self.nickNameLabel.x, 0, screenWidth - self.nickNameLabel.x, 1)];
-    self.line = line;
-    line.backgroundColor = DRWhiteLineColor;
-    [self addSubview:line];
-    
+{    
     //头像
     UIImageView * avatarImageView = [[UIImageView alloc] initWithFrame:CGRectMake(DRMargin, 10, 36, 36)];
     self.avatarImageView = avatarImageView;
@@ -55,7 +40,7 @@
     avatarImageView.layer.cornerRadius = avatarImageView.width / 2;
     [self addSubview:avatarImageView];
     
-    //店名
+    //昵称
     UILabel * nickNameLabel = [[UILabel alloc] init];
     self.nickNameLabel = nickNameLabel;
     nickNameLabel.font = [UIFont systemFontOfSize:DRGetFontSize(26)];
@@ -112,5 +97,6 @@
     }
     self.commentLabel.frame = _model.commentLabelF;
 }
+
 
 @end

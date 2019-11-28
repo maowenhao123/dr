@@ -15,6 +15,7 @@
 #import "DRGoodTitleCollectionReusableView.h"
 #import "DRGoodHeaderCollectionViewCell.h"
 #import "DRGoodCommentCollectionViewCell.h"
+#import "DRGoodGroupCollectionViewCell.h"
 #import "DRGoodShopMessageCollectionViewCell.h"
 #import "DRRecommendGoodCollectionViewCell.h"
 #import "UIButton+DR.h"
@@ -35,6 +36,7 @@ NSString * const GoodCommentHeaderId = @"GoodCommentHeaderId";
 NSString * const GoodTitleHeaderId = @"GoodTitleHeaderId";
 NSString * const GoodHeaderId = @"GoodHeaderId";
 NSString * const GoodCommentId = @"GoodCommentId";
+NSString * const GoodGroupId = @"GoodGroupId";
 NSString * const GoodShopMessageId = @"GoodShopMessageId";
 NSString * const WebViewCellId = @"WebViewCellId";
 NSString * const GoodDetailRecommendGoodCellId = @"GoodDetailRecommendGoodCellId";
@@ -341,7 +343,7 @@ NSString * const GoodDetailRecommendGoodCellId = @"GoodDetailRecommendGoodCellId
                 goodModel.specifications = [DRGoodSpecificationModel mj_objectArrayWithKeyValuesArray:json[@"sameStoreRecommendGoodsList"][index][@"specifications"]];
             }
             self.shopGoodsArray = [NSArray arrayWithArray:dataArray];
-            [self.collectionView reloadSections:[NSIndexSet indexSetWithIndex:4]];//刷新数据
+            [self.collectionView reloadSections:[NSIndexSet indexSetWithIndex:5]];//刷新数据
         }
     } failure:^(NSError *error) {
         DRLog(@"error:%@",error);
@@ -370,7 +372,7 @@ NSString * const GoodDetailRecommendGoodCellId = @"GoodDetailRecommendGoodCellId
                 goodModel.specifications = [DRGoodSpecificationModel mj_objectArrayWithKeyValuesArray:json[@"sameSubjectRecommendGoodsList"][index][@"specifications"]];
             }
             self.similarGoodArray = [NSArray arrayWithArray:dataArray];
-            [self.collectionView reloadSections:[NSIndexSet indexSetWithIndex:5]];//刷新数据
+            [self.collectionView reloadSections:[NSIndexSet indexSetWithIndex:6]];//刷新数据
         }
     } failure:^(NSError *error) {
         DRLog(@"error:%@",error);
@@ -398,6 +400,7 @@ NSString * const GoodDetailRecommendGoodCellId = @"GoodDetailRecommendGoodCellId
     [collectionView registerClass:[DRGoodTitleCollectionReusableView class] forSupplementaryViewOfKind:UICollectionElementKindSectionHeader withReuseIdentifier:GoodTitleHeaderId];
     [collectionView registerClass:[DRGoodHeaderCollectionViewCell class] forCellWithReuseIdentifier:GoodHeaderId];
     [collectionView registerClass:[DRGoodCommentCollectionViewCell class] forCellWithReuseIdentifier:GoodCommentId];
+    [collectionView registerClass:[DRGoodGroupCollectionViewCell class] forCellWithReuseIdentifier:GoodGroupId];
     [collectionView registerClass:[DRGoodShopMessageCollectionViewCell class] forCellWithReuseIdentifier:GoodShopMessageId];
     [collectionView registerClass:[UICollectionViewCell class] forCellWithReuseIdentifier:WebViewCellId];
     [collectionView registerClass:[DRRecommendGoodCollectionViewCell class] forCellWithReuseIdentifier:GoodDetailRecommendGoodCellId];
@@ -610,7 +613,7 @@ NSString * const GoodDetailRecommendGoodCellId = @"GoodDetailRecommendGoodCellId
     self.goodHeaderFrameModel.grouponModel = self.grouponModel;
     
     [self.collectionView reloadSections:[NSIndexSet indexSetWithIndex:0]];//刷新数据
-    [self.collectionView reloadSections:[NSIndexSet indexSetWithIndex:2]];//刷新数据
+    [self.collectionView reloadSections:[NSIndexSet indexSetWithIndex:3]];//刷新数据
     
     if ([_goodModel.sellType intValue] == 1) {//一物一拍/零售
         self.buyButton.hidden = NO;
@@ -945,19 +948,19 @@ NSString * const GoodDetailRecommendGoodCellId = @"GoodDetailRecommendGoodCellId
     // 获取内容高度
     CGFloat height = [[webView stringByEvaluatingJavaScriptFromString:@"document.body.scrollHeight"] floatValue];
     self.webView.height = height;
-    [self.collectionView reloadSections:[NSIndexSet indexSetWithIndex:3]];//刷新数据
+    [self.collectionView reloadSections:[NSIndexSet indexSetWithIndex:4]];//刷新数据
 }
 #pragma mark - UICollectionViewDelegateFlowLayout
 - (CGFloat)collectionView:(UICollectionView *)collectionView layout:(UICollectionViewLayout *)collectionViewLayout minimumLineSpacingForSectionAtIndex:(NSInteger)section
 {
-    if (section == 4 || section == 5) {
+    if (section == 5 || section == 6) {
         return 5;
     }
     return 0;
 }
 - (CGFloat)collectionView:(UICollectionView *)collectionView layout:(UICollectionViewLayout *)collectionViewLayout minimumInteritemSpacingForSectionAtIndex:(NSInteger)section
 {
-    if (section == 4 || section == 5) {
+    if (section == 5 || section == 6) {
         return 5;
     }
     return 0;
@@ -973,18 +976,21 @@ NSString * const GoodDetailRecommendGoodCellId = @"GoodDetailRecommendGoodCellId
         return CGSizeMake(screenWidth, model.cellH);
     }else if (indexPath.section == 2)
     {
-        return CGSizeMake(screenWidth, 90);
+        return CGSizeMake(screenWidth, 9 + 40 + 70);
     }else if (indexPath.section == 3)
+    {
+        return CGSizeMake(screenWidth, 90);
+    }else if (indexPath.section == 4)
     {
         if (DRStringIsEmpty(self.goodModel.detail)) {
             return CGSizeMake(screenWidth, 0.01);
         }
         return CGSizeMake(screenWidth, self.webView.height);
-    }else if (indexPath.section == 4)
+    }else if (indexPath.section == 5)
     {
         CGFloat width = (screenWidth - 5) / 2;
         return CGSizeMake(width, width + 75);
-    }else if (indexPath.section == 5)
+    }else if (indexPath.section == 6)
     {
         CGFloat width = (screenWidth - 5) / 2;
         return CGSizeMake(width, width + 75);
@@ -995,13 +1001,13 @@ NSString * const GoodDetailRecommendGoodCellId = @"GoodDetailRecommendGoodCellId
 {
     if (section == 1 && [self.goodModel.commentCount intValue] > 0) {
         return CGSizeMake(screenWidth, 9 + 35);
-    }else if (section == 3 && !DRStringIsEmpty(self.goodModel.detail))
+    }else if (section == 4 && !DRStringIsEmpty(self.goodModel.detail))
     {
         return CGSizeMake(screenWidth, 9 + 80);
-    }else if (section == 4 && self.shopGoodsArray.count > 0)
+    }else if (section == 5 && self.shopGoodsArray.count > 0)
     {
         return CGSizeMake(screenWidth, 9 + 80);
-    }else if (section == 5 && self.similarGoodArray.count > 0)
+    }else if (section == 6 && self.similarGoodArray.count > 0)
     {
         return CGSizeMake(screenWidth, 9 + 80);
     }
@@ -1010,20 +1016,23 @@ NSString * const GoodDetailRecommendGoodCellId = @"GoodDetailRecommendGoodCellId
 #pragma mark - UICollectionViewDataSource
 - (NSInteger)numberOfSectionsInCollectionView:(UICollectionView *)collectionView
 {
-    return 6;
+    return 7;
 }
 
 - (NSInteger)collectionView:(UICollectionView *)collectionView numberOfItemsInSection:(NSInteger)section
 {
-    if (section == 0 || section == 2 || section == 3) {
+    if (section == 0 || section == 3 || section == 4) {
         return 1;
     }else if (section == 1)
     {
         return self.commentDataArray.count;
-    }else if (section == 4)
+    }else if (section == 2)
+    {
+        return 0;
+    }else if (section == 5)
     {
         return self.shopGoodsArray.count;
-    }else if (section == 5)
+    }else if (section == 6)
     {
         return self.similarGoodArray.count;
     }
@@ -1045,20 +1054,24 @@ NSString * const GoodDetailRecommendGoodCellId = @"GoodDetailRecommendGoodCellId
         return cell;
     }else if (indexPath.section == 2)
     {
+        DRGoodGroupCollectionViewCell *cell = [collectionView dequeueReusableCellWithReuseIdentifier:GoodGroupId forIndexPath:indexPath];
+        return cell;
+    }else if (indexPath.section == 3)
+    {
         DRGoodShopMessageCollectionViewCell *cell = [collectionView dequeueReusableCellWithReuseIdentifier:GoodShopMessageId forIndexPath:indexPath];
         cell.store = self.goodModel.store;
         return cell;
-    }else if (indexPath.section == 3)
+    }else if (indexPath.section == 4)
     {
         UICollectionViewCell *cell = [collectionView dequeueReusableCellWithReuseIdentifier:WebViewCellId forIndexPath:indexPath];
         [cell addSubview:self.webView];
         return cell;
-    }else if (indexPath.section == 4)
+    }else if (indexPath.section == 5)
     {
         DRRecommendGoodCollectionViewCell *cell = [collectionView dequeueReusableCellWithReuseIdentifier:GoodDetailRecommendGoodCellId forIndexPath:indexPath];
         cell.model = self.shopGoodsArray[indexPath.item];
         return cell;
-    }else if (indexPath.section == 5)
+    }else if (indexPath.section == 6)
     {
         DRRecommendGoodCollectionViewCell *cell = [collectionView dequeueReusableCellWithReuseIdentifier:GoodDetailRecommendGoodCellId forIndexPath:indexPath];
         cell.model = self.similarGoodArray[indexPath.item];
@@ -1073,15 +1086,15 @@ NSString * const GoodDetailRecommendGoodCellId = @"GoodDetailRecommendGoodCellId
         DRGoodCommentCollectionReusableView *headerView = [collectionView dequeueReusableSupplementaryViewOfKind:kind withReuseIdentifier:GoodCommentId forIndexPath:indexPath];
         headerView.goodModel = self.goodModel;
         return headerView;
-    }else if (kind == UICollectionElementKindSectionHeader && ((indexPath.section == 3 && !DRStringIsEmpty(self.goodModel.detail)) || (indexPath.section == 4 && self.shopGoodsArray.count > 0)  || (indexPath.section == 5 && self.similarGoodArray.count > 0)))
+    }else if (kind == UICollectionElementKindSectionHeader && ((indexPath.section == 4 && !DRStringIsEmpty(self.goodModel.detail)) || (indexPath.section == 5 && self.shopGoodsArray.count > 0)  || (indexPath.section == 6 && self.similarGoodArray.count > 0)))
     {
         DRGoodTitleCollectionReusableView *headerView = [collectionView dequeueReusableSupplementaryViewOfKind:kind withReuseIdentifier:GoodTitleHeaderId forIndexPath:indexPath];
-        if (indexPath.section == 3 && !DRStringIsEmpty(self.goodModel.detail)) {
+        if (indexPath.section == 4 && !DRStringIsEmpty(self.goodModel.detail)) {
             headerView.title = @"—— 商品详情 ——";
-        }else if (indexPath.section == 4 && self.shopGoodsArray.count > 0)
+        }else if (indexPath.section == 5 && self.shopGoodsArray.count > 0)
         {
             headerView.title = @"—— 同店推荐 ——";
-        }else if (indexPath.section == 5 && self.similarGoodArray.count > 0)
+        }else if (indexPath.section == 6 && self.similarGoodArray.count > 0)
         {
             headerView.title = @"—— 同类优选 ——";
         }
@@ -1092,12 +1105,12 @@ NSString * const GoodDetailRecommendGoodCellId = @"GoodDetailRecommendGoodCellId
 
 - (void)collectionView:(UICollectionView *)collectionView didSelectItemAtIndexPath:(NSIndexPath *)indexPath
 {
-    if (indexPath.section == 4) {
+    if (indexPath.section == 5) {
         DRGoodDetailViewController * goodVC = [[DRGoodDetailViewController alloc] init];
         DRGoodModel * goodModel = self.shopGoodsArray[indexPath.item];
         goodVC.goodId = goodModel.id;
         [self.navigationController pushViewController:goodVC animated:YES];
-    }else if (indexPath.section == 5)
+    }else if (indexPath.section == 6)
     {
         DRGoodDetailViewController * goodVC = [[DRGoodDetailViewController alloc] init];
         DRGoodModel * goodModel = self.similarGoodArray[indexPath.item];
@@ -1165,6 +1178,7 @@ NSString * const GoodDetailRecommendGoodCellId = @"GoodDetailRecommendGoodCellId
     singleSpecificationView.delegate = self;
     [self.view addSubview:singleSpecificationView];
 }
+
 #pragma mark - 初始化
 - (NSArray *)commentDataArray
 {

@@ -215,6 +215,7 @@
         if (!DRObjectIsEmpty(returnGoodModel.specification)) {
             returnGoodVC.specificationId = returnGoodModel.specification.id;
         }
+        returnGoodVC.isSeller = YES;
         [self.navigationController pushViewController:returnGoodVC animated:YES];
     }
 }

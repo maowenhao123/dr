@@ -16,7 +16,7 @@
 @property (nonatomic, weak) UIImageView *goodImageView;//商品图片
 @property (nonatomic, weak) UILabel * titleLabel;
 @property (nonatomic, weak) UILabel * detailLabel;
-@property (nonatomic,strong) NSDictionary *typeDic;
+@property (nonatomic, strong) NSDictionary *typeDic;
 
 @end
 

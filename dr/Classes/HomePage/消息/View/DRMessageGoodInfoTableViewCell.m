@@ -18,6 +18,7 @@ static const CGFloat kCellHeight = 180.0f;
     self = [super initWithStyle:style reuseIdentifier:reuseIdentifier model:model];
     if (self) {
         self.avatarSize = 40;
+        self.avatarCornerRadius = 20;
         self.hasRead.hidden = YES;
         self.selectionStyle = UITableViewCellSelectionStyleNone;
     }

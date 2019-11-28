@@ -14,9 +14,11 @@
             symbolName = "*0x10938efd9">
             <Locations>
                <Location
+                  uuid = "2A76B2EA-4A75-44C7-9972-BA623C4B0259 - c0c38"
                   shouldBeEnabled = "Yes"
                   ignoreCount = "0"
                   continueAfterRunningActions = "No"
+                  moduleName = "dr"
                   usesParentBreakpointCondition = "Yes"
                   offsetFromSymbolStart = "0">
                </Location>

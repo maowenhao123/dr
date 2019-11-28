@@ -15,5 +15,6 @@
 @property (nonatomic,copy) NSString *returnGoodId;
 @property (nonatomic,copy) NSString *id;
 @property (nonatomic,copy) NSString *specificationId;
+@property (nonatomic,assign) BOOL isSeller;
 
 @end

@@ -106,7 +106,7 @@
 {
     _badge = badge;
     self.badgeView.hidden = badge == 0;
-    self.badgeView.text = [NSString stringWithFormat:@"%ld", _badge];
+    self.badgeView.text = [NSString stringWithFormat:@"%ld", (long)_badge];
 }
 
 @end

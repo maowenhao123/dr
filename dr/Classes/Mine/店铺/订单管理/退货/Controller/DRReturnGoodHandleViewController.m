@@ -7,10 +7,13 @@
 //
 
 #import "DRReturnGoodHandleViewController.h"
+#import "DRShipmentDetailViewController.h"
+#import "DRChatViewController.h"
 #import "DRShowMultipleImageView.h"
 #import "DRTextView.h"
 #import "DRReturnGoodModel.h"
 #import "XLPhotoBrowser.h"
+#import "DRIMTool.h"
 
 @interface DRReturnGoodHandleViewController ()<ShowMultipleImageViewDelegate, XLPhotoBrowserDatasource>
 
@@ -20,6 +23,7 @@
 @property (nonatomic,weak) UILabel * goodNameLabel;
 @property (nonatomic, weak) UILabel *goodSpecificationLabel;//商品规格
 @property (nonatomic,weak) UILabel * goodPriceLabel;
+@property (nonatomic,weak) UIButton *orderButton;
 @property (nonatomic, weak) UITextField * countTF;
 @property (nonatomic, weak) UITextField * moneyTF;
 @property (nonatomic, weak) DRTextView *detailTV;
@@ -36,9 +40,11 @@
 {
     [super viewDidLoad];
     self.title = @"退款处理";
+    self.view.backgroundColor = [UIColor whiteColor];
     [self getData];
     [self setupChilds];
 }
+
 - (void)getData
 {
     if (DRStringIsEmpty(self.returnGoodId)) {
@@ -46,18 +52,18 @@
     }
     
     NSDictionary *bodyDic = @{
-                              @"id":self.returnGoodId,
-                              };
+        @"id":self.returnGoodId,
+    };
     NSMutableDictionary *bodyDic_mu = [NSMutableDictionary dictionaryWithDictionary:bodyDic];
     if (!DRStringIsEmpty(self.specificationId)) {
         [bodyDic_mu setObject:self.specificationId forKey:@"specificationId"];
     }
-
+    
     NSDictionary *headDic = @{
-                              @"digest":[DRTool getDigestByBodyDic:bodyDic_mu],
-                              @"cmd":@"S28",
-                              @"userId":UserId,
-                              };
+        @"digest":[DRTool getDigestByBodyDic:bodyDic_mu],
+        @"cmd":@"S28",
+        @"userId":UserId,
+    };
     [[DRHttpTool shareInstance] postWithTarget:self headDic:headDic bodyDic:bodyDic_mu success:^(id json) {
         DRLog(@"%@",json);
         if (SUCCESS) {
@@ -72,12 +78,18 @@
         DRLog(@"error:%@",error);
     }];
 }
+
 - (void)setupChilds
 {
+    self.navigationItem.rightBarButtonItem = [[UIBarButtonItem alloc] initWithTitle:@"联系买家" style:UIBarButtonItemStylePlain target:self action:@selector(chat)];
+    
     //contentView
-    UIScrollView * contentView = [[UIScrollView alloc] initWithFrame:CGRectMake(0, 0, screenWidth, screenHeight - statusBarH - navBarH - 45)];
+    CGFloat bottomPadding = 0;
+    if (IsBangIPhone) {
+        bottomPadding = [DRTool getSafeAreaBottom];
+    }
+    UIScrollView * contentView = [[UIScrollView alloc] initWithFrame:CGRectMake(0, 0, screenWidth, screenHeight - statusBarH - navBarH - 45 - bottomPadding)];
     self.contentView = contentView;
-    contentView.backgroundColor = [UIColor whiteColor];
     [self.view addSubview:contentView];
     
     //订单状态
@@ -124,42 +136,61 @@
     goodPriceLabel.font = [UIFont systemFontOfSize:DRGetFontSize(24)];
     [contentView addSubview:goodPriceLabel];
     
-    //分割线
-    UIView * line1 = [[UIView alloc]initWithFrame:CGRectMake(0, CGRectGetMaxY(goodImageView.frame) + 7, screenWidth, 1)];
-    line1.backgroundColor = DRWhiteLineColor;
-    [contentView addSubview:line1];
+    //查看订单
+    UIButton *orderButton = [UIButton buttonWithType:UIButtonTypeCustom];
+    self.orderButton = orderButton;
+    [orderButton setTitle:@"订单详情" forState:UIControlStateNormal];
+    [orderButton setTitleColor:DRBlackTextColor forState:UIControlStateNormal];
+    orderButton.titleLabel.font = [UIFont systemFontOfSize:DRGetFontSize(24)];
+    [orderButton addTarget:self action:@selector(orderButtonDidClick) forControlEvents:UIControlEventTouchUpInside];
+    orderButton.layer.masksToBounds = YES;
+    orderButton.layer.cornerRadius = 4;
+    orderButton.layer.borderColor = DRGrayTextColor.CGColor;
+    orderButton.layer.borderWidth = 1;
+    [contentView addSubview:orderButton];
     
     NSArray * labelTitles = @[@"退款数量", @"退款总额"];
+    CGFloat maxY = CGRectGetMaxY(goodImageView.frame) + 7;
     for (int i = 0; i < labelTitles.count; i++) {
-        //选择退款原因
+        //分割线
+        if (i == 0) {
+            UIView * lineView = [[UIView alloc] initWithFrame:CGRectMake(0, maxY, screenWidth, 9)];
+            lineView.backgroundColor = DRBackgroundColor;
+            [contentView addSubview:lineView];
+            maxY = CGRectGetMaxY(lineView.frame);
+        }
+        
         UILabel * label = [[UILabel alloc] init];
+        label.tag = i;
         label.text = labelTitles[i];
         label.font = [UIFont systemFontOfSize:DRGetFontSize(28)];
-        label.textColor=DRBlackTextColor;
+        label.textColor = DRBlackTextColor;
         CGSize labelSize = [label.text sizeWithLabelFont:label.font];
-        label.frame = CGRectMake(DRMargin, CGRectGetMaxY(line1.frame) + DRCellH * i, labelSize.width, DRCellH);
+        label.frame = CGRectMake(DRMargin, maxY, labelSize.width, DRCellH);
         [contentView addSubview:label];
         
         UITextField * textField = [[UITextField alloc] init];
-        if (i == 0) {
+        if (i == 0)
+        {
             self.countTF = textField;
-        }else
+        }else if (i == 1)
         {
             self.moneyTF = textField;
         }
         CGFloat textFieldX = CGRectGetMaxX(label.frame) + DRMargin;
-        textField.frame = CGRectMake(textFieldX, CGRectGetMaxY(line1.frame) + DRCellH * i, screenWidth - textFieldX - DRMargin, DRCellH);
+        textField.frame = CGRectMake(textFieldX, maxY, screenWidth - textFieldX - DRMargin, DRCellH);
         textField.textColor = DRBlackTextColor;
         textField.textAlignment = NSTextAlignmentRight;
         textField.font = [UIFont systemFontOfSize:DRGetFontSize(28)];
         textField.tintColor = DRDefaultColor;
         textField.userInteractionEnabled = NO;
         [contentView addSubview:textField];
+        maxY = CGRectGetMaxY(label.frame);
         
         //分割线
-        UIView * line2 = [[UIView alloc]initWithFrame:CGRectMake(0, CGRectGetMaxY(line1.frame) + (DRCellH - 1) * (i + 1), screenWidth, 1)];
-        line2.backgroundColor = DRWhiteLineColor;
-        [contentView addSubview:line2];
+        UIView * line = [[UIView alloc]initWithFrame:CGRectMake(0, maxY, screenWidth, 1)];
+        line.backgroundColor = DRWhiteLineColor;
+        [contentView addSubview:line];
     }
     
     //退款说明
@@ -168,7 +199,7 @@
     detailLabel.textColor = DRBlackTextColor;
     detailLabel.font = [UIFont systemFontOfSize:DRGetFontSize(28)];
     CGSize detailLabelSize = [detailLabel.text sizeWithLabelFont:detailLabel.font];
-    detailLabel.frame = CGRectMake(DRMargin, 9 + CGRectGetMaxY(line1.frame) + 2 * DRCellH, detailLabelSize.width, detailLabelSize.height);
+    detailLabel.frame = CGRectMake(DRMargin, maxY + 9, detailLabelSize.width, detailLabelSize.height);
     [contentView addSubview:detailLabel];
     
     //退款描述
@@ -210,7 +241,7 @@
     memoLabel.textColor = DRBlackTextColor;
     memoLabel.font = [UIFont systemFontOfSize:DRGetFontSize(28)];
     CGSize memoLabelSize = [memoLabel.text sizeWithLabelFont:memoLabel.font];
-    memoLabel.frame = CGRectMake(DRMargin, CGRectGetMaxY(lineView.frame), memoLabelSize.width, 9 + memoLabelSize.height);
+    memoLabel.frame = CGRectMake(DRMargin, CGRectGetMaxY(lineView.frame) + 9, memoLabelSize.width, 9 + memoLabelSize.height);
     [memoView addSubview:memoLabel];
     
     //备注
@@ -228,13 +259,17 @@
     line4.backgroundColor = DRWhiteLineColor;
     [memoView addSubview:line4];
     
-    contentView.contentSize = CGSizeMake(screenWidth, CGRectGetMaxY(memoView.frame));    
+    contentView.contentSize = CGSizeMake(screenWidth, CGRectGetMaxY(memoView.frame));
+    
     //底部按钮
-    NSArray * buttonTitles = @[@"不同意",@"同意"];
+    UIView * buttonView = [[UIView alloc] initWithFrame:CGRectMake(0, contentView.height, screenWidth, 45)];
+    [self.view addSubview:buttonView];
+    
+    NSArray * buttonTitles = @[@"不同意", @"同意"];
     for (int i = 0; i < buttonTitles.count; i++) {
         UIButton * button = [UIButton buttonWithType:UIButtonTypeCustom];
         button.tag = i;
-        button.frame = CGRectMake(screenWidth / 2 * i, CGRectGetMaxY(contentView.frame), screenWidth / 2, 45);
+        button.frame = CGRectMake(buttonView.width / 2 * i, 0, buttonView.width / 2, buttonView.height);
         button.adjustsImageWhenHighlighted = NO;
         if (i == 0) {
             button.backgroundColor = [UIColor whiteColor];
@@ -247,13 +282,26 @@
         [button setTitle:buttonTitles[i] forState:UIControlStateNormal];
         button.titleLabel.font = [UIFont systemFontOfSize:DRGetFontSize(30)];
         [button addTarget:self action:@selector(buttonDidClick:) forControlEvents:UIControlEventTouchUpInside];
-        [self.view addSubview:button];
+        [buttonView addSubview:button];
     }
-    
-    UIView * line5 = [[UIView alloc] initWithFrame:CGRectMake(0, CGRectGetMaxY(contentView.frame), screenWidth, 1)];
-    line5.backgroundColor = DRWhiteLineColor;
-    [self.view addSubview:line5];
 }
+
+- (void)chat
+{
+    DRChatViewController *chatVC = [[DRChatViewController alloc] initWithConversationChatter:self.returnGoodModel.user.id conversationType:EMConversationTypeChat];
+    chatVC.title = self.returnGoodModel.user.nickName;
+    NSString * imageUrlStr = [NSString stringWithFormat:@"%@%@", baseUrl, self.returnGoodModel.user.headImg];
+    [DRIMTool saveUserProfileWithUsername:self.returnGoodModel.user.id forNickName:self.returnGoodModel.user.nickName avatarURLPath:imageUrlStr];
+    [self.navigationController pushViewController:chatVC animated:YES];
+}
+
+- (void)orderButtonDidClick
+{
+    DRShipmentDetailViewController * shipmentDetailVC = [[DRShipmentDetailViewController alloc] init];
+    shipmentDetailVC.orderId = self.returnGoodModel.orderId;
+    [self.navigationController pushViewController:shipmentDetailVC animated:YES];
+}
+
 - (void)setData
 {
     if ([self.returnGoodModel.status intValue] == 0) {
@@ -327,6 +375,8 @@
     CGSize goodPriceLabelSize = [self.goodPriceLabel.text sizeWithLabelFont:self.goodPriceLabel.font];
     CGFloat goodPriceLabelX = goodNameLabelX;
     self.goodPriceLabel.frame = CGRectMake(goodPriceLabelX, CGRectGetMaxY(self.goodImageView.frame) - 3 - goodPriceLabelSize.height, goodPriceLabelSize.width, goodPriceLabelSize.height);
+    self.orderButton.frame = CGRectMake(screenWidth - 70 - DRMargin, 0, 70, 25);
+    self.orderButton.centerY = self.goodPriceLabel.centerY;
     
     CGSize detailTVSize = [self.detailTV.text sizeWithFont:self.detailTV.font maxSize:CGSizeMake(self.detailTV.width, MAXFLOAT)];
     self.detailTV.height = detailTVSize.height + 2 * 9;
@@ -335,6 +385,7 @@
     self.memoView.y = CGRectGetMaxY(self.showImageView.frame) + 9;
     self.contentView.contentSize = CGSizeMake(screenWidth, CGRectGetMaxY(self.memoView.frame));
 }
+
 - (void)buttonDidClick:(UIButton *)button
 {
     if (DRStringIsEmpty(self.memoTV.text) && button.tag == 0)
@@ -352,10 +403,10 @@
     }
     
     NSDictionary * orderGoodsRefund_ = @{
-                                        @"id":self.returnGoodModel.id,
-                                        @"goodsId":self.returnGoodModel.goods.id,
-                                        @"status":status
-                                        };
+        @"id":self.returnGoodModel.id,
+        @"goodsId":self.returnGoodModel.goods.id,
+        @"status":status
+    };
     NSMutableDictionary *orderGoodsRefund = [NSMutableDictionary dictionaryWithDictionary:orderGoodsRefund_];
     if (!DRStringIsEmpty(self.memoTV.text)) {
         [orderGoodsRefund setObject:self.memoTV.text forKey:@"memo"];
@@ -364,14 +415,14 @@
         [orderGoodsRefund setObject:self.specificationId forKey:@"specificationId"];
     }
     NSDictionary *bodyDic = @{
-                              @"orderGoodsRefund":orderGoodsRefund
-                              };
+        @"orderGoodsRefund":orderGoodsRefund
+    };
     
     NSDictionary *headDic = @{
-                              @"digest":[DRTool getDigestByBodyDic:bodyDic],
-                              @"cmd":@"S27",
-                              @"userId":UserId,
-                              };
+        @"digest":[DRTool getDigestByBodyDic:bodyDic],
+        @"cmd":@"S27",
+        @"userId":UserId,
+    };
     [[DRHttpTool shareInstance] postWithHeadDic:headDic bodyDic:bodyDic success:^(id json) {
         DRLog(@"%@",json);
         if (SUCCESS) {
