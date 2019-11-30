@@ -11,7 +11,7 @@
  */
 
 #import "EaseChatBarMoreView.h"
-
+#import "UIButton+DR.h"
 #define CHAT_BUTTON_SIZE CGSizeMake(50,60)
 #define INSETS 10
 #define MOREVIEW_COL 4
@@ -97,22 +97,22 @@
     _photoButton.tag = MOREVIEW_BUTTON_TAG;
     [_scrollview addSubview:_photoButton];
     
-    _locationButton = [self btnWithImage:[UIImage imageNamed:@"EaseUIResource.bundle/chatBar_colorMore_location"]
-                        highlightedImage:[UIImage imageNamed:@"EaseUIResource.bundle/chatBar_colorMore_locationSelected"]
-                                   title:@"位置"];
-    _locationButton.accessibilityIdentifier = @"location";
-    [_locationButton setFrame:CGRectMake(insets * 2 + CHAT_BUTTON_SIZE.width, 10, CHAT_BUTTON_SIZE.width , CHAT_BUTTON_SIZE.height)];
-    [_locationButton addTarget:self action:@selector(locationAction) forControlEvents:UIControlEventTouchUpInside];
-    _locationButton.tag = MOREVIEW_BUTTON_TAG + 1;
-    [_scrollview addSubview:_locationButton];
+//    _locationButton = [self btnWithImage:[UIImage imageNamed:@"EaseUIResource.bundle/chatBar_colorMore_location"]
+//                        highlightedImage:[UIImage imageNamed:@"EaseUIResource.bundle/chatBar_colorMore_locationSelected"]
+//                                   title:@"位置"];
+//    _locationButton.accessibilityIdentifier = @"location";
+//    [_locationButton setFrame:CGRectMake(insets * 2 + CHAT_BUTTON_SIZE.width, 10, CHAT_BUTTON_SIZE.width , CHAT_BUTTON_SIZE.height)];
+//    [_locationButton addTarget:self action:@selector(locationAction) forControlEvents:UIControlEventTouchUpInside];
+//    _locationButton.tag = MOREVIEW_BUTTON_TAG + 1;
+//    [_scrollview addSubview:_locationButton];
     
     _takePicButton = [self btnWithImage:[UIImage imageNamed:@"EaseUIResource.bundle/chatBar_colorMore_camera"]
                        highlightedImage:[UIImage imageNamed:@"EaseUIResource.bundle/chatBar_colorMore_cameraSelected"]
                                   title:@"拍照"];
-    [_takePicButton setFrame:CGRectMake(insets * 3 + CHAT_BUTTON_SIZE.width * 2, 10, CHAT_BUTTON_SIZE.width , CHAT_BUTTON_SIZE.height)];
+    [_takePicButton setFrame:CGRectMake(insets * 2 + CHAT_BUTTON_SIZE.width, 10, CHAT_BUTTON_SIZE.width , CHAT_BUTTON_SIZE.height)];
     [_takePicButton addTarget:self action:@selector(takePicAction) forControlEvents:UIControlEventTouchUpInside];
     _takePicButton.tag = MOREVIEW_BUTTON_TAG + 2;
-    _maxIndex = 2;
+    _maxIndex = 1;
     [_scrollview addSubview:_takePicButton];
     
 //    _audioCallButton = [self btnWithImage:[UIImage imageNamed:@"EaseUIResource.bundle/chatBar_colorMore_audioCall"]
@@ -157,8 +157,9 @@
     [btn setTitle:aTitle forState:UIControlStateNormal];
     [btn setTitleColor:[UIColor blackColor] forState:UIControlStateNormal];
     btn.titleLabel.font = [UIFont systemFontOfSize: 12.0];
+//    [btn setButtonTitleWithImageAlignment:UIButtonTitleWithImageAlignmentUp imgTextDistance:2];
     btn.imageEdgeInsets = UIEdgeInsetsMake(-10, 0, 20, 0);
-    btn.titleEdgeInsets = UIEdgeInsetsMake(14, -60, -20, 0);
+    btn.titleEdgeInsets = UIEdgeInsetsMake(20, -CHAT_BUTTON_SIZE.width, -20, 0);
     return btn;
 }
 

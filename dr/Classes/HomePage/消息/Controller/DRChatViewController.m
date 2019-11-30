@@ -238,7 +238,7 @@
             didSelectMoreView:(EaseChatBarMoreView *)moreView
                       AtIndex:(NSInteger)index
 {
-    if (index == 3) {
+    if (index == 2) {
         DRMessageChooseGoodViewController * chooseGoodVC = [[DRMessageChooseGoodViewController alloc] init];
         chooseGoodVC.delegate = self;
         [self.navigationController pushViewController:chooseGoodVC animated:YES];
