@@ -54,13 +54,21 @@
 - (void)imagePickerController:(UIImagePickerController *)picker didFinishPickingMediaWithInfo:(NSDictionary<NSString *,id> *)info
 {
     UIImage *image = [info objectForKey:UIImagePickerControllerOriginalImage];
+    if (self.type == 0) {//0不编辑 1圆形 2方形
+        UIImage * croppedImage_ = [DRTool imageCompressionWithImage:image];
+        if (_delegate && [_delegate respondsToSelector:@selector(imageManageCropImage:)]) {
+            [_delegate imageManageCropImage:croppedImage_];
+        }
+        [picker dismissViewControllerAnimated:YES completion:nil];
+        return;
+    }
     RSKImageCropViewController *imageCropVC = [[RSKImageCropViewController alloc] initWithImage:image];
     imageCropVC.delegate = self;
-    if (self.isSquare) {
-        imageCropVC.cropMode=RSKImageCropModeSquare;
-    }else
+    if (self.type == 1) {
+        imageCropVC.cropMode = RSKImageCropModeSquare;
+    }else if (self.type == 2)
     {
-        imageCropVC.cropMode=RSKImageCropModeCircle;
+        imageCropVC.cropMode = RSKImageCropModeCircle;
     }
     [picker pushViewController:imageCropVC animated:YES];
 }

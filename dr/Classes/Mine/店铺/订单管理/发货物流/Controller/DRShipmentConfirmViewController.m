@@ -102,7 +102,6 @@
     NSDictionary * delivery = @{
                                 @"logisticsId":self.deliveryDic[@"id"],
                                 @"logisticsNum":self.numberTF.text,
-//                                @"orderDetailId":self.orderId,
                                 };
     
     NSArray * deliverys = @[delivery];

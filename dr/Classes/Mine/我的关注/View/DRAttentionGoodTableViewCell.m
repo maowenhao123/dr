@@ -42,7 +42,7 @@
 - (void)setupChildViews
 {
     //分割线
-    UIView * lineView = [[UIView alloc]initWithFrame:CGRectMake(0, 0, screenWidth, 9)];
+    UIView * lineView = [[UIView alloc]initWithFrame:CGRectMake(0, 0, screenWidth, 1)];
     lineView.backgroundColor = DRBackgroundColor;
     [self addSubview:lineView];
     
@@ -73,6 +73,7 @@
     goodPriceLabel.frame = CGRectMake(goodPriceLabelX, goodPriceLabelY, goodPriceLabelW, goodPriceLabelSize.height);
     [self addSubview:goodPriceLabel];
 }
+
 - (void)setJson:(id)json
 {
     _json = json;

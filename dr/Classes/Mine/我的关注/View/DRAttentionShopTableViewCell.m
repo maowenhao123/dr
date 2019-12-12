@@ -59,7 +59,7 @@
     [self addSubview:avatarImageView];
     
     //店名
-    UILabel * nameLabel = [[UILabel alloc] initWithFrame:CGRectMake(CGRectGetMaxX(avatarImageView.frame) + 5, CGRectGetMaxY(lineView.frame) + 7, 100, 20)];
+    UILabel * nameLabel = [[UILabel alloc] initWithFrame:CGRectMake(CGRectGetMaxX(avatarImageView.frame) + 5, CGRectGetMaxY(lineView.frame) + 7, 200, 20)];
     self.nameLabel = nameLabel;
     nameLabel.font = [UIFont systemFontOfSize:DRGetFontSize(26)];
     nameLabel.textColor = DRBlackTextColor;

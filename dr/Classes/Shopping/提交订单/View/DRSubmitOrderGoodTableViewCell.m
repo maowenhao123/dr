@@ -79,7 +79,7 @@
     goodPriceLabel.textColor = DRRedTextColor;
     goodPriceLabel.font = [UIFont systemFontOfSize:DRGetFontSize(26)];
     [self addSubview:goodPriceLabel];
-    
+   
     //分割线
     UIView * line = [[UIView alloc]initWithFrame:CGRectMake(0, 99, screenWidth, 1)];
     line.backgroundColor = DRWhiteLineColor;

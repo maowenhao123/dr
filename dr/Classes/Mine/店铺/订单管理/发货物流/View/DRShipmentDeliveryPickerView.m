@@ -69,13 +69,13 @@
 - (void)getData
 {
     NSDictionary *bodyDic = @{
-                              };
+    };
     
     NSDictionary *headDic = @{
-                              @"digest":[DRTool getDigestByBodyDic:bodyDic],
-                              @"cmd":@"P15",
-                              @"userId":UserId,
-                              };
+        @"digest":[DRTool getDigestByBodyDic:bodyDic],
+        @"cmd":@"P15",
+        @"userId":UserId,
+    };
     [[DRHttpTool shareInstance] postWithHeadDic:headDic bodyDic:bodyDic success:^(id json) {
         DRLog(@"%@",json);
         if (SUCCESS) {

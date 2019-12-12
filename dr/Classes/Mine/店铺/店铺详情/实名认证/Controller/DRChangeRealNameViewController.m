@@ -143,7 +143,7 @@
     self.addImageManage = [[DRAddImageManage alloc] init];
     self.addImageManage.viewController = self;
     self.addImageManage.delegate = self;
-    self.addImageManage.isSquare = YES;
+    self.addImageManage.type = 0;
     self.addImageManage.tag = ges.view.tag;
     [self.addImageManage addImage];
 }

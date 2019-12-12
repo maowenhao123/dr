@@ -10,7 +10,8 @@
 
 @implementation UITextField (DRTextFieldSelected)
 
-- (NSRange)selectedRange {
+- (NSRange)selectedRange
+{
     // 文首的位置
     UITextPosition *beginning = self.beginningOfDocument;
     

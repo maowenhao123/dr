@@ -122,7 +122,7 @@
                     storeOrder.detail = detail_;
                 }
                 NSDateComponents * components = [DRDateTool getDeltaDateToTimestampg:orderModel.createTime + 15 * 60 * 1000];
-                if (components.minute > 0 || components.second > 0 || status != 0) {
+                if (components.minute > 0 || components.second > 0 || orderModel.status != 0) {
                     [dataArray_ addObject:orderModel];
                 }
             }
@@ -236,7 +236,7 @@
 - (void)setupChilds
 {
     //添加btnTitle
-    self.btnTitles = @[@"全部",@"待付款",@"待发货",@"待收货",@"已完成"];
+    self.btnTitles = @[@"全部", @"待付款", @"待发货", @"待收货", @"已完成"];
     self.maxViewCount = 5;
     //添加tableview
     CGFloat scrollViewH = screenHeight - statusBarH - navBarH - topBtnH;
@@ -267,6 +267,7 @@
     [super configurationComplete];
     [super topBtnClick:self.topBtns[self.currentIndex]];
 }
+
 - (void)addSetDeadlineTimer
 {
     if(self.timer == nil)//空才创建
@@ -276,10 +277,12 @@
         [self.timer fire];
     }
 }
+
 - (void)setTimeLabelText
 {
     [[NSNotificationCenter defaultCenter] postNotificationName:@"OrderCountDownNotification" object:nil];
 }
+
 - (void)changeCurrentIndex:(int)currentIndex
 {
     NSMutableArray * dataArray_ = self.dataArray[self.currentIndex];
@@ -321,6 +324,7 @@
     //请求数据
     [self getData];
 }
+
 - (void)footerRefreshViewBeginRefreshing
 {
     if(self.currentIndex == 0)
@@ -354,6 +358,7 @@
     }
     [self getData];
 }
+
 #pragma mark - UITableViewDataSource
 - (NSInteger)numberOfSectionsInTableView:(UITableView *)tableView
 {
@@ -361,10 +366,12 @@
     [tableView showNoDataWithTitle:@"您还没有相关的订单" description:@"去买个多肉萌翻自己~" rowCount:dataArray_.count];
     return dataArray_.count;
 }
+
 - (NSInteger)tableView:(UITableView *)tableView numberOfRowsInSection:(NSInteger)section
 {
     return 1;
 }
+
 - (UITableViewCell *)tableView:(UITableView *)tableView cellForRowAtIndexPath:(NSIndexPath *)indexPath
 {
     NSMutableArray * dataArray_ = self.dataArray[self.currentIndex];
@@ -394,14 +401,17 @@
         }
     }
 }
+
 - (CGFloat)tableView:(UITableView *)tableView heightForRowAtIndexPath:(NSIndexPath *)indexPath
 {
     return 100;
 }
+
 - (CGFloat)tableView:(UITableView *)tableView heightForHeaderInSection:(NSInteger)section
 {
     return 9 + 35;
 }
+
 - (CGFloat)tableView:(UITableView *)tableView heightForFooterInSection:(NSInteger)section
 {
     NSMutableArray * dataArray_ = self.dataArray[self.currentIndex];

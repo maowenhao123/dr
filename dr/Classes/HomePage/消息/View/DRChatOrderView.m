@@ -24,6 +24,7 @@
         self.dataSource = self;
         self.separatorStyle = UITableViewCellSeparatorStyleNone;
         [self setEstimatedSectionHeaderHeightAndFooterHeight];
+        self.layer.masksToBounds = YES;
     }
     return self;
 }

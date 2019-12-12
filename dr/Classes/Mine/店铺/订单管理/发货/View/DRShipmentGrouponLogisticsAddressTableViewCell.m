@@ -18,6 +18,7 @@
 @property (nonatomic, weak) UILabel *logisticsNameLabel;//物流公司
 @property (nonatomic, weak) UILabel *logisticsNumLabel;//物流单号
 @property (nonatomic, weak) UILabel *mailTypeLabel;//配送方式
+@property (nonatomic, weak) UILabel *remarkLabel;//订单备注
 @property (nonatomic,weak) UIButton *logisticsButton;
 @property (nonatomic,strong) NSMutableArray *titleLabelArray;
 
@@ -56,7 +57,7 @@
     CGFloat labelPadding2 = 9;
     CGFloat orderLabelH = (175 - labelPadding1 * 2 - labelPadding2 * 6) / 7;
     CGFloat titleLabelW = 0;
-    NSArray * titles = @[@"联系人：", @"联系电话：", @"收货地址：", @"数量：", @"物流公司：", @"物流单号：",@"配送方式："];
+    NSArray * titles = @[@"联系人：", @"联系电话：", @"收货地址：", @"数量：", @"物流公司：", @"物流单号：",@"配送方式：", @"备注："];
     for (NSString *title in titles) {
         CGSize titleLabelSize = [title sizeWithLabelFont:[UIFont systemFontOfSize:DRGetFontSize(24)]];
         titleLabelW = titleLabelW < titleLabelSize.width ? titleLabelSize.width : titleLabelW;
@@ -94,6 +95,9 @@
         }else if (i == 6)
         {
             self.mailTypeLabel = label;
+        }else if (i == 7)
+        {
+            self.remarkLabel = label;
         }
         label.numberOfLines = 0;
         label.textColor = DRBlackTextColor;
@@ -146,6 +150,7 @@
         mailTypeStr = [NSString stringWithFormat:@"%@", mailTypes[[_deliveryModel.mailType intValue] - 1]];
     }
     self.mailTypeLabel.text = mailTypeStr;
+    self.remarkLabel.text = _deliveryModel.remarks;
     
     //frame
     CGSize titleLabelSize = [@"收货地址：" sizeWithLabelFont:[UIFont systemFontOfSize:DRGetFontSize(24)]];
@@ -158,6 +163,7 @@
     self.logisticsNameLabel.frame = CGRectMake(DRMargin + titleLabelW, CGRectGetMaxY(self.countLabel.frame) + DRMargin, _deliveryModel.logisticsNameSize.width, _deliveryModel.logisticsNameSize.height);
     self.logisticsNumLabel.frame = CGRectMake(DRMargin + titleLabelW, CGRectGetMaxY(self.logisticsNameLabel.frame) + DRMargin, _deliveryModel.logisticsNumSize.width, _deliveryModel.logisticsNumSize.height);
     self.mailTypeLabel.frame = CGRectMake(DRMargin + titleLabelW, CGRectGetMaxY(self.logisticsNumLabel.frame) + DRMargin, _deliveryModel.typeSize.width, _deliveryModel.typeSize.height);
+    self.remarkLabel.frame = CGRectMake(DRMargin + titleLabelW, CGRectGetMaxY(self.mailTypeLabel.frame) + DRMargin, _deliveryModel.remarkSize.width, _deliveryModel.remarkSize.height);
     
     for (int i = 0; i < self.titleLabelArray.count; i++) {
         UILabel * label = self.titleLabelArray[i];
@@ -181,6 +187,14 @@
         }else if (i == 6)
         {
             label.frame = CGRectMake(DRMargin, self.mailTypeLabel.y, titleLabelW, titleLabelSize.height);
+        }else if (i == 7)
+        {
+            if (DRStringIsEmpty(_deliveryModel.remarks)) {
+                label.hidden = YES;
+            }else
+            {
+                label.frame = CGRectMake(DRMargin, self.remarkLabel.y, titleLabelW, titleLabelSize.height);
+            }
         }
     }
     

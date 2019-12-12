@@ -24,13 +24,13 @@
 @property (nonatomic, weak) UITableView * tableView;
 @property (nonatomic, weak) DRSubmitOrderAddressView * addressView;
 @property (nonatomic, strong) DRChooseRedPacketView * redPacketView;
-@property (nonatomic,weak) UILabel *moneyLabel;
-@property (nonatomic,strong) NSArray * storeOrderList;
-@property (nonatomic,strong) DRAddressModel *addressModel;
-@property (nonatomic,assign) NSInteger couponNumber;
-@property (nonatomic,copy) NSString *couponUserId;
-@property (nonatomic,assign) double goodsPrice;
-@property (nonatomic,assign) double orderPrice;
+@property (nonatomic ,weak) UILabel *moneyLabel;
+@property (nonatomic, strong) NSArray * storeOrderList;
+@property (nonatomic, strong) DRAddressModel *addressModel;
+@property (nonatomic, assign) NSInteger couponNumber;
+@property (nonatomic, copy) NSString *couponUserId;
+@property (nonatomic, assign) double goodsPrice;
+@property (nonatomic, assign) double orderPrice;
 
 @end
 
@@ -62,9 +62,9 @@
         for (DRShoppingCarShopModel * carShopModel in self.dataArray) {
             for (DRShoppingCarGoodModel * carGoodModel in carShopModel.goodArr) {
                 NSDictionary * item = @{
-                                        @"purchaseCount":[NSNumber numberWithInt:carGoodModel.count],
-                                        @"goodsId":carGoodModel.goodModel.id,
-                                        };
+                    @"purchaseCount":[NSNumber numberWithInt:carGoodModel.count],
+                    @"goodsId":carGoodModel.goodModel.id,
+                };
                 NSMutableDictionary *item_mu = [NSMutableDictionary dictionaryWithDictionary:item];
                 if (!DRObjectIsEmpty(carGoodModel.specificationModel)) {
                     [item_mu setObject:carGoodModel.specificationModel.id forKey:@"specificationId"];
@@ -74,27 +74,27 @@
         }
         
         NSDictionary * order = @{
-                                 @"items":items,
-                                 };
+            @"items":items,
+        };
         
-       bodyDic = @{
-                   @"order":order,
-                   };
+        bodyDic = @{
+            @"order":order,
+        };
     }else
     {
         cmd = @"S33";
         DRShoppingCarShopModel * carShopModel = self.dataArray.firstObject;
         DRShoppingCarGoodModel * carGoodModel = carShopModel.goodArr.firstObject;
         bodyDic = @{
-                    @"purchaseCount":[NSNumber numberWithInt:carGoodModel.count],
-                    @"goodsId":carGoodModel.goodModel.id,
-                    };
+            @"purchaseCount":[NSNumber numberWithInt:carGoodModel.count],
+            @"goodsId":carGoodModel.goodModel.id,
+        };
     }
     NSDictionary *headDic = @{
-                              @"digest":[DRTool getDigestByBodyDic:bodyDic],
-                              @"cmd":cmd,
-                              @"userId":UserId,
-                              };
+        @"digest":[DRTool getDigestByBodyDic:bodyDic],
+        @"cmd":cmd,
+        @"userId":UserId,
+    };
     waitingView
     [[DRHttpTool shareInstance] postWithTarget:self headDic:headDic bodyDic:bodyDic success:^(id json) {
         DRLog(@"%@",json);
@@ -151,13 +151,13 @@
     }
     
     NSDictionary *bodyDic = @{
-                              };
+    };
     
     NSDictionary *headDic = @{
-                              @"digest":[DRTool getDigestByBodyDic:bodyDic],
-                              @"cmd":@"U08",
-                              @"userId":UserId,
-                              };
+        @"digest":[DRTool getDigestByBodyDic:bodyDic],
+        @"cmd":@"U08",
+        @"userId":UserId,
+    };
     [[DRHttpTool shareInstance] postWithHeadDic:headDic bodyDic:bodyDic success:^(id json) {
         DRLog(@"%@",json);
         if (SUCCESS) {
@@ -184,16 +184,16 @@
 - (void)getRedPacketData
 {
     NSDictionary *bodyDic = @{
-                              @"pageIndex":@(1),
-                              @"pageSize":@"100000",
-                              @"status":@(1),
-                              @"orderPrice":@(self.goodsPrice * 100),
-                              };
+        @"pageIndex":@(1),
+        @"pageSize":@"100000",
+        @"status":@(1),
+        @"orderPrice":@(self.goodsPrice * 100),
+    };
     NSDictionary *headDic = @{
-                              @"digest":[DRTool getDigestByBodyDic:bodyDic],
-                              @"cmd":@"C02",
-                              @"userId":UserId,
-                              };
+        @"digest":[DRTool getDigestByBodyDic:bodyDic],
+        @"cmd":@"C02",
+        @"userId":UserId,
+    };
     [[DRHttpTool shareInstance] postWithTarget:self headDic:headDic bodyDic:bodyDic success:^(id json) {
         DRLog(@"%@",json);
         if (SUCCESS) {
@@ -206,7 +206,7 @@
             }
             self.couponNumber = usableRedPacketList.count;
             if (self.couponNumber == 0) {
-                self.tableView.tableFooterView = [UIView new];
+                self.tableView.tableFooterView = nil;
             }else
             {
                 self.redPacketView.couponNumber = self.couponNumber;
@@ -221,22 +221,23 @@
 #pragma mark - 布局视图
 - (void)setupChilds
 {
-    UITableView * tableView = [[UITableView alloc] initWithFrame:CGRectMake(0, 0, screenWidth, screenHeight - statusBarH - navBarH - 45) style:UITableViewStyleGrouped];
+    UITableView * tableView = [[UITableView alloc] initWithFrame:CGRectMake(0, 0, screenWidth, screenHeight - statusBarH - navBarH - 45 - [DRTool getSafeAreaBottom]) style:UITableViewStyleGrouped];
     self.tableView = tableView;
     tableView.backgroundColor = DRBackgroundColor;
-    tableView.contentInset = UIEdgeInsetsMake(10, 0, 10, 0);
     tableView.delegate = self;
     tableView.dataSource = self;
     tableView.separatorStyle = UITableViewCellSeparatorStyleNone;
     [tableView setEstimatedSectionHeaderHeightAndFooterHeight];
     [self.view addSubview:tableView];
     
+    //地址
     DRSubmitOrderAddressView *addressView = [[DRSubmitOrderAddressView alloc] initWithFrame:CGRectMake(0, 0, screenWidth, 91)];
     self.addressView = addressView;
     [addressView addGestureRecognizer:[[UITapGestureRecognizer alloc] initWithTarget:self action:@selector(chooseAddress)]];
     tableView.tableHeaderView = addressView;
     
-    DRChooseRedPacketView *redPacketView = [[DRChooseRedPacketView alloc] initWithFrame:CGRectMake(0, 0, screenWidth, 9 + DRCellH)];
+    //红包
+    DRChooseRedPacketView *redPacketView = [[DRChooseRedPacketView alloc] initWithFrame:CGRectMake(0, 0, screenWidth, DRCellH + 2 * 9)];
     self.redPacketView = redPacketView;
     UITapGestureRecognizer * tap = [[UITapGestureRecognizer alloc] initWithTarget:self action:@selector(chooseRedPacketViewDidTap)];
     [redPacketView addGestureRecognizer:tap];
@@ -355,7 +356,12 @@
 
 - (CGFloat)tableView:(UITableView *)tableView heightForFooterInSection:(NSInteger)section
 {
-    return 37 + 37;
+    if (self.grouponType == 0) {
+         return 37 * 3;
+    }else//团购
+    {
+         return 37 * 2;
+    }
 }
 
 #pragma mark - 红包
@@ -393,6 +399,8 @@
 #pragma mark - 提交订单
 - (void)confirmButtonDidClick:(UIButton *)button
 {
+    [self.view endEditing:YES];
+    
     if((!UserId || !Token))//未登录
     {
         DRLoginViewController * loginVC = [[DRLoginViewController alloc] init];
@@ -405,31 +413,51 @@
         return;
     }
     
+    for (DRStoreOrderModel * storeOrderModel in self.storeOrderList) {
+        if (storeOrderModel.remarks.length > 100) {
+            [MBProgressHUD showError:@"备注内容最多可写100字"];
+            return;
+        }
+        if ([DRTool stringContainsEmoji:storeOrderModel.remarks]) {
+            [MBProgressHUD showError:@"请删掉特殊符号或表情后，再提交哦~"];
+            return;
+        }
+    }
+    
     NSDictionary *bodyDic_ = [NSDictionary dictionary];
     NSString * cmd;
     if (self.grouponType == 0) {
         cmd = @"S10";
         NSMutableArray * items = [NSMutableArray array];
+        NSMutableArray * storeOrderRemarksList = [NSMutableArray array];
         for (DRStoreOrderModel * storeOrderModel in self.storeOrderList) {
             for (DROrderItemDetailModel * orderItemDetailModel in storeOrderModel.detail) {
                 NSDictionary * item = @{
-                                        @"purchaseCount":orderItemDetailModel.purchaseCount,
-                                        @"goodsId":orderItemDetailModel.goods.id,
-                                        };
+                    @"purchaseCount":orderItemDetailModel.purchaseCount,
+                    @"goodsId":orderItemDetailModel.goods.id,
+                };
                 NSMutableDictionary *item_mu = [NSMutableDictionary dictionaryWithDictionary:item];
                 if (!DRObjectIsEmpty(orderItemDetailModel.specification)) {
                     [item_mu setObject:orderItemDetailModel.specification.id forKey:@"specificationId"];
                 }
                 [items addObject:item_mu];
             }
+            if (!DRStringIsEmpty(storeOrderModel.remarks)) {
+                NSDictionary * dict = @{
+                    @"storeId":storeOrderModel.storeId,
+                    @"remarks":storeOrderModel.remarks
+                };
+                [storeOrderRemarksList addObject:dict];
+            }
         }
         NSDictionary * order = @{
-                                 @"items":items,
-                                 @"addressId":self.addressModel.id,
-                                 };
+            @"items":items,
+            @"storeOrderRemarksList": storeOrderRemarksList,
+            @"addressId":self.addressModel.id,
+        };
         bodyDic_ = @{
-                     @"order":order,
-                     };
+            @"order":order,
+        };
     }else
     {
         DRStoreOrderModel * storeOrderModel =  self.storeOrderList.firstObject;
@@ -441,18 +469,18 @@
         {
             cmd = @"S04";
             bodyDic_ = @{
-                         @"purchaseCount":orderItemDetailModel.purchaseCount,
-                         @"groupId":self.groupId,
-                         @"addressId":self.addressModel.id,
-                         };
+                @"purchaseCount":orderItemDetailModel.purchaseCount,
+                @"groupId":self.groupId,
+                @"addressId":self.addressModel.id,
+            };
         }else//发起团购
         {
             cmd = @"S01";
             bodyDic_ = @{
-                         @"purchaseCount":orderItemDetailModel.purchaseCount,
-                         @"goodsId":orderItemDetailModel.goods.id,
-                         @"addressId":self.addressModel.id,
-                         };
+                @"purchaseCount":orderItemDetailModel.purchaseCount,
+                @"goodsId":orderItemDetailModel.goods.id,
+                @"addressId":self.addressModel.id,
+            };
         }
     }
     
@@ -463,10 +491,10 @@
     
     waitingView
     NSDictionary *headDic = @{
-                              @"digest":[DRTool getDigestByBodyDic:bodyDic],
-                              @"cmd":cmd,
-                              @"userId":UserId,
-                              };
+        @"digest":[DRTool getDigestByBodyDic:bodyDic],
+        @"cmd":cmd,
+        @"userId":UserId,
+    };
     [[DRHttpTool shareInstance] postWithHeadDic:headDic bodyDic:bodyDic success:^(id json) {
         DRLog(@"%@",json);
         [MBProgressHUD hideHUDForView:self.view];

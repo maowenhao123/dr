@@ -243,7 +243,7 @@
 - (CGFloat)tableView:(UITableView *)tableView heightForRowAtIndexPath:(NSIndexPath *)indexPath
 {
     if (self.currentIndex == 0) {
-        return 108 + 9;
+        return 104 + 1;
     }else if (self.currentIndex == 1)
     {
         CGFloat padding = 5;
@@ -251,7 +251,7 @@
         return 53 + padding * 2 + smallImageViewWH * 2 + 44;
     }else if (self.currentIndex == 2)
     {
-        return 9 + 50;
+        return 1 + 50;
     }
     return 100;
 }

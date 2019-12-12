@@ -7,11 +7,13 @@
 //
 
 #import "DRSubmitOrderGoodFooterView.h"
+#import "UITextField+DRTextFieldSelected.h"
 
-@interface DRSubmitOrderGoodFooterView ()
+@interface DRSubmitOrderGoodFooterView ()<UITextFieldDelegate>
 
 @property (nonatomic,weak) UILabel * mailTypeLabel;
 @property (nonatomic,weak) UILabel * moneyLabel;
+@property (nonatomic, weak) UITextField * remarkTF;
 
 @end
 
@@ -39,7 +41,7 @@
 
 - (void)setupChildViews
 {
-    UIView * footerView = [[UIView alloc] initWithFrame:CGRectMake(0, 0, screenWidth, 37 + 37)];
+    UIView * footerView = [[UIView alloc] initWithFrame:CGRectMake(0, 0, screenWidth, 37 * 3)];
     footerView.backgroundColor = [UIColor whiteColor];
     [self addSubview:footerView];
     
@@ -60,9 +62,9 @@
     [footerView addSubview:moneyLabel];
     
     //分割线
-    UIView * line = [[UIView alloc]initWithFrame:CGRectMake(0, 37, screenWidth, 1)];
-    line.backgroundColor = DRWhiteLineColor;
-    [footerView addSubview:line];
+    UIView * line1 = [[UIView alloc]initWithFrame:CGRectMake(0, 37, screenWidth, 1)];
+    line1.backgroundColor = DRWhiteLineColor;
+    [footerView addSubview:line1];
     
     //配送方式
     UILabel * mailTypeTitleLabel = [[UILabel alloc] init];
@@ -79,6 +81,53 @@
     mailTypeLabel.font = [UIFont systemFontOfSize:DRGetFontSize(26)];
     [footerView addSubview:mailTypeLabel];
     
+    //分割线
+    UIView * line2 = [[UIView alloc]initWithFrame:CGRectMake(0, 37 * 2, screenWidth, 1)];
+    line2.backgroundColor = DRWhiteLineColor;
+    [footerView addSubview:line2];
+    
+    UILabel * remarkLabel = [[UILabel alloc] init];
+    remarkLabel.text = @"备注";
+    remarkLabel.textColor = DRBlackTextColor;
+    remarkLabel.font = [UIFont systemFontOfSize:DRGetFontSize(26)];
+    CGSize remarkLabelSize = [remarkLabel.text sizeWithLabelFont:remarkLabel.font];
+    remarkLabel.frame = CGRectMake(DRMargin, 37 * 2, remarkLabelSize.width, 37);
+    [footerView addSubview:remarkLabel];
+    
+    UITextField * remarkTF = [[UITextField alloc] init];
+    self.remarkTF = remarkTF;
+    CGFloat remarkTFX = CGRectGetMaxX(remarkLabel.frame) + DRMargin;
+    remarkTF.frame = CGRectMake(remarkTFX, 37 * 2, screenWidth - remarkTFX - DRMargin - 7, 37);
+    remarkTF.textColor = DRBlackTextColor;
+    remarkTF.textAlignment = NSTextAlignmentRight;
+    remarkTF.font = [UIFont systemFontOfSize:DRGetFontSize(26)];
+    remarkTF.tintColor = DRDefaultColor;
+    remarkTF.placeholder = @"请输入备注";
+    remarkTF.delegate = self;
+    [footerView addSubview:remarkTF];
+    
+    [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(textFieldDidChange:) name:UITextFieldTextDidChangeNotification object:remarkTF];
+}
+
+- (void)textFieldDidEndEditing:(UITextField *)textField
+{
+    if (self.remarkTF == textField) {
+        self.storeOrderModel.remarks = textField.text;
+    }
+}
+
+- (void)textFieldDidChange:(NSNotification *)note
+{
+    UITextField *textField = note.object;
+    if (DRObjectIsEmpty(textField.markedTextRange)) {
+        NSMutableAttributedString * attStr = [[NSMutableAttributedString alloc] initWithString:textField.text];
+        [attStr addAttribute:NSForegroundColorAttributeName value:DRBlackTextColor range:NSMakeRange(0, attStr.length)];
+        int maxCount = 100;
+        if (attStr.length > maxCount) {
+            [attStr addAttribute:NSForegroundColorAttributeName value:DRRedTextColor range:NSMakeRange(maxCount, attStr.length - maxCount)];
+        }
+        textField.attributedText = attStr;
+    }
 }
 
 - (void)setStoreOrderModel:(DRStoreOrderModel *)storeOrderModel
@@ -114,6 +163,14 @@
         mailTypeLabelSize = [self.mailTypeLabel.text sizeWithLabelFont:self.mailTypeLabel.font];
     }
     self.mailTypeLabel.frame = CGRectMake(screenWidth - DRMargin - mailTypeLabelSize.width, 37, mailTypeLabelSize.width, 37);
+    
+    self.remarkTF.text = _storeOrderModel.remarks;
+}
+
+#pragma mark - dealloc
+- (void)dealloc
+{
+    [[NSNotificationCenter defaultCenter] removeObserver:self name:UITextFieldTextDidChangeNotification object:self.remarkTF];
 }
 
 

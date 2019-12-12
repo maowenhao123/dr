@@ -30,6 +30,7 @@
     }
     return  cell;
 }
+
 - (id)initWithStyle:(UITableViewCellStyle)style reuseIdentifier:(NSString *)reuseIdentifier
 {
     self = [super initWithStyle:style reuseIdentifier:reuseIdentifier];
@@ -38,15 +39,16 @@
     }
     return self;
 }
+
 - (void)setupChildViews
 {
     //分割线
-    UIView * lineView = [[UIView alloc]initWithFrame:CGRectMake(0, 0, screenWidth, 9)];
+    UIView * lineView = [[UIView alloc]initWithFrame:CGRectMake(0, 0, screenWidth, 1)];
     lineView.backgroundColor = DRBackgroundColor;
     [self addSubview:lineView];
     
     //头像
-    UIImageView * avatarImageView = [[UIImageView alloc] initWithFrame:CGRectMake(DRMargin, 9 + 7.5, 35, 35)];
+    UIImageView * avatarImageView = [[UIImageView alloc] initWithFrame:CGRectMake(DRMargin, CGRectGetMaxY(lineView.frame) + 7.5, 35, 35)];
     self.avatarImageView = avatarImageView;
     avatarImageView.layer.masksToBounds = YES;
     avatarImageView.layer.cornerRadius = avatarImageView.width / 2;
@@ -61,7 +63,7 @@
 
     //取消关注
     UIButton * cancelButton = [UIButton buttonWithType:UIButtonTypeCustom];
-    cancelButton.frame = CGRectMake(screenWidth - DRMargin - 70, 9 + (50 - 27) / 2, 70, 27);
+    cancelButton.frame = CGRectMake(screenWidth - DRMargin - 70, CGRectGetMaxY(lineView.frame) + (50 - 27) / 2, 70, 27);
     [cancelButton setTitle:@"取消关注" forState:UIControlStateNormal];
     [cancelButton setTitleColor:DRBlackTextColor forState:UIControlStateNormal];
     cancelButton.titleLabel.font = [UIFont systemFontOfSize:DRGetFontSize(24)];
@@ -72,12 +74,14 @@
     [cancelButton addTarget:self action:@selector(cancelButtonDidClick:) forControlEvents:UIControlEventTouchUpInside];
     [self addSubview:cancelButton];
 }
+
 - (void)cancelButtonDidClick:(UIButton *)button
 {
     if (_delegate && [_delegate respondsToSelector:@selector(attentionShowTableViewCell:cancelAttentionButtonDidClick:)]) {
         [_delegate attentionShowTableViewCell:self cancelAttentionButtonDidClick:button];
     }
 }
+
 - (void)setJson:(id)json
 {
     _json = json;

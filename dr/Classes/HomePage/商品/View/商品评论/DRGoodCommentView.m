@@ -31,7 +31,12 @@
 }
 
 - (void)setupChildViews
-{    
+{
+    //分割线
+    UIView * line = [[UIView alloc]initWithFrame:CGRectMake(0, 0, screenWidth, 1)];
+    line.backgroundColor = DRWhiteLineColor;
+    [self addSubview:line];
+
     //头像
     UIImageView * avatarImageView = [[UIImageView alloc] initWithFrame:CGRectMake(DRMargin, 10, 36, 36)];
     self.avatarImageView = avatarImageView;

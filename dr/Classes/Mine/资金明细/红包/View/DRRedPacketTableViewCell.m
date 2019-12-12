@@ -133,7 +133,7 @@
     
     //时间
     NSDate *date = [NSDate dateWithTimeIntervalSince1970: _redPacketModel.couponUser.useEndTime / 1000];
-    NSString * endTimekStr = [date stringWithFormat:@"yyyy-MM-dd"];
+    NSString * endTimekStr = [date stringWithFormat:@"yyyy-MM-dd HH:mm:ss"];
     self.timeLabel.text = [NSString stringWithFormat:@"有效期:%@", endTimekStr];
 }
 

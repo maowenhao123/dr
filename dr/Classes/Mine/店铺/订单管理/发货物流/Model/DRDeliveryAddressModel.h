@@ -20,6 +20,8 @@
 @property (nonatomic,copy) NSString *logisticsNum;//快递号
 @property (nonatomic,copy) NSString *groupId;//团购订单号，只有团购订单才有
 @property (nonatomic,strong) NSNumber *freight;
+@property (nonatomic,copy) NSString *remarks;
+@property (nonatomic,strong) NSNumber *status;
 
 //自定义
 @property (nonatomic,strong) NSDictionary *deliveryDic;
@@ -27,8 +29,10 @@
 @property (nonatomic,assign) CGSize phoneSize;
 @property (nonatomic,assign) CGSize addressSize;
 @property (nonatomic,assign) CGSize typeSize;
+@property (nonatomic,assign) CGSize remarkSize;
 @property (nonatomic,assign) CGSize countSize;
 @property (nonatomic,assign) CGSize logisticsNameSize;
 @property (nonatomic,assign) CGSize logisticsNumSize;
+@property (nonatomic,assign) CGFloat cellH;
 
 @end

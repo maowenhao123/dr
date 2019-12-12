@@ -18,8 +18,8 @@
 @interface DRAddImageManage : NSObject
 
 @property (nonatomic, strong) UIViewController * viewController;
-@property (nonatomic,assign) BOOL isSquare;
-@property (nonatomic,assign) NSInteger tag;
+@property (nonatomic, assign) NSInteger type;//0不编辑 1圆形 2方形
+@property (nonatomic, assign) NSInteger tag;
 
 - (void)addImage;
 

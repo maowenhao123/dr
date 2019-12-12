@@ -13,7 +13,10 @@
 
 @property (nonatomic, weak) UILabel *orderNoLabel;//订单编号
 @property (nonatomic,weak) UIButton *numberButton;
+@property (nonatomic,weak) UIView * orderView;
 @property (nonatomic, weak) UILabel *orderTimeLabel;//下单时间
+@property (nonatomic, weak) UILabel *orderRemarkLabel;//下单备注
+@property (nonatomic,weak) UIView * moneyView;
 @property (nonatomic, weak) UILabel *goodMoneyLabel;//商品金额
 @property (nonatomic,weak) UIView * redPacketMoneyView;//红包抵用
 @property (nonatomic,weak) UILabel * redPacketMoneyLabel;
@@ -44,13 +47,14 @@
     
     //订单信息
     UIView * orderView = [[UIView alloc] initWithFrame:CGRectMake(0, CGRectGetMaxY(lineView1.frame), screenWidth, 1)];
+    self.orderView = orderView;
     orderView.backgroundColor = [UIColor whiteColor];
     [self addSubview:orderView];
     
     CGFloat labelPadding1 = 12;
     CGFloat labelPadding2 = 8;
     CGFloat orderLabelH = [UIFont systemFontOfSize:DRGetFontSize(24)].lineHeight;
-    for (int i = 0; i < 2; i++) {
+    for (int i = 0; i < 3; i++) {
         UILabel * orderLabel = [[UILabel alloc] initWithFrame:CGRectMake(DRMargin, labelPadding1 + (labelPadding2 + orderLabelH) * i, screenWidth - 2 * DRMargin, orderLabelH)];
         if (i == 0) {
             self.orderNoLabel = orderLabel;
@@ -59,8 +63,13 @@
         {
             self.orderTimeLabel = orderLabel;
             orderLabel.text = @"下单时间：";
+        }else if (i == 2)
+        {
+            self.orderRemarkLabel = orderLabel;
+            orderLabel.text = @"备注：";
         }
         orderLabel.textColor = DRGrayTextColor;
+        orderLabel.numberOfLines = 0;
         orderLabel.font = [UIFont systemFontOfSize:DRGetFontSize(24)];
         [orderView addSubview:orderLabel];
         
@@ -79,37 +88,37 @@
     copyButton.layer.borderWidth = 1;
     [orderView addSubview:copyButton];
     
-    //分割线
-    UIView * lineView2 = [[UIView alloc]initWithFrame:CGRectMake(0, CGRectGetMaxY(orderView.frame), screenWidth, 9)];
-    lineView2.backgroundColor = DRBackgroundColor;
-    [self addSubview:lineView2];
+    //金额
+    UIView * moneyView = [[UIView alloc] initWithFrame:CGRectMake(0, CGRectGetMaxY(orderView.frame), screenWidth, 1)];
+    self.moneyView = moneyView;
+    moneyView.backgroundColor = [UIColor whiteColor];
+    [self addSubview:moneyView];
     
-    //商品金额
-    UIView * goodMoneyView = [[UIView alloc] initWithFrame:CGRectMake(0, CGRectGetMaxY(lineView2.frame), screenWidth, 35)];
-    goodMoneyView.backgroundColor = [UIColor whiteColor];
-    [self addSubview:goodMoneyView];
+    //分割线
+    UIView * lineView2 = [[UIView alloc]initWithFrame:CGRectMake(0, 0, screenWidth, 9)];
+    lineView2.backgroundColor = DRBackgroundColor;
+    [moneyView addSubview:lineView2];
     
     UILabel * goodMoneyTitleLabel = [[UILabel alloc] init];
     goodMoneyTitleLabel.text = @"商品金额";
     goodMoneyTitleLabel.textColor = DRBlackTextColor;
     goodMoneyTitleLabel.font = [UIFont systemFontOfSize:DRGetFontSize(24)];
     CGSize goodMoneyTitleLabelSize = [goodMoneyTitleLabel.text sizeWithLabelFont:goodMoneyTitleLabel.font];
-    goodMoneyTitleLabel.frame = CGRectMake(DRMargin, 0, goodMoneyTitleLabelSize.width, goodMoneyView.height);
-    [goodMoneyView addSubview:goodMoneyTitleLabel];
+    goodMoneyTitleLabel.frame = CGRectMake(DRMargin, CGRectGetMaxY(lineView2.frame), goodMoneyTitleLabelSize.width, 35);
+    [moneyView addSubview:goodMoneyTitleLabel];
     
-    UILabel * goodMoneyLabel = [[UILabel alloc] initWithFrame:CGRectMake(CGRectGetMaxX(goodMoneyTitleLabel.frame) + DRMargin, 0, screenWidth - 2 * DRMargin - CGRectGetMaxX(goodMoneyTitleLabel.frame), goodMoneyView.height)];
+    UILabel * goodMoneyLabel = [[UILabel alloc] initWithFrame:CGRectMake(CGRectGetMaxX(goodMoneyTitleLabel.frame) + DRMargin, CGRectGetMaxY(lineView2.frame), screenWidth - 2 * DRMargin - CGRectGetMaxX(goodMoneyTitleLabel.frame), 35)];
     self.goodMoneyLabel = goodMoneyLabel;
     goodMoneyLabel.textColor = DRBlackTextColor;
     goodMoneyLabel.font = [UIFont systemFontOfSize:DRGetFontSize(24)];
     goodMoneyLabel.textAlignment = NSTextAlignmentRight;
-    [goodMoneyView addSubview:goodMoneyLabel];
+    [moneyView addSubview:goodMoneyLabel];
     
     //红包抵用
-    UIView * redPacketMoneyView = [[UIView alloc] initWithFrame:CGRectMake(0, CGRectGetMaxY(goodMoneyView.frame), screenWidth, 0)];
+    UIView * redPacketMoneyView = [[UIView alloc] initWithFrame:CGRectMake(0, CGRectGetMaxY(goodMoneyTitleLabel.frame), screenWidth, 0)];
     self.redPacketMoneyView = redPacketMoneyView;
-    redPacketMoneyView.backgroundColor = [UIColor whiteColor];
     redPacketMoneyView.hidden = YES;
-    [self addSubview:redPacketMoneyView];
+    [moneyView addSubview:redPacketMoneyView];
     
     UIView * redPacketMoneyLine = [[UIView alloc] initWithFrame:CGRectMake(0, 0, screenWidth, 1)];
     redPacketMoneyLine.backgroundColor = DRWhiteLineColor;
@@ -133,8 +142,7 @@
     //运费
     UIView * mailmentView = [[UIView alloc] initWithFrame:CGRectMake(0, CGRectGetMaxY(redPacketMoneyView.frame), screenWidth, 35)];
     self.mailmentView = mailmentView;
-    mailmentView.backgroundColor = [UIColor whiteColor];
-    [self addSubview:mailmentView];
+    [moneyView addSubview:mailmentView];
     
     UIView * mailmentLine = [[UIView alloc] initWithFrame:CGRectMake(0, 0, screenWidth, 1)];
     mailmentLine.backgroundColor = DRWhiteLineColor;
@@ -158,8 +166,7 @@
     //总金额
     UIView * allMoneyView = [[UIView alloc] initWithFrame:CGRectMake(0, CGRectGetMaxY(mailmentView.frame), screenWidth, 37)];
     self.allMoneyView = allMoneyView;
-    allMoneyView.backgroundColor = [UIColor whiteColor];
-    [self addSubview:allMoneyView];
+    [moneyView addSubview:allMoneyView];
     
     UIView * allMoneyLine = [[UIView alloc] initWithFrame:CGRectMake(0, 0, screenWidth, 1)];
     allMoneyLine.backgroundColor = DRWhiteLineColor;
@@ -180,7 +187,8 @@
     allmoneyLabel.textAlignment = NSTextAlignmentRight;
     [allMoneyView addSubview:allmoneyLabel];
     
-    self.height = CGRectGetMaxY(allMoneyView.frame) + 9;
+    moneyView.height = CGRectGetMaxY(allMoneyView.frame);
+    self.height = CGRectGetMaxY(moneyView.frame) + 9;
 }
 
 - (void)setOrderModel:(DROrderModel *)orderModel
@@ -195,7 +203,24 @@
     self.numberButton.frame = CGRectMake(CGRectGetMaxX(self.orderNoLabel.frame) + 5, 0, copyButtonW, copyButtonH);
     self.numberButton.centerY = self.orderNoLabel.centerY;
     self.orderTimeLabel.text = [NSString stringWithFormat:@"下单时间：%@",[DRDateTool getTimeByTimestamp:_orderModel.createTime format:@"yyyy-MM-dd HH:mm:ss"]];
-
+    NSString *remarks = @"";
+    DRStoreOrderModel * storeOrder = _orderModel.storeOrders.firstObject;
+    if (!DRObjectIsEmpty(storeOrder)) {
+        remarks = storeOrder.remarks;
+    }
+    if (DRStringIsEmpty(remarks)) {
+        self.orderRemarkLabel.hidden = YES;
+        self.orderView.height = CGRectGetMaxY(self.orderTimeLabel.frame) + 12;
+    }else
+    {
+        self.orderRemarkLabel.hidden = NO;
+        self.orderRemarkLabel.text = [NSString stringWithFormat:@"备注：%@", remarks];
+        CGSize orderRemarkLabelSize = [self.orderRemarkLabel.text sizeWithFont:self.orderRemarkLabel.font maxSize:CGSizeMake(self.orderRemarkLabel.width, MAXFLOAT)];
+        self.orderRemarkLabel.height = orderRemarkLabelSize.height;
+        self.orderView.height = CGRectGetMaxY(self.orderRemarkLabel.frame) + 12;
+    }
+    self.moneyView.y = CGRectGetMaxY(self.orderView.frame);
+    
     NSInteger goodCount = 0;
     for (DRStoreOrderModel * storeOrder in _orderModel.storeOrders) {
         for (DROrderItemDetailModel *orderItemDetailModel in storeOrder.detail) {
@@ -256,7 +281,8 @@
     self.allMoneyView.y = CGRectGetMaxY(self.mailmentView.frame);
     self.allMoneyLabel.text = [NSString stringWithFormat:@"¥%@", [DRTool formatFloat:[_orderModel.amountPayable doubleValue] / 100]];
     
-    self.height = CGRectGetMaxY(self.allMoneyView.frame) + 9;
+    self.moneyView.height = CGRectGetMaxY(self.allMoneyView.frame);
+    self.height = CGRectGetMaxY(self.moneyView.frame) + 9;
     
 }
 

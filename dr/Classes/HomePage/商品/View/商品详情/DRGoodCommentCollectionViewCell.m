@@ -29,12 +29,6 @@
 
 - (void)setupChildViews
 {
-    //分割线
-    UIView * line = [[UIView alloc]initWithFrame:CGRectMake(0, 0, screenWidth, 1)];
-    self.line = line;
-    line.backgroundColor = DRWhiteLineColor;
-    [self addSubview:line];
-    
     DRGoodCommentView * goodCommentView = [[DRGoodCommentView alloc] initWithFrame:CGRectMake(0, 0, screenWidth, 0)];
     self.goodCommentView = goodCommentView;
     [self addSubview:goodCommentView];

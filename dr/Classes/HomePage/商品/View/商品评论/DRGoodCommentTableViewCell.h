@@ -15,6 +15,4 @@
 
 @property (nonatomic, strong) DRGoodCommentModel * model;
 
-@property (nonatomic, weak) UIView * line;
-
 @end

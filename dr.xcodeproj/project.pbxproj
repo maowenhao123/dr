@@ -14,9 +14,9 @@
 		1D0DB5BB22E845D1008E7B97 /* DRAddSpecificationViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 1D0DB5BA22E845D1008E7B97 /* DRAddSpecificationViewController.m */; };
 		1D0DB5BE22E845FB008E7B97 /* DRSpecificationTableViewCell.m in Sources */ = {isa = PBXBuildFile; fileRef = 1D0DB5BD22E845FB008E7B97 /* DRSpecificationTableViewCell.m */; };
 		1D0DB5C122E84FF5008E7B97 /* DRGoodSpecificationModel.m in Sources */ = {isa = PBXBuildFile; fileRef = 1D0DB5BF22E84FF5008E7B97 /* DRGoodSpecificationModel.m */; };
+		1D0F169823965FAC003F0F26 /* HyphenateLite.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 1D0F169723965FAB003F0F26 /* HyphenateLite.framework */; };
+		1D0F169923965FB3003F0F26 /* HyphenateLite.framework in Embed Frameworks */ = {isa = PBXBuildFile; fileRef = 1D0F169723965FAB003F0F26 /* HyphenateLite.framework */; settings = {ATTRIBUTES = (CodeSignOnCopy, RemoveHeadersOnCopy, ); }; };
 		1D0F3D8E23695A5000EDA647 /* DRShoppingCarCache.m in Sources */ = {isa = PBXBuildFile; fileRef = 1D0F3D8D23695A5000EDA647 /* DRShoppingCarCache.m */; };
-		1D6FA78C238F55A600716A11 /* HyphenateLite.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 1D6FA78B238F55A600716A11 /* HyphenateLite.framework */; };
-		1D6FA78D238F55AD00716A11 /* HyphenateLite.framework in Embed Frameworks */ = {isa = PBXBuildFile; fileRef = 1D6FA78B238F55A600716A11 /* HyphenateLite.framework */; settings = {ATTRIBUTES = (CodeSignOnCopy, RemoveHeadersOnCopy, ); }; };
 		1D7BDF8423700AA60015CD8E /* DRSeckillGoodModel.m in Sources */ = {isa = PBXBuildFile; fileRef = 1D7BDF8323700AA60015CD8E /* DRSeckillGoodModel.m */; };
 		1D7BDF8723700B650015CD8E /* DRChooseGoodViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 1D7BDF8623700B650015CD8E /* DRChooseGoodViewController.m */; };
 		1D7BDF8A23700B980015CD8E /* DRChooseGoodTableViewCell.m in Sources */ = {isa = PBXBuildFile; fileRef = 1D7BDF8923700B980015CD8E /* DRChooseGoodTableViewCell.m */; };
@@ -696,7 +696,7 @@
 			dstPath = "";
 			dstSubfolderSpec = 10;
 			files = (
-				1D6FA78D238F55AD00716A11 /* HyphenateLite.framework in Embed Frameworks */,
+				1D0F169923965FB3003F0F26 /* HyphenateLite.framework in Embed Frameworks */,
 			);
 			name = "Embed Frameworks";
 			runOnlyForDeploymentPostprocessing = 0;
@@ -718,9 +718,9 @@
 		1D0DB5BD22E845FB008E7B97 /* DRSpecificationTableViewCell.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = DRSpecificationTableViewCell.m; sourceTree = "<group>"; };
 		1D0DB5BF22E84FF5008E7B97 /* DRGoodSpecificationModel.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = DRGoodSpecificationModel.m; sourceTree = "<group>"; };
 		1D0DB5C022E84FF5008E7B97 /* DRGoodSpecificationModel.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = DRGoodSpecificationModel.h; sourceTree = "<group>"; };
+		1D0F169723965FAB003F0F26 /* HyphenateLite.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; path = HyphenateLite.framework; sourceTree = "<group>"; };
 		1D0F3D8C23695A5000EDA647 /* DRShoppingCarCache.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = DRShoppingCarCache.h; sourceTree = "<group>"; };
 		1D0F3D8D23695A5000EDA647 /* DRShoppingCarCache.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = DRShoppingCarCache.m; sourceTree = "<group>"; };
-		1D6FA78B238F55A600716A11 /* HyphenateLite.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; path = HyphenateLite.framework; sourceTree = "<group>"; };
 		1D76804722DC0A72007C1154 /* HealthKit.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = HealthKit.framework; path = System/Library/Frameworks/HealthKit.framework; sourceTree = SDKROOT; };
 		1D7BDF8223700AA60015CD8E /* DRSeckillGoodModel.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = DRSeckillGoodModel.h; sourceTree = "<group>"; };
 		1D7BDF8323700AA60015CD8E /* DRSeckillGoodModel.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = DRSeckillGoodModel.m; sourceTree = "<group>"; };
@@ -2056,7 +2056,7 @@
 				AAA9284F1F91A5E400C52510 /* CoreFoundation.framework in Frameworks */,
 				AAA2C82F1F17D20D0046A335 /* libSocialQQ.a in Frameworks */,
 				AAADEAAC1FD77C9F007BD4AD /* libMagicWindowSDK.a in Frameworks */,
-				1D6FA78C238F55A600716A11 /* HyphenateLite.framework in Frameworks */,
+				1D0F169823965FAC003F0F26 /* HyphenateLite.framework in Frameworks */,
 				AA89127B1EFA6B3F0038EB2F /* CoreMotion.framework in Frameworks */,
 				AA2643581FC566BF000474F7 /* UMMobClick.framework in Frameworks */,
 				AA8912781EFA6A870038EB2F /* libcrypto.a in Frameworks */,
@@ -2936,7 +2936,7 @@
 		AA27E43921B7A4FA0067F72B /* HyphenateSDK */ = {
 			isa = PBXGroup;
 			children = (
-				1D6FA78B238F55A600716A11 /* HyphenateLite.framework */,
+				1D0F169723965FAB003F0F26 /* HyphenateLite.framework */,
 			);
 			path = HyphenateSDK;
 			sourceTree = "<group>";
@@ -6959,7 +6959,7 @@
 				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "iPhone Distribution";
 				CODE_SIGN_INJECT_BASE_ENTITLEMENTS = YES;
 				CODE_SIGN_STYLE = Manual;
-				CURRENT_PROJECT_VERSION = 1.4.2;
+				CURRENT_PROJECT_VERSION = 1.4.8;
 				DEVELOPMENT_ASSET_PATHS = "";
 				DEVELOPMENT_TEAM = BT38JUEXT9;
 				ENABLE_BITCODE = NO;
@@ -7003,7 +7003,7 @@
 					"$(PROJECT_DIR)/dr/Classes/Other/Lib/EaseUI/EMUIKit/3rdparty/DeviceHelper/VoiceConvert/opencore-amrwb",
 					"$(PROJECT_DIR)/dr/Classes/Other/Lib/EaseUI/EMUIKit/3rdparty/DeviceHelper/VoiceConvert/opencore-amrnb",
 				);
-				MARKETING_VERSION = 1.4.2;
+				MARKETING_VERSION = 1.4.8;
 				OTHER_LDFLAGS = "-ObjC";
 				OTHER_LIBTOOLFLAGS = "";
 				PRODUCT_BUNDLE_IDENTIFIER = com.lottery.dr;
@@ -7156,7 +7156,7 @@
 				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "iPhone Developer";
 				CODE_SIGN_INJECT_BASE_ENTITLEMENTS = YES;
 				CODE_SIGN_STYLE = Automatic;
-				CURRENT_PROJECT_VERSION = 1.4.2;
+				CURRENT_PROJECT_VERSION = 1.4.8;
 				DEVELOPMENT_ASSET_PATHS = "";
 				DEVELOPMENT_TEAM = BT38JUEXT9;
 				ENABLE_BITCODE = NO;
@@ -7200,7 +7200,7 @@
 					"$(PROJECT_DIR)/dr/Classes/Other/Lib/EaseUI/EMUIKit/3rdparty/DeviceHelper/VoiceConvert/opencore-amrwb",
 					"$(PROJECT_DIR)/dr/Classes/Other/Lib/EaseUI/EMUIKit/3rdparty/DeviceHelper/VoiceConvert/opencore-amrnb",
 				);
-				MARKETING_VERSION = 1.4.2;
+				MARKETING_VERSION = 1.4.8;
 				OTHER_LDFLAGS = "-ObjC";
 				OTHER_LIBTOOLFLAGS = "";
 				PRODUCT_BUNDLE_IDENTIFIER = com.lottery.dr;
@@ -7222,7 +7222,7 @@
 				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "iPhone Distribution";
 				CODE_SIGN_INJECT_BASE_ENTITLEMENTS = YES;
 				CODE_SIGN_STYLE = Manual;
-				CURRENT_PROJECT_VERSION = 1.4.2;
+				CURRENT_PROJECT_VERSION = 1.4.8;
 				DEVELOPMENT_ASSET_PATHS = "";
 				DEVELOPMENT_TEAM = BT38JUEXT9;
 				ENABLE_BITCODE = NO;
@@ -7266,13 +7266,13 @@
 					"$(PROJECT_DIR)/dr/Classes/Other/Lib/EaseUI/EMUIKit/3rdparty/DeviceHelper/VoiceConvert/opencore-amrwb",
 					"$(PROJECT_DIR)/dr/Classes/Other/Lib/EaseUI/EMUIKit/3rdparty/DeviceHelper/VoiceConvert/opencore-amrnb",
 				);
-				MARKETING_VERSION = 1.4.2;
+				MARKETING_VERSION = 1.4.8;
 				OTHER_LDFLAGS = "-ObjC";
 				OTHER_LIBTOOLFLAGS = "";
 				PRODUCT_BUNDLE_IDENTIFIER = com.lottery.dr;
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				PROVISIONING_PROFILE = "f2f787af-7dc5-4b11-8227-9f0c491abb2c";
-				PROVISIONING_PROFILE_SPECIFIER = dr_adHoc_29;
+				PROVISIONING_PROFILE_SPECIFIER = dr_appstore;
 				VALID_ARCHS = "arm64 armv7 armv7s";
 			};
 			name = Release;

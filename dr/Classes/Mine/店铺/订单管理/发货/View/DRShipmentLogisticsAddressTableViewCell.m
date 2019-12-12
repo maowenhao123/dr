@@ -18,6 +18,7 @@
 @property (nonatomic, weak) UILabel *logisticsNumLabel;//物流单号
 @property (nonatomic,weak) UIButton *logisticsButton;
 @property (nonatomic, weak) UILabel *mailTypeLabel;//配送方式
+@property (nonatomic, weak) UILabel *remarkLabel;//订单备注
 @property (nonatomic,strong) NSMutableArray *titleLabelArray;
 
 @end
@@ -51,7 +52,7 @@
     line.backgroundColor = DRWhiteLineColor;
     [self addSubview:line];
 
-    NSArray * titles = @[@"联系人：", @"联系电话：", @"收货地址：", @"物流公司：", @"物流单号：",@"配送方式："];
+    NSArray * titles = @[@"联系人：", @"联系电话：", @"收货地址：", @"物流公司：", @"物流单号：",@"配送方式：", @"备注："];
     for (int i = 0; i < titles.count; i++) {
         UILabel * titleLabel = [[UILabel alloc] init];
         titleLabel.text = titles[i];
@@ -83,6 +84,9 @@
         }else if (i == 5)
         {
             self.mailTypeLabel = label;
+        }else if (i == 6)
+        {
+            self.remarkLabel = label;
         }
         label.textColor = DRBlackTextColor;
         label.font = [UIFont systemFontOfSize:DRGetFontSize(24)];
@@ -103,12 +107,14 @@
     logisticsButton.layer.borderWidth = 1;
     [self addSubview:logisticsButton];
 }
+
 - (void)logisticsButtonDidClick:(UIButton *)button
 {
     if (_delegate && [_delegate respondsToSelector:@selector(shipmentLogisticsAddressTableViewCell:logisticsButtonDidClick:)]) {
         [_delegate shipmentLogisticsAddressTableViewCell:self logisticsButtonDidClick:button];
     }
 }
+
 - (void)setDeliveryModel:(DRDeliveryAddressModel *)deliveryModel
 {
     _deliveryModel = deliveryModel;
@@ -134,6 +140,7 @@
         mailTypeStr = [NSString stringWithFormat:@"%@", mailTypes[[_deliveryModel.mailType intValue] - 1]];
     }
     self.mailTypeLabel.text = mailTypeStr;
+    self.remarkLabel.text = _deliveryModel.remarks;
     
     //frame
     CGSize titleLabelSize = [@"收货地址：" sizeWithLabelFont:[UIFont systemFontOfSize:DRGetFontSize(24)]];
@@ -145,6 +152,7 @@
     self.logisticsNameLabel.frame = CGRectMake(DRMargin + titleLabelW, CGRectGetMaxY(self.addressLabel.frame) + DRMargin, _deliveryModel.logisticsNameSize.width, _deliveryModel.logisticsNameSize.height);
     self.logisticsNumLabel.frame = CGRectMake(DRMargin + titleLabelW, CGRectGetMaxY(self.logisticsNameLabel.frame) + DRMargin, _deliveryModel.logisticsNumSize.width, _deliveryModel.logisticsNumSize.height);
     self.mailTypeLabel.frame = CGRectMake(DRMargin + titleLabelW, CGRectGetMaxY(self.logisticsNumLabel.frame) + DRMargin, _deliveryModel.typeSize.width, _deliveryModel.typeSize.height);
+    self.remarkLabel.frame = CGRectMake(DRMargin + titleLabelW, CGRectGetMaxY(self.mailTypeLabel.frame) + DRMargin, _deliveryModel.remarkSize.width, _deliveryModel.remarkSize.height);
     
     for (int i = 0; i < self.titleLabelArray.count; i++) {
         UILabel * label = self.titleLabelArray[i];
@@ -165,6 +173,14 @@
         }else if (i == 5)
         {
             label.frame = CGRectMake(DRMargin, self.mailTypeLabel.y, titleLabelW, titleLabelSize.height);
+        }else if (i == 6)
+        {
+            if (DRStringIsEmpty(_deliveryModel.remarks)) {
+                label.hidden = YES;
+            }else
+            {
+                label.frame = CGRectMake(DRMargin, self.remarkLabel.y, titleLabelW, titleLabelSize.height);
+            }
         }
     }
 

@@ -57,7 +57,6 @@ static NSString *kConversationChatter = @"ConversationChatter";
 - (void)viewDidLoad
 {
     [super viewDidLoad];
-    
     self.delegate = self;
     //初始化tabbar
     [self setupTabbars];

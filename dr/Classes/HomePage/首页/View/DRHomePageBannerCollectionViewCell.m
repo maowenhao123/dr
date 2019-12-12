@@ -82,6 +82,7 @@
             if(!UserId || !Token)
             {
                 DRLoginViewController * loginVC = [[DRLoginViewController alloc] init];
+                loginVC.modalPresentationStyle = UIModalPresentationFullScreen;
                 [self.viewController presentViewController:loginVC animated:YES completion:nil];
                 return;
             }

@@ -74,6 +74,8 @@
             for (DRDeliveryAddressModel * model in shipmentModel.deliveryList) {
                 model.mailType = shipmentModel.mailType;
                 model.freight = shipmentModel.freight;
+                model.remarks = shipmentModel.order.remarks;
+                model.status = shipmentModel.status;
             }
             shipmentModel.orderType = self.orderType;
             if (self.isWaitPending && [shipmentModel.status intValue] == 0) {
@@ -99,7 +101,7 @@
 #pragma mark - 布局视图
 - (void)setupChilds
 {
-    UITableView *tableView = [[UITableView alloc] initWithFrame:CGRectMake(0, 0, screenWidth, screenHeight - statusBarH - navBarH - 49) style:UITableViewStyleGrouped];
+    UITableView *tableView = [[UITableView alloc] initWithFrame:CGRectMake(0, 0, screenWidth, screenHeight - statusBarH - navBarH - 49 - [DRTool getSafeAreaBottom]) style:UITableViewStyleGrouped];
     self.tableView = tableView;
     tableView.backgroundColor = DRBackgroundColor;
     tableView.delegate = self;
@@ -698,13 +700,13 @@
             }else
             {
                 DRDeliveryAddressModel * deliveryModel = self.shipmentModel.deliveryList[indexPath.row];
-                return DRMargin + deliveryModel.countSize.height + DRMargin + deliveryModel.nameSize.height + DRMargin + deliveryModel.phoneSize.height + DRMargin + deliveryModel.addressSize.height + DRMargin + deliveryModel.typeSize.height + DRMargin;
+                return deliveryModel.cellH;
             }
         }else
         {
             if (indexPath.section == 0) {
                 DRDeliveryAddressModel * deliveryModel = self.shipmentModel.deliveryList[indexPath.row];
-                return DRMargin + deliveryModel.nameSize.height + DRMargin + deliveryModel.phoneSize.height + DRMargin + deliveryModel.addressSize.height + DRMargin + deliveryModel.typeSize.height + DRMargin;
+                return deliveryModel.cellH;
             }else
             {
                 return 100;
@@ -717,15 +719,13 @@
             }else
             {
                 DRDeliveryAddressModel * deliveryModel = self.shipmentModel.deliveryList[indexPath.row];
-                return DRMargin + deliveryModel.countSize.height + DRMargin + deliveryModel.nameSize.height + DRMargin + deliveryModel.phoneSize.height + DRMargin + deliveryModel.addressSize.height + DRMargin +  deliveryModel.logisticsNameSize.height + DRMargin +
-                     deliveryModel.logisticsNumSize.height + DRMargin + deliveryModel.typeSize.height + DRMargin;
+                return deliveryModel.cellH;
             }
         }else
         {
             if (indexPath.section == 0) {
                 DRDeliveryAddressModel * deliveryModel = self.shipmentModel.deliveryList[indexPath.row];
-                return DRMargin + deliveryModel.nameSize.height + DRMargin + deliveryModel.phoneSize.height + DRMargin + deliveryModel.addressSize.height + DRMargin +  deliveryModel.logisticsNameSize.height + DRMargin +
-                deliveryModel.logisticsNumSize.height + DRMargin + deliveryModel.typeSize.height + DRMargin;
+                return deliveryModel.cellH;
             }else
             {
                 return 100;
@@ -738,13 +738,13 @@
             }else
             {
                 DRDeliveryAddressModel * deliveryModel = self.shipmentModel.deliveryList[indexPath.row];
-                return DRMargin + deliveryModel.countSize.height + DRMargin + deliveryModel.nameSize.height + DRMargin + deliveryModel.phoneSize.height + DRMargin + deliveryModel.addressSize.height + DRMargin + deliveryModel.typeSize.height + DRMargin;
+                return deliveryModel.cellH;
             }
         }else
         {
             if (indexPath.section == 0) {
                 DRDeliveryAddressModel * deliveryModel = self.shipmentModel.deliveryList[indexPath.row];
-                return DRMargin + deliveryModel.nameSize.height + DRMargin + deliveryModel.phoneSize.height + DRMargin + deliveryModel.addressSize.height + DRMargin + deliveryModel.typeSize.height + DRMargin;
+                return deliveryModel.cellH;
             }else
             {
                 return 100;

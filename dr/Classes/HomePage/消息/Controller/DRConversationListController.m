@@ -35,6 +35,7 @@
 {
     [super viewDidLoad];
     self.navigationItem.title = @"消息中心";
+    self.navigationItem.rightBarButtonItem = [[UIBarButtonItem alloc] initWithTitle:@"重新连接" style:UIBarButtonItemStylePlain target:self action:@selector(reconnection)];
     self.delegate = self;
     self.dataSource = self;
     self.showRefreshHeader = YES;
@@ -46,6 +47,11 @@
     [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(haveNewMessage) name:@"setupUnreadMessageCount" object:nil];
     //环信登录成功时的通知
     [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(haveNewMessage) name:@"hxLoginSuccess" object:nil];
+}
+
+- (void)reconnection
+{
+    [DRTool loginImAccount];
 }
 
 - (void)_setupTableViewHeaderView
@@ -84,8 +90,10 @@
 
 - (void)haveNewMessage
 {
-    [self tableViewDidTriggerHeaderRefresh];
-    [self getSystemMessage];
+    dispatch_async(dispatch_get_main_queue(),^{//主线程
+        [self tableViewDidTriggerHeaderRefresh];
+        [self getSystemMessage];
+    });
 }
 
 - (void)getSystemMessage

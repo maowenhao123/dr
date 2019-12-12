@@ -22,7 +22,8 @@
 
 @implementation DRPayViewController
 
-- (void)viewDidLoad {
+- (void)viewDidLoad
+{
     [super viewDidLoad];
     self.title = @"收银台";
     [self setupChilds];
@@ -30,8 +31,10 @@
     [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(setAliPayResultStatus:) name:@"aliPayResultStatus" object:nil];
     [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(weiXinPaySuccess) name:@"WeiXinRechargeSuccessNote" object:nil];
 }
+
 #pragma mark - 支付充值结果回调
--(void)setAliPayResultStatus:(NSNotification *)result{
+-(void)setAliPayResultStatus:(NSNotification *)result
+{
     NSInteger resultStatus = [result.userInfo[@"resultStatus"] integerValue];
     
     if (resultStatus == 9000) {
@@ -46,6 +49,7 @@
         [self.navigationController pushViewController:paySuccessGoodVC animated:YES];
     }
 }
+
 - (void)weiXinPaySuccess
 {
     [self postPaySuccessNote];
@@ -58,6 +62,7 @@
     paySuccessGoodVC.orderId = self.orderId;
     [self.navigationController pushViewController:paySuccessGoodVC animated:YES];
 }
+
 #pragma mark - 布局视图
 - (void)setupChilds
 {
@@ -93,15 +98,13 @@
     [headerView addSubview:payTitleLabel];
     tableView.tableHeaderView = headerView;
 }
+
 #pragma mark - cell delegate
-- (NSInteger)numberOfSectionsInTableView:(UITableView *)tableView
-{
-    return 1;
-}
 - (NSInteger)tableView:(UITableView *)tableView numberOfRowsInSection:(NSInteger)section
 {
     return self.functionStatuss.count;
 }
+
 - (UITableViewCell *)tableView:(UITableView *)tableView cellForRowAtIndexPath:(NSIndexPath *)indexPath
 {
     DRIconTextTableViewCell *cell = [DRIconTextTableViewCell cellWithTableView:tableView];
@@ -114,15 +117,18 @@
     cell.icon = status.functionIconName;
     return cell;
 }
+
 - (CGFloat)tableView:(UITableView *)tableView heightForRowAtIndexPath:(NSIndexPath *)indexPath
 {
     return DRCellH;
 }
+
 - (void)tableView:(UITableView *)tableView didSelectRowAtIndexPath:(NSIndexPath *)indexPath
 {
     [tableView deselectRowAtIndexPath:indexPath animated:YES];
     [self accountPayWithRow:indexPath.row];
 }
+
 - (void)accountPayWithRow:(NSInteger)row
 {
     NSDictionary *bodyDic = @{

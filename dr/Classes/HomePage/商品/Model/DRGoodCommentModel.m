@@ -24,13 +24,16 @@
         CGSize levelLabelSize = [_levelDesc sizeWithLabelFont:[UIFont systemFontOfSize:DRGetFontSize(22)]];
         CGFloat levelLabelW = levelLabelSize.width + 17;
         _levelLabelF = CGRectMake(screenWidth - 10 - levelLabelW, CGRectGetMaxY(_nickNameLabelF), levelLabelW, 20);
+        
+        CGSize commentLabelSize = [_content sizeWithFont:[UIFont systemFontOfSize:DRGetFontSize(24)] maxSize:CGSizeMake(_levelLabelF.origin.x - _nickNameLabelF.origin.x - 10, MAXFLOAT)];
+        _commentLabelF = CGRectMake(_nickNameLabelF.origin.x, CGRectGetMaxY(_nickNameLabelF), commentLabelSize.width, commentLabelSize.height);
     }else
     {
         _levelLabelF = CGRectZero;
+        
+        CGSize commentLabelSize = [_content sizeWithFont:[UIFont systemFontOfSize:DRGetFontSize(24)] maxSize:CGSizeMake(screenWidth - _nickNameLabelF.origin.x - 10, MAXFLOAT)];
+        _commentLabelF = CGRectMake(_nickNameLabelF.origin.x, CGRectGetMaxY(_nickNameLabelF), commentLabelSize.width, commentLabelSize.height);
     }
-    
-    CGSize commentLabelSize = [_content sizeWithFont:[UIFont systemFontOfSize:DRGetFontSize(24)] maxSize:CGSizeMake(_levelLabelF.origin.x - _nickNameLabelF.origin.x - 10, MAXFLOAT)];
-    _commentLabelF = CGRectMake(_nickNameLabelF.origin.x, CGRectGetMaxY(_nickNameLabelF), commentLabelSize.width, commentLabelSize.height);
     
     _cellH = CGRectGetMaxY(_commentLabelF) + 10;
     return _cellH;

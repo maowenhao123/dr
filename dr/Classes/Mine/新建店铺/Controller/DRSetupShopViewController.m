@@ -203,7 +203,7 @@
         DRLog(@"%@",json);
         [MBProgressHUD hideHUDForView:self.view];
         if (SUCCESS) {
-            [MBProgressHUD showSuccess:@"开店成功"];
+            [MBProgressHUD showSuccess:json[@"message"]];
             [self.navigationController popViewControllerAnimated:YES];
             [[NSNotificationCenter defaultCenter] postNotificationName:@"setupShopSuccess" object:nil];
         }else

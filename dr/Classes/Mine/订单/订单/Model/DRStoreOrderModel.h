@@ -19,5 +19,6 @@
 @property (nonatomic,strong) NSNumber *freight;//邮费
 @property (nonatomic,strong) NSNumber *mailType;//快递方式 1 包邮 2 肉币支付 3 快递到付
 @property (nonatomic,strong) NSArray <DROrderItemDetailModel *> *detail;
+@property (nonatomic,copy) NSString *remarks;
 
 @end

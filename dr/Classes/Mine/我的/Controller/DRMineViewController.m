@@ -108,13 +108,13 @@
         return;
     }
     NSDictionary *bodyDic = @{
-                              };
+    };
     
     NSDictionary *headDic = @{
-                              @"digest":[DRTool getDigestByBodyDic:bodyDic],
-                              @"cmd":@"U10",
-                              @"userId":UserId,
-                              };
+        @"digest":[DRTool getDigestByBodyDic:bodyDic],
+        @"cmd":@"U10",
+        @"userId":UserId,
+    };
     //190710150926010002
     [[DRHttpTool shareInstance] postWithTarget:self headDic:headDic bodyDic:bodyDic success:^(id json) {
         DRLog(@"%@",json);
@@ -226,7 +226,7 @@
     UIView *allOrderItemView = [[UIView alloc] initWithFrame:CGRectMake(0, CGRectGetMaxY(orderView.frame), screenWidth, 64)];
     allOrderItemView.backgroundColor = [UIColor whiteColor];
     [headerView addSubview:allOrderItemView];
-
+    
     NSArray *orderItemTitles = @[@"待付款", @"待发货", @"待收货", @"待评价", @"退款"];
     NSArray *orderItemImageNames = @[@"order_wait_pay_icon", @"order_wait_deliver_icon", @"order_wait_receiving_icon", @"order_wait_comment_icon", @"order_return_icon"];
     CGFloat orderItemViewW = screenWidth / orderItemTitles.count;
@@ -242,7 +242,7 @@
         
         [self.orderItemViews addObject:itemView];
     }
-
+    
     //分割线
     UIView * lineView = [[UIView alloc]initWithFrame:CGRectMake(0, CGRectGetMaxY(allOrderItemView.frame), screenWidth, 9)];
     lineView.backgroundColor = DRBackgroundColor;
@@ -366,7 +366,7 @@
         }else if (tag == 2){
             currentIndex = 3;
         }
-
+        
         DROrderListViewController * myOrderVC = [[DROrderListViewController alloc] init];
         myOrderVC.currentIndex = currentIndex;
         [self.navigationController pushViewController:myOrderVC animated:YES];
@@ -420,8 +420,32 @@
             }
         }else//已开店
         {
-            DRMyShopViewController * myShopVC = [[DRMyShopViewController alloc] init];
-            [self.navigationController pushViewController:myShopVC animated:YES];
+            NSDictionary *bodyDic = @{
+            };
+            
+            NSDictionary *headDic = @{
+                @"digest":[DRTool getDigestByBodyDic:bodyDic],
+                @"cmd":@"B01",
+                @"userId":UserId,
+            };
+            waitingView
+            [[DRHttpTool shareInstance] postWithHeadDic:headDic bodyDic:bodyDic success:^(id json) {
+                DRLog(@"%@",json);
+                [MBProgressHUD hideHUDForView:self.view];
+                if (SUCCESS) {
+                    DRMyShopViewController * myShopVC = [[DRMyShopViewController alloc] init];
+                    [self.navigationController pushViewController:myShopVC animated:YES];
+                }else
+                {
+                    ShowErrorView
+                }
+            } failure:^(NSError *error) {
+                [MBProgressHUD hideHUDForView:self.view];
+                if ([self.header isRefreshing]) {
+                    [self.header endRefreshing];
+                }
+                DRLog(@"error:%@",error);
+            }];
         }
     }
 }

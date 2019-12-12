@@ -15,6 +15,7 @@
 @property (nonatomic, weak) UILabel *phoneLabel;//电话
 @property (nonatomic, weak) UILabel *addressLabel;//地址
 @property (nonatomic, weak) UILabel *mailTypeLabel;//配送方式
+@property (nonatomic, weak) UILabel *remarkLabel;//订单备注
 @property (nonatomic,strong) NSMutableArray *titleLabelArray;
 
 @end
@@ -48,7 +49,7 @@
     line.backgroundColor = DRWhiteLineColor;
     [self addSubview:line];
     
-    NSArray * titles = @[@"联系人：", @"联系电话：", @"收货地址：",@"配送方式："];
+    NSArray * titles = @[@"联系人：", @"联系电话：", @"收货地址：", @"配送方式：", @"备注："];
     for (int i = 0; i < titles.count; i++)
     {
         UILabel * titleLabel = [[UILabel alloc] init];
@@ -74,6 +75,9 @@
         }else if (i == 3)
         {
             self.mailTypeLabel = label;
+        }else if (i == 4)
+        {
+            self.remarkLabel = label;
         }
         label.textColor = DRBlackTextColor;
         label.font = [UIFont systemFontOfSize:DRGetFontSize(24)];
@@ -127,6 +131,7 @@
         mailTypeStr = [NSString stringWithFormat:@"%@", mailTypes[[_deliveryModel.mailType intValue] - 1]];
     }
     self.mailTypeLabel.text = mailTypeStr;
+    self.remarkLabel.text = _deliveryModel.remarks;
     
     //frame
     CGSize titleLabelSize = [@"收货地址：" sizeWithLabelFont:[UIFont systemFontOfSize:DRGetFontSize(24)]];
@@ -137,7 +142,8 @@
     self.phoneLabel.frame = CGRectMake(DRMargin + titleLabelW, CGRectGetMaxY(self.nameLabel.frame) + DRMargin, _deliveryModel.phoneSize.width, _deliveryModel.phoneSize.height);
     self.addressLabel.frame = CGRectMake(DRMargin + titleLabelW , CGRectGetMaxY(self.phoneLabel.frame) + DRMargin, _deliveryModel.addressSize.width, _deliveryModel.addressSize.height);
     self.mailTypeLabel.frame = CGRectMake(DRMargin + titleLabelW, CGRectGetMaxY(self.addressLabel.frame) + DRMargin, _deliveryModel.typeSize.width, _deliveryModel.typeSize.height);
-    
+    self.remarkLabel.frame = CGRectMake(DRMargin + titleLabelW, CGRectGetMaxY(self.mailTypeLabel.frame) + DRMargin, _deliveryModel.remarkSize.width, _deliveryModel.remarkSize.height);
+
     for (int i = 0; i < self.titleLabelArray.count; i++) {
         UILabel * label = self.titleLabelArray[i];
         if (i == 0) {
@@ -151,6 +157,14 @@
         }else if (i == 3)
         {
             label.frame = CGRectMake(DRMargin, self.mailTypeLabel.y, titleLabelW, titleLabelSize.height);
+        }else if (i == 4)
+        {
+            if (DRStringIsEmpty(_deliveryModel.remarks)) {
+                label.hidden = YES;
+            }else
+            {
+                label.frame = CGRectMake(DRMargin, self.remarkLabel.y, titleLabelW, titleLabelSize.height);
+            }
         }
     }
 }

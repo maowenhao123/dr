@@ -31,6 +31,7 @@
     [super viewDidAppear:animated];
     [UIApplication sharedApplication].statusBarStyle = UIStatusBarStyleDefault;
 }
+
 - (void)viewDidLoad
 {
     [super viewDidLoad];

@@ -16,6 +16,7 @@
 @property (nonatomic, weak) UILabel *phoneLabel;//电话
 @property (nonatomic, weak) UILabel *addressLabel;//地址
 @property (nonatomic, weak) UILabel *mailTypeLabel;//配送方式
+@property (nonatomic, weak) UILabel *remarkLabel;//订单备注
 @property (nonatomic,strong) NSMutableArray *titleLabelArray;
 
 @end
@@ -53,7 +54,7 @@
     CGFloat labelPadding2 = 0;
     CGFloat orderLabelH = (125 - labelPadding1 * 2 - labelPadding2 * 4) / 5;
     CGFloat titleLabelW = 0;
-    NSArray * titles = @[@"联系人：", @"联系电话：", @"收货地址：", @"数量：",  @"配送方式："];
+    NSArray * titles = @[@"联系人：", @"联系电话：", @"收货地址：", @"数量：",  @"配送方式：", @"备注："];
     for (NSString *title in titles) {
         CGSize titleLabelSize = [title sizeWithLabelFont:[UIFont systemFontOfSize:DRGetFontSize(24)]];
         titleLabelW = titleLabelW < titleLabelSize.width ? titleLabelSize.width : titleLabelW;
@@ -85,6 +86,9 @@
         }else if (i == 4)
         {
             self.mailTypeLabel = label;
+        }else if (i == 5)
+        {
+            self.remarkLabel = label;
         }
         label.numberOfLines = 0;
         label.textColor = DRBlackTextColor;
@@ -140,6 +144,7 @@
         mailTypeStr = [NSString stringWithFormat:@"%@", mailTypes[[_deliveryModel.mailType intValue] - 1]];
     }
     self.mailTypeLabel.text = mailTypeStr;
+    self.remarkLabel.text = _deliveryModel.remarks;
     
     //frame
     CGSize titleLabelSize = [@"收货地址：" sizeWithLabelFont:[UIFont systemFontOfSize:DRGetFontSize(24)]];
@@ -151,7 +156,8 @@
     self.addressLabel.frame = CGRectMake(DRMargin + titleLabelW , CGRectGetMaxY(self.phoneLabel.frame) + DRMargin, _deliveryModel.addressSize.width, _deliveryModel.addressSize.height);
     self.countLabel.frame = CGRectMake(DRMargin + titleLabelW, CGRectGetMaxY(self.addressLabel.frame) + DRMargin, _deliveryModel.countSize.width, _deliveryModel.countSize.height);
     self.mailTypeLabel.frame = CGRectMake(DRMargin + titleLabelW, CGRectGetMaxY(self.countLabel.frame) + DRMargin, _deliveryModel.typeSize.width, _deliveryModel.typeSize.height);
-    
+    self.remarkLabel.frame = CGRectMake(DRMargin + titleLabelW, CGRectGetMaxY(self.mailTypeLabel.frame) + DRMargin, _deliveryModel.remarkSize.width, _deliveryModel.remarkSize.height);
+
     for (int i = 0; i < self.titleLabelArray.count; i++) {
         UILabel * label = self.titleLabelArray[i];
         if (i == 0) {
@@ -168,6 +174,14 @@
         }else if (i == 4)
         {
             label.frame = CGRectMake(DRMargin, self.mailTypeLabel.y, titleLabelW, titleLabelSize.height);
+        }else if (i == 5)
+        {
+            if (DRStringIsEmpty(_deliveryModel.remarks)) {
+                label.hidden = YES;
+            }else
+            {
+                label.frame = CGRectMake(DRMargin, self.remarkLabel.y, titleLabelW, titleLabelSize.height);
+            }
         }
     }
 }
@@ -179,4 +193,5 @@
     }
     return _titleLabelArray;
 }
+
 @end
