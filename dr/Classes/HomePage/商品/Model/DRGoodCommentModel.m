@@ -20,7 +20,7 @@
     CGSize timeLabelSize = [_timeStr sizeWithLabelFont:[UIFont systemFontOfSize:DRGetFontSize(22)]];
     _timeLabelF = CGRectMake(screenWidth - DRMargin - timeLabelSize.width, 9, timeLabelSize.width, 30);
     
-    if (DRStringIsEmpty(_levelDesc)) {
+    if (!DRStringIsEmpty(_levelDesc)) {
         CGSize levelLabelSize = [_levelDesc sizeWithLabelFont:[UIFont systemFontOfSize:DRGetFontSize(22)]];
         CGFloat levelLabelW = levelLabelSize.width + 17;
         _levelLabelF = CGRectMake(screenWidth - 10 - levelLabelW, CGRectGetMaxY(_nickNameLabelF), levelLabelW, 20);
