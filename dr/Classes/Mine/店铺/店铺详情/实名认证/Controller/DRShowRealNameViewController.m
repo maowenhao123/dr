@@ -7,14 +7,18 @@
 //
 
 #import "DRShowRealNameViewController.h"
+#import "XLPhotoBrowser.h"
 
-@interface DRShowRealNameViewController ()
+@interface DRShowRealNameViewController ()<XLPhotoBrowserDatasource>
+
+@property (nonatomic, strong) NSMutableArray * imageViews;
 
 @end
 
 @implementation DRShowRealNameViewController
 
-- (void)viewDidLoad {
+- (void)viewDidLoad
+{
     [super viewDidLoad];
     self.title = @"实名认证";
     [self setupChilds];
@@ -68,21 +72,72 @@
     DRUser *user = [DRUserDefaultTool user];
     CGFloat imageViewY = 2 * DRCellH + 10;
     CGFloat imageViewHW = 100;
-    CGFloat padding = (screenWidth - 2 * imageViewHW) / 3;
-    for (int i = 0; i < 2; i++) {
+    CGFloat padding = (screenWidth - 3 * imageViewHW) / 4;
+    for (int i = 0; i < 3; i++) {
         UIImageView * imageView = [[UIImageView alloc] init];
+        imageView.tag = i;
         imageView.frame = CGRectMake(padding + (imageViewHW + padding) * i, imageViewY, imageViewHW, imageViewHW);
         if (i == 0) {
             NSString * idCardImgUrlStr = [NSString stringWithFormat:@"%@%@",baseUrl,user.idCardImg];
             [imageView sd_setImageWithURL:[NSURL URLWithString:idCardImgUrlStr] placeholderImage:[UIImage imageNamed:@"placeholder"]];
-        }else
+        }else if (i == 1)
         {
             NSString * idCardBackImgUrlStr = [NSString stringWithFormat:@"%@%@",baseUrl,user.idCardBackImg];
+            [imageView sd_setImageWithURL:[NSURL URLWithString:idCardBackImgUrlStr] placeholderImage:[UIImage imageNamed:@"placeholder"]];
+        }else if (i == 2)
+        {
+            NSString * idCardBackImgUrlStr = [NSString stringWithFormat:@"%@%@",baseUrl,user.idCardHoldImg];
             [imageView sd_setImageWithURL:[NSURL URLWithString:idCardBackImgUrlStr] placeholderImage:[UIImage imageNamed:@"placeholder"]];
         }
         imageView.contentMode = UIViewContentModeScaleAspectFit;
         [contentView addSubview:imageView];
+        [self.imageViews addObject:imageView];
+        
+        UITapGestureRecognizer * tap = [[UITapGestureRecognizer alloc] initWithTarget:self action:@selector(imageViewDidClick:)];
+        imageView.userInteractionEnabled = YES;
+        [imageView addGestureRecognizer:tap];
     }
+}
+
+- (void)imageViewDidClick:(UIGestureRecognizer *)ges
+{
+    XLPhotoBrowser * photoBrowser = [XLPhotoBrowser showPhotoBrowserWithCurrentImageIndex:ges.view.tag imageCount:3 datasource:self];
+    photoBrowser.browserStyle = XLPhotoBrowserStyleSimple;
+}
+
+#pragma mark - XLPhotoBrowserDatasource
+- (UIImage *)photoBrowser:(XLPhotoBrowser *)browser placeholderImageForIndex:(NSInteger)index
+{
+    UIImageView * imageView = self.imageViews[index];
+    return imageView.image;
+}
+
+- (NSURL *)photoBrowser:(XLPhotoBrowser *)browser highQualityImageURLForIndex:(NSInteger)index
+{
+    DRUser *user = [DRUserDefaultTool user];
+    NSMutableArray *URLArray = [NSMutableArray array];
+    [URLArray addObject:[NSURL URLWithString:[NSString stringWithFormat:@"%@%@", baseUrl, user.idCardImg]]];
+    [URLArray addObject:[NSURL URLWithString:[NSString stringWithFormat:@"%@%@", baseUrl, user.idCardBackImg]]];
+    if (DRObjectIsEmpty(user.idCardHoldImg)) {
+        [URLArray addObject:@""];
+    }else
+    {
+        [URLArray addObject:[NSURL URLWithString:[NSString stringWithFormat:@"%@%@", baseUrl, user.idCardHoldImg]]];
+    }
+    return URLArray[index];
+}
+- (UIView *)photoBrowser:(XLPhotoBrowser *)browser sourceImageViewForIndex:(NSInteger)index
+{
+    return self.imageViews[index];
+}
+
+#pragma mark - 初始化
+- (NSMutableArray *)imageViews
+{
+    if (!_imageViews) {
+        _imageViews = [NSMutableArray array];
+    }
+    return _imageViews;
 }
 
 @end

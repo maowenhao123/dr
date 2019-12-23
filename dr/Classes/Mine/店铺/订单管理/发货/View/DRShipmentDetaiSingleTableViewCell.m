@@ -206,7 +206,7 @@
         }
     }
     
-    self.orderDetailLabel.text = [NSString stringWithFormat:@"共%ld件商品 实付款：￥%@", goodCount, [DRTool formatFloat:[_orderModel.priceCount doubleValue] / 100]];
+    self.orderDetailLabel.text = [NSString stringWithFormat:@"共%ld件商品 实付款：￥%@", (long)goodCount, [DRTool formatFloat:[_orderModel.priceCount doubleValue] / 100 + [_orderModel.mailPrice doubleValue] / 100]];
     
     //frame
     CGSize timeLabelSize = [self.timeLabel.text sizeWithLabelFont:self.timeLabel.font];

@@ -28,6 +28,7 @@
     [self setupChilds];
     [self getData];
 }
+
 #pragma mark - 请求数据
 - (void)getData
 {
@@ -209,6 +210,7 @@
 {
     [self getData];
 }
+
 #pragma mark - 初始化
 - (NSMutableArray *)dataArray
 {

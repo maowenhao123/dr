@@ -91,6 +91,9 @@ NSString * const ShopHeaderCellId = @"ShopHeaderCellId";
             [UIView performWithoutAnimation:^{
                 [self.collectionView reloadSections:[NSIndexSet indexSetWithIndex:0]];
             }];
+        }else
+        {
+            ShowErrorView
         }
     } failure:^(NSError *error) {
         DRLog(@"error:%@",error);

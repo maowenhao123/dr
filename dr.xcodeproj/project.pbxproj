@@ -23,8 +23,10 @@
 		1DABCE5222FAA582009C5D33 /* DRShoppingCarRecommendTableViewCell.m in Sources */ = {isa = PBXBuildFile; fileRef = 1DABCE5122FAA582009C5D33 /* DRShoppingCarRecommendTableViewCell.m */; };
 		1DABCE5522FAAAE7009C5D33 /* DRGoodItemView.m in Sources */ = {isa = PBXBuildFile; fileRef = 1DABCE5422FAAAE7009C5D33 /* DRGoodItemView.m */; };
 		1DABCE5822FAAEBC009C5D33 /* DRShoppingCarNoDataTableViewCell.m in Sources */ = {isa = PBXBuildFile; fileRef = 1DABCE5722FAAEBC009C5D33 /* DRShoppingCarNoDataTableViewCell.m */; };
-		1DB2494823A319E700188213 /* HyphenateLite.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 1DB2494723A319E700188213 /* HyphenateLite.framework */; };
-		1DB2494923A319F100188213 /* HyphenateLite.framework in Embed Frameworks */ = {isa = PBXBuildFile; fileRef = 1DB2494723A319E700188213 /* HyphenateLite.framework */; settings = {ATTRIBUTES = (CodeSignOnCopy, RemoveHeadersOnCopy, ); }; };
+		1DB2494B23A33AEE00188213 /* HyphenateLite.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 1DB2494A23A33AEE00188213 /* HyphenateLite.framework */; };
+		1DB2494C23A33B1000188213 /* HyphenateLite.framework in Embed Frameworks */ = {isa = PBXBuildFile; fileRef = 1DB2494A23A33AEE00188213 /* HyphenateLite.framework */; settings = {ATTRIBUTES = (CodeSignOnCopy, RemoveHeadersOnCopy, ); }; };
+		1DB2495B23A75A9F00188213 /* DRMyFansViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 1DB2495A23A75A9F00188213 /* DRMyFansViewController.m */; };
+		1DB2496423A8B6D400188213 /* DRMyFansModel.m in Sources */ = {isa = PBXBuildFile; fileRef = 1DB2496323A8B6D400188213 /* DRMyFansModel.m */; };
 		1DCA15EA2320E04E00F2061B /* DRRewardView.m in Sources */ = {isa = PBXBuildFile; fileRef = 1DCA15E92320E04D00F2061B /* DRRewardView.m */; };
 		1DD309D423855C9600653481 /* DRGoodGroupCollectionViewCell.m in Sources */ = {isa = PBXBuildFile; fileRef = 1DD309D323855C9500653481 /* DRGoodGroupCollectionViewCell.m */; };
 		1DD309D72385602F00653481 /* DRGoodGroupUserViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 1DD309D62385602F00653481 /* DRGoodGroupUserViewController.m */; };
@@ -696,7 +698,7 @@
 			dstPath = "";
 			dstSubfolderSpec = 10;
 			files = (
-				1DB2494923A319F100188213 /* HyphenateLite.framework in Embed Frameworks */,
+				1DB2494C23A33B1000188213 /* HyphenateLite.framework in Embed Frameworks */,
 			);
 			name = "Embed Frameworks";
 			runOnlyForDeploymentPostprocessing = 0;
@@ -737,7 +739,11 @@
 		1DABCE5422FAAAE7009C5D33 /* DRGoodItemView.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = DRGoodItemView.m; sourceTree = "<group>"; };
 		1DABCE5622FAAEBC009C5D33 /* DRShoppingCarNoDataTableViewCell.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = DRShoppingCarNoDataTableViewCell.h; sourceTree = "<group>"; };
 		1DABCE5722FAAEBC009C5D33 /* DRShoppingCarNoDataTableViewCell.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = DRShoppingCarNoDataTableViewCell.m; sourceTree = "<group>"; };
-		1DB2494723A319E700188213 /* HyphenateLite.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; path = HyphenateLite.framework; sourceTree = "<group>"; };
+		1DB2494A23A33AEE00188213 /* HyphenateLite.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; path = HyphenateLite.framework; sourceTree = "<group>"; };
+		1DB2495923A75A9F00188213 /* DRMyFansViewController.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = DRMyFansViewController.h; sourceTree = "<group>"; };
+		1DB2495A23A75A9F00188213 /* DRMyFansViewController.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = DRMyFansViewController.m; sourceTree = "<group>"; };
+		1DB2496223A8B6D400188213 /* DRMyFansModel.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = DRMyFansModel.h; sourceTree = "<group>"; };
+		1DB2496323A8B6D400188213 /* DRMyFansModel.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = DRMyFansModel.m; sourceTree = "<group>"; };
 		1DCA15E82320E04D00F2061B /* DRRewardView.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = DRRewardView.h; sourceTree = "<group>"; };
 		1DCA15E92320E04D00F2061B /* DRRewardView.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = DRRewardView.m; sourceTree = "<group>"; };
 		1DD309D223855C9500653481 /* DRGoodGroupCollectionViewCell.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = DRGoodGroupCollectionViewCell.h; sourceTree = "<group>"; };
@@ -2056,7 +2062,7 @@
 				AAA9284F1F91A5E400C52510 /* CoreFoundation.framework in Frameworks */,
 				AAA2C82F1F17D20D0046A335 /* libSocialQQ.a in Frameworks */,
 				AAADEAAC1FD77C9F007BD4AD /* libMagicWindowSDK.a in Frameworks */,
-				1DB2494823A319E700188213 /* HyphenateLite.framework in Frameworks */,
+				1DB2494B23A33AEE00188213 /* HyphenateLite.framework in Frameworks */,
 				AA89127B1EFA6B3F0038EB2F /* CoreMotion.framework in Frameworks */,
 				AA2643581FC566BF000474F7 /* UMMobClick.framework in Frameworks */,
 				AA8912781EFA6A870038EB2F /* libcrypto.a in Frameworks */,
@@ -2206,6 +2212,41 @@
 			children = (
 			);
 			path = View;
+			sourceTree = "<group>";
+		};
+		1DB2495523A75A6B00188213 /* 我的粉丝 */ = {
+			isa = PBXGroup;
+			children = (
+				1DB2495823A75A8900188213 /* Controller */,
+				1DB2495623A75A8800188213 /* Model */,
+				1DB2495723A75A8900188213 /* View */,
+			);
+			path = "我的粉丝";
+			sourceTree = "<group>";
+		};
+		1DB2495623A75A8800188213 /* Model */ = {
+			isa = PBXGroup;
+			children = (
+				1DB2496223A8B6D400188213 /* DRMyFansModel.h */,
+				1DB2496323A8B6D400188213 /* DRMyFansModel.m */,
+			);
+			path = Model;
+			sourceTree = "<group>";
+		};
+		1DB2495723A75A8900188213 /* View */ = {
+			isa = PBXGroup;
+			children = (
+			);
+			path = View;
+			sourceTree = "<group>";
+		};
+		1DB2495823A75A8900188213 /* Controller */ = {
+			isa = PBXGroup;
+			children = (
+				1DB2495923A75A9F00188213 /* DRMyFansViewController.h */,
+				1DB2495A23A75A9F00188213 /* DRMyFansViewController.m */,
+			);
+			path = Controller;
 			sourceTree = "<group>";
 		};
 		1DD309E123856B7200653481 /* 商品列表 */ = {
@@ -2936,7 +2977,7 @@
 		AA27E43921B7A4FA0067F72B /* HyphenateSDK */ = {
 			isa = PBXGroup;
 			children = (
-				1DB2494723A319E700188213 /* HyphenateLite.framework */,
+				1DB2494A23A33AEE00188213 /* HyphenateLite.framework */,
 			);
 			path = HyphenateSDK;
 			sourceTree = "<group>";
@@ -5786,6 +5827,7 @@
 				AAF439041FAFF8A500CA31DE /* 资金明细 */,
 				AAF4395E1FAFFAAE00CA31DE /* 订单 */,
 				AAF4393A1FAFF96E00CA31DE /* 我的关注 */,
+				1DB2495523A75A6B00188213 /* 我的粉丝 */,
 				AAF439B01FAFFEB100CA31DE /* 店铺 */,
 				AA8DF8EC2192CB8000EABD17 /* 新建店铺 */,
 			);
@@ -6345,6 +6387,7 @@
 				AA27EC6F1F7C85000081DB18 /* IQUIScrollView+Additions.m in Sources */,
 				AA1AC13320AD7CE600F1D33D /* DRSystemMessageViewController.m in Sources */,
 				AA8E46E7212D261A005DE5CE /* MKAnnotationView+WebCache.m in Sources */,
+				1DB2495B23A75A9F00188213 /* DRMyFansViewController.m in Sources */,
 				AAABE06F2027E76100DD3DBE /* DRChooseRedPacketView.m in Sources */,
 				AA27EC701F7C85000081DB18 /* IQUITextFieldView+Additions.m in Sources */,
 				1DD309D423855C9600653481 /* DRGoodGroupCollectionViewCell.m in Sources */,
@@ -6635,6 +6678,7 @@
 				AA263CDD1FEB596200CA02EB /* DRMessageChooseGoodModel.m in Sources */,
 				AAF04E3A1F10CE200023FFEC /* DRGridViewFlowLayout.m in Sources */,
 				AA3A9D4921E2FC1700F9147C /* DRPraiseListHeaderFooterView.m in Sources */,
+				1DB2496423A8B6D400188213 /* DRMyFansModel.m in Sources */,
 				CE468E8C1E29C32A00768646 /* UIImage+DR.m in Sources */,
 				AAE55CB32089B45200A29844 /* DRHomePageBannerCollectionViewCell.m in Sources */,
 				AAEFE8342137BF6F004300CD /* UIView+XLExtension.m in Sources */,

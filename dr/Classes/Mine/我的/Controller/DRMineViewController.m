@@ -9,6 +9,7 @@
 #import "DRMineViewController.h"
 #import "DRLoadHtmlFileViewController.h"
 #import "DRLoginViewController.h"
+#import "DRMyFansViewController.h"
 #import "DRChatViewController.h"
 #import "DRSettingViewController.h"
 #import "DRAccountInfoViewController.h"
@@ -398,14 +399,16 @@
     {
         DRUser *user = [DRUserDefaultTool user];
         if ([user.type intValue] == 0) {//未开店
-            if (!user.phone || !user.realName) {
+            if (DRStringIsEmpty(user.phone) || DRStringIsEmpty(user.realName)) {
                 UIAlertController * alertController = [UIAlertController alertControllerWithTitle:@"温馨提示" message:@"完善信息后才能开店哦" preferredStyle:UIAlertControllerStyleAlert];
                 UIAlertAction * alertAction1 = [UIAlertAction actionWithTitle:@"取消" style:UIAlertActionStyleCancel handler:nil];
                 UIAlertAction * alertAction2 = [UIAlertAction actionWithTitle:@"去完善" style:UIAlertActionStyleDefault handler:^(UIAlertAction * _Nonnull action) {
-                    if (!user.realName) {
+                    if (DRStringIsEmpty(user.realName))
+                    {
                         DRChangeRealNameViewController * realNameVC = [[DRChangeRealNameViewController alloc]init];
                         [self.navigationController pushViewController:realNameVC animated:YES];
-                    }else if (!user.phone) {
+                    }else if (DRStringIsEmpty(user.phone))
+                    {
                         DRBindingPhoneViewController * bindingPhoneVC = [[DRBindingPhoneViewController alloc]init];
                         [self.navigationController pushViewController:bindingPhoneVC animated:YES];
                     }
@@ -489,7 +492,8 @@
     
     if (indexPath.row == 0) {
         [DRShareTool shareApp];
-    }else if (indexPath.row == 1) {
+    }else if (indexPath.row == 1)
+    {
         if((!UserId || !Token))
         {
             DRLoginViewController * loginVC = [[DRLoginViewController alloc] init];
@@ -499,6 +503,10 @@
         chatVC.title = @"吾花肉客服";
         [self.navigationController pushViewController:chatVC animated:YES];
     }else if (indexPath.row == 2)
+    {
+        DRMyFansViewController * myFansVC = [[DRMyFansViewController  alloc]init];
+        [self.navigationController pushViewController:myFansVC animated:YES];
+    }else if (indexPath.row == 3)
     {
         UIAlertController * alertController = [UIAlertController alertControllerWithTitle:@"温馨提示" message:@"微信公众号：Wuhuarou_2017，复制并打开微信？" preferredStyle:UIAlertControllerStyleAlert];
         UIAlertAction * alertAction1 = [UIAlertAction actionWithTitle:@"取消" style:UIAlertActionStyleCancel handler:nil];
@@ -513,11 +521,12 @@
         [alertController addAction:alertAction1];
         [alertController addAction:alertAction2];
         [self presentViewController:alertController animated:YES completion:nil];
-    }else if (indexPath.row == 3)
+    }else if (indexPath.row == 4)
     {
         DRLoadHtmlFileViewController * htmlVC = [[DRLoadHtmlFileViewController alloc] initWithWeb:[NSString stringWithFormat:@"%@/static/maijia.html", baseUrl]];
         [self.navigationController pushViewController:htmlVC animated:YES];
-    }else if (indexPath.row == 4) {
+    }else if (indexPath.row == 5)
+    {
         DRSettingViewController * settingVC = [[DRSettingViewController  alloc]init];
         [self.navigationController pushViewController:settingVC animated:YES];
     }
@@ -547,7 +556,7 @@
 - (NSArray *)functionNames
 {
     if (!_functionNames) {
-        _functionNames = @[@"分享好友", @"在线客服", @"微信公众号", @"买家须知", @"设置"];
+        _functionNames = @[@"分享好友", @"在线客服", @"我的粉丝", @"微信公众号", @"买家须知", @"设置"];
     }
     return _functionNames;
 }

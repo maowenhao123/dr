@@ -15,8 +15,6 @@ NS_ASSUME_NONNULL_BEGIN
 
 @property (nonatomic, assign) BOOL openActivity;
 
-@property (nonatomic, assign) BOOL activityStatus;
-
 @end
 
 NS_ASSUME_NONNULL_END

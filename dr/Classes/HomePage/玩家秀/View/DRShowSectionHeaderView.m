@@ -10,12 +10,14 @@
 #import "DRUserShowViewController.h"
 #import "UIButton+DR.h"
 #import "DRDateTool.h"
+#import "DRShareTool.h"
 
 @interface DRShowSectionHeaderView ()
 
 @property (nonatomic, weak) UIImageView * avatarImageView;
 @property (nonatomic, weak) UIButton * nickNameButton;
 @property (nonatomic, weak) UILabel * timeLabel;
+@property (nonatomic, weak) UIButton * shareButton;
 @property (nonatomic, weak) UIButton * praiseButton;
 @property (nonatomic, weak) UIButton * commentButton;
 @property (nonatomic, weak) UILabel * titleLabel;
@@ -58,7 +60,8 @@
     [self addSubview:lineView];
     
     //头像
-    UIImageView * avatarImageView = [[UIImageView alloc] initWithFrame:CGRectMake(DRMargin, CGRectGetMaxY(lineView.frame) + 9, 36, 36)];
+    CGFloat avatarImageViewWH = 36;
+    UIImageView * avatarImageView = [[UIImageView alloc] initWithFrame:CGRectMake(DRMargin, CGRectGetMaxY(lineView.frame) + 9, avatarImageViewWH, avatarImageViewWH)];
     self.avatarImageView = avatarImageView;
     avatarImageView.contentMode = UIViewContentModeScaleAspectFill;
     avatarImageView.layer.masksToBounds = YES;
@@ -69,10 +72,20 @@
     UITapGestureRecognizer * userTap = [[UITapGestureRecognizer alloc] initWithTarget:self action:@selector(userShowDidClick)];
     [avatarImageView addGestureRecognizer:userTap];
     
+    //分享
+    UIButton * shareButton = [UIButton buttonWithType:UIButtonTypeCustom];
+    self.shareButton = shareButton;
+    shareButton.frame = CGRectMake(screenWidth - 10 - avatarImageViewWH, avatarImageView.y, avatarImageViewWH, avatarImageViewWH);
+    [shareButton setImage:[UIImage imageNamed:@"show_share"] forState:UIControlStateNormal];
+    [shareButton addTarget:self action:@selector(shareButtonDidClick:) forControlEvents:UIControlEventTouchUpInside];
+    [self addSubview:shareButton];
+    
     //昵称
     UIButton * nickNameButton = [UIButton buttonWithType:UIButtonTypeCustom];
     self.nickNameButton = nickNameButton;
+    nickNameButton.frame = CGRectMake(CGRectGetMaxX(avatarImageView.frame) + 5, 9, screenWidth - (CGRectGetMaxX(avatarImageView.frame) + 5) - DRMargin, 20);
     [nickNameButton setTitleColor:DRBlackTextColor forState:UIControlStateNormal];
+    nickNameButton.contentHorizontalAlignment = UIControlContentHorizontalAlignmentLeft;
     nickNameButton.titleLabel.font = [UIFont systemFontOfSize:DRGetFontSize(26)];
     [nickNameButton addTarget:self action:@selector(userShowDidClick) forControlEvents:UIControlEventTouchUpInside];
     [self addSubview:nickNameButton];
@@ -80,6 +93,7 @@
     //时间
     UILabel * timeLabel = [[UILabel alloc] init];
     self.timeLabel = timeLabel;
+    timeLabel.frame = CGRectMake(nickNameButton.x, CGRectGetMaxY(nickNameButton.frame), screenWidth - nickNameButton.x - DRMargin, 16);
     timeLabel.font = [UIFont systemFontOfSize:DRGetFontSize(22)];
     timeLabel.textColor = DRGrayTextColor;
     [self addSubview:timeLabel];
@@ -162,7 +176,30 @@
     showDetailVC.userHeadImg = self.model.userHeadImg;
     [self.viewController.navigationController pushViewController:showDetailVC animated:YES];
 }
-
+- (void)shareButtonDidClick:(UIButton *)button
+{
+    NSDictionary *bodyDic = @{
+                              @"id":self.model.id,
+                              };
+    
+    NSDictionary *headDic = @{
+                              @"digest":[DRTool getDigestByBodyDic:bodyDic],
+                              @"cmd":@"G11",
+                              @"userId":UserId,
+                              };
+    [[DRHttpTool shareInstance] postWithHeadDic:headDic bodyDic:bodyDic success:^(id json) {
+        DRLog(@"%@",json);
+        if (SUCCESS) {
+            DRShareView * shareView = [[DRShareView alloc] init];
+            [shareView show];
+            shareView.block = ^(UMSocialPlatformType platformType){//选择平台
+                [DRShareTool shareWithTitle:@"集赞赢多肉" description:@"我在吾花肉发表了多肉秀，快来帮我点赞" imageUrl:[NSString stringWithFormat:@"%@/static/img/zanshare.png", @"http://www.esodar.com"] image:nil platformType:platformType url:json[@"url"]];
+            };
+        }
+    } failure:^(NSError *error) {
+        DRLog(@"error:%@",error);
+    }];
+}
 - (void)imageViewDidClick:(UIGestureRecognizer *)ges
 {
     if (_delegate && [_delegate respondsToSelector:@selector(showHeaderViewShowImageDidClickWithHeaderView:imageView:)]) {
@@ -211,12 +248,6 @@
     self.praiseButton.selected = [praiseUserIdArray containsObject:UserId];
     
     //frame
-    CGSize nickNameButtonSize = [self.nickNameButton.currentTitle sizeWithLabelFont:self.nickNameButton.titleLabel.font];
-    self.nickNameButton.frame = CGRectMake(CGRectGetMaxX(self.avatarImageView.frame) + 7, 9 + 7, nickNameButtonSize.width, nickNameButtonSize.height);
-    
-    CGSize timeLabelSize = [self.timeLabel.text sizeWithLabelFont:self.timeLabel.font];
-    self.timeLabel.frame = CGRectMake(self.nickNameButton.x, CGRectGetMaxY(self.nickNameButton.frame) + 3, timeLabelSize.width, timeLabelSize.height);
-
     self.titleLabel.frame = _model.titleLabelF;
     self.detailLabel.frame = _model.detailLabelF;
     
@@ -255,6 +286,7 @@
     }
     self.triangleImageView.frame = _model.triangleImageViewF;
 }
+
 #pragma mark - 初始化
 - (NSMutableArray *)imageViews
 {

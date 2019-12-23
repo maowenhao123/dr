@@ -273,10 +273,12 @@ NSString * const RecommendGoodCellId = @"RecommendGoodCellId";
     backTopBtn.hidden = YES;
     [self.view addSubview:backTopBtn];
 }
+
 - (void)backTopBtnDidClick
 {
     [self.collectionView setContentOffset:CGPointMake(self.collectionView.contentOffset.x, 0) animated:YES];
 }
+
 - (void)headerRefreshViewBeginRefreshing
 {
     self.pageIndex = 1;

@@ -12,6 +12,8 @@
 #import "DRMailSettingViewController.h"
 #import "DRReturnGoodManageViewController.h"
 #import "DRWaitSettlementOrderViewController.h"
+#import "DRChangeRealNameViewController.h"
+#import "DRMyFansViewController.h"
 #import "DRWithdrawViewController.h"
 #import "DRBillingViewController.h"
 #import "DRPublishGoodViewController.h"
@@ -78,13 +80,13 @@
 - (void)getData
 {
     NSDictionary *bodyDic = @{
-                              };
+    };
     
     NSDictionary *headDic = @{
-                              @"digest":[DRTool getDigestByBodyDic:bodyDic],
-                              @"cmd":@"B01",
-                              @"userId":UserId,
-                              };
+        @"digest":[DRTool getDigestByBodyDic:bodyDic],
+        @"cmd":@"B01",
+        @"userId":UserId,
+    };
     [[DRHttpTool shareInstance] postWithHeadDic:headDic bodyDic:bodyDic success:^(id json) {
         DRLog(@"%@",json);
         [MBProgressHUD hideHUDForView:self.view];
@@ -141,7 +143,7 @@
     tableView.mj_header = header;
     
     //headerView
-    UIView * headerView = [[UIView alloc] initWithFrame:CGRectMake(0, 0, screenWidth, scaleScreenWidth(177) + 165 + 9 + DRCellH + 70)];
+    UIView * headerView = [[UIView alloc] initWithFrame:CGRectMake(0, 0, screenWidth, scaleScreenWidth(177) + 200 + 9 + DRCellH + 70)];
     headerView.backgroundColor = [UIColor whiteColor];
     
     UIImageView * backImageView = [[UIImageView alloc] initWithFrame:CGRectMake(0, 0, screenWidth, scaleScreenWidth(177))];
@@ -203,21 +205,25 @@
     [backImageView addSubview:accessoryImageView];
     
     //店铺金额
-    UIView *moneyView = [[UIView alloc] initWithFrame:CGRectMake(0, CGRectGetMaxY(backImageView.frame), screenWidth, 165)];
+    UIView *moneyView = [[UIView alloc] initWithFrame:CGRectMake(0, CGRectGetMaxY(backImageView.frame), screenWidth, 200)];
     moneyView.backgroundColor = [UIColor whiteColor];
     [headerView addSubview:moneyView];
     
-    CGFloat labelH = 15;
-    for (int i = 0; i < 4; i++) {
+    CGFloat labelH = 20;
+    CGFloat labelPadding = 12;
+    for (int i = 0; i < 5; i++) {
         UILabel *moneyLabel = [[UILabel alloc] init];
         if (i == 0) {
-            moneyLabel.frame = CGRectMake(DRMargin, 15 + (labelH + 20) * i, screenWidth - 2 * DRMargin, labelH);
+            moneyLabel.frame = CGRectMake(DRMargin, labelPadding + (labelH + labelPadding) * i, screenWidth - 2 * DRMargin, labelH);
         }else if (i == 3)
         {
-            moneyLabel.frame = CGRectMake(DRMargin * 2, 15 + (labelH + 20) * i, screenWidth - 4 * DRMargin, labelH * 2);
+            moneyLabel.frame = CGRectMake(DRMargin * 2, labelPadding + (labelH + labelPadding) * i, screenWidth - 4 * DRMargin, labelH * 2);
+        }else if (i == 4)
+        {
+            moneyLabel.frame = CGRectMake(DRMargin, labelPadding + (labelH + labelPadding) * i + labelH, screenWidth - 2 * DRMargin, labelH);
         }else
         {
-            moneyLabel.frame = CGRectMake(DRMargin * 2, 15 + (labelH + 20) * i, screenWidth - 4 * DRMargin, labelH);
+            moneyLabel.frame = CGRectMake(DRMargin * 2, labelPadding + (labelH + labelPadding) * i, screenWidth - 4 * DRMargin, labelH);
         }
         moneyLabel.textColor = DRBlackTextColor;
         moneyLabel.font = [UIFont systemFontOfSize:DRGetFontSize(26)];
@@ -230,7 +236,7 @@
     //充值提款
     CGFloat rechargeBtnH = 25;
     CGFloat rechargeBtnW = 63;
-    for (int i = 0; i < 3; i++) {
+    for (int i = 0; i < 4; i++) {
         UILabel * moneyLabel = self.labelArray[i + 1];
         UIButton * button = [UIButton buttonWithType:UIButtonTypeCustom];
         button.tag = 100 + i;
@@ -240,20 +246,23 @@
             [button setTitle:@"账单" forState:UIControlStateNormal];
             [button setTitleColor:DRBlackTextColor forState:UIControlStateNormal];
             button.layer.borderColor = DRGrayTextColor.CGColor;
-            button.centerY = moneyLabel.centerY - 1;
         }else if (i == 1)
         {
             [button setTitle:@"提款" forState:UIControlStateNormal];
             [button setTitleColor:DRViceColor forState:UIControlStateNormal];
             button.layer.borderColor = DRViceColor.CGColor;
-            button.centerY = moneyLabel.centerY;
         }else if (i == 2)
         {
             [button setTitle:@"详情" forState:UIControlStateNormal];
             [button setTitleColor:DRBlackTextColor forState:UIControlStateNormal];
             button.layer.borderColor = DRGrayTextColor.CGColor;
-            button.centerY = moneyLabel.centerY - labelH / 2;
+        }else if (i == 3)
+        {
+            [button setTitle:@"详情" forState:UIControlStateNormal];
+            [button setTitleColor:DRBlackTextColor forState:UIControlStateNormal];
+            button.layer.borderColor = DRGrayTextColor.CGColor;
         }
+        button.centerY = moneyLabel.centerY;
         button.layer.borderWidth = 1;
         button.layer.cornerRadius = 3;
         button.layer.masksToBounds = YES;
@@ -304,7 +313,7 @@
     UIView * line2 = [[UIView alloc]initWithFrame:CGRectMake(0, orderView.height - 1, screenWidth, 1)];
     line2.backgroundColor = DRWhiteLineColor;
     [orderView addSubview:line2];
-
+    
     //订单选项
     UIView *allOrderItemView = [[UIView alloc] initWithFrame:CGRectMake(0, CGRectGetMaxY(orderView.frame), screenWidth, 70)];
     allOrderItemView.backgroundColor = [UIColor whiteColor];
@@ -326,7 +335,7 @@
         
         [self.orderItemViews addObject:itemView];
     }
-
+    
     tableView.tableHeaderView = headerView;
 }
 
@@ -358,6 +367,11 @@
     {
         DRWaitSettlementOrderViewController * waitSettlementOrderVC = [[DRWaitSettlementOrderViewController alloc] init];
         [self.navigationController pushViewController:waitSettlementOrderVC animated:YES];
+    }else if (button.tag - 100 == 3)//粉丝
+    {
+        DRMyFansViewController * myFansVC = [[DRMyFansViewController alloc] init];
+        myFansVC.isShop = YES;
+        [self.navigationController pushViewController:myFansVC animated:YES];
     }
 }
 
@@ -523,14 +537,14 @@
 - (void)judgeMail
 {
     NSDictionary *bodyDic = @{
-                              
-                              };
+        
+    };
     
     NSDictionary *headDic = @{
-                              @"digest":[DRTool getDigestByBodyDic:bodyDic],
-                              @"cmd":@"B15",
-                              @"userId":UserId,
-                              };
+        @"digest":[DRTool getDigestByBodyDic:bodyDic],
+        @"cmd":@"B15",
+        @"userId":UserId,
+    };
     waitingView
     [[DRHttpTool shareInstance] postWithHeadDic:headDic bodyDic:bodyDic success:^(id json) {
         DRLog(@"%@",json);
@@ -594,7 +608,7 @@
 - (void)setMoneyLabelText
 {
     DRMyShopModel * shopModel = [DRUserDefaultTool myShopModel];
-  
+    
     for (int i = 0; i < self.labelArray.count; i++) {
         UILabel * moneyLabel = self.labelArray[i];
         if (i == 0) {
@@ -622,6 +636,12 @@
             paragraphStyle.lineSpacing = 30 - [UIFont systemFontOfSize:DRGetFontSize(26)].lineHeight - [UIFont systemFontOfSize:DRGetFontSize(22)].lineHeight;
             [moneyAttStr addAttribute:NSParagraphStyleAttributeName value:paragraphStyle range:NSMakeRange(0, moneyAttStr.length)];
             moneyLabel.attributedText = moneyAttStr;
+        }else if (i == 4)
+        {
+            NSString * fansCountStr = [NSString stringWithFormat:@"%@", shopModel.fansCount];
+            NSMutableAttributedString * fansCountAttStr = [[NSMutableAttributedString alloc] initWithString:[NSString stringWithFormat:@"店铺粉丝%@人", fansCountStr]];
+            [fansCountAttStr addAttribute:NSForegroundColorAttributeName value:DRDefaultColor range:[fansCountAttStr.string rangeOfString:fansCountStr]];
+            moneyLabel.attributedText = fansCountAttStr;
         }
     }
 }

@@ -8,6 +8,7 @@
 
 #import <Foundation/Foundation.h>
 #import <UMSocialCore/UMSocialCore.h>
+#import "DRShareView.h"
 
 @interface DRShareTool : NSObject
 

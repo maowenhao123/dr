@@ -99,8 +99,7 @@
     
     //frame
     CGSize nickNameLabelSize = [self.nickNameLabel.text sizeWithLabelFont:self.nickNameLabel.font];
-    self.nickNameLabel.frame = CGRectMake(CGRectGetMaxX(self.avatarImageView.frame) + 5, 9, nickNameLabelSize.width, 50);
-    
+    self.nickNameLabel.frame = CGRectMake(CGRectGetMaxX(self.avatarImageView.frame) + 5, 0, nickNameLabelSize.width, 50);
 }
 
 @end

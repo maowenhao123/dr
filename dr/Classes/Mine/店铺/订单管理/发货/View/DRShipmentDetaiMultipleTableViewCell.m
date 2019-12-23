@@ -168,14 +168,15 @@
             goodCount += [orderItemDetailModel.purchaseCount integerValue];
         }
     }
-    self.orderDetailLabel.text = [NSString stringWithFormat:@"共%ld件商品 实付款：￥%@", (long)goodCount, [DRTool formatFloat:[_orderModel.priceCount doubleValue] / 100]];
+    self.orderDetailLabel.text = [NSString stringWithFormat:@"共%ld件商品 实付款：￥%@", (long)goodCount, [DRTool formatFloat:[_orderModel.priceCount doubleValue] / 100 + [_orderModel.mailPrice doubleValue] / 100]];
     
     //frame
     CGSize timeLabelSize = [self.timeLabel.text sizeWithLabelFont:self.timeLabel.font];
     self.timeLabel.frame = CGRectMake(CGRectGetMaxX(self.grouponImageView.frame) + 3, 9, timeLabelSize.width, 35);
     if ([_orderModel.orderType intValue] == 2) {//团购
         self.timeLabel.frame = CGRectMake(CGRectGetMaxX(self.grouponImageView.frame) + 5, 9, timeLabelSize.width, 35);
-    } else {//普通
+    } else//普通
+    {
         self.timeLabel.frame = CGRectMake(DRMargin, 9, timeLabelSize.width, 35);
     }
     

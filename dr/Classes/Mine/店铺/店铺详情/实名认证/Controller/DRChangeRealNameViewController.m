@@ -15,11 +15,8 @@
 
 @property (nonatomic, weak) UITextField * realNameTF;
 @property (nonatomic, weak) UITextField * personalIdTF;
-@property (nonatomic,weak) UIImageView * imageView1;
-@property (nonatomic,weak) UIImageView * imageView2;
+@property (nonatomic, strong) NSMutableArray *imageViews;
 @property (nonatomic, strong) DRAddImageManage * addImageManage;
-@property (nonatomic,assign) BOOL haveImage1;
-@property (nonatomic,assign) BOOL haveImage2;
 @property (nonatomic, strong) NSMutableArray *uploadImageUrlArray;
 
 @end
@@ -39,11 +36,11 @@
     self.navigationItem.rightBarButtonItem = [[UIBarButtonItem alloc]initWithTitle:@"保存" style:UIBarButtonItemStylePlain target:self action:@selector(saveBarDidClick)];
     
     UIView * contentView = [[UIView alloc] init];
-    contentView.frame = CGRectMake(0, 9, screenWidth, 2 * DRCellH + 170);
+    contentView.frame = CGRectMake(0, 9, screenWidth, 0);
     contentView.backgroundColor = [UIColor whiteColor];
     [self.view addSubview:contentView];
 
-    NSArray * titles = @[@"真实姓名",@"身份证号"];
+    NSArray * titles = @[@"真实姓名", @"身份证号"];
     for (int i = 0; i < 2; i++) {
         UILabel * titleLabel = [[UILabel alloc]init];
         titleLabel.font = [UIFont systemFontOfSize:DRGetFontSize(28)];
@@ -89,40 +86,45 @@
     pictureLabel.frame = CGRectMake(DRMargin, 2 * DRCellH + 5, titleLabelSize.width, 25);
     [contentView addSubview:pictureLabel];
     
-    CGFloat imageViewY = CGRectGetMaxY(pictureLabel.frame) + 5;
+    CGFloat maxY = CGRectGetMaxY(pictureLabel.frame) + 10;
     CGFloat imageViewHW = 100;
     CGFloat padding = (screenWidth - 2 * imageViewHW) / 3;
-    NSArray * pictureTitles = @[@"身份证正面",@"身份证反面"];
-    for (int i = 0; i < 2; i++) {
+    NSArray * pictureTitles = @[@"身份证正面", @"身份证反面", @"本人手持身份照照片（需露出身份照正面照及本人清晰五官）"];
+    for (int i = 0; i < 3; i++) {
         UIImageView * imageView = [[UIImageView alloc] init];
-        if (i == 0) {
-            self.imageView1 = imageView;
-        }else
-        {
-            self.imageView2 = imageView;
-        }
-        imageView.frame = CGRectMake(padding + (imageViewHW + padding) * i, imageViewY, imageViewHW, imageViewHW);
+        imageView.frame = CGRectMake(padding + (imageViewHW + padding) * (i % 2), maxY + (imageViewHW + 40) * (i / 2), imageViewHW, imageViewHW);
         imageView.tag = i;
         imageView.image = [UIImage imageNamed:@"addImage"];
         imageView.userInteractionEnabled = YES;
         imageView.contentMode = UIViewContentModeScaleAspectFit;
         [contentView addSubview:imageView];
+        [self.imageViews addObject:imageView];
         
         UITapGestureRecognizer * tap = [[UITapGestureRecognizer alloc] initWithTarget:self action:@selector(imageViewDidClick:)];
         [imageView addGestureRecognizer:tap];
         
-        UILabel * pictureTitleLabel = [[UILabel alloc]init];
-        pictureTitleLabel.font = [UIFont systemFontOfSize:DRGetFontSize(24)];
-        pictureTitleLabel.textColor = DRGrayTextColor;
-        pictureTitleLabel.text = pictureTitles[i];
-        CGSize titleLabelSize = [pictureTitleLabel.text sizeWithLabelFont:pictureTitleLabel.font];
-        pictureTitleLabel.frame = CGRectMake(0, CGRectGetMaxY(imageView.frame) + 5, titleLabelSize.width, 25);
-        pictureTitleLabel.centerX = imageView.centerX;
-        [contentView addSubview:pictureTitleLabel];
+        UILabel * titleLabel = [[UILabel alloc] init];
+        titleLabel.font = [UIFont systemFontOfSize:DRGetFontSize(24)];
+        titleLabel.textColor = DRGrayTextColor;
+        titleLabel.text = pictureTitles[i];
+        titleLabel.numberOfLines = 0;
+        titleLabel.textAlignment = NSTextAlignmentCenter;
+        CGSize titleLabelSize = [titleLabel.text sizeWithFont:titleLabel.font maxSize:CGSizeMake(imageViewHW + 100, MAXFLOAT)];
+        CGFloat titleLabelH = titleLabelSize.height;
+        if (titleLabelH < 25) {
+            titleLabelH = 25;
+        }
+        titleLabel.frame = CGRectMake(0, CGRectGetMaxY(imageView.frame) + 5, imageViewHW + 100, titleLabelH);
+        titleLabel.centerX = imageView.centerX;
+        [contentView addSubview:titleLabel];
+        
+        if (i == 2) {
+            contentView.height = CGRectGetMaxY(titleLabel.frame) + 10;
+        }
     }
     
     //温馨提示
-    UILabel * promptLabel = [[UILabel alloc]init];
+    UILabel * promptLabel = [[UILabel alloc] init];
     promptLabel.numberOfLines = 0;
     NSString * promptStr = @"*实名信息不允许修改，请认真填写";
     NSMutableAttributedString * promptAttStr = [[NSMutableAttributedString alloc]initWithString:promptStr];
@@ -136,6 +138,7 @@
     promptLabel.frame = CGRectMake(DRMargin, CGRectGetMaxY(contentView.frame) + 10, screenWidth - DRMargin * 2, promptSize.height);
     [self.view addSubview:promptLabel];
 }
+
 - (void)imageViewDidClick:(UIGestureRecognizer *)ges
 {
     [self.view endEditing:YES];
@@ -147,17 +150,13 @@
     self.addImageManage.tag = ges.view.tag;
     [self.addImageManage addImage];
 }
+
 - (void)imageManageCropImage:(UIImage *)image
 {
-    if (self.addImageManage.tag == 0) {
-        self.imageView1.image = image;
-        self.haveImage1 = YES;
-    }else
-    {
-        self.imageView2.image = image;
-        self.haveImage2 = YES;
-    }
+    UIImageView * imageView = self.imageViews[self.addImageManage.tag];
+    imageView.image = image;
 }
+
 - (void)saveBarDidClick
 {
     [self.view endEditing:YES];
@@ -174,51 +173,51 @@
         return;
     }
     
-    if (!self.haveImage1) {
-        [MBProgressHUD showError:@"请输入身份证正面"];
-        return;
+    for (UIImageView * imageView in self.imageViews) {
+        NSInteger index = [self.imageViews indexOfObject:imageView];
+        if (imageView.image == [UIImage imageNamed:@"addImage"]) {
+            if (index == 0) {
+                [MBProgressHUD showError:@"请输入身份证正面"];
+                return;
+            }else if (index == 1)
+            {
+                [MBProgressHUD showError:@"请输入身份证反面"];
+                return;
+            }else if (index == 2)
+            {
+                [MBProgressHUD showError:@"本人手持身份照照片"];
+                return;
+            }
+        }
     }
-    
-    if (!self.haveImage2) {
-        [MBProgressHUD showError:@"请输入身份证反面"];
-        return;
-    }
-    
-    [self uploadImageWithImage:self.imageView1.image back:NO];
+
+    [self uploadImageWithImageView:self.imageViews.firstObject];
 }
 
-- (void)uploadImageWithImage:(UIImage *)image back:(BOOL)back
+- (void)uploadImageWithImageView:(UIImageView *)imageView
 {
-    NSInteger currentIndex = 0;
-    if (back == NO) {
-        currentIndex = 1;
-    }else
-    {
-        currentIndex = 2;
-    }
-    [DRHttpTool uploadWithImage:image currentIndex:currentIndex totalCount:2 Success:^(id json) {
+    [DRHttpTool uploadWithImage:imageView.image currentIndex:[self.imageViews indexOfObject:imageView] + 1 totalCount:self.imageViews.count Success:^(id json) {
         if (SUCCESS) {
-            NSDictionary * dic = @{
-                                   @"back":@(back),
-                                   @"picUrl":json[@"picUrl"]
-                                   };
-            [self.uploadImageUrlArray addObject:dic];
-        }
-        if (currentIndex == 1)
-        {
-            [self uploadImageWithImage:self.imageView2.image back:YES];
+            [self.uploadImageUrlArray addObject:json[@"picUrl"]];
         }else
         {
+            [self.uploadImageUrlArray addObject:@""];
+        }
+        if (self.uploadImageUrlArray.count == self.imageViews.count)
+        {
             [self upData];
+        }else
+        {
+            [self uploadImageWithImageView:self.imageViews[self.uploadImageUrlArray.count]];
         }
     } Failure:^(NSError *error) {
         [self.uploadImageUrlArray addObject:@""];
-        if (currentIndex == 1)
-        {
-            [self uploadImageWithImage:self.imageView2.image back:YES];
-        }else
+        if (self.uploadImageUrlArray.count == self.imageViews.count)
         {
             [self upData];
+        }else
+        {
+            [self uploadImageWithImageView:self.imageViews[self.uploadImageUrlArray.count]];
         }
     }  Progress:^(float percent) {
         
@@ -227,20 +226,14 @@
 
 - (void)upData
 {
-    NSString * idCardImgURL;
-    NSString * idCardBackImgURL;
-    for (NSDictionary * dic in self.uploadImageUrlArray) {
-        if ([dic[@"back"] boolValue] == YES) {
-            idCardBackImgURL = dic[@"picUrl"];
-        }else
-        {
-            idCardImgURL = dic[@"picUrl"];
-        }
-    }
-    
+    NSString * idCardImgURL = self.uploadImageUrlArray[0];
+    NSString * idCardBackImgURL = self.uploadImageUrlArray[1];
+    NSString * idCardHoldImg = self.uploadImageUrlArray[2];
+   
     NSDictionary *bodyDic = @{
                               @"idCardImg":idCardImgURL,
                               @"idCardBackImg":idCardBackImgURL,
+                              @"idCardHoldImg":idCardHoldImg,
                               @"realName":self.realNameTF.text,
                               @"personalId":self.personalIdTF.text
                               };
@@ -269,6 +262,15 @@
         DRLog(@"error:%@",error);
     }];
 }
+
+- (NSMutableArray *)imageViews
+{
+    if (!_imageViews) {
+        _imageViews = [NSMutableArray array];
+    }
+    return _imageViews;
+}
+
 
 - (NSMutableArray *)uploadImageUrlArray
 {

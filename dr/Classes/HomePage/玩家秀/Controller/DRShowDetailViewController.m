@@ -389,14 +389,14 @@
     [contentView addSubview:avatarImageView];
     
     //昵称
-    UILabel * nameLabel = [[UILabel alloc] initWithFrame:CGRectMake(CGRectGetMaxX(avatarImageView.frame) + 5, 7, screenWidth - (CGRectGetMaxX(avatarImageView.frame) + 5) - 2 * DRMargin, 20)];
+    UILabel * nameLabel = [[UILabel alloc] initWithFrame:CGRectMake(CGRectGetMaxX(avatarImageView.frame) + 5, 9, screenWidth - (CGRectGetMaxX(avatarImageView.frame) + 5) - 2 * DRMargin, 20)];
     self.nameLabel = nameLabel;
     nameLabel.font = [UIFont systemFontOfSize:DRGetFontSize(26)];
     nameLabel.textColor = DRBlackTextColor;
     [contentView addSubview:nameLabel];
     
     //时间
-    UILabel * timeLabel = [[UILabel alloc] initWithFrame:CGRectMake(nameLabel.x, CGRectGetMaxY(nameLabel.frame), screenWidth - nameLabel.x - 2 * DRMargin, 20)];
+    UILabel * timeLabel = [[UILabel alloc] initWithFrame:CGRectMake(nameLabel.x, CGRectGetMaxY(nameLabel.frame), screenWidth - nameLabel.x - 2 * DRMargin, 16)];
     self.timeLabel = timeLabel;
     timeLabel.font = [UIFont systemFontOfSize:DRGetFontSize(22)];
     timeLabel.textColor = DRGrayTextColor;

@@ -72,6 +72,9 @@
         if (SUCCESS) {
             self.headerView.openActivity = [json[@"status"] boolValue];
             self.showTableView.tableHeaderView = self.headerView;
+        }else
+        {
+            self.showTableView.tableHeaderView = nil;
         }
     } failure:^(NSError *error) {
         DRLog(@"error:%@",error);
@@ -121,7 +124,6 @@
     //headerView
     self.headerView = [[DRShowHeaderView alloc] initWithFrame:CGRectMake(0, 0, screenWidth, headerViewH)];
     self.headerView.openActivity = NO;
-    showTableView.tableHeaderView = self.headerView;
 }
 
 - (void)addShowBarDidClick

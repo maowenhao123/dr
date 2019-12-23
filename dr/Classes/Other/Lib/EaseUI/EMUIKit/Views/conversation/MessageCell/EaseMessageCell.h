@@ -79,7 +79,7 @@ typedef enum{
 /*
  *  聊天气泡的最大宽度
  */
-@property (nonatomic) CGFloat bubbleMaxWidth UI_APPEARANCE_SELECTOR; //default 200;
+@property (nonatomic) CGFloat bubbleMaxWidth UI_APPEARANCE_SELECTOR; //default screenWidth * 0.7;
 
 @property (nonatomic) UIEdgeInsets bubbleMargin UI_APPEARANCE_SELECTOR; //default UIEdgeInsetsMake(8, 0, 8, 0);
 

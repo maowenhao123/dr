@@ -25,6 +25,7 @@
 @property (nonatomic, copy) NSString *headImg;
 @property (nonatomic,copy) NSString *idCardImg;//身份证正面
 @property (nonatomic,copy) NSString *idCardBackImg;//身份证反面
+@property (nonatomic,copy) NSString *idCardHoldImg;
 @property (nonatomic, strong) NSNumber *couponNumber;//可用红包数量
 @property (nonatomic, strong) NSNumber *waitPayCount;//待付款
 @property (nonatomic, strong) NSNumber *waitDeliveryCount;//待发货
