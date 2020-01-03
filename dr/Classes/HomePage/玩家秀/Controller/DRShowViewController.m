@@ -133,9 +133,4 @@
     [self.navigationController pushViewController:addShowVC animated:YES];
 }
 
-- (void)addShowSuccess
-{
-    [self.showTableView getData];
-}
-
 @end

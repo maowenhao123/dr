@@ -504,7 +504,7 @@
         [self.navigationController pushViewController:chatVC animated:YES];
     }else if (indexPath.row == 2)
     {
-        DRMyFansViewController * myFansVC = [[DRMyFansViewController  alloc]init];
+        DRMyFansViewController * myFansVC = [[DRMyFansViewController alloc] init];
         [self.navigationController pushViewController:myFansVC animated:YES];
     }else if (indexPath.row == 3)
     {

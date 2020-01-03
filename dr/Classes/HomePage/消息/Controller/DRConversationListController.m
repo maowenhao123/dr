@@ -17,8 +17,10 @@
 
 @property (nonatomic,weak) DRSystemMessageView * orderMessageView;
 @property (nonatomic,weak) DRSystemMessageView * systemMessageView;
+@property (nonatomic,weak) DRSystemMessageView * interactiveMessageView;
 @property (strong, nonatomic) EMConversation *orderConversation;
 @property (strong, nonatomic) EMConversation *systemConversation;
+@property (strong, nonatomic) EMConversation *interactiveConversation;
 
 @end
 
@@ -57,7 +59,7 @@
 - (void)_setupTableViewHeaderView
 {
     CGFloat cellH = 60;
-    UIView * headerView = [[UIView alloc] initWithFrame:CGRectMake(0, 0, screenWidth, cellH * 2 + 9)];
+    UIView * headerView = [[UIView alloc] initWithFrame:CGRectMake(0, 0, screenWidth, cellH * 3 + 9)];
     headerView.backgroundColor = [UIColor whiteColor];
     
     DRMessageModel * orderMessageModel = [DRMessageModel new];
@@ -80,8 +82,18 @@
     systemMessageView.messageModel = systemMessageModel;
     [headerView addSubview:systemMessageView];
     
+    DRMessageModel * interactiveMessageModel = [DRMessageModel new];
+    interactiveMessageModel.title = @"互动消息";
+    interactiveMessageModel.imageName = @"interactive_message";
+    interactiveMessageModel.detail = @"暂无消息";
+    DRSystemMessageView * interactiveMessageView = [[DRSystemMessageView alloc] initWithFrame:CGRectMake(0, cellH * 2, screenWidth, cellH)];
+    self.interactiveMessageView = interactiveMessageView;
+    interactiveMessageView.delegate = self;
+    interactiveMessageView.messageModel = interactiveMessageModel;
+    [headerView addSubview:interactiveMessageView];
+    
     //分割线
-    UIView * lineView = [[UIView alloc] initWithFrame:CGRectMake(0, cellH * 2, screenWidth, 9)];
+    UIView * lineView = [[UIView alloc] initWithFrame:CGRectMake(0, cellH * 3, screenWidth, 9)];
     lineView.backgroundColor = DRBackgroundColor;
     [headerView addSubview:lineView];
     
@@ -109,6 +121,11 @@
         if ([conversation.conversationId isEqualToString:@"message"]) {
             self.systemConversation = conversation;
             [self setSystemMessageData];
+        }
+        //获取互动消息
+        if ([conversation.conversationId isEqualToString:@"interact"]) {
+            self.interactiveConversation = conversation;
+            [self setInteractiveMessageData];
         }
     }
 }
@@ -161,16 +178,45 @@
     self.systemMessageView.badge = unReadCount;
 }
 
+- (void)setInteractiveMessageData
+{
+    [self.interactiveConversation loadMessagesStartFromId:nil count:1 searchDirection:EMMessageSearchDirectionUp completion:^(NSArray *aMessages, EMError *aError) {
+        if (!aError && [aMessages count]) {
+            EMMessage *emessageModel = aMessages.lastObject;
+            
+            DRMessageModel * interactiveMessageModel = self.interactiveMessageView.messageModel;
+            interactiveMessageModel.time = [NSString stringWithFormat:@"%@",[DRDateTool getTimeByTimestamp:emessageModel.localTime format:@"yyyy-MM-dd"]];
+            EMMessageBody *messageBody = emessageModel.body;
+            if (messageBody.type == EMMessageBodyTypeText) {
+                interactiveMessageModel.detail = ((EMTextMessageBody *)messageBody).text;
+            }
+            self.interactiveMessageView.messageModel = interactiveMessageModel;
+        }else
+        {
+            self.interactiveMessageView.timeLabel.text = nil;
+            self.interactiveMessageView.contentLabel.text = @"暂无消息";
+        }
+    }];
+    
+    int unReadCount = [self.interactiveConversation unreadMessagesCount];
+    self.interactiveMessageView.badge = unReadCount;
+}
+
 - (void)systemMessageViewDidClick:(DRSystemMessageView *)systemMessageView
 {
     DRSystemMessageViewController * messageVC = [[DRSystemMessageViewController alloc] init];
     messageVC.title = systemMessageView.messageModel.title;
     if (self.orderMessageView == systemMessageView) {
+        messageVC.systemMessageType = OrderMessage;
         messageVC.conversation = self.orderConversation;
     }else if (self.systemMessageView == systemMessageView)
     {
-        messageVC.isSystem = YES;
+        messageVC.systemMessageType = SystemMessage;
         messageVC.conversation = self.systemConversation;
+    }else if (self.interactiveMessageView == systemMessageView)
+    {
+        messageVC.systemMessageType = InteractiveMessage;
+        messageVC.conversation = self.interactiveConversation;
     }
     [self.navigationController pushViewController:messageVC animated:YES];
 }
@@ -218,7 +264,7 @@
                                     modelForConversation:(EMConversation *)conversation
 {
     EaseConversationModel *model = [[EaseConversationModel alloc] initWithConversation:conversation];
-    if ([model.title isEqualToString:@"system"] || [model.title isEqualToString:@"message"]) {
+    if ([model.title isEqualToString:@"system"] || [model.title isEqualToString:@"message"] || [model.title isEqualToString:@"interact"]) {
         return model;
     }
     NSDictionary * ext = model.conversation.lastReceivedMessage.ext;

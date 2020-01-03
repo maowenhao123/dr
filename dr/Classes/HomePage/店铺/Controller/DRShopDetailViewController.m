@@ -198,14 +198,22 @@ NSString * const ShopHeaderCellId = @"ShopHeaderCellId";
                               @"cmd":cmd,
                               @"userId":UserId,
                               };
+    waitingView
     [[DRHttpTool shareInstance] postWithHeadDic:headDic bodyDic:bodyDic success:^(id json) {
         DRLog(@"%@",json);
+        [MBProgressHUD hideHUDForView:self.view];
         if (SUCCESS) {
             self.isAttention = !self.isAttention;
-            [self getShopData];
+            [UIView performWithoutAnimation:^{
+                [self.collectionView reloadSections:[NSIndexSet indexSetWithIndex:0]];
+            }];
+        }else
+        {
+            ShowErrorView
         }
     } failure:^(NSError *error) {
         DRLog(@"error:%@",error);
+        [MBProgressHUD hideHUDForView:self.view];
     }];
 }
 #pragma mark - 布局视图

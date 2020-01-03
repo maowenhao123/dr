@@ -37,6 +37,8 @@
     //商品图片
     UIImageView * goodImageView = [[UIImageView alloc] initWithFrame:CGRectMake(DRMargin, 5, 40, 40)];
     self.goodImageView = goodImageView;
+    goodImageView.contentMode = UIViewContentModeScaleAspectFill;
+    goodImageView.layer.masksToBounds = YES;
     [contentView addSubview:goodImageView];
     
     //商品名称

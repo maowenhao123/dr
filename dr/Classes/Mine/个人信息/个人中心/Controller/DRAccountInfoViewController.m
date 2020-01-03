@@ -131,7 +131,7 @@
             self.addImageManage = [[DRAddImageManage alloc] init];
             self.addImageManage.viewController = self;
             self.addImageManage.delegate = self;
-            self.addImageManage.type = 2;
+            self.addImageManage.type = 1;
             [self.addImageManage addImage];
         }else if (indexPath.row == 1)//昵称
         {

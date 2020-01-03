@@ -19,12 +19,12 @@ static NSDictionary *platformDic;
 + (void)shareGrouponByGrouponId:(NSString *)grouponId
 {
     NSDictionary *bodyDic = @{
-                              @"id":grouponId,
-                              };
+        @"id":grouponId,
+    };
     
     NSDictionary *headDic = @{
-                              @"cmd":@"S18",
-                              };
+        @"cmd":@"S18",
+    };
     [MBProgressHUD showMessage:@"请稍后"];
     [[DRHttpTool shareInstance] postWithHeadDic:headDic bodyDic:bodyDic success:^(id json) {
         DRLog(@"%@",json);
@@ -55,12 +55,12 @@ static NSDictionary *platformDic;
 + (void)shareGrouponByGoodId:(NSString *)goodId
 {
     NSDictionary *bodyDic = @{
-                              @"id":goodId,
-                              };
+        @"id":goodId,
+    };
     
     NSDictionary *headDic = @{
-                              @"cmd":@"B08",
-                              };
+        @"cmd":@"B08",
+    };
     [MBProgressHUD showMessage:@"请稍后"];
     [[DRHttpTool shareInstance] postWithHeadDic:headDic bodyDic:bodyDic success:^(id json) {
         DRLog(@"%@",json);
@@ -91,12 +91,12 @@ static NSDictionary *platformDic;
 + (void)shareGrouponByShopId:(NSString *)shopId
 {
     NSDictionary *bodyDic = @{
-                              @"storeId":shopId,
-                              };
+        @"storeId":shopId,
+    };
     
     NSDictionary *headDic = @{
-                              @"cmd":@"B01",
-                              };
+        @"cmd":@"B01",
+    };
     [MBProgressHUD showMessage:@"请稍后"];
     [[DRHttpTool shareInstance] postWithHeadDic:headDic bodyDic:bodyDic success:^(id json) {
         DRLog(@"%@",json);
@@ -155,6 +155,37 @@ static NSDictionary *platformDic;
     shareView.block = ^(UMSocialPlatformType platformType){//选择平台
         [self shareWithTitle:@"【吾花肉】拼手气，抢红包" description:[NSString stringWithFormat:@"%@元多肉红包等你来抢，手快有，手慢无", [DRTool formatFloat:amountMoney]] imageUrl:nil image:[UIImage imageNamed:@"order_red_packet_share_icon"] platformType:platformType url:rewardUrl];
     };
+}
+
+#pragma mark - 分享玩家秀
++ (void)shareShowWithShowId:(NSString *)showId userNickName:(NSString *)userNickName title:(NSString *)title content:(NSString *)content imageUrl:(NSString *)imageUrl
+{
+    NSDictionary *bodyDic = @{
+        @"id":showId
+    };
+    
+    NSDictionary *headDic = @{
+        @"digest":[DRTool getDigestByBodyDic:bodyDic],
+        @"cmd":@"G11",
+        @"userId":UserId,
+    };
+    [[DRHttpTool shareInstance] postWithHeadDic:headDic bodyDic:bodyDic success:^(id json) {
+        DRLog(@"%@",json);
+        if (SUCCESS) {
+            DRShareView * shareView = [[DRShareView alloc] init];
+            [shareView show];
+            shareView.block = ^(UMSocialPlatformType platformType){//选择平台
+                if (platformType == UMSocialPlatformType_WechatTimeLine) {
+                    [DRShareTool shareWithTitle:[NSString stringWithFormat:@"@%@发布了一篇花肉玩家秀，火速围观！", userNickName] description:[NSString stringWithFormat:@"%@\n%@", title, content] imageUrl:imageUrl image:nil platformType:platformType url:json[@"url"]];
+                }else
+                {
+                    [DRShareTool shareWithTitle:[NSString stringWithFormat:@"@%@发布了一篇花肉玩家秀", userNickName] description:[NSString stringWithFormat:@"%@\n%@", title, content] imageUrl:imageUrl image:nil platformType:platformType url:json[@"url"]];
+                }
+            };
+        }
+    } failure:^(NSError *error) {
+        DRLog(@"error:%@",error);
+    }];
 }
 
 + (void)shareWithTitle:(NSString *)title description:(NSString *)description imageUrl:(NSString *)imageUrl image:(UIImage *)image platformType:(UMSocialPlatformType)platformType url:(NSString *)url

@@ -43,8 +43,14 @@
         [self getBannerData];
         [self getNewData];
         [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(showPraiseActivityEnd) name:@"ShowPraiseActivityEnd" object:nil];
+        [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(addShowSuccess) name:@"AddShowSuccess" object:nil];
     }
     return self;
+}
+
+- (void)addShowSuccess
+{
+    [self topBtnClick:self.topBtnView.subviews[0]];
 }
 
 - (void)showPraiseActivityEnd
@@ -115,6 +121,7 @@
     UIView * activityView = [[UIView alloc] initWithFrame:CGRectMake(0, 0, screenWidth, 0)];
     self.activityView = activityView;
     activityView.backgroundColor = DRBackgroundColor;
+    activityView.hidden = YES;
     [self addSubview:activityView];
     
     //轮播图
@@ -185,7 +192,7 @@
     activityView.height = CGRectGetMaxY(activityContentView.frame) + 10;
     
     //顶部按钮
-    UIView * topBtnView = [[UIView alloc]initWithFrame:CGRectMake(0, CGRectGetMaxY(activityView.frame), screenWidth, 40)];
+    UIView * topBtnView = [[UIView alloc]initWithFrame:CGRectMake(0, 0, screenWidth, 40)];
     self.topBtnView = topBtnView;
     topBtnView.backgroundColor = [UIColor whiteColor];
     [self addSubview:topBtnView];

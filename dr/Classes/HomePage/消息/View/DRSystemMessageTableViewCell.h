@@ -9,12 +9,17 @@
 #import <UIKit/UIKit.h>
 #import <HyphenateLite/HyphenateLite.h>
 
+typedef NS_ENUM(NSUInteger, SystemMessageType) {
+    OrderMessage = 0,
+    SystemMessage,
+    InteractiveMessage,
+};
+
 @interface DRSystemMessageTableViewCell : UITableViewCell
 
 + (DRSystemMessageTableViewCell *)cellWithTableView:(UITableView *)tableView;
 
-@property (nonatomic, assign) BOOL isSystem;
-
+@property (assign, nonatomic) SystemMessageType systemMessageType;
 @property (nonatomic,strong) EMMessage *messageModel;
 
 @end

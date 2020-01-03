@@ -8,8 +8,8 @@
 
 #import "DRAddShowSuccessViewController.h"
 #import "DRShowViewController.h"
-#import "DRShareView.h"
 #import "DRShareTool.h"
+#import "DRShowModel.h"
 
 @interface DRAddShowSuccessViewController ()
 
@@ -66,6 +66,8 @@
 #pragma mark - 布局视图
 - (void)setupChilds
 {
+    self.navigationItem.leftBarButtonItem = [[UIBarButtonItem alloc] initWithImage:[UIImage imageNamed:@"black_back_bar"] style:UIBarButtonItemStylePlain target:self action:@selector(back)];
+    
     UIScrollView * scrollView = [[UIScrollView alloc] initWithFrame:CGRectMake(0, 0, screenWidth, screenHeight - statusBarH - navBarH)];
     self.scrollView = scrollView;
     [self.view addSubview:scrollView];
@@ -139,6 +141,8 @@
 
 - (void)back
 {
+    [[NSNotificationCenter defaultCenter] postNotificationName:@"AddShowSuccess" object:nil];
+    
     UIViewController * praiseListVC = nil;
     for (UIViewController *viewController in self.navigationController.viewControllers) {
         if ([viewController isKindOfClass:[DRShowViewController class]]) {
@@ -157,22 +161,18 @@
 - (void)shareBarDidClick
 {
     NSDictionary *bodyDic = @{
-                              @"id":self.showId,
+                              @"id":self.showId
                               };
     
     NSDictionary *headDic = @{
-                              @"digest":[DRTool getDigestByBodyDic:bodyDic],
-                              @"cmd":@"G11",
-                              @"userId":UserId,
+                              @"cmd":@"A04",
                               };
     [[DRHttpTool shareInstance] postWithHeadDic:headDic bodyDic:bodyDic success:^(id json) {
         DRLog(@"%@",json);
         if (SUCCESS) {
-            DRShareView * shareView = [[DRShareView alloc] init];
-            [shareView show];
-            shareView.block = ^(UMSocialPlatformType platformType){//选择平台
-                [DRShareTool shareWithTitle:@"集赞赢多肉" description:@"我在吾花肉发表了多肉秀，快来帮我点赞" imageUrl:[NSString stringWithFormat:@"%@/static/img/zanshare.png", @"http://www.esodar.com"] image:nil platformType:platformType url:json[@"url"]];
-            };
+            DRShowModel *showModel = [DRShowModel mj_objectWithKeyValues:json[@"article"]];
+            NSArray * imageUrls = [showModel.pics componentsSeparatedByString:@"|"];
+            [DRShareTool shareShowWithShowId:showModel.id userNickName:showModel.userNickName title:showModel.name content:showModel.content imageUrl:[NSString stringWithFormat:@"%@%@%@", baseUrl, imageUrls.firstObject, smallPicUrl]];
         }
     } failure:^(NSError *error) {
         DRLog(@"error:%@",error);

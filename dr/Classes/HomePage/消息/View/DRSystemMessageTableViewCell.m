@@ -20,7 +20,6 @@
 
 @end
 
-
 @implementation DRSystemMessageTableViewCell
 
 + (DRSystemMessageTableViewCell *)cellWithTableView:(UITableView *)tableView
@@ -35,6 +34,7 @@
     }
     return  cell;
 }
+
 - (id)initWithStyle:(UITableViewCellStyle)style reuseIdentifier:(NSString *)reuseIdentifier
 {
     self = [super initWithStyle:style reuseIdentifier:reuseIdentifier];
@@ -44,6 +44,7 @@
     }
     return self;
 }
+
 - (void)setupChildViews
 {
     //时间
@@ -106,9 +107,9 @@
     */
     
     //时间
-    NSDictionary * data = [DRTool dictionaryWithJsonString:messageModel.ext[@"data"]];
-    if (self.isSystem) {
-//        self.timeLabel.text = [NSString stringWithFormat:@"%@", messageModel.ext[@"type"]];
+    NSDictionary *ext = messageModel.ext;
+    NSDictionary * data = [DRTool dictionaryWithJsonString:ext[@"data"]];
+    if (self.systemMessageType == SystemMessage || self.systemMessageType == InteractiveMessage) {
         self.timeLabel.text = [NSString stringWithFormat:@"%@",[DRDateTool getTimeByTimestamp:[data[@"time"] longLongValue] format:@"yyyy-MM-dd HH:mm:ss"]];
     }else
     {
@@ -117,17 +118,33 @@
     
     //图片
     NSString * urlStr;
-    if (self.isSystem) {
+    if (self.systemMessageType == SystemMessage) {
         urlStr = [NSString stringWithFormat:@"%@%@%@",baseUrl, data[@"picture"], smallPicUrl];
+        [self.goodImageView sd_setImageWithURL:[NSURL URLWithString:urlStr] placeholderImage:[UIImage imageNamed:@"placeholder"]];
+    }else if (self.systemMessageType == InteractiveMessage)
+    {
+        if ([ext[@"type"] isEqualToString:@"INTERACT_STORE_FOCUS"]) {
+            self.goodImageView.image = [UIImage imageNamed:@"shop_attention"];
+        }else if ([ext[@"type"] isEqualToString:@"INTERACT_USER_FOCUS"])
+        {
+            self.goodImageView.image = [UIImage imageNamed:@"user_attention"];
+        }else
+        {
+            urlStr = [NSString stringWithFormat:@"%@%@%@",baseUrl, data[@"pic"], smallPicUrl];
+            [self.goodImageView sd_setImageWithURL:[NSURL URLWithString:urlStr] placeholderImage:[UIImage imageNamed:@"placeholder"]];
+        }
     }else
     {
         urlStr = [NSString stringWithFormat:@"%@%@%@",baseUrl, messageModel.ext[@"goodsPic"], smallPicUrl];
+        [self.goodImageView sd_setImageWithURL:[NSURL URLWithString:urlStr] placeholderImage:[UIImage imageNamed:@"placeholder"]];
     }
-    [self.goodImageView sd_setImageWithURL:[NSURL URLWithString:urlStr] placeholderImage:[UIImage imageNamed:@"placeholder"]];
     
     //标题
-    if (self.isSystem) {
+    if (self.systemMessageType == SystemMessage) {
         self.titleLabel.text = data[@"name"];
+    }else if (self.systemMessageType == InteractiveMessage)
+    {
+        self.titleLabel.text = data[@"title"];
     }else
     {
         NSString * type = [NSString stringWithFormat:@"%@", messageModel.ext[@"type"]];

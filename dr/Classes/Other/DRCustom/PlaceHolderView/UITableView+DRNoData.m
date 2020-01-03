@@ -12,13 +12,15 @@
 
 - (void)showNoDataWithTitle:(NSString *)title description:(NSString *)description rowCount:(NSInteger)rowCount
 {
+    [self showNoDataWithTitle:title description:description rowCount:rowCount offY:0];
+}
+
+- (void)showNoDataWithTitle:(NSString *)title description:(NSString *)description rowCount:(NSInteger)rowCount offY:(CGFloat)offY
+{
     UIView * backView = [[UIView alloc] initWithFrame:self.bounds];
     
     //图片
     UIImage * image = [UIImage imageNamed:@"no_data"];
-//    if (isCar) {
-//        image = [UIImage imageNamed:@"car_no_data"];
-//    }
     UIImageView * imageView = [[UIImageView alloc] initWithImage:image];
     [backView addSubview:imageView];
     
@@ -52,7 +54,7 @@
     CGFloat titleLabelH = titleLabelSize.height;
     CGFloat detailTextLabelW = detailTextLabelSize.width;
     CGFloat detailTextLabelH = detailTextLabelSize.height;
-    CGFloat imageViewY = (backView.height - (imageViewH + padding1 + titleLabelH + padding2 + detailTextLabelH)) * 0.39;
+    CGFloat imageViewY = offY + (backView.height - (imageViewH + padding1 + titleLabelH + padding2 + detailTextLabelH)) * 0.39;
     imageView.frame = CGRectMake((backView.width - imageViewW) / 2, imageViewY, imageViewW, imageViewH);
     titleLabel.frame = CGRectMake((backView.width - titleLabelW) / 2, CGRectGetMaxY(imageView.frame) + padding1, titleLabelW, titleLabelH);
     if (DRStringIsEmpty(title)) {

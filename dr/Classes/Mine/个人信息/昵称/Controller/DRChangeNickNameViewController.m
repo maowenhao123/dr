@@ -49,9 +49,9 @@
 {
     [self.view endEditing:YES];
     
-    if (![DRValidateTool validateNickname:self.nickNameTF.text])//不是昵称
+    if (DRStringIsEmpty(self.nickNameTF.text))
     {
-        [MBProgressHUD showError:@"您输入的昵称格式不对"];
+        [MBProgressHUD showError:@"请输入的昵称"];
         return;
     }
     

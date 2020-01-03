@@ -220,7 +220,7 @@
             moneyLabel.frame = CGRectMake(DRMargin * 2, labelPadding + (labelH + labelPadding) * i, screenWidth - 4 * DRMargin, labelH * 2);
         }else if (i == 4)
         {
-            moneyLabel.frame = CGRectMake(DRMargin, labelPadding + (labelH + labelPadding) * i + labelH, screenWidth - 2 * DRMargin, labelH);
+            moneyLabel.frame = CGRectMake(DRMargin * 2, labelPadding + (labelH + labelPadding) * i + labelH, screenWidth - 4 * DRMargin, labelH);
         }else
         {
             moneyLabel.frame = CGRectMake(DRMargin * 2, labelPadding + (labelH + labelPadding) * i, screenWidth - 4 * DRMargin, labelH);

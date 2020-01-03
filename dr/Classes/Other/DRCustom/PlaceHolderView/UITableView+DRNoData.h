@@ -10,6 +10,7 @@
 
 @interface UITableView (DRNoData)
 
+- (void)showNoDataWithTitle:(NSString *)title description:(NSString *)description rowCount:(NSInteger)rowCount offY:(CGFloat)offY;
 - (void)showNoDataWithTitle:(NSString *)title description:(NSString *)description rowCount:(NSInteger)rowCount;
 
 @end

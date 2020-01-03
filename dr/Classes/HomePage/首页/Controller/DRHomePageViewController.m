@@ -484,7 +484,7 @@ NSString * const RecommendGoodCellId = @"RecommendGoodCellId";
 - (void)searchBarTextDidBeginEditing:(UISearchBar *)searchBar
 {
     DRHomePageSerachViewController * searchVC = [[DRHomePageSerachViewController alloc] init];
-    [self.navigationController pushViewController:searchVC animated:NO];
+    [self.navigationController pushViewController:searchVC animated:YES];
 }
 #pragma mark - 初始化
 - (NSArray *)sortDataArray

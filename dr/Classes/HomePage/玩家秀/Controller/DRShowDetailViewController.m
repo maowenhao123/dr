@@ -564,27 +564,8 @@
 
 - (void)shareBarDidClick
 {
-    NSDictionary *bodyDic = @{
-                              @"id":self.showId,
-                              };
-    
-    NSDictionary *headDic = @{
-                              @"digest":[DRTool getDigestByBodyDic:bodyDic],
-                              @"cmd":@"G11",
-                              @"userId":UserId,
-                              };
-    [[DRHttpTool shareInstance] postWithHeadDic:headDic bodyDic:bodyDic success:^(id json) {
-        DRLog(@"%@",json);
-        if (SUCCESS) {
-            DRShareView * shareView = [[DRShareView alloc] init];
-            [shareView show];
-            shareView.block = ^(UMSocialPlatformType platformType){//选择平台
-                [DRShareTool shareWithTitle:@"集赞赢多肉" description:@"我在吾花肉发表了多肉秀，快来帮我点赞" imageUrl:[NSString stringWithFormat:@"%@/static/img/zanshare.png", @"http://www.esodar.com"] image:nil platformType:platformType url:json[@"url"]];
-            };
-        }
-    } failure:^(NSError *error) {
-        DRLog(@"error:%@",error);
-    }];
+    NSArray * imageUrls = [self.showModel.pics componentsSeparatedByString:@"|"];
+    [DRShareTool shareShowWithShowId:self.showModel.id userNickName:self.showModel.userNickName title:self.showModel.name content:self.showModel.content imageUrl:[NSString stringWithFormat:@"%@%@%@", baseUrl, imageUrls.firstObject, smallPicUrl]];
 }
 
 - (void)goShopDetailBarDidClick

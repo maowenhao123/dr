@@ -73,9 +73,11 @@
     [avatarImageView addGestureRecognizer:userTap];
     
     //分享
+    CGFloat shareButtonWH = 40;
     UIButton * shareButton = [UIButton buttonWithType:UIButtonTypeCustom];
     self.shareButton = shareButton;
-    shareButton.frame = CGRectMake(screenWidth - 10 - avatarImageViewWH, avatarImageView.y, avatarImageViewWH, avatarImageViewWH);
+    shareButton.frame = CGRectMake(screenWidth - 10 - shareButtonWH, avatarImageView.y, shareButtonWH, shareButtonWH);
+    shareButton.centerY = self.avatarImageView.centerY;
     [shareButton setImage:[UIImage imageNamed:@"show_share"] forState:UIControlStateNormal];
     [shareButton addTarget:self action:@selector(shareButtonDidClick:) forControlEvents:UIControlEventTouchUpInside];
     [self addSubview:shareButton];
@@ -178,27 +180,8 @@
 }
 - (void)shareButtonDidClick:(UIButton *)button
 {
-    NSDictionary *bodyDic = @{
-                              @"id":self.model.id,
-                              };
-    
-    NSDictionary *headDic = @{
-                              @"digest":[DRTool getDigestByBodyDic:bodyDic],
-                              @"cmd":@"G11",
-                              @"userId":UserId,
-                              };
-    [[DRHttpTool shareInstance] postWithHeadDic:headDic bodyDic:bodyDic success:^(id json) {
-        DRLog(@"%@",json);
-        if (SUCCESS) {
-            DRShareView * shareView = [[DRShareView alloc] init];
-            [shareView show];
-            shareView.block = ^(UMSocialPlatformType platformType){//选择平台
-                [DRShareTool shareWithTitle:@"集赞赢多肉" description:@"我在吾花肉发表了多肉秀，快来帮我点赞" imageUrl:[NSString stringWithFormat:@"%@/static/img/zanshare.png", @"http://www.esodar.com"] image:nil platformType:platformType url:json[@"url"]];
-            };
-        }
-    } failure:^(NSError *error) {
-        DRLog(@"error:%@",error);
-    }];
+    NSArray * imageUrls = [self.model.pics componentsSeparatedByString:@"|"];
+    [DRShareTool shareShowWithShowId:self.model.id userNickName:self.model.userNickName title:self.model.name content:self.model.content imageUrl:[NSString stringWithFormat:@"%@%@%@", baseUrl, imageUrls.firstObject, smallPicUrl]];
 }
 - (void)imageViewDidClick:(UIGestureRecognizer *)ges
 {

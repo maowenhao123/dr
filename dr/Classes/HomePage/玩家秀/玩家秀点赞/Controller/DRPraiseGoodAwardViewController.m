@@ -104,6 +104,7 @@ NSString * const GoodAwardCollectionCellId = @"PraiseGoodAwardCollectionViewCell
     CGFloat width = (screenWidth - 30) / 2;
     return CGSizeMake(width, width + 45);
 }
+
 #pragma mark - UICollectionViewDataSource
 - (NSInteger)numberOfSectionsInCollectionView:(UICollectionView *)collectionView
 {

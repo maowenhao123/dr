@@ -8,11 +8,11 @@
 
 #import "DRBaseViewController.h"
 #import <HyphenateLite/HyphenateLite.h>
+#import "DRSystemMessageTableViewCell.h"
 
 @interface DRSystemMessageViewController : DRBaseViewController
 
-@property (nonatomic, assign) BOOL isSystem;
-
+@property (assign, nonatomic) SystemMessageType systemMessageType;
 @property (strong, nonatomic) EMConversation *conversation;
 
 @end

@@ -39,7 +39,7 @@
     [self.view addSubview:contentView];
     
     //logo
-    CGFloat logoWH = 57;
+    CGFloat logoWH = 65;
     CGFloat logoImageViewX = (screenWidth - logoWH) / 2;
     UIImageView * logoImageView = [[UIImageView alloc] initWithFrame:CGRectMake(logoImageViewX, 30, logoWH, logoWH)];
     self.logoImageView = logoImageView;
@@ -134,27 +134,33 @@
     [agreementBtn addTarget:self action:@selector(seeAgreement) forControlEvents:UIControlEventTouchUpInside];
     [self.view addSubview:agreementBtn];
 }
+
 - (void)agreementSeletedBtnDidClick:(UIButton *)button
 {
     button.selected = !button.selected;
 }
+
 - (void)seeAgreement
 {
     DRLoadHtmlFileViewController * htmlVC = [[DRLoadHtmlFileViewController alloc] initWithWeb:[NSString stringWithFormat:@"%@/static/kaidian.html", baseUrl]];
     [self.navigationController pushViewController:htmlVC animated:YES];
 }
+
 //添加图片
 - (void)addLogo
 {
     self.addImageManage = [[DRAddImageManage alloc] init];
     self.addImageManage.viewController = self;
     self.addImageManage.delegate = self;
+    self.addImageManage.type = 1;
     [self.addImageManage addImage];
 }
+
 - (void)imageManageCropImage:(UIImage *)image
 {
     self.logoImageView.image = image;
 }
+
 - (void)nextButtonDidClick
 {
     [self.view endEditing:YES];
@@ -178,6 +184,10 @@
     if (DRStringIsEmpty(self.shopDescriptionTV.text))
     {
         [MBProgressHUD showError:@"您还未输入店铺简介"];
+        return;
+    }
+    if ([DRTool stringContainsEmoji:self.shopNameTF.text] || [DRTool stringContainsEmoji:self.shopDescriptionTV.text]) {
+        [MBProgressHUD showError:@"请删掉特殊符号或表情后，再提交哦~"];
         return;
     }
     if (!self.agreementSeletedBtn.selected)

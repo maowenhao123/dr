@@ -176,7 +176,10 @@
         [MBProgressHUD showError:@"您还未输入详细地址"];
         return;
     }
-
+    if ([DRTool stringContainsEmoji:self.nameTF.text] || [DRTool stringContainsEmoji:self.addressDescriptionTV.text]) {
+        [MBProgressHUD showError:@"请删掉特殊符号或表情后，再提交哦~"];
+        return;
+    }
     
     NSDictionary *bodyDic = [NSDictionary dictionary];
     if (self.addressModel) {

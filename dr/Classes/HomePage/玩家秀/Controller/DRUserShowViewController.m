@@ -7,6 +7,7 @@
 //
 
 #import "DRUserShowViewController.h"
+#import "DRLoginViewController.h"
 #import "DRShowTableView.h"
 #import "IQKeyboardManager.h"
 
@@ -17,6 +18,7 @@
 @property (nonatomic,weak) UIImageView *barAvatarImageView;
 @property (nonatomic, weak) UILabel * barNickNameLabel;
 @property (nonatomic, weak) UIButton * backButon;
+@property (nonatomic, weak) UIButton * attentionButton;
 
 @end
 
@@ -54,6 +56,36 @@
     {
         self.automaticallyAdjustsScrollViewInsets = NO;
     }
+    [self getAttentionData];
+}
+
+- (void)getAttentionData
+{
+    if(!UserId || !Token)
+    {
+        return;
+    }
+
+    NSDictionary *bodyDic = @{
+                              @"id":self.userId,
+                              @"type":@(3)
+                              };
+    
+    NSDictionary *headDic = @{
+                              @"digest":[DRTool getDigestByBodyDic:bodyDic],
+                              @"cmd":@"U25",
+                              @"userId":UserId,
+                              };
+    [[DRHttpTool shareInstance] postWithHeadDic:headDic bodyDic:bodyDic success:^(id json) {
+        DRLog(@"%@",json);
+        [MBProgressHUD hideHUDForView:self.view];
+        if (SUCCESS) {
+            self.attentionButton.selected = [json[@"focus"] boolValue];
+        }
+    } failure:^(NSError *error) {
+        [MBProgressHUD hideHUDForView:self.view];
+        DRLog(@"error:%@",error);
+    }];
 }
 
 #pragma mark - 布局视图
@@ -68,10 +100,10 @@
     [showTableView setupChilds];
     
     //headerView
-    UIView * headerView = [[UIView alloc] initWithFrame:CGRectMake(0, 0, screenWidth, scaleScreenWidth(177))];
+    UIView * headerView = [[UIView alloc] initWithFrame:CGRectMake(0, 0, screenWidth, scaleScreenWidth(200))];
     headerView.backgroundColor = [UIColor whiteColor];
     
-    UIImageView * backImageView = [[UIImageView alloc] initWithFrame:CGRectMake(0, 0, screenWidth, scaleScreenWidth(177))];
+    UIImageView * backImageView = [[UIImageView alloc] initWithFrame:CGRectMake(0, 0, screenWidth, scaleScreenWidth(200))];
     if (iPhone4 || iPhone5)
     {
         backImageView.image = [UIImage imageNamed:@"mine_top_back_320"];
@@ -142,7 +174,59 @@
     nickNameLabel.frame = CGRectMake(0, CGRectGetMaxY(avatarImageView.frame) + 12, backImageView.width, nickNameLabel.font.lineHeight);
     [backImageView addSubview:nickNameLabel];
     
+    UIButton * attentionButton = [UIButton buttonWithType:UIButtonTypeCustom];
+    self.attentionButton = attentionButton;
+    [attentionButton setTitle:@"+关注" forState:UIControlStateNormal];
+    [attentionButton setTitle:@"已关注" forState:UIControlStateSelected];
+    CGFloat buttonW = 65;
+    CGFloat buttonH = 24;
+    attentionButton.frame = CGRectMake((screenWidth - buttonW) / 2, CGRectGetMaxY(nickNameLabel.frame) + 13, buttonW, buttonH);
+    [attentionButton setTitleColor:[UIColor whiteColor] forState:UIControlStateNormal];
+    attentionButton.titleLabel.font = [UIFont systemFontOfSize:DRGetFontSize(24)];
+    attentionButton.layer.masksToBounds = YES;
+    attentionButton.layer.cornerRadius = buttonH / 2;
+    attentionButton.layer.borderColor = [UIColor whiteColor].CGColor;
+    attentionButton.layer.borderWidth = 1;
+    [attentionButton addTarget:self action:@selector(attentionButtonDidClick) forControlEvents:UIControlEventTouchUpInside];
+    [backImageView addSubview:attentionButton];
+    
     showTableView.tableHeaderView = headerView;
+}
+
+- (void)attentionButtonDidClick
+{
+    if(!UserId || !Token)
+    {
+        DRLoginViewController * loginVC = [[DRLoginViewController alloc] init];
+        [self presentViewController:loginVC animated:YES completion:nil];
+        return;
+    }
+
+    NSString * cmd;
+    if (self.attentionButton.selected) {//取消关注
+        cmd = @"U23";
+    }else//添加关注
+    {
+        cmd = @"U22";
+    }
+    NSDictionary *bodyDic = @{
+                              @"id":self.userId,
+                              @"type":@(3)
+                              };
+    
+    NSDictionary *headDic = @{
+                              @"digest":[DRTool getDigestByBodyDic:bodyDic],
+                              @"cmd":cmd,
+                              @"userId":UserId,
+                              };
+    [[DRHttpTool shareInstance] postWithHeadDic:headDic bodyDic:bodyDic success:^(id json) {
+        DRLog(@"%@",json);
+        if (SUCCESS) {
+            [self getAttentionData];
+        }
+    } failure:^(NSError *error) {
+        DRLog(@"error:%@",error);
+    }];
 }
 
 - (void)backButonDidClick

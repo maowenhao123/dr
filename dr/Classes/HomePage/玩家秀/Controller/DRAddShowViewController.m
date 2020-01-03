@@ -180,8 +180,8 @@
         DRLog(@"%@",json);
         [MBProgressHUD hideHUDForView:self.view];
         if (SUCCESS) {
-            if (self->_delegate && [self->_delegate respondsToSelector:@selector(addShowSuccess)]) {
-                [self->_delegate addShowSuccess];
+            if (_delegate && [_delegate respondsToSelector:@selector(addShowSuccess)]) {
+                [_delegate addShowSuccess];
             }
             DRAddShowSuccessViewController * addShowVC = [[DRAddShowSuccessViewController alloc] init];
             addShowVC.showId = json[@"id"];

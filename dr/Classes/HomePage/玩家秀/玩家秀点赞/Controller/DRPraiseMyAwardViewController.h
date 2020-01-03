@@ -12,8 +12,6 @@ NS_ASSUME_NONNULL_BEGIN
 
 @interface DRPraiseMyAwardViewController : DRSegementViewController
 
-@property (nonatomic, assign) BOOL showProgressHUD;
-
 @end
 
 NS_ASSUME_NONNULL_END

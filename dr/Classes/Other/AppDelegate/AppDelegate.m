@@ -21,7 +21,6 @@
 #import "WXApi.h"
 #import "UMMobClick/MobClick.h"
 #import "EaseSDKHelper.h"
-#import "MWApi.h"
 
 @interface AppDelegate ()<WXApiDelegate>
 
@@ -76,7 +75,7 @@
     if (error) {
         DRLog(@"%@", error.errorDescription);
     }
-
+    
     [DRTool loginImAccount];
     
     NSDictionary* userInfo = [launchOptions objectForKey:UIApplicationLaunchOptionsRemoteNotificationKey];
@@ -85,10 +84,6 @@
         [[NSNotificationCenter defaultCenter] postNotificationName:@"haveNewMessageNote" object:nil];
         DRLog(@"userInfo：%@",userInfo);
     }
-    
-    //注册魔窗
-    [MWApi registerApp:MWAppKey];
-    [self registerMlink];
     
     //判断token是否过期
     NSString * lastLoginTime = [DRUserDefaultTool getObjectForKey:@"lastLoginTime"];
@@ -103,8 +98,6 @@
     application.keyWindow.rootViewController = [[DRTabBarViewController alloc] init];
     
     [self jumpUrlViewController];
-//    //开启网络监控
-//    [[AFNetworkReachabilityManager sharedManager] startMonitoring];
     return YES;
 }
 
@@ -138,38 +131,6 @@
     [application registerForRemoteNotifications];
 }
 
-- (BOOL)application:(UIApplication *)application
-             openURL:(NSURL *)url
-   sourceApplication:(NSString *)sourceApplication
-          annotation:(id)annotation {
-    
-    if ([url.host isEqualToString:@"safepay"]) {
-        // 支付跳转支付宝钱包进行支付，处理支付结果
-        [[AlipaySDK defaultService] processOrderWithPaymentResult:url standbyCallback:^(NSDictionary *resultDic) {
-            [[NSNotificationCenter defaultCenter] postNotificationName:@"aliPayResultStatus" object:nil userInfo:resultDic];
-            NSLog(@"%@",resultDic);
-        }];
-    }else if([[url absoluteString] rangeOfString:[NSString stringWithFormat:@"%@://pay",WXAppId]].location == 0) {//微信支付
-        return [WXApi handleOpenURL:url delegate:self];
-    }else if ([[url absoluteString] hasPrefix:@"esodar"])
-    {
-        DRGoodDetailViewController * goodDetailVC = [[DRGoodDetailViewController alloc] init];
-        NSString *urlStr = [url absoluteString];
-        NSString * grouponId = [urlStr substringFromIndex:[urlStr rangeOfString:@"id=1"].location + 3];
-        goodDetailVC.grouponId = grouponId;
-        goodDetailVC.isGroupon = YES;
-        DRBaseNavigationController * naVC = [[DRBaseNavigationController alloc] initWithRootViewController:goodDetailVC];
-        [self.window.rootViewController.navigationController presentViewController:naVC animated:YES completion:nil];
-    }
-    else
-    {
-        return [[UMSocialManager defaultManager] handleOpenURL:url];//友盟回调
-    }
-    [MWApi routeMLink:url];
-    return YES;
-}
-
-// NOTE: 9.0以后使用新API接口
 - (BOOL)application:(UIApplication *)app openURL:(NSURL *)url options:(NSDictionary<NSString*, id> *)options
 {
     if ([url.host isEqualToString:@"safepay"]) {
@@ -180,27 +141,33 @@
         }];
     }else if([[url absoluteString] rangeOfString:[NSString stringWithFormat:@"%@://pay",WXAppId]].location == 0) {//微信支付
         return [WXApi handleOpenURL:url delegate:self];
-    }else if ([url.relativeString hasPrefix:@"esodar"])
+    }else if ([url.absoluteString containsString:@"esodar://copy/playShow/detail"])
+    {
+        NSArray * urlParamArray = [url.absoluteString componentsSeparatedByString:@"="];
+        NSString * showId = urlParamArray[1];
+        DRShowDetailViewController * showDetailVC = [[DRShowDetailViewController alloc] init];
+        showDetailVC.isHomePage = YES;
+        showDetailVC.showId = showId;
+        [[self getCurNavController] pushViewController:showDetailVC animated:YES];
+    }else if ([url.absoluteString containsString:@"esodar://rddapp_goods"])
     {
         DRGoodDetailViewController * goodDetailVC = [[DRGoodDetailViewController alloc] init];
-        
-        NSString *urlStr = url.relativeString;
-        if ([urlStr containsString:@"rddapp_goods"]) {
-            NSString * goodId = [urlStr substringFromIndex:[urlStr rangeOfString:@"id="].location + 3];
-            goodDetailVC.goodId = goodId;
-        }else
-        {
-            NSString * grouponId = [urlStr substringFromIndex:[urlStr rangeOfString:@"id="].location + 3];
-            goodDetailVC.grouponId = grouponId;
-            goodDetailVC.isGroupon = YES;
+        NSArray * urlParamArray = [[NSString stringWithFormat:@"%@", [url.absoluteString componentsSeparatedByString:@"?"][1]] componentsSeparatedByString:@"&"];
+        for (NSString * urlParamStr in urlParamArray) {
+            NSArray * urlParamArr = [urlParamStr componentsSeparatedByString:@"="];
+            if ([[NSString stringWithFormat:@"%@", urlParamArr[0]] isEqualToString:@"goodsId"]) {
+                goodDetailVC.goodId = [NSString stringWithFormat:@"%@", urlParamArr[1]];
+                goodDetailVC.grouponId = [NSString stringWithFormat:@"%@", urlParamArr[1]];
+            }else if ([[NSString stringWithFormat:@"%@", urlParamArr[0]] isEqualToString:@"isGroup"])
+            {
+                goodDetailVC.isGroupon = [urlParamArr[1] boolValue];
+            }
         }
-        DRBaseNavigationController * naVC = [[DRBaseNavigationController alloc] initWithRootViewController:goodDetailVC];
-        [self.window.rootViewController presentViewController:naVC animated:YES completion:nil];
+        [[self getCurNavController] pushViewController:goodDetailVC animated:YES];
     }else
     {
         return [[UMSocialManager defaultManager] handleOpenURL:url];//友盟回调
     }
-    [MWApi routeMLink:url];
     return YES;
 }
 /*! @brief 发送一个sendReq后，收到微信的回应
@@ -284,35 +251,6 @@ didRegisterForRemoteNotificationsWithDeviceToken:(NSData *)deviceToken
             [UIPasteboard generalPasteboard].string = @"";
         }
     }
-}
-
-- (BOOL)application:(UIApplication *)application continueUserActivity:(NSUserActivity *)userActivity restorationHandler:(void (^)(NSArray * _Nullable))restorationHandler
-{
-    //如果使用了Universal link ，此方法必写
-    return [MWApi continueUserActivity:userActivity];
-}
-
-- (void)registerMlink
-{
-    //普通商品
-    [MWApi registerMLinkHandlerWithKey:@"productdetail" handler:^(NSURL * _Nonnull url, NSDictionary * _Nullable params) {
-        DRGoodDetailViewController * goodDetailVC = [[DRGoodDetailViewController alloc] init];
-        goodDetailVC.goodId = params[@"id"];
-        [[self getCurNavController] pushViewController:goodDetailVC animated:YES];
-    }];
-    
-    //团购商品
-    [MWApi registerMLinkHandlerWithKey:@"tuangou" handler:^(NSURL * _Nonnull url, NSDictionary * _Nullable params) {
-        DRGoodDetailViewController * goodDetailVC = [[DRGoodDetailViewController alloc] init];
-        goodDetailVC.grouponId = params[@"id"];
-        goodDetailVC.isGroupon = YES;
-        [[self getCurNavController] pushViewController:goodDetailVC animated:YES];
-    }];
-    
-    //红包
-    [MWApi registerMLinkHandlerWithKey:@"redpacket" handler:^(NSURL * _Nonnull url, NSDictionary * _Nullable params) {
-        DRLog(@"redpacket");
-    }];
 }
 
 - (UINavigationController *)getCurNavController

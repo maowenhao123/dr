@@ -61,7 +61,7 @@
 - (NSInteger)tableView:(UITableView *)tableView numberOfRowsInSection:(NSInteger)section
 {
     // Return the number of rows in the section.
-    [tableView showNoDataWithTitle:@"" description:@"暂无聊天数据" rowCount:self.dataArray.count];
+    [tableView showNoDataWithTitle:@"" description:@"暂无聊天数据" rowCount:self.dataArray.count offY:3 * DRCellH + 9];
     return [self.dataArray count];
 }
 
@@ -198,7 +198,7 @@
             [self.dataArray addObjectsFromArray:sorted];
             NSMutableArray * dataArray = [NSMutableArray arrayWithArray:self.dataArray];
             for (EaseConversationModel * models in dataArray) {
-                if ([models.title isEqualToString:@"system"] || [models.title isEqualToString:@"message"]) {
+                if ([models.title isEqualToString:@"system"] || [models.title isEqualToString:@"message"] || [models.title isEqualToString:@"interact"]) {
                     [self.dataArray removeObject:models];
                 }
             }
@@ -240,7 +240,7 @@
             model = [[EaseConversationModel alloc] initWithConversation:converstion];
         }
         
-        if (model && ![model.title isEqualToString:@"system"] && ![model.title isEqualToString:@"message"]) {
+        if (model && ![model.title isEqualToString:@"system"] && ![model.title isEqualToString:@"message"] && ![model.title isEqualToString:@"interact"]) {
             [self.dataArray addObject:model];
         }
     }

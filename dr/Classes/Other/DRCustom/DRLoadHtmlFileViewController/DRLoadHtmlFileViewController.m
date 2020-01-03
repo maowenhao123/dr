@@ -151,7 +151,7 @@
     
     [_bridge registerHandler:@"handleSearch" handler:^(id data, WVJBResponseCallback responseCallback) {
         DRHomePageSerachViewController * searchVC = [[DRHomePageSerachViewController alloc] init];
-        [self.navigationController pushViewController:searchVC animated:NO];
+        [self.navigationController pushViewController:searchVC animated:YES];
     }];
     
     [_bridge registerHandler:@"handleCarousel" handler:^(id data, WVJBResponseCallback responseCallback) {
@@ -461,7 +461,7 @@
     {
         DRHomePageSerachViewController * searchVC = [[DRHomePageSerachViewController alloc] init];
         searchVC.keyWord = [NSString stringWithFormat:@"%@", data];
-        [self.navigationController pushViewController:searchVC animated:NO];
+        [self.navigationController pushViewController:searchVC animated:YES];
     }
 }
 

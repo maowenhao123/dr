@@ -43,6 +43,11 @@
 + (void)shareRedPacketWithRewardUrl:(NSString *)rewardUrl amountMoney:(float)amountMoney;
 
 /*
+ 分享玩家秀
+ */
++ (void)shareShowWithShowId:(NSString *)showId userNickName:(NSString *)userNickName title:(NSString *)title content:(NSString *)content imageUrl:(NSString *)imageUrl;
+
+/*
  分享
  */
 + (void)shareWithTitle:(NSString *)title description:(NSString *)description imageUrl:(NSString *)imageUrl image:(UIImage *)image platformType:(UMSocialPlatformType)platformType url:(NSString *)url;

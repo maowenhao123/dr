@@ -13,11 +13,9 @@
 #import "DRMenuView.h"
 #import "UIButton+DR.h"
 #import "DRSearchTool.h"
-#import "DRTitleView.h"
 
 @interface DRHomePageSerachViewController ()<UISearchBarDelegate, CollectionTextViewDelegate, MenuViewDelegate>
 
-@property (nonatomic,weak) DRTitleView *titleView;
 @property (nonatomic,weak) UIView *searchView;
 @property (nonatomic, weak) UISearchBar * searchBar;
 @property (nonatomic,strong) UIButton * sortbutton;
@@ -34,9 +32,6 @@
 - (void)viewWillAppear:(BOOL)animated
 {
     [super viewWillAppear:animated];
-    UINavigationBar *navBar = self.navigationController.navigationBar;
-    [navBar setShadowImage:[UIImage new]];
-    
     [self.searchBar becomeFirstResponder];
 }
 
@@ -49,9 +44,6 @@
 - (void)viewWillDisappear:(BOOL)animated
 {
     [super viewWillDisappear:animated];
-    UINavigationBar *navBar = self.navigationController.navigationBar;
-    [navBar setShadowImage:nil];
-    
     [self.searchBar resignFirstResponder];
 }
 
@@ -87,16 +79,13 @@
 }
 - (void)setupChildViews
 {
-    self.navigationItem.leftBarButtonItem = [[UIBarButtonItem alloc] initWithImage:[UIImage imageNamed:@"black_back_bar"] style:UIBarButtonItemStylePlain target:self action:@selector(back)];
+    UIButton * backButton = [UIButton buttonWithType:UIButtonTypeCustom];
+    backButton.frame = CGRectMake(0, statusBarH, 40, navBarH);
+    [backButton setImage:[UIImage imageNamed:@"black_back_bar"] forState:UIControlStateNormal];
+    [backButton addTarget:self action:@selector(back) forControlEvents:UIControlEventTouchUpInside];
+    [self.view addSubview:backButton];
     
-    //search
-    DRTitleView *titleView = [[DRTitleView alloc] init];
-    titleView.x = 40;
-    titleView.width = screenWidth - 60;
-    titleView.height = 33;
-    titleView.y = (navBarH - titleView.height) / 2;
-    
-    UISearchBar * searchBar = [[UISearchBar alloc] initWithFrame:titleView.bounds];
+    UISearchBar * searchBar = [[UISearchBar alloc] initWithFrame:CGRectMake(CGRectGetMaxX(backButton.frame), statusBarH + 5, screenWidth - CGRectGetMaxX(backButton.frame), 34)];
     self.searchBar = searchBar;
     searchBar.showsCancelButton = YES;
     searchBar.delegate = self;
@@ -136,11 +125,10 @@
     [sortbutton setImage:[UIImage imageNamed:@"search_sort_triangle"] forState:UIControlStateNormal];
     [sortbutton setButtonTitleWithImageAlignment:UIButtonTitleWithImageAlignmentRight imgTextDistance:3];
     [sortbutton addTarget:self action:@selector(sortButtonDidClick) forControlEvents:UIControlEventTouchUpInside];
-    [titleView addSubview:searchBar];
-    self.navigationItem.titleView = titleView;
+    [self.view addSubview:searchBar];
     
     //搜索页面
-    UIView * searchView = [[UIView alloc] initWithFrame:CGRectMake(0, 0, screenWidth, screenHeight - statusBarH - navBarH)];
+    UIView * searchView = [[UIView alloc] initWithFrame:CGRectMake(0, statusBarH + navBarH, screenWidth, screenHeight - statusBarH - navBarH)];
     self.searchView = searchView;
     [self.view addSubview:searchView];
     
@@ -202,6 +190,7 @@
     [self.searchBar resignFirstResponder];
     [self.navigationController popViewControllerAnimated:NO];
 }
+
 - (void)sortButtonDidClick
 {
     DRMenuView * menuView = [[DRMenuView alloc] initWithFrame:CGRectMake(0, 0, screenWidth, screenHeight) titleArray:@[@"宝贝", @"店铺"] left:YES];
@@ -209,6 +198,7 @@
     menuView.menuViewX = 40 + 15;
     [self.tabBarController.view addSubview:menuView];
 }
+
 - (void)menuViewButtonDidClick:(UIButton *)button
 {
     self.type = button.tag + 1;

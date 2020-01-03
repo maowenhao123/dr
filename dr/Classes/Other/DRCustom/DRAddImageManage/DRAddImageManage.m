@@ -65,10 +65,10 @@
     RSKImageCropViewController *imageCropVC = [[RSKImageCropViewController alloc] initWithImage:image];
     imageCropVC.delegate = self;
     if (self.type == 1) {
-        imageCropVC.cropMode = RSKImageCropModeSquare;
+        imageCropVC.cropMode = RSKImageCropModeCircle;
     }else if (self.type == 2)
     {
-        imageCropVC.cropMode = RSKImageCropModeCircle;
+        imageCropVC.cropMode = RSKImageCropModeSquare;
     }
     [picker pushViewController:imageCropVC animated:YES];
 }

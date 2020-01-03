@@ -11,6 +11,8 @@
 #import "DRLoginViewController.h"
 #import "DRGoodDetailViewController.h"
 #import "DRShowViewController.h"
+#import "DRShowDetailViewController.h"
+#import "DRMyFansViewController.h"
 #import "DRMaintainViewController.h"
 #import "DRMaintainDetailViewController.h"
 #import "DRGoodListViewController.h"
@@ -19,7 +21,6 @@
 #import "DRReturnGoodHandleViewController.h"
 #import "DRReturnGoodDetailViewController.h"
 #import "DROrderDetailViewController.h"
-#import "DRSystemMessageTableViewCell.h"
 #import "UITableView+DRNoData.h"
 
 @interface DRSystemMessageViewController ()<UITableViewDataSource,UITableViewDelegate>
@@ -102,7 +103,7 @@
 - (UITableViewCell *)tableView:(UITableView *)tableView cellForRowAtIndexPath:(NSIndexPath *)indexPath
 {
     DRSystemMessageTableViewCell *cell = [DRSystemMessageTableViewCell cellWithTableView:tableView];
-    cell.isSystem = self.isSystem;
+    cell.systemMessageType = self.systemMessageType;
     cell.messageModel = self.dataArray[indexPath.row];
     return cell;
 }
@@ -114,7 +115,7 @@
     EMMessageBody *messageBody = messageModel.body;
     if (messageBody.type == EMMessageBodyTypeText) {
         NSString * titleStr = @"";
-        if (self.isSystem) {
+        if (self.systemMessageType == SystemMessage) {
             NSDictionary * data = [DRTool dictionaryWithJsonString:messageModel.ext[@"data"]];
             titleStr = data[@"name"];
         }else
@@ -151,8 +152,6 @@
 - (void)tableView:(UITableView *)tableView didSelectRowAtIndexPath:(NSIndexPath *)indexPath
 {
     EMMessage * messageModel = self.dataArray[indexPath.row];
-    
-    int type = [messageModel.ext[@"type"] intValue];
     /*
      type =1 一物一拍
      type =2 批发
@@ -164,7 +163,8 @@
      type =8 药肥
      type =9 工具
      */
-    if (self.isSystem) {//系统消息
+    if (self.systemMessageType == SystemMessage) {//系统消息
+        int type = [messageModel.ext[@"type"] intValue];
         NSDictionary * data = [DRTool dictionaryWithJsonString:messageModel.ext[@"data"]];
         if (type == 4) {
             if(!UserId || !Token)
@@ -217,12 +217,12 @@
                 [self.navigationController pushViewController:goodVC animated:YES];
             }
         }
-    }else
+    }else if (self.systemMessageType == OrderMessage)
     {
         if (DRStringIsEmpty(messageModel.ext[@"orderId"])) {
             return;
         }
-        
+        int type = [messageModel.ext[@"type"] intValue];
         if (type == 101) {//发货提醒
             DRShipmentListViewController * shipmentListVC = [[DRShipmentListViewController alloc] init];
             shipmentListVC.currentIndex = 3;
@@ -247,6 +247,30 @@
             DROrderDetailViewController * orderDetailVC = [[DROrderDetailViewController alloc] init];
             orderDetailVC.orderId = messageModel.ext[@"orderId"];
             [self.navigationController pushViewController:orderDetailVC animated:YES];
+        }
+    }else if (self.systemMessageType == InteractiveMessage)
+    {
+        NSDictionary *ext = messageModel.ext;
+        NSString * type = [NSString stringWithFormat:@"%@", ext[@"type"]];
+        NSDictionary * data = [DRTool dictionaryWithJsonString:ext[@"data"]];
+        if ([type isEqualToString:@"INTERACT_ART_SHOW_PRAISE"] || [type isEqualToString:@"INTERACT_ART_SHOW_COMMENT"] || [type isEqualToString:@"INTERACT_ART_SHOW_COMMENT_REPLY"]) {
+            DRShowDetailViewController * showDetailVC = [[DRShowDetailViewController alloc] init];
+            showDetailVC.showId = [NSString stringWithFormat:@"%@", data[@"detailId"]];
+            [self.navigationController pushViewController:showDetailVC animated:YES];
+        }else if ([type isEqualToString:@"INTERACT_GOODS_COMMENT"])
+        {
+            DRGoodDetailViewController * goodVC = [[DRGoodDetailViewController alloc] init];
+            goodVC.goodId = [NSString stringWithFormat:@"%@", data[@"detailId"]];
+            [self.navigationController pushViewController:goodVC animated:YES];
+        }else if ([type isEqualToString:@"INTERACT_STORE_FOCUS"])
+        {
+            DRMyFansViewController * myFansVC = [[DRMyFansViewController alloc] init];
+            myFansVC.isShop = YES;
+            [self.navigationController pushViewController:myFansVC animated:YES];
+        }else if ([type isEqualToString:@"INTERACT_USER_FOCUS"])
+        {
+            DRMyFansViewController * myFansVC = [[DRMyFansViewController alloc] init];
+            [self.navigationController pushViewController:myFansVC animated:YES];
         }
     }
 }

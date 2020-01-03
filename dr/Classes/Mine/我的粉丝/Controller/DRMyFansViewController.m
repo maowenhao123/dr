@@ -8,12 +8,16 @@
 
 #import "DRMyFansViewController.h"
 #import "DRShowViewController.h"
+#import "DRMailSettingViewController.h"
+#import "DRPublishGoodViewController.h"
 #import "DRIconTextTableViewCell.h"
 #import "DRMyFansModel.h"
 
 @interface DRMyFansViewController ()<UITableViewDelegate, UITableViewDataSource>
 
 @property (nonatomic, weak) UITableView * tableView;
+@property (nonatomic, weak) UILabel * noDataLabel;
+@property (nonatomic, weak) UIButton * addBtn;
 @property (nonatomic, weak) UIView * noDataView;
 @property (nonatomic, weak) MJRefreshGifHeader *headerView;
 @property (nonatomic, weak) MJRefreshBackGifFooter *footerView;
@@ -71,6 +75,14 @@
             if (self.dataArray.count == 0) {
                 self.noDataView.hidden = NO;
                 self.tableView.hidden = YES;
+                if (self.isShop) {
+                    self.noDataLabel.text = @"抱歉，店铺还没有粉丝，快去上新品吧！";
+                    [self.addBtn setTitle:@"去发布商品" forState:UIControlStateNormal];
+                }else
+                {
+                    self.noDataLabel.text = @"抱歉，您还没有粉丝，快去玩家秀场发帖集人气吧！";
+                    [self.addBtn setTitle:@"前往玩家秀场" forState:UIControlStateNormal];
+                }
             }else
             {
                 self.noDataView.hidden = YES;
@@ -108,16 +120,17 @@
     [self.view addSubview:noDataView];
     
     UILabel * noDataLabel = [[UILabel alloc] init];
-    NSMutableAttributedString * noDataAttStr = [[NSMutableAttributedString alloc] initWithString:@"抱歉，您还没有粉丝，快去玩家秀场发帖集人气吧！"];
-    [noDataAttStr addAttribute:NSFontAttributeName value:[UIFont systemFontOfSize:DRGetFontSize(28)] range:NSMakeRange(0, noDataAttStr.length)];
-    [noDataAttStr addAttribute:NSForegroundColorAttributeName value:DRGrayTextColor range:NSMakeRange(0, noDataAttStr.length)];
-    noDataLabel.attributedText = noDataAttStr;
-    CGSize noDataLabelSize = [noDataLabel.attributedText boundingRectWithSize:CGSizeMake(screenWidth - DRMargin * 2, MAXFLOAT) options:NSStringDrawingUsesLineFragmentOrigin context:nil].size;
-    noDataLabel.frame = CGRectMake(DRMargin, self.view.height * 0.3, screenWidth, noDataLabelSize.height);
+    self.noDataLabel = noDataLabel;
+    noDataLabel.font = [UIFont systemFontOfSize:DRGetFontSize(28)];
+    noDataLabel.textColor = DRGrayTextColor;
     noDataLabel.textAlignment = NSTextAlignmentCenter;
+    noDataLabel.text = @"抱歉，您还没有粉丝，快去玩家秀场发帖集人气吧！";
+    CGSize noDataLabelSize = [noDataLabel.text sizeWithFont:noDataLabel.font maxSize:CGSizeMake(screenWidth - DRMargin * 2, MAXFLOAT)];
+    noDataLabel.frame = CGRectMake(DRMargin, self.view.height * 0.3, screenWidth, noDataLabelSize.height);
     [noDataView addSubview:noDataLabel];
     
     UIButton * addBtn = [UIButton buttonWithType:UIButtonTypeCustom];
+    self.addBtn = addBtn;
     addBtn.frame = CGRectMake(screenWidth * 0.2, CGRectGetMaxY(noDataLabel.frame) + DRMargin, screenWidth * 0.6, 40);
     addBtn.backgroundColor = DRDefaultColor;
     [addBtn setTitle:@"前往玩家秀场" forState:UIControlStateNormal];
@@ -164,8 +177,52 @@
 
 - (void)addButtonDidClick
 {
-    DRShowViewController * showVC = [[DRShowViewController alloc] init];
-    [self.navigationController pushViewController:showVC animated:YES];
+    if (self.isShop) {
+        NSDictionary *bodyDic = @{
+            
+        };
+        
+        NSDictionary *headDic = @{
+            @"digest":[DRTool getDigestByBodyDic:bodyDic],
+            @"cmd":@"B15",
+            @"userId":UserId,
+        };
+        waitingView
+        [[DRHttpTool shareInstance] postWithHeadDic:headDic bodyDic:bodyDic success:^(id json) {
+            DRLog(@"%@",json);
+            [MBProgressHUD hideHUDForView:self.view];
+            if (SUCCESS) {
+                NSString * conditionalMailId = json[@"conditionalMailId"];
+                double ruleMoney = [json[@"ruleMoney"] doubleValue];
+                double freight = [json[@"freight"] doubleValue];
+                if (DRStringIsEmpty(conditionalMailId) || (ruleMoney > 0 && freight == 0)) {
+                    UIAlertController * alertController = [UIAlertController alertControllerWithTitle:@"温馨提示" message:@"您的运费信息不完善，请完善。" preferredStyle:UIAlertControllerStyleAlert];
+                    UIAlertAction * alertAction1 = [UIAlertAction actionWithTitle:@"退出" style:UIAlertActionStyleCancel handler:nil];
+                    UIAlertAction * alertAction2 = [UIAlertAction actionWithTitle:@"去完善" style:UIAlertActionStyleDefault handler:^(UIAlertAction * _Nonnull action) {
+                        DRMailSettingViewController * mailSettingVC = [[DRMailSettingViewController alloc] init];
+                        [self.navigationController pushViewController:mailSettingVC animated:YES];
+                    }];
+                    [alertController addAction:alertAction1];
+                    [alertController addAction:alertAction2];
+                    [self presentViewController:alertController animated:YES completion:nil];
+                }else
+                {
+                    DRPublishGoodViewController * addGoodVC = [[DRPublishGoodViewController alloc] init];
+                    [self.navigationController pushViewController:addGoodVC animated:YES];
+                }
+            }else
+            {
+                ShowErrorView
+            }
+        } failure:^(NSError *error) {
+            [MBProgressHUD hideHUDForView:self.view];
+            DRLog(@"error:%@",error);
+        }];
+    }else
+    {
+        DRShowViewController * showVC = [[DRShowViewController alloc] init];
+        [self.navigationController pushViewController:showVC animated:YES];
+    }
 }
 
 #pragma mark - cell delegate

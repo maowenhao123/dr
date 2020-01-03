@@ -207,6 +207,7 @@
     showDetailVC.userId = praiseModel.userId;
     showDetailVC.nickName = praiseModel.userNickName;
     showDetailVC.userHeadImg = praiseModel.userHeadImg;
+    
     [self.navigationController pushViewController:showDetailVC animated:YES];
 }
 
