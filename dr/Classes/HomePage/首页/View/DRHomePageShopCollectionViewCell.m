@@ -14,7 +14,7 @@
 
 @property (nonatomic, weak) UIImageView *avatarImageView;
 @property (nonatomic, weak) UILabel *nameLabel;
-@property (nonatomic, weak) UILabel *fansLabel;
+@property (nonatomic, weak) UILabel *sellCountLabel;
 @property (nonatomic, weak) UIImageView * bigImageView;
 @property (nonatomic, weak) UIImageView * smallImageView1;
 @property (nonatomic, weak) UIImageView * smallImageView2;
@@ -55,17 +55,12 @@
     nameLabel.textColor = DRBlackTextColor;
     [self addSubview:nameLabel];
     
-    //粉丝
-    UIImageView * favoriteImageView = [[UIImageView alloc] initWithFrame:CGRectMake(nameLabel.x, CGRectGetMaxY(nameLabel.frame), 11, 11)];
-    favoriteImageView.image = [UIImage imageNamed:@"favorite_icon"];
-    [self addSubview:favoriteImageView];
-    
-    UILabel * fansLabel = [[UILabel alloc] initWithFrame:CGRectMake(CGRectGetMaxX(favoriteImageView.frame) + 2, CGRectGetMaxY(nameLabel.frame), 100, 20)];
-    self.fansLabel = fansLabel;
-    fansLabel.textColor = DRGrayTextColor;
-    fansLabel.font = [UIFont systemFontOfSize:DRGetFontSize(24)];
-    [self addSubview:fansLabel];
-    favoriteImageView.centerY = fansLabel.centerY;
+    //销量
+    UILabel * sellCountLabel = [[UILabel alloc] initWithFrame:CGRectMake(nameLabel.x, CGRectGetMaxY(nameLabel.frame), 100, 20)];
+    self.sellCountLabel = sellCountLabel;
+    sellCountLabel.textColor = DRGrayTextColor;
+    sellCountLabel.font = [UIFont systemFontOfSize:DRGetFontSize(24)];
+    [self addSubview:sellCountLabel];
     
     //进店看看
     UIButton * goShopButton = [UIButton buttonWithType:UIButtonTypeCustom];
@@ -134,7 +129,7 @@
     [self.avatarImageView sd_setImageWithURL:[NSURL URLWithString:imageUrlStr] placeholderImage:[UIImage imageNamed:@"avatar_placeholder"]];
     
     self.nameLabel.text = _model.storeName;
-    self.fansLabel.text = [NSString stringWithFormat:@"%@",_model.fansCount];
+    self.sellCountLabel.text = [NSString stringWithFormat:@"销量：%@",_model.sellCount];
     self.bigImageView.image = [UIImage imageNamed:@"shop_no_good"];
     self.smallImageView1.image = [UIImage imageNamed:@"shop_no_good"];
     self.smallImageView2.image = [UIImage imageNamed:@"shop_no_good"];

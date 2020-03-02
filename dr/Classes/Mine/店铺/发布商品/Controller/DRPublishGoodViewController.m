@@ -212,7 +212,7 @@
                     [detailAttStr appendAttributedString:[[NSAttributedString alloc] initWithString:@"\n"]];
                 }
                 NSURL * imageUrl = [NSURL URLWithString:[NSString stringWithFormat:@"%@%@", baseUrl, richText[@"content"]]];
-                NSData * imageData=[NSData dataWithContentsOfURL:imageUrl];
+                NSData * imageData = [NSData dataWithContentsOfURL:imageUrl];
                 UIImage * image = [UIImage imageWithData:imageData];
                 NSTextAttachment *textAttachment = [[NSTextAttachment alloc] initWithData:nil ofType:nil];
                 CGFloat textAttachmentW = screenWidth - 2 * 5;

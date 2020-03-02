@@ -73,7 +73,7 @@
     [avatarImageView addGestureRecognizer:userTap];
     
     //分享
-    CGFloat shareButtonWH = 40;
+    CGFloat shareButtonWH = 45;
     UIButton * shareButton = [UIButton buttonWithType:UIButtonTypeCustom];
     self.shareButton = shareButton;
     shareButton.frame = CGRectMake(screenWidth - 10 - shareButtonWH, avatarImageView.y, shareButtonWH, shareButtonWH);

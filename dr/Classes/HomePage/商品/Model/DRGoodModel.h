@@ -53,6 +53,8 @@
 @property (nonatomic,assign) long long systemTime;
 @property (nonatomic,assign) long long dayBeginTime;
 @property (nonatomic,assign) long long dayEndTime;
+@property (nonatomic,copy) NSAttributedString *htmlAttStr;
+@property (nonatomic,assign) CGFloat htmlLabelH;
 @property (nonatomic,strong) NSArray <NSString *>*tags;
 @property (nonatomic,strong) NSArray <DRGoodSpecificationModel *>*specifications;
 //自定义

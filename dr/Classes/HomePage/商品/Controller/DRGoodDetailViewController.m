@@ -18,6 +18,7 @@
 #import "DRGoodGroupCollectionViewCell.h"
 #import "DRGoodShopMessageCollectionViewCell.h"
 #import "DRRecommendGoodCollectionViewCell.h"
+#import "DRGoodHtmlCollectionViewCell.h"
 #import "UIButton+DR.h"
 #import "DRWholesaleNumberView.h"
 #import "DRSingleSpecificationView.h"
@@ -31,6 +32,7 @@
 #import "DRDateTool.h"
 #import "DRIMTool.h"
 #import "DRShoppingCarCache.h"
+#import "HTMLHelper.h"
 
 NSString * const GoodCommentHeaderId = @"GoodCommentHeaderId";
 NSString * const GoodTitleHeaderId = @"GoodTitleHeaderId";
@@ -41,7 +43,7 @@ NSString * const GoodShopMessageId = @"GoodShopMessageId";
 NSString * const WebViewCellId = @"WebViewCellId";
 NSString * const GoodDetailRecommendGoodCellId = @"GoodDetailRecommendGoodCellId";
 
-@interface DRGoodDetailViewController ()<UICollectionViewDataSource, UICollectionViewDelegate, UICollectionViewDelegateFlowLayout, UIWebViewDelegate, WholesaleNumberViewDelegate, SingleSpecificationViewDelegate, JoinGrouponViewDelegate, StartGrouponViewDelegate, MenuViewDelegate, GoodHeaderCollectionViewCellDelegate>
+@interface DRGoodDetailViewController ()<UICollectionViewDataSource, UICollectionViewDelegate, UICollectionViewDelegateFlowLayout, WholesaleNumberViewDelegate, SingleSpecificationViewDelegate, JoinGrouponViewDelegate, StartGrouponViewDelegate, MenuViewDelegate, GoodHeaderCollectionViewCellDelegate>
 
 @property (nonatomic, weak) UICollectionView *collectionView;
 @property (nonatomic, weak) UIView *barView;
@@ -54,7 +56,6 @@ NSString * const GoodDetailRecommendGoodCellId = @"GoodDetailRecommendGoodCellId
 @property (nonatomic, weak) UIButton * attentionButon;
 @property (nonatomic,weak) UIButton *buyButton;
 @property (nonatomic,weak) UIButton *addCarButton;
-@property (nonatomic,strong) UIWebView *webView;
 @property (nonatomic, weak) DRVideoFloatingWindow *videoFloatingWindow;
 @property (nonatomic,strong) DRGoodHeaderFrameModel *goodHeaderFrameModel;
 @property (nonatomic,strong) DRGoodModel *goodModel;
@@ -122,6 +123,11 @@ NSString * const GoodDetailRecommendGoodCellId = @"GoodDetailRecommendGoodCellId
     } else {
         self.automaticallyAdjustsScrollViewInsets = NO;
     }
+    [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(refreshGoodHtmlCell) name:@"RefreshGoodHtmlCell" object:nil];
+}
+- (void)refreshGoodHtmlCell
+{
+    [self.collectionView reloadSections:[NSIndexSet indexSetWithIndex:4]];
 }
 #pragma mark - 请求数据
 - (void)getGrouponData
@@ -130,12 +136,12 @@ NSString * const GoodDetailRecommendGoodCellId = @"GoodDetailRecommendGoodCellId
         return;
     }
     NSDictionary *bodyDic = @{
-                              @"id":self.grouponId,
-                              };
+        @"id":self.grouponId,
+    };
     
     NSDictionary *headDic = @{
-                              @"cmd":@"S18",
-                              };
+        @"cmd":@"S18",
+    };
     [[DRHttpTool shareInstance] postWithTarget:self headDic:headDic bodyDic:bodyDic success:^(id json) {
         DRLog(@"%@",json);
         if (SUCCESS) {
@@ -157,12 +163,12 @@ NSString * const GoodDetailRecommendGoodCellId = @"GoodDetailRecommendGoodCellId
         return;
     }
     NSDictionary *bodyDic = @{
-                              @"id":self.goodId,
-                              };
+        @"id":self.goodId,
+    };
     
     NSDictionary *headDic = @{
-                              @"cmd":@"B08",
-                              };
+        @"cmd":@"B08",
+    };
     waitingView
     [[DRHttpTool shareInstance] postWithTarget:self headDic:headDic bodyDic:bodyDic success:^(id json) {
         DRLog(@"%@",json);
@@ -173,6 +179,35 @@ NSString * const GoodDetailRecommendGoodCellId = @"GoodDetailRecommendGoodCellId
             goodModel.specifications = [DRGoodSpecificationModel mj_objectArrayWithKeyValuesArray:json[@"goods"][@"specifications"]];
             NSSortDescriptor *sortDescriptor = [NSSortDescriptor sortDescriptorWithKey:@"count" ascending:YES];
             goodModel.wholesaleRule = [goodModel.wholesaleRule sortedArrayUsingDescriptors:@[sortDescriptor]];//排序
+            NSMutableAttributedString *htmlAttStr = [[NSMutableAttributedString alloc] init];
+            for (NSDictionary * richText in goodModel.richTexts) {
+                if ([richText[@"type"] intValue] == 1) {//图片
+                    NSURL * imageUrl = [NSURL URLWithString:[NSString stringWithFormat:@"%@%@", baseUrl, richText[@"content"]]];
+                    NSData * imageData = [NSData dataWithContentsOfURL:imageUrl];
+                    UIImage * image = [UIImage imageWithData:imageData];
+                    NSTextAttachment *textAttachment = [[NSTextAttachment alloc] initWithData:nil ofType:nil];
+                    CGFloat textAttachmentW = screenWidth - 2 * DRMargin;
+                    CGFloat textAttachmentH = textAttachmentW * (image.size.height / image.size.width);
+                    textAttachment.bounds = CGRectMake(DRMargin, 0, textAttachmentW , textAttachmentH);
+                    textAttachment.image = image;
+                    NSAttributedString *textAttachmentString = [NSAttributedString attributedStringWithAttachment:textAttachment];
+                    [htmlAttStr appendAttributedString:textAttachmentString];
+                    [htmlAttStr appendAttributedString:[[NSAttributedString alloc] initWithString:@"\n"]];
+                }else//文字
+                {
+                    NSMutableAttributedString *textAttStr = [[NSMutableAttributedString alloc] initWithString:[NSString stringWithFormat:@"%@", richText[@"content"]]];
+                    [textAttStr addAttribute:NSFontAttributeName value:[UIFont systemFontOfSize:DRGetFontSize(32)] range:NSMakeRange(0, textAttStr.length)];
+                    [textAttStr addAttribute:NSForegroundColorAttributeName value:DRBlackTextColor range:NSMakeRange(0, textAttStr.length)];
+                    [htmlAttStr appendAttributedString:textAttStr];
+                    [htmlAttStr appendAttributedString:[[NSAttributedString alloc] initWithString:@"\n"]];
+                }
+            }
+            goodModel.htmlAttStr = htmlAttStr;
+            UILabel * label = [[UILabel alloc] init];
+            label.numberOfLines = 0;
+            label.attributedText = htmlAttStr;
+            CGSize labelSize = [label sizeThatFits:CGSizeMake(screenWidth - 2 * DRMargin, MAXFLOAT)];
+            goodModel.htmlLabelH = labelSize.height;
             self.goodModel = goodModel;
             if (self.grouponModel) {
                 self.grouponModel.goods = goodModel;
@@ -198,15 +233,15 @@ NSString * const GoodDetailRecommendGoodCellId = @"GoodDetailRecommendGoodCellId
         return;
     }
     NSDictionary *bodyDic = @{
-                              @"id":self.goodId,
-                              @"type":@(1)
-                              };
+        @"id":self.goodId,
+        @"type":@(1)
+    };
     
     NSDictionary *headDic = @{
-                              @"digest":[DRTool getDigestByBodyDic:bodyDic],
-                              @"cmd":@"U25",
-                              @"userId":UserId,
-                              };
+        @"digest":[DRTool getDigestByBodyDic:bodyDic],
+        @"cmd":@"U25",
+        @"userId":UserId,
+    };
     [[DRHttpTool shareInstance] postWithHeadDic:headDic bodyDic:bodyDic success:^(id json) {
         DRLog(@"%@",json);
         [MBProgressHUD hideHUDForView:self.view];
@@ -241,15 +276,15 @@ NSString * const GoodDetailRecommendGoodCellId = @"GoodDetailRecommendGoodCellId
         cmd = @"U22";
     }
     NSDictionary *bodyDic = @{
-                              @"id":self.goodId,
-                              @"type":@(1)
-                              };
+        @"id":self.goodId,
+        @"type":@(1)
+    };
     
     NSDictionary *headDic = @{
-                              @"digest":[DRTool getDigestByBodyDic:bodyDic],
-                              @"cmd":cmd,
-                              @"userId":UserId,
-                              };
+        @"digest":[DRTool getDigestByBodyDic:bodyDic],
+        @"cmd":cmd,
+        @"userId":UserId,
+    };
     [[DRHttpTool shareInstance] postWithHeadDic:headDic bodyDic:bodyDic success:^(id json) {
         DRLog(@"%@",json);
         if (SUCCESS) {
@@ -279,12 +314,12 @@ NSString * const GoodDetailRecommendGoodCellId = @"GoodDetailRecommendGoodCellId
     }
     
     NSDictionary *bodyDic = @{
-                              @"goodsId":self.goodId,
-                              };
+        @"goodsId":self.goodId,
+    };
     
     NSDictionary *headDic = @{
-                              @"cmd":@"S03"
-                              };
+        @"cmd":@"S03"
+    };
     [[DRHttpTool shareInstance] postWithHeadDic:headDic bodyDic:bodyDic success:^(id json) {
         DRLog(@"%@",json);
         if (SUCCESS) {
@@ -302,15 +337,15 @@ NSString * const GoodDetailRecommendGoodCellId = @"GoodDetailRecommendGoodCellId
         return;
     }
     NSDictionary *bodyDic = @{
-                              @"pageIndex":@1,
-                              @"pageSize":@2,
-                              @"goodsId":self.goodId,
-                              };
+        @"pageIndex":@1,
+        @"pageSize":@2,
+        @"goodsId":self.goodId,
+    };
     
     NSDictionary *headDic = @{
-                              
-                              @"cmd":@"B21",
-                              };
+        
+        @"cmd":@"B21",
+    };
     [[DRHttpTool shareInstance] postWithHeadDic:headDic bodyDic:bodyDic success:^(id json) {
         if (SUCCESS) {
             self.commentDataArray = [DRGoodCommentModel mj_objectArrayWithKeyValuesArray:json[@"list"]];
@@ -328,12 +363,12 @@ NSString * const GoodDetailRecommendGoodCellId = @"GoodDetailRecommendGoodCellId
     }
     
     NSDictionary *bodyDic = @{
-                              @"goodsId":self.goodId,
-                              };
+        @"goodsId":self.goodId,
+    };
     
     NSDictionary *headDic = @{
-                              @"cmd": @"GET_SAME_STORE_RECOMMEND_GOODS_LIST",
-                              };
+        @"cmd": @"GET_SAME_STORE_RECOMMEND_GOODS_LIST",
+    };
     
     [[DRHttpTool shareInstance] postWithHeadDic:headDic bodyDic:bodyDic success:^(id json) {
         if (SUCCESS) {
@@ -355,14 +390,14 @@ NSString * const GoodDetailRecommendGoodCellId = @"GoodDetailRecommendGoodCellId
     if (!self.goodId) {
         return;
     }
-
+    
     NSDictionary *bodyDic = @{
-                              @"goodsId":self.goodId,
-                              };
+        @"goodsId":self.goodId,
+    };
     
     NSDictionary *headDic = @{
-                              @"cmd": @"GET_SAME_SUBJECT_RECOMMEND_GOODS_LIST",
-                              };
+        @"cmd": @"GET_SAME_SUBJECT_RECOMMEND_GOODS_LIST",
+    };
     
     [[DRHttpTool shareInstance] postWithHeadDic:headDic bodyDic:bodyDic success:^(id json) {
         if (SUCCESS) {
@@ -402,7 +437,7 @@ NSString * const GoodDetailRecommendGoodCellId = @"GoodDetailRecommendGoodCellId
     [collectionView registerClass:[DRGoodCommentCollectionViewCell class] forCellWithReuseIdentifier:GoodCommentId];
     [collectionView registerClass:[DRGoodGroupCollectionViewCell class] forCellWithReuseIdentifier:GoodGroupId];
     [collectionView registerClass:[DRGoodShopMessageCollectionViewCell class] forCellWithReuseIdentifier:GoodShopMessageId];
-    [collectionView registerClass:[UICollectionViewCell class] forCellWithReuseIdentifier:WebViewCellId];
+    [collectionView registerClass:[DRGoodHtmlCollectionViewCell class] forCellWithReuseIdentifier:WebViewCellId];
     [collectionView registerClass:[DRRecommendGoodCollectionViewCell class] forCellWithReuseIdentifier:GoodDetailRecommendGoodCellId];
     [self.view addSubview:collectionView];
     
@@ -542,11 +577,6 @@ NSString * const GoodDetailRecommendGoodCellId = @"GoodDetailRecommendGoodCellId
         }
     }
     
-    self.webView = [[UIWebView alloc] initWithFrame:CGRectMake(0, 0, screenWidth, 1)];
-    self.webView.delegate = self;
-    self.webView.backgroundColor = [UIColor clearColor];
-    self.webView.scrollView.scrollEnabled = NO;
-    
     //浮窗视频
     DRVideoFloatingWindow *videoFloatingWindow = [[DRVideoFloatingWindow alloc] initWithFrame:CGRectMake(0, 0, screenWidth, 390)];
     self.videoFloatingWindow = videoFloatingWindow;
@@ -592,10 +622,10 @@ NSString * const GoodDetailRecommendGoodCellId = @"GoodDetailRecommendGoodCellId
     if (components.day > 0 || components.hour > 0 || components.minute > 0 || components.second > 0) {
         self.buyButton.enabled = YES;
         if (components.day > 0) {
-            self.timeLabel.text = [NSString stringWithFormat:@"距结束\n%ld天 %02ld:%02ld:%02ld", components.day, components.hour, components.minute, components.second];
+            self.timeLabel.text = [NSString stringWithFormat:@"距结束\n%ld天 %02ld:%02ld:%02ld", (long)components.day, (long)components.hour, (long)components.minute, (long)components.second];
         }else if (components.hour > 0)
         {
-            self.timeLabel.text = [NSString stringWithFormat:@"距结束\n%02ld:%02ld:%02ld", components.hour, components.minute, components.second];
+            self.timeLabel.text = [NSString stringWithFormat:@"距结束\n%02ld:%02ld:%02ld", (long)components.hour, (long)components.minute, (long)components.second];
         }
     }else
     {
@@ -614,6 +644,7 @@ NSString * const GoodDetailRecommendGoodCellId = @"GoodDetailRecommendGoodCellId
     
     [self.collectionView reloadSections:[NSIndexSet indexSetWithIndex:0]];//刷新数据
     [self.collectionView reloadSections:[NSIndexSet indexSetWithIndex:3]];//刷新数据
+    [self.collectionView reloadSections:[NSIndexSet indexSetWithIndex:4]];//刷新数据
     
     if ([_goodModel.sellType intValue] == 1) {//一物一拍/零售
         self.buyButton.hidden = NO;
@@ -631,13 +662,6 @@ NSString * const GoodDetailRecommendGoodCellId = @"GoodDetailRecommendGoodCellId
     }
     
     self.barGoodNameLabel.text = _goodModel.name;
-   
-    NSString * htmlStr = self.goodModel.detail;
-    htmlStr = [htmlStr stringByReplacingOccurrencesOfString:@"\n" withString:@"</br>"];
-    if (!DRStringIsEmpty(htmlStr)) {
-        [self.webView loadHTMLString:htmlStr baseURL:[NSURL URLWithString:baseUrl]];
-    }
-    
     //视频
     if (!DRStringIsEmpty(_goodModel.video)) {
         self.videoFloatingWindow.urlString = _goodModel.video;
@@ -841,7 +865,7 @@ NSString * const GoodDetailRecommendGoodCellId = @"GoodDetailRecommendGoodCellId
             [goodInfo setObject:priceStr forKey:@"price"];
         }
         
-         // 推广图片
+        // 推广图片
         if (!DRStringIsEmpty(self.goodModel.spreadPics)) {
             [goodInfo setObject:self.goodModel.spreadPics forKey:@"spreadPics"];
         }
@@ -942,14 +966,6 @@ NSString * const GoodDetailRecommendGoodCellId = @"GoodDetailRecommendGoodCellId
     [self.navigationController pushViewController:submitOrderVC animated:YES];
 }
 
-#pragma mark - UIWebViewDelegate
-- (void)webViewDidFinishLoad:(UIWebView *)webView
-{
-    // 获取内容高度
-    CGFloat height = [[webView stringByEvaluatingJavaScriptFromString:@"document.body.scrollHeight"] floatValue];
-    self.webView.height = height;
-    [self.collectionView reloadSections:[NSIndexSet indexSetWithIndex:4]];//刷新数据
-}
 #pragma mark - UICollectionViewDelegateFlowLayout
 - (CGFloat)collectionView:(UICollectionView *)collectionView layout:(UICollectionViewLayout *)collectionViewLayout minimumLineSpacingForSectionAtIndex:(NSInteger)section
 {
@@ -985,7 +1001,7 @@ NSString * const GoodDetailRecommendGoodCellId = @"GoodDetailRecommendGoodCellId
         if (DRStringIsEmpty(self.goodModel.detail)) {
             return CGSizeMake(screenWidth, 0.01);
         }
-        return CGSizeMake(screenWidth, self.webView.height);
+        return CGSizeMake(screenWidth, self.goodModel.htmlLabelH);
     }else if (indexPath.section == 5)
     {
         CGFloat width = (screenWidth - 5) / 2;
@@ -1063,8 +1079,8 @@ NSString * const GoodDetailRecommendGoodCellId = @"GoodDetailRecommendGoodCellId
         return cell;
     }else if (indexPath.section == 4)
     {
-        UICollectionViewCell *cell = [collectionView dequeueReusableCellWithReuseIdentifier:WebViewCellId forIndexPath:indexPath];
-        [cell addSubview:self.webView];
+        DRGoodHtmlCollectionViewCell *cell = [collectionView dequeueReusableCellWithReuseIdentifier:WebViewCellId forIndexPath:indexPath];
+        cell.goodModel = self.goodModel;
         return cell;
     }else if (indexPath.section == 5)
     {

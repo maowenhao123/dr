@@ -7,6 +7,7 @@
 //
 
 #import "DRShowViewController.h"
+#import "DRPraiseListViewController.h"
 #import "DRAddShowViewController.h"
 #import "DRShowTableView.h"
 #import "DRShowHeaderView.h"
@@ -81,6 +82,7 @@
     }];
 }
 
+//18801074076
 - (void)judgePraiseAward
 {
     NSDictionary *bodyDic = @{
@@ -128,6 +130,10 @@
 
 - (void)addShowBarDidClick
 {
+    DRPraiseListViewController * praiseListVC = [[DRPraiseListViewController alloc] init];
+    [self.navigationController pushViewController:praiseListVC animated:YES];
+    return;
+    
     DRAddShowViewController * addShowVC = [[DRAddShowViewController alloc] init];
     addShowVC.delegate = self;
     [self.navigationController pushViewController:addShowVC animated:YES];

@@ -28,7 +28,7 @@
 - (void)viewDidLoad
 {
     [super viewDidLoad];
-    self.title = @"实时榜单";
+    self.title = @"我的奖励";
     [self setupChilds];
     [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(headerRefreshViewBeginRefreshing) name:@"PraiseAwardGoodSuccess" object:nil];
 }

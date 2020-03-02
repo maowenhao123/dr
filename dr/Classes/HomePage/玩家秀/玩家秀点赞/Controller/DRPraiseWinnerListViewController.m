@@ -37,7 +37,7 @@
         cmd = @"G02";
     }else if (self.currentIndex == 1)
     {
-        cmd = @"G07";
+        cmd = @"W06";
     }
     NSDictionary *bodyDic = @{
                               };
@@ -85,7 +85,7 @@
 #pragma mark - 布局视图
 - (void)setupChilds
 {
-    self.btnTitles = @[@"周榜", @"总榜"];
+    self.btnTitles = @[@"周奖励", @"月奖励"];
     CGFloat scrollViewH = screenHeight - statusBarH - navBarH - topBtnH - 45 - [DRTool getSafeAreaBottom];
     for(int i = 0; i < self.btnTitles.count; i++)
     {

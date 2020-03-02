@@ -17,8 +17,8 @@ MJCodingImplementation
     [DRGoodModel mj_setupReplacedKeyFromPropertyName:^NSDictionary *{
         
         return @{
-                 @"description_":@"description"
-                 };
+            @"description_":@"description"
+        };
     }];
 }
 

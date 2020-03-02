@@ -8,7 +8,6 @@
 
 #import "DRShowHeaderView.h"
 #import "DRLoadHtmlFileViewController.h"
-#import "DRPraiseListViewController.h"
 #import "SDCycleScrollView.h"
 #import "DRTitleCycleScrollView.h"
 #import "DRPraiseListView.h"

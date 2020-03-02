@@ -204,6 +204,14 @@ NSString * const ShopHeaderCellId = @"ShopHeaderCellId";
         [MBProgressHUD hideHUDForView:self.view];
         if (SUCCESS) {
             self.isAttention = !self.isAttention;
+            NSInteger fansCount = [self.shopModel.fansCount integerValue];
+            if (self.isAttention) {
+                fansCount ++;
+            }else
+            {
+                fansCount --;
+            }
+            self.shopModel.fansCount = @(fansCount);
             [UIView performWithoutAnimation:^{
                 [self.collectionView reloadSections:[NSIndexSet indexSetWithIndex:0]];
             }];

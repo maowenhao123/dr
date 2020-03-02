@@ -12,7 +12,7 @@
 
 - (CGFloat)GoodHeaderCellH
 {
-    CGSize goodNameLabelSize = [_goodModel.name sizeWithLabelFont:[UIFont boldSystemFontOfSize:DRGetFontSize(32)]];
+    CGSize goodNameLabelSize = [_goodModel.name sizeWithFont:[UIFont boldSystemFontOfSize:DRGetFontSize(32)] maxSize:CGSizeMake(screenWidth - 2 * DRMargin, MAXFLOAT)];
     _goodNameLabelF = CGRectMake(DRMargin, 390 + 10, goodNameLabelSize.width, goodNameLabelSize.height);
     
     NSString * detailStr = _goodModel.description_;
